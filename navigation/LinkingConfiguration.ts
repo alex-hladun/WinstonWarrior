@@ -6,12 +6,12 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Play: {
             screens: {
               TabOneScreen: 'one',
             },
           },
-          TabTwo: {
+          Stats: {
             screens: {
               TabTwoScreen: 'two',
             },
