@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 50,
   },
   header: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 10,
     // width: '100%'
@@ -85,10 +85,10 @@ export const styles = StyleSheet.create({
     top: '85%'
   },
   holeContainer: {
-flexDirection: 'column',
-justifyContent: 'flex-start',
-height: '100%',
-width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    height: '100%',
+    width: '100%',
 
   }
 });
