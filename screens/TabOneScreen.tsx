@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -8,7 +8,9 @@ import { Text, View } from '../components/Themed';
 
 interface Location {
   latitude: number,
-  longitude: number
+  longitude: number,
+  latitudeDelta: number,
+  longitudeDelta: number
 }
 interface myState {
   location: Location,
@@ -21,16 +23,20 @@ export default function TabOneScreen() {
   const [state, setState] = React.useState<myState>({
     location: {
       latitude: 0,
-      longitude: 0
+      longitude: 0,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05
     },
-    geocode:null,
-    errorMessage:""
+    geocode: null,
+    errorMessage: ""
   })
 
   // const getGeocodeAsync= async (location) => {
   //   let geocode = await Location.reverseGeocodeAsync(location)
   //   setState({...state, geocode})
   // }
+  let locationUpdate;
+
 
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -39,10 +45,17 @@ export default function TabOneScreen() {
       });
     }
 
-    let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Highest});
-    const { latitude , longitude } = location.coords
+    let location = await Location.watchPositionAsync({
+      accuracy:Location.Accuracy.Highest, 
+      distanceInterval: 0.1
+    }, (loc) => {
+
+      setState({ ...state, location: {latitudeDelta: 0.05, longitudeDelta: 0.05, latitude: loc.coords.latitude, longitude: loc.coords.longitude}});
+
+    })
+    
+    // const { latitude , longitude } = location.coords
     // getGeocodeAsync({latitude, longitude})
-    setState({ ...state, location: {latitude, longitude}});
 
   };
 
@@ -52,10 +65,9 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <Hole holeNum={1} /> */}
-      <Text>
-      {state.location ? `${state.location.latitude}, ${state.location.longitude}` :""}
-      </Text>
+      <Hole holeNum={1} location={state.location} />
+      
+     
     </View>
   );
 }

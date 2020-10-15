@@ -79,7 +79,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     zIndex: 100,
-    borderStyle: "2px solid black",
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 2,
     backgroundColor: 'green',
     // marginTop: '90%'
     top: '85%'
