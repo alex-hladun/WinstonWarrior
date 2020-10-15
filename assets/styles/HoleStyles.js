@@ -31,9 +31,11 @@ export const styles = StyleSheet.create({
     marginHorizontal: 50,
   },
   header: {
-    flexDirection: 'row',
+    // position: 'absolute',
     justifyContent: 'space-between',
-    margin: 10,
+    flexDirection: 'row',
+    marginHorizontal: 10,
+
     // width: '100%'
   },
   homeScreenFilename: {
@@ -66,25 +68,34 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 30,
+    marginTop: 10,
     height: 1,
     width: '80%',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   floating: {
     width: '70%',
     height: '10%',
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     position: 'absolute',
     zIndex: 100,
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 2,
-    backgroundColor: 'green',
+    backgroundColor: '#4FC879',
+    borderRadius: 100,
     // marginTop: '90%'
     top: '85%'
+  },
+  shotDiff: {
+    margin: 20,
+    // backgroundColor: 'yellow',
+    // height: '100%',
+    // borderRadius: 100,
+    // zIndex: 1
   },
   holeContainer: {
     flexDirection: 'column',

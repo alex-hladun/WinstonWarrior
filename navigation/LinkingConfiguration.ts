@@ -6,7 +6,7 @@ export default {
     screens: {
       Root: {
         screens: {
-          Play: {
+          WinstonWarrior: {
             screens: {
               TabOneScreen: 'one',
             },

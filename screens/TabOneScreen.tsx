@@ -15,7 +15,8 @@ interface Location {
 interface myState {
   location: Location,
   geocode: any,
-  errorMessage: string
+  errorMessage: string,
+  hole: number
 }
 
 export default function TabOneScreen() {
@@ -28,7 +29,8 @@ export default function TabOneScreen() {
       longitudeDelta: 0.05
     },
     geocode: null,
-    errorMessage: ""
+    errorMessage: "",
+    hole: 1
   })
 
   // const getGeocodeAsync= async (location) => {
@@ -60,15 +62,15 @@ export default function TabOneScreen() {
 
   };
 
+ 
+
   React.useEffect(() => {
     getLocationAsync()
   }, [locationUpdate])
 
   return (
     <View style={styles.container}>
-      <Hole holeNum={1} location={state.location} />
-      
-     
+      <Hole location={state.location}/>
     </View>
   );
 }
