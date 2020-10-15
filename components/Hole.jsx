@@ -18,11 +18,15 @@ import MapView, { Marker } from 'react-native-maps';
 export default function Hole({ holeNum, location }) {
 
   const [region, setRegion] = useState({
-    location
+    latitude: 51.040053,
+    longitude: -114.072797,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05
   })
 
-  const handleRegionChange = (region) => {
-    setRegion({ region });
+  // The actual box of the map (NOT location)
+  const handleRegionChange = (reg) => {
+    setRegion(reg);
   }
 
   return (
@@ -31,7 +35,7 @@ export default function Hole({ holeNum, location }) {
         <Text style={styles.title}>  Hole {holeNum}</Text>
         <Text style={styles.title}>269 Yards</Text>
         <Text>
-          Sam1ple{location ? `${location.latitude}, ${location.longitude}` : ""}
+          Sample{location ? `${location.latitude}, ${location.longitude}` : ""}
         </Text>
       </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
@@ -48,14 +52,11 @@ export default function Hole({ holeNum, location }) {
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
         }}
-        region={{
-          latitude: 51.040053,
-          longitude: -114.072797,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05
+        mapType={'satellite'}
+        initialRegion={
+        region
         }
-        // onRegionChange={handleRegionChange}
-      }
+        onRegionChangeComplete={handleRegionChange}
       >
         <Marker
           coordinate={location}

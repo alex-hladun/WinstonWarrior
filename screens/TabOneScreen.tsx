@@ -37,7 +37,7 @@ export default function TabOneScreen() {
   // }
   let locationUpdate;
 
-
+  let location;
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
@@ -47,7 +47,8 @@ export default function TabOneScreen() {
 
     let location = await Location.watchPositionAsync({
       accuracy:Location.Accuracy.Highest, 
-      distanceInterval: 0.1
+      distanceInterval: 1.0,
+      timeInterval: 1000
     }, (loc) => {
 
       setState({ ...state, location: {latitudeDelta: 0.05, longitudeDelta: 0.05, latitude: loc.coords.latitude, longitude: loc.coords.longitude}});
@@ -61,7 +62,7 @@ export default function TabOneScreen() {
 
   React.useEffect(() => {
     getLocationAsync()
-  }, [])
+  }, [locationUpdate])
 
   return (
     <View style={styles.container}>
