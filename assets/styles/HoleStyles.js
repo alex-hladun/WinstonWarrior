@@ -156,14 +156,19 @@ export const styles = StyleSheet.create({
 
   },
   distancePin: {
-    // top: 20,
-    width: 20,
-    height: 20,
+    top: 20,
+    // marginBottom: 0,
+    // width: 20,
+    // height: 20,
+    paddingVertical: 7,
+    paddingHorizontal: 7,
     backgroundColor: 'white',
     borderRadius: 100,
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 2,
+    elevation: 3,
+    zIndex: 20
   },
   customMarker: {
     justifyContent: 'center',

@@ -11,6 +11,7 @@ import CheckSymbol from '../assets/svg/CheckSymbol'
 import LeftSymbol from '../assets/svg/LeftSymbol'
 import RightSymbol from '../assets/svg/RightSymbol'
 import TargetSymbol from '../assets/svg/TargetSymbol'
+import LocationSymbol from '../assets/svg/LocationSymbol'
 import holeInfo from '../assets/holeInfo'
 
 
@@ -77,7 +78,7 @@ export default function Hole({ location }) {
   }
 
   const handleHoleInc = () => {
-    if (holeNum !== 4) {
+    if (holeNum !== 19) {
       setHoleNum(holeNum + 1)
       setDistanceMarker({
         latitude: undefined,
@@ -98,8 +99,8 @@ export default function Hole({ location }) {
       })
       mapRef.current.animateCamera(holeInfo[holeNum - 1].camera)
     } else {
-      setHoleNum(4)
-      mapRef.current.animateCamera(holeInfo[4].camera)
+      setHoleNum(6)
+      mapRef.current.animateCamera(holeInfo[6].camera)
     }
   }
 
@@ -119,7 +120,10 @@ export default function Hole({ location }) {
   }
 
   // The actual box of the map (NOT oc)
-  const handleRegionChange = (reg) => {
+  const handleRegionChange = async(reg) => {
+    // console.log('region change')
+    const coords = await mapRef.current.getCamera()
+    console.log(coords)
     // setRegion(reg);
   }
 
@@ -135,11 +139,7 @@ export default function Hole({ location }) {
     console.log('map short press', event.nativeEvent.coordinate)
     const coords = event.nativeEvent.coordinate
     await setDistanceMarker(coords)
-
-
   }
-
-
 
   return (
     <View style={styles.holeContainer}>
@@ -147,9 +147,6 @@ export default function Hole({ location }) {
         <Text style={styles.title} onPress={() => handleHoleChange(1)}>Hole {holeNum}</Text>
         <Text style={styles.title}>Par {holeInfo[holeNum].par}</Text>
         <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
-        {/* <Text>
-          Sample{location ? `${location.latitude}, ${location.longitude}` : ""}
-        </Text> */}
       </View>
 
 
@@ -164,7 +161,7 @@ export default function Hole({ location }) {
         initialCamera={
           camera
         }
-        onRegionChangeComplete={handleRegionChange}
+        onRegionChangeComplete={(event) => handleRegionChange(event)}
         onLongPress={() => handleMapLongPress()}
         onPress={(event) => handleMapShortPress(event)}
       >
@@ -172,8 +169,15 @@ export default function Hole({ location }) {
           coordinate={location}
           title={'Alex Loc'}
           description={'A full description'}
-          pinColor={'white'}
-        />
+          pinColor={'#FFFFFF'}
+          style={styles.customMarker}>
+
+
+
+          <Image style={styles.markerImage} source={require('../assets/images/circle.png')} />
+
+        </Marker>
+
         <Marker
           style={styles.customMarker}
           ref={holeTargetRef}
@@ -189,8 +193,6 @@ export default function Hole({ location }) {
           }
           <Image style={styles.markerImage} source={require('../assets/images/pngegg.png')} />
         </Marker>
-
-
         {distanceMarker.latitude &&
           <Marker
             ref={shotTargetRef}
@@ -203,7 +205,6 @@ export default function Hole({ location }) {
             </View>
           </Marker>
         }
-
         {distanceMarker.latitude &&
           <Polyline
             coordinates={[location, distanceMarker]}
@@ -211,7 +212,6 @@ export default function Hole({ location }) {
             strokeWidth={2}
             geodesic={true}
           />
-
         }
         {distanceMarker.latitude &&
           <Polyline
@@ -220,47 +220,46 @@ export default function Hole({ location }) {
             strokeWidth={2}
             lineDashPattern={[4, 3]}
           />
-
         }
 
       </MapView>
 
       <View style={styles.floatingContainer}>
-      <View style={[styles.floatingHoleMarker, styles.move]}>
-        <TouchableHighlight>
-          <Text onPress={() => handleHoleDec()}>
-            <LeftSymbol />
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={[styles.floatingHoleMarker, styles.flag]}>
-        <TouchableHighlight>
-          <Text onPress={() => handleHoleReset()}>
-            <FlagSymbol />
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={[styles.floatingHoleMarker, styles.check]}>
-        <TouchableHighlight>
-          <Text onPress={() => handleHoleReset()}>
-            <CheckSymbol />
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={[styles.floatingHoleMarker, styles.target]}>
-        <TouchableHighlight>
-          <Text onPress={() => handleHoleReset()}>
-            <TargetSymbol />
-          </Text>
-        </TouchableHighlight>
-      </View>
-      <View style={[styles.floatingHoleMarker, styles.move]}>
-        <TouchableHighlight>
-          <Text onPress={() => handleHoleInc()}>
-            <RightSymbol />
-          </Text>
-        </TouchableHighlight>
-      </View>
+        <View style={[styles.floatingHoleMarker, styles.move]}>
+          <TouchableHighlight onPress={() => handleHoleDec()}>
+            <Text >
+              <LeftSymbol />
+            </Text>
+          </TouchableHighlight>
+        </View>
+        <View style={[styles.floatingHoleMarker, styles.flag]} >
+          <TouchableHighlight onPress={() => handleHoleReset()}>
+            <Text >
+              <FlagSymbol />
+            </Text>
+          </TouchableHighlight>
+        </View>
+        <View style={[styles.floatingHoleMarker, styles.check]}>
+          <TouchableHighlight>
+            <Text onPress={() => handleHoleReset()}>
+              <CheckSymbol />
+            </Text>
+          </TouchableHighlight>
+        </View>
+        <View style={[styles.floatingHoleMarker, styles.target]}>
+          <TouchableHighlight>
+            <Text onPress={(event) => handleRegionChange(event)}>
+              <TargetSymbol />
+            </Text>
+          </TouchableHighlight>
+        </View>
+        <View style={[styles.floatingHoleMarker, styles.move]}>
+          <TouchableHighlight onPress={() => handleHoleInc()}>
+            <Text >
+              <RightSymbol />
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     </View>
   );
