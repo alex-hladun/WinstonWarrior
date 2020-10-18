@@ -102,28 +102,44 @@ export const styles = StyleSheet.create({
     backgroundColor: '#4FC879',
     borderRadius: 100,
     opacity: 0.85,
-    // marginTop: '90%'
     top: '90%'
+  },
+  floatingContainer: {
+    width: '90%',
+    height: '7%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    position: 'absolute',
+    zIndex: 100,
+    top: '90%',
+    alignSelf: 'center',
+    backgroundColor: 'transparent'
+
   },
   floatingHoleMarker: {
     width: 50,
     height: 50,
     alignItems: 'center',
-    // alignSelf: 'center',
-    left: '80%',
     justifyContent: 'center',
-    flexDirection: 'row',
-    position: 'absolute',
-    zIndex: 100,
+    paddingTop: 5,
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 2,
-    backgroundColor: '#5d97e8',
     borderRadius: 100,
     opacity: 0.85,
     color: '#000000',
-    // marginTop: '90%'
-    top: '80%'
+  },
+  flag: {
+    backgroundColor: '#5d97e8'
+  },
+  check: {
+    backgroundColor: '#4fd163'
+  },
+  target: {
+    backgroundColor: '#d15f4d'
+  },
+  move: {
+    backgroundColor: '#ccdee3'
   },
   shotDiff: {
     margin: 20,
@@ -138,6 +154,34 @@ export const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
 
+  },
+  distancePin: {
+    // top: 20,
+    width: 20,
+    height: 20,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 2,
+  },
+  customMarker: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  distanceCallout: {
+    backgroundColor: '#fff',
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    borderColor: '#ccc',
+    elevation: 3,
+    opacity: 0.75
+  },
+  markerImage: {
+    width: 20,
+    height: 20
   }
 });
 

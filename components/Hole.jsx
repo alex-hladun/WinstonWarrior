@@ -1,12 +1,16 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useRef, useCallback } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, Image, TouchableHighlight } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import FlagSymbol from '../assets/svg/FlagSymbol'
+import CheckSymbol from '../assets/svg/CheckSymbol'
+import LeftSymbol from '../assets/svg/LeftSymbol'
+import RightSymbol from '../assets/svg/RightSymbol'
+import TargetSymbol from '../assets/svg/TargetSymbol'
 import holeInfo from '../assets/holeInfo'
 
 
@@ -22,7 +26,7 @@ export default function Hole({ location }) {
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
 
-  
+
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
@@ -72,9 +76,42 @@ export default function Hole({ location }) {
     }
   }
 
+  const handleHoleInc = () => {
+    if (holeNum !== 4) {
+      setHoleNum(holeNum + 1)
+      setDistanceMarker({
+        latitude: undefined,
+        longitude: undefined
+      })
+      mapRef.current.animateCamera(holeInfo[holeNum + 1].camera)
+    } else {
+      setHoleNum(1)
+      mapRef.current.animateCamera(holeInfo[1].camera)
+    }
+  }
+  const handleHoleDec = () => {
+    if (holeNum !== 1) {
+      setHoleNum(holeNum - 1)
+      setDistanceMarker({
+        latitude: undefined,
+        longitude: undefined
+      })
+      mapRef.current.animateCamera(holeInfo[holeNum - 1].camera)
+    } else {
+      setHoleNum(4)
+      mapRef.current.animateCamera(holeInfo[4].camera)
+    }
+  }
+
   const handleHoleReset = () => {
     console.log('handle hole reset')
     mapRef.current.animateCamera(holeInfo[holeNum].camera)
+    setDistanceMarker({
+      latitude: undefined,
+      longitude: undefined
+    })
+    holeTargetRef.current.hideCallout()
+
   }
   const handleScoreEnter = () => {
     console.log('handle score enter')
@@ -94,20 +131,15 @@ export default function Hole({ location }) {
     console.log('map long press')
   }
 
-  const handleMapShortPress = async(event) => {
+  const handleMapShortPress = async (event) => {
     console.log('map short press', event.nativeEvent.coordinate)
     const coords = event.nativeEvent.coordinate
     await setDistanceMarker(coords)
-    // console.log('shot target ref', shotTargetRef.current.showCallout())
-    // shotTargetRef.title = "Test"
-    shotTargetRef.current.showCallout()
-
-    // shotTargetRef.showCallout()
 
 
   }
 
- 
+
 
   return (
     <View style={styles.holeContainer}>
@@ -119,7 +151,6 @@ export default function Hole({ location }) {
           Sample{location ? `${location.latitude}, ${location.longitude}` : ""}
         </Text> */}
       </View>
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
 
 
       <MapView
@@ -144,30 +175,45 @@ export default function Hole({ location }) {
           pinColor={'white'}
         />
         <Marker
+          style={styles.customMarker}
+          ref={holeTargetRef}
           coordinate={holeInfo[holeNum].pinCoords}
-          pinColor={'#f8ff3b'}
-        />
+        >
+          {distanceMarker.latitude &&
+            <View style={styles.distanceCallout} >
+              <Text>
+                {distanceToFlagTarget()} yds
+             </Text>
+
+            </View>
+          }
+          <Image style={styles.markerImage} source={require('../assets/images/pngegg.png')} />
+        </Marker>
+
 
         {distanceMarker.latitude &&
           <Marker
             ref={shotTargetRef}
             coordinate={distanceMarker}
-            title={`${distanceToShotTarget()} yd`}
-            pinColor={'red'}
+            style={styles.customMarker}>
+            <View style={styles.distanceCallout} >
+              <Text>
+                {distanceToShotTarget()} yds
+                </Text>
+            </View>
+          </Marker>
+        }
 
-          />}
-          
-        
-         {distanceMarker.latitude &&
+        {distanceMarker.latitude &&
           <Polyline
             coordinates={[location, distanceMarker]}
             strokeColor={'#FFFFFF'}
             strokeWidth={2}
             geodesic={true}
           />
-          
+
         }
-         {distanceMarker.latitude &&
+        {distanceMarker.latitude &&
           <Polyline
             coordinates={[holeInfo[holeNum].pinCoords, distanceMarker]}
             strokeColor={'#FFFFFF'}
@@ -179,21 +225,42 @@ export default function Hole({ location }) {
 
       </MapView>
 
-      <View style={styles.floating}>
-
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-          onPress={() => handleScoreEnter()}>
-          Enter Score
-        </Text>
-
+      <View style={styles.floatingContainer}>
+      <View style={[styles.floatingHoleMarker, styles.move]}>
+        <TouchableHighlight>
+          <Text onPress={() => handleHoleDec()}>
+            <LeftSymbol />
+          </Text>
+        </TouchableHighlight>
       </View>
-      <View style={styles.floatingHoleMarker}>
-        <Text onPress={() => handleHoleReset()}>
-          <FlagSymbol />
-        </Text>
+      <View style={[styles.floatingHoleMarker, styles.flag]}>
+        <TouchableHighlight>
+          <Text onPress={() => handleHoleReset()}>
+            <FlagSymbol />
+          </Text>
+        </TouchableHighlight>
+      </View>
+      <View style={[styles.floatingHoleMarker, styles.check]}>
+        <TouchableHighlight>
+          <Text onPress={() => handleHoleReset()}>
+            <CheckSymbol />
+          </Text>
+        </TouchableHighlight>
+      </View>
+      <View style={[styles.floatingHoleMarker, styles.target]}>
+        <TouchableHighlight>
+          <Text onPress={() => handleHoleReset()}>
+            <TargetSymbol />
+          </Text>
+        </TouchableHighlight>
+      </View>
+      <View style={[styles.floatingHoleMarker, styles.move]}>
+        <TouchableHighlight>
+          <Text onPress={() => handleHoleInc()}>
+            <RightSymbol />
+          </Text>
+        </TouchableHighlight>
+      </View>
       </View>
     </View>
   );
