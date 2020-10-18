@@ -1,71 +1,65 @@
 import * as WebBrowser from 'expo-web-browser';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
-import MapView, { Marker } from 'react-native-maps';
-// interface Location {
-//   latitude: number,
-//   longitude: number
-// }
-
-// interface myState {
-//   location: Location
-// }
+import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from 'react-native-maps';
+import FlagSymbol from '../assets/svg/FlagSymbol'
+import holeInfo from '../assets/holeInfo'
 
 
-const holeInfo = {
-  1: {
-    par: 4,
-    distance: 420,
-    pinCoords: {
-      latitude: 51.043448,
-      longitude: -114.072521
-    },
-    region: {
-      latitude: 51.040053,
-      longitude: -114.072797,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01
-    }
-  },
-  2: {
-    par: 4,
-    distance: 420,
-    pinCoords: {
-      latitude: 51.078795,
-      longitude: -114.046645
-    },
-    region: {
-      latitude: 51.077372,
-      longitude: -114.045964,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01
-    }
-  }
-}
 export default function Hole({ location }) {
   const [shotDiff, setShotDiff] = useState(3)
   const [holeNum, setHoleNum] = useState(1)
-  const [region, setRegion] = useState(holeInfo[holeNum].region)
+  // const [camera, setRegion] = useState(holeInfo[holeNum].region)
+  const [camera, setCamera] = useState(holeInfo[holeNum].camera)
+  const [distanceMarker, setDistanceMarker] = useState({
+    latitude: undefined,
+    longitude: undefined
+  })
+  const mapRef = useRef(null)
 
   const handleHoleChange = (delta) => {
-    if (holeNum === 1) {
+    console.log('changing hole')
+    if (holeNum !== 4) {
       setHoleNum(holeNum + delta)
+      mapRef.current.animateCamera(holeInfo[holeNum + delta].camera)
     } else {
       setHoleNum(1)
+      mapRef.current.animateCamera(holeInfo[1].camera)
     }
+  }
+  
+  const handleHoleReset = () => {
+    console.log('handle hole reset')
+    mapRef.current.animateCamera(holeInfo[holeNum].camera)
+  }
+  const handleScoreEnter = () => {
+    console.log('handle score enter')
+    mapRef.current.animateCamera(holeInfo[holeNum].camera)
   }
 
   // The actual box of the map (NOT oc)
   const handleRegionChange = (reg) => {
-    setRegion(reg);
+    // setRegion(reg);
   }
 
   const handleShotDiff = (diff) => {
     setShotDiff(shotDiff + diff)
+  }
+
+  const handleMapLongPress = () => {
+    console.log('map long press')
+  }
+  
+  const handleMapShortPress = (event) => {
+    console.log('map short press', event.nativeEvent.coordinate)
+    const coords = event.nativeEvent.coordinate
+    setDistanceMarker(coords)
+
+
   }
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
@@ -90,19 +84,26 @@ export default function Hole({ location }) {
           Sample{location ? `${location.latitude}, ${location.longitude}` : ""}
         </Text> */}
       </View>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
 
 
       <MapView
+        ref={mapRef}
+        provider={PROVIDER_GOOGLE}
         style={{
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
         }}
         mapType={'satellite'}
-        initialRegion={
-          region
+        // initialRegion={
+        //   region
+        // }
+        initialCamera={
+          camera
         }
         onRegionChangeComplete={handleRegionChange}
+        onLongPress={() => handleMapLongPress()}
+        onPress={(event) => handleMapShortPress(event)}
       >
         <Marker
           coordinate={location}
@@ -114,22 +115,24 @@ export default function Hole({ location }) {
           coordinate={holeInfo[holeNum].pinCoords}
           pinColor={'yellow'}
         />
+        
       </MapView>
+
       <View style={styles.floating}>
-        <Text style={styles.shotDiff}
-          onPress={() => handleShotDiff(-1)}>
-          -
-        </Text>
+     
         <Text
           style={styles.getStartedText}
           lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Shots: {shotDiff}
+          darkColor="rgba(255,255,255,0.8)"
+          onPress={() => handleScoreEnter()}>
+          Enter Score
         </Text>
-        <Text style={styles.shotDiff}
-          onPress={() => handleShotDiff(1)}>
-          +
-        </Text>
+       
+      </View>
+      <View style={styles.floatingHoleMarker}>
+        <Text onPress={() => handleHoleReset()}>
+          <FlagSymbol />
+          </Text>
       </View>
     </View>
   );

@@ -34,7 +34,20 @@ export const styles = StyleSheet.create({
     // position: 'absolute',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
+    opacity: 0.80,
+    position: 'absolute',
+    backgroundColor: 'white',
+    zIndex: 2,
+    width: '100%',
+    padding: 10,
+    marginTop: 40,
+    borderStyle: 'solid',
+    borderColor: 'black',
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    // marginLeft: 20,
+    marginRight: 20
 
     // width: '100%'
   },
@@ -52,6 +65,7 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
     textAlign: 'center',
+    alignSelf: 'center'
   },
   helpContainer: {
     marginTop: 15,
@@ -74,11 +88,11 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   floating: {
-    width: '70%',
-    height: '10%',
+    width: '48%',
+    height: '7%',
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'row',
     position: 'absolute',
     zIndex: 100,
@@ -87,8 +101,29 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     backgroundColor: '#4FC879',
     borderRadius: 100,
+    opacity: 0.85,
     // marginTop: '90%'
-    top: '85%'
+    top: '90%'
+  },
+  floatingHoleMarker: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    // alignSelf: 'center',
+    left: '80%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    position: 'absolute',
+    zIndex: 100,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 2,
+    backgroundColor: '#5d97e8',
+    borderRadius: 100,
+    opacity: 0.85,
+    color: '#000000',
+    // marginTop: '90%'
+    top: '80%'
   },
   shotDiff: {
     margin: 20,

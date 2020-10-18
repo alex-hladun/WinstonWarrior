@@ -66,12 +66,13 @@ export default function TabOneScreen() {
 
   React.useEffect(() => {
     getLocationAsync()
+
   }, [locationUpdate])
 
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
       <Hole location={state.location}/>
-    </View>
+    // </View>
   );
 }
 

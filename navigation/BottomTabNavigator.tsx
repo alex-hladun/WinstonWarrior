@@ -52,7 +52,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Winston Warrior' }}
+        options={{ headerTitle: 'Winston Warrior', headerShown: false }}
       />
     </TabOneStack.Navigator>
   );
