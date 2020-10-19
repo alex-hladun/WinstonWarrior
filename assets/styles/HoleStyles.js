@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   },
   developmentModeText: {
     marginBottom: 20,
-    fontSize: 14,
+    // fontSize: 14,
     lineHeight: 19,
     textAlign: 'center',
   },
@@ -153,7 +153,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     height: '100%',
     width: '100%',
-
+  },
+  fadeContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    height: '60%',
+    width: '100%',
+    position: 'absolute',
+    // elevation: 3,
+    // zIndex: 1,
+    // opacity: 0
   },
   distancePin: {
     top: 20,

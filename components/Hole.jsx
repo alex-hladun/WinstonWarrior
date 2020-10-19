@@ -1,7 +1,8 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useRef, useCallback } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated,  Alert, Modal } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
+import holeListStyles from '../assets/styles/HoleSummaryStyles'
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
@@ -14,6 +15,7 @@ import TargetSymbol from '../assets/svg/TargetSymbol'
 import LocationSymbol from '../assets/svg/LocationSymbol'
 import holeInfo from '../assets/holeInfo'
 
+const { width } = Dimensions.get('window');
 
 export default function Hole({ location }) {
   const [shotDiff, setShotDiff] = useState(3)
@@ -23,9 +25,35 @@ export default function Hole({ location }) {
     latitude: undefined,
     longitude: undefined
   })
+  const [holeView, setHoleView] = useState(false)
   const mapRef = useRef(null)
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
+
+  const [fadeAnim] = useState(new Animated.Value(0))
+
+  const fadeIn = () => {
+    setView('HoleList')
+    console.log('fadeIN called')
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      duration: 3000
+    })
+      .start()
+  }
+
+
+
+  const fadeOut = () => {
+    // Will change fadeAnim value to 0 in 5 seconds
+    setView('Play')
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      duration: 5000,
+    }).start();
+  };
 
 
 
@@ -64,17 +92,19 @@ export default function Hole({ location }) {
 
   const handleHoleChange = (delta) => {
     console.log('changing hole')
-    if (holeNum !== 4) {
-      setHoleNum(holeNum + delta)
-      setDistanceMarker({
-        latitude: undefined,
-        longitude: undefined
-      })
-      mapRef.current.animateCamera(holeInfo[holeNum + delta].camera)
-    } else {
-      setHoleNum(1)
-      mapRef.current.animateCamera(holeInfo[1].camera)
-    }
+    setHoleView(!holeView)
+  }
+
+  const setHole = async(num) => {
+    mapRef.current.animateCamera(holeInfo[num].camera)
+    console.log(`Setting hole to ${num}`)
+    await setHoleNum(num)
+    setDistanceMarker({
+      latitude: undefined,
+      longitude: undefined
+    })
+    // await mapRef.current.animateCamera(holeInfo[holeNum].camera)
+    setHoleView(false)
   }
 
   const handleHoleInc = () => {
@@ -111,7 +141,6 @@ export default function Hole({ location }) {
       latitude: undefined,
       longitude: undefined
     })
-    holeTargetRef.current.hideCallout()
 
   }
   const handleScoreEnter = () => {
@@ -119,12 +148,9 @@ export default function Hole({ location }) {
     mapRef.current.animateCamera(holeInfo[holeNum].camera)
   }
 
-  // The actual box of the map (NOT oc)
-  const handleRegionChange = async(reg) => {
-    // console.log('region change')
-    const coords = await mapRef.current.getCamera()
-    console.log(coords)
-    // setRegion(reg);
+  const handleRegionChange = async (reg) => {
+    // const coords = await mapRef.current.getCamera()
+    // console.log(coords)
   }
 
   const handleShotDiff = (diff) => {
@@ -142,7 +168,25 @@ export default function Hole({ location }) {
   }
 
   return (
+
+
     <View style={styles.holeContainer}>
+      <Modal 
+      animationType="slide"
+      transparent={true}
+      visible={holeView}
+      >
+         <View style={holeListStyles.container}>
+      <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
+        Hello this is sample text
+      </Text>
+      <Text style={holeListStyles.header} onPress={() => setHole(12)}>
+        Go to hole 6
+      </Text>
+    </View>
+    
+        {/* <HoleList handleHoleChange={handleHoleChange} setHole={setHoleNum} mapRef={mapRef}/> */}
+      </Modal>
       <View style={styles.header}>
         <Text style={styles.title} onPress={() => handleHoleChange(1)}>Hole {holeNum}</Text>
         <Text style={styles.title}>Par {holeInfo[holeNum].par}</Text>
