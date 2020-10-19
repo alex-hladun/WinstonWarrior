@@ -143,10 +143,6 @@ export const styles = StyleSheet.create({
   },
   shotDiff: {
     margin: 20,
-    // backgroundColor: 'yellow',
-    // height: '100%',
-    // borderRadius: 100,
-    // zIndex: 1
   },
   holeContainer: {
     flexDirection: 'column',
