@@ -14,6 +14,7 @@ import RightSymbol from '../assets/svg/RightSymbol'
 import TargetSymbol from '../assets/svg/TargetSymbol'
 import LocationSymbol from '../assets/svg/LocationSymbol'
 import holeInfo from '../assets/holeInfo'
+import HoleList from './HoleList'
 
 const { width } = Dimensions.get('window');
 
@@ -43,8 +44,6 @@ export default function Hole({ location }) {
       .start()
   }
 
-
-
   const fadeOut = () => {
     // Will change fadeAnim value to 0 in 5 seconds
     setView('Play')
@@ -54,8 +53,6 @@ export default function Hole({ location }) {
       duration: 5000,
     }).start();
   };
-
-
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
@@ -180,72 +177,7 @@ export default function Hole({ location }) {
       <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
         X
       </Text>
-      <View style={holeListStyles.holeRow}>
-      <Text style={holeListStyles.hole} onPress={() => setHole(1)}>
-        1
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(2)}>
-        2
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(3)}>
-        3
-      </Text>
-      </View>
-      <View style={holeListStyles.holeRow}>
-      <Text style={holeListStyles.hole} onPress={() => setHole(4)}>
-        4
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(5)}>
-        5
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(6)}>
-        6
-      </Text>
-      </View>
-      <View style={holeListStyles.holeRow}>
-      <Text style={holeListStyles.hole} onPress={() => setHole(7)}>
-        7
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(8)}>
-        8
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(9)}>
-        9
-      </Text>
-      </View>
-      <View style={holeListStyles.holeRow}>
-      <Text style={holeListStyles.hole} onPress={() => setHole(10)}>
-        10
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(11)}>
-        11
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(12)}>
-        12
-      </Text>
-      </View>
-      <View style={holeListStyles.holeRow}>
-      <Text style={holeListStyles.hole} onPress={() => setHole(13)}>
-        13
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(14)}>
-        14
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(15)}>
-        15
-      </Text>
-      </View>
-      <View style={holeListStyles.holeRow}>
-      <Text style={holeListStyles.hole} onPress={() => setHole(16)}>
-        16
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(17)}>
-        17
-      </Text>
-      <Text style={holeListStyles.hole} onPress={() => setHole(18)}>
-        18
-      </Text>
-      </View>
+     <HoleList setHole={setHole} />
     </View>
     
         {/* <HoleList handleHoleChange={handleHoleChange} setHole={setHoleNum} mapRef={mapRef}/> */}
