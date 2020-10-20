@@ -10,7 +10,7 @@ import db from '../db/dbSetup'
 
 
 
-export default function Score({ holeNum }) {
+export default function Score({ holeNum, setHole }) {
   const [score, setScore] = useState(holeInfo[holeNum].par)
   const [putts, setPutts] = useState(2)
   const [teeShot, setTeeShot] = useState(50)
@@ -38,13 +38,14 @@ export default function Score({ holeNum }) {
             approach_rtg,
             chip_rtg,
             putt_rtg
-          ) VALUES (?, strftime('%Y-%m-%d %H-%M','now'), ?, ?, ?, ?, ?, ?);
+          ) VALUES (?, strftime('%Y-%m-%d %H:%M:%S','now'), ?, ?, ?, ?, ?, ?);
           `
         , [holeNum, score, putts, teeShot, approach, chip, putting], (txObj, result) => {
-          console.log('result', result.rows._array)
-          console.log('transObj', txObj)
+          // console.log('result', result.rows._array)
+          // console.log('transObj', txObj)
+          setHole(holeNum + 1)
           // console.log('txObj', txObj)
-        }, err => console.log('err', err))
+        }, (err, mess) => console.log('err', mess))
     })
     console.log('entered score')
   }
@@ -113,7 +114,7 @@ export default function Score({ holeNum }) {
             maximumTrackTintColor="#000000"
             value={teeShot}
             step={25}
-            onSlidingComplete={(val) => setTeeShot(val)}
+            onSlidingStart={(val) => setTeeShot(val)}
           />
         </View>
         <View style={[styles.pickerHeader]}>
@@ -142,7 +143,7 @@ export default function Score({ holeNum }) {
             maximumTrackTintColor="#000000"
             value={approach}
             // step={0.25}
-            onSlidingComplete={(val) => setApproach(val)}
+            onSlidingStart={(val) => setApproach(val)}
           />
         </View>
         <View style={[styles.pickerHeader]}>
@@ -159,7 +160,7 @@ export default function Score({ holeNum }) {
             maximumTrackTintColor="#000000"
             value={chip}
             // step={0.25}
-            onSlidingComplete={(val) => setChip(val)}
+            onSlidingStart={(val) => setChip(val)}
           />
         </View>
         <View style={[styles.pickerHeader]}>
@@ -176,7 +177,7 @@ export default function Score({ holeNum }) {
             maximumTrackTintColor="#000000"
             value={putting}
             // step={0.25}
-            onSlidingComplete={(val) => setPutting(val)}
+            onSlidingStart={(val) => setPutting(val)}
           />
         </View>
         <View style={styles.pickerHeader}>

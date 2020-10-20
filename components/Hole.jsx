@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
 import holeListStyles from '../assets/styles/HoleSummaryStyles'
@@ -15,6 +15,8 @@ import LocationSymbol from '../assets/svg/LocationSymbol'
 import holeInfo from '../assets/holeInfo'
 import HoleList from './HoleList'
 import Score from './Score.jsx';
+import ScoreCard from './ScoreCard'
+import { dbCall, existingGameAlert } from '../db/dbSetup'
 
 const { width } = Dimensions.get('window');
 
@@ -28,6 +30,12 @@ export default function Hole({ location }) {
   })
   const [holeView, setHoleView] = useState(false)
   const [scoreView, setScoreView] = useState(false)
+  const [scoreCardView, setScoreCardView] = useState(false)
+  const [startTrack, setStartTrack] = useState({
+    latitude: undefined,
+    longitude: undefined
+  })
+  const [tracking, setTracking] = useState(false)
   const mapRef = useRef(null)
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
@@ -43,6 +51,33 @@ export default function Hole({ location }) {
     var d = R * c;
     return d * 1000 * 1.09361; // yards
   }
+
+  const handleTracking = () => {
+    if (!tracking) {
+      setStartTrack(location)
+      setTracking(true)
+      console.log('Starting tracking')
+    } else {
+      const distance = measure(startTrack.latitude, startTrack.longitude, location.latitude, location.longitude).toFixed(1);
+      console.log('Measured a distance of ', distance, 'yds')
+      Alert.alert(
+        "Shot tracked",
+        `Your shot was ${distance} yds`,
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      );
+  
+      setTracking(false)
+
+
+    }
+  }
+
+  useEffect(() => {
+    setTimeout(function () { dbCall() }, 2000)
+  }, [])
 
   const distanceToShotTarget = useCallback(
     () => {
@@ -77,6 +112,11 @@ export default function Hole({ location }) {
     setScoreView(!scoreView)
   }
 
+  const handleScoreCardEnter = () => {
+    console.log('handle score enter')
+    setScoreCardView(!scoreCardView)
+  }
+
   const setHole = async (num) => {
     mapRef.current.animateCamera(holeInfo[num].camera)
     console.log(`Setting hole to ${num}`)
@@ -86,7 +126,13 @@ export default function Hole({ location }) {
       longitude: undefined
     })
     // await mapRef.current.animateCamera(holeInfo[holeNum].camera)
-    setHoleView(false)
+    if (holeView) {
+      setHoleView(false)
+    }
+
+    if (scoreView) {
+      setScoreView(false)
+    }
   }
 
   const handleHoleInc = () => {
@@ -146,14 +192,8 @@ export default function Hole({ location }) {
   }
 
   return (
-
-
     <View style={styles.holeContainer}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={holeView}
-      >
+      <Modal animationType="slide" transparent={true} visible={holeView}>
         <View style={holeListStyles.container}>
           <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
             X
@@ -162,23 +202,28 @@ export default function Hole({ location }) {
         </View>
       </Modal>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={scoreView}
-      >
+      <Modal animationType="slide" transparent={true} visible={scoreView}>
         <View style={holeListStyles.scoreContainer}>
           <Text style={holeListStyles.header} onPress={() => handleScoreEnter()}>
             X
       </Text>
-          <Score holeNum={holeNum}/>
+          <Score holeNum={holeNum} setHole={setHole} />
+        </View>
+      </Modal>
+
+      <Modal animationType="slide" transparent={true} visible={scoreCardView}>
+        <View style={holeListStyles.scoreContainer}>
+          <Text style={holeListStyles.header} onPress={() => handleScoreCardEnter()}>
+            X
+      </Text>
+          <ScoreCard holeNum={holeNum} />
         </View>
       </Modal>
 
 
       <View style={styles.header}>
         <Text style={styles.title} onPress={() => handleHoleChange(1)}>Hole {holeNum}</Text>
-        <Text style={styles.title}>Par {holeInfo[holeNum].par}</Text>
+        <Text style={styles.title} onPress={() => handleScoreCardEnter()}>Par {holeInfo[holeNum].par}</Text>
         <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
       </View>
 
@@ -204,11 +249,7 @@ export default function Hole({ location }) {
           description={'A full description'}
           pinColor={'#FFFFFF'}
           style={styles.customMarker}>
-
-
-
           <Image style={styles.markerImage} source={require('../assets/images/circle.png')} />
-
         </Marker>
 
         <Marker
@@ -221,7 +262,6 @@ export default function Hole({ location }) {
               <Text>
                 {distanceToFlagTarget()} yds
              </Text>
-
             </View>
           }
           <Image style={styles.markerImage} source={require('../assets/images/pngegg.png')} />
@@ -281,7 +321,7 @@ export default function Hole({ location }) {
         </View>
         <View style={[styles.floatingHoleMarker, styles.target]}>
           <TouchableHighlight>
-            <Text onPress={(event) => handleRegionChange(event)}>
+            <Text onPress={(event) => handleTracking()}>
               <TargetSymbol />
             </Text>
           </TouchableHighlight>
