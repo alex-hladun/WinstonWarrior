@@ -39,7 +39,17 @@ export default function Hole({ location }) {
   const mapRef = useRef(null)
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
-  const trackAnim = useRef(new Animated.Value(0)).current
+  const trackAnim = useRef(new Animated.Value(0.85)).current
+
+  // useEffect(() => {
+  //   if(tracking) {
+
+  //   } else {
+  //     trackAnim = 0.75
+  //   }
+
+  //     // console.log(trackAnim)
+  // , [trackAnim]})
 
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
@@ -59,6 +69,21 @@ export default function Hole({ location }) {
       setStartTrack(location)
       setTracking(true)
       console.log('Starting tracking')
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(trackAnim, {
+            toValue: 0.1,
+            duration: 550,
+            useNativeDriver: true
+          }),
+          Animated.timing(trackAnim, {
+            toValue: 0.85,
+            duration: 550,
+            useNativeDriver: true
+
+
+          })
+        ])).start()
     } else {
       const distance = measure(startTrack.latitude, startTrack.longitude, location.latitude, location.longitude).toFixed(1);
       console.log('Measured a distance of ', distance, 'yds')
@@ -70,7 +95,15 @@ export default function Hole({ location }) {
         ],
         { cancelable: false }
       );
-  
+      trackAnim.stopAnimation()
+
+      Animated.timing(trackAnim, {
+        toValue: 0.85,
+        duration: 1,
+        useNativeDriver: true
+      }).start()
+
+
       setTracking(false)
 
 
@@ -224,8 +257,13 @@ export default function Hole({ location }) {
 
 
       <View style={styles.header}>
-        <Text style={styles.title} onPress={() => handleHoleChange(1)}>Hole {holeNum}</Text>
-        <Text style={styles.title} onPress={() => handleScoreCardEnter()}>Par {holeInfo[holeNum].par}</Text>
+        <TouchableOpacity onPress={() => handleHoleChange(1)}>
+        <Text style={styles.title} >Hole {holeNum}</Text>
+
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleScoreCardEnter()}>
+        <Text style={styles.title} >Par {holeInfo[holeNum].par}</Text>
+        </TouchableOpacity>
         <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
       </View>
 
@@ -302,41 +340,43 @@ export default function Hole({ location }) {
       </MapView>
 
       <View style={styles.floatingContainer}>
-        <View style={[styles.floatingHoleMarker, styles.move]}>
-          <TouchableHighlight onPress={() => handleHoleDec()}>
+        <TouchableOpacity onPress={() => handleHoleDec()}>
+          <View style={[styles.floatingHoleMarker, styles.move]}>
             <Text >
               <LeftSymbol />
             </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={[styles.floatingHoleMarker, styles.flag]} >
-          <TouchableHighlight onPress={() => handleHoleReset()}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleHoleReset()}>
+          <View style={[styles.floatingHoleMarker, styles.flag]} >
             <Text >
               <FlagSymbol />
             </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={[styles.floatingHoleMarker, styles.check]}>
-          <TouchableHighlight>
-            <Text onPress={() => handleScoreEnter()}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleScoreEnter()}>
+          <View style={[styles.floatingHoleMarker, styles.check]}>
+            <Text >
               <CheckSymbol />
             </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={[styles.floatingHoleMarker, styles.target]}>
-          <TouchableHighlight>
-            <Text onPress={(event) => handleTracking()}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={(event) => handleTracking()}>
+          <Animated.View style={[styles.floatingHoleMarker, styles.target, { opacity: trackAnim }]} >
+            {/* <View > */}
+            <Text >
               <TargetSymbol />
             </Text>
-          </TouchableHighlight>
-        </View>
-        <View style={[styles.floatingHoleMarker, styles.move]}>
-          <TouchableHighlight onPress={() => handleHoleInc()}>
+          </Animated.View>
+        </TouchableOpacity>
+        {/* </View> */}
+        <TouchableOpacity onPress={() => handleHoleInc()}>
+          <View style={[styles.floatingHoleMarker, styles.move]}>
             <Text >
               <RightSymbol />
             </Text>
-          </TouchableHighlight>
-        </View>
+          </View>
+        </TouchableOpacity >
       </View>
     </View>
   );

@@ -1,96 +1,66 @@
 import { StyleSheet } from 'react-native';
 
+const headerHeight = 'auto'
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    zIndex: 4,
-    // backgroundColor: '#fff',
-    alignSelf: 'center',
-    top: 100,
-    width: 300,
-    height: 475,
-    opacity: 0.75,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 0.5,
-    // borderRadius: 15,
-    // backgroundColor: 'red',
-    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  holeHeader: {
+    backgroundColor: 'rgb(14,96,44)',
+    color: 'white'
+  },
+  parCell: {
+    backgroundColor: 'rgb(0,81,120)'
+  },
+  whiteText: {
+    color: 'white'
   },
   headerCell: {
     width: 50,
-    height: 25,
+    paddingVertical: 4,
+    height: headerHeight,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
+    borderColor: '#a19f9f',
     borderStyle: 'solid',
     borderWidth: 0.5,
-    marginHorizontal: 1,
-    marginVertical: 0.5
+    marginHorizontal: 0.3,
+    marginVertical: 0.3,
   },
   score: {
     fontWeight: 'bold',
     // backgroundColor: 
   },
-  
   invisibleHeader: {
     width: 80,
-    height: 25,
+    height: headerHeight,
     marginHorizontal: 1,
     marginVertical: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
+    borderColor: '#a19f9f',
     borderStyle: 'solid',
     borderWidth: 0.5,
   },
   table: {
+    marginLeft: '7%',
     flexDirection: 'column',
-    top: '50%',
-    // right: '15%'
+    justifyContent: 'center',
+    // alignItems: 'center',
+    transform: [{ rotate: "270deg" }]
   },
   tableChild: {
     flexDirection: 'column',
-    marginBottom: 50
+    // alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginBottom: '10%'
   },
   tableRow: {
     flexDirection: 'row',
     // justifyContent: 'space-eve'
-    
-
-  },
-  pickerContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-evenly'
-  },
-  pickerHeader: {
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginTop: 10
-  },
-  pickerRow: {
-    justifyContent: 'space-evenly',
-    flexDirection: 'row'
-  },
-  pickerStyle: {
-    color: 'red',
-    backgroundColor: 'orange'
-  },
-  checkSymbol: {
-    width: 50,
-    height: 50,
-    marginTop: 10,
-    
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 5,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    borderRadius: 100,
-    opacity: 0.85,
-    color: '#4dc951',
   }
 });
 

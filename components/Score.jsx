@@ -50,6 +50,8 @@ export default function Score({ holeNum, setHole }) {
     console.log('entered score')
   }
 
+  const pickWidth = 100
+
   return (
     <>
       <View style={styles.pickerContainer}>
@@ -64,7 +66,7 @@ export default function Score({ holeNum, setHole }) {
         <View style={styles.pickerRow}>
 
           <Picker
-            style={[{ height: 200, width: 100 }]}
+            style={[{ height: 200, width: pickWidth }]}
             onValueChange={(itemValue, itemIndex) => {
               setScore(itemValue)
             }
@@ -83,7 +85,7 @@ export default function Score({ holeNum, setHole }) {
           </Picker>
 
           <Picker
-            style={{ height: 200, width: 100 }}
+            style={{ height: 200, width: pickWidth }}
             onValueChange={(itemValue, itemIndex) => {
               setPutts(itemValue)
             }
@@ -96,6 +98,60 @@ export default function Score({ holeNum, setHole }) {
             <Picker.Item label="3" value={3} />
             <Picker.Item label="4" value={4} />
             <Picker.Item label="5+" value={5} />
+          </Picker>
+          <Picker
+            style={[{ height: 200, width: pickWidth }]}
+            onValueChange={(itemValue, itemIndex) => {
+              setScore(itemValue)
+            }
+            }
+            selectedValue={score}
+          >
+            <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
+            <Picker.Item style={styles.pickerStyle} label="2" value={2} />
+            <Picker.Item label="3" value={3} />
+            <Picker.Item label="4" value={4} />
+            <Picker.Item label="5" value={5} />
+            <Picker.Item label="6" value={6} />
+            <Picker.Item label="7" value={7} />
+            <Picker.Item label="8" value={8} />
+            <Picker.Item label="9" value={9} />
+          </Picker>
+          <Picker
+            style={[{ height: 200, width: pickWidth }]}
+            onValueChange={(itemValue, itemIndex) => {
+              setScore(itemValue)
+            }
+            }
+            selectedValue={score}
+          >
+            <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
+            <Picker.Item style={styles.pickerStyle} label="2" value={2} />
+            <Picker.Item label="3" value={3} />
+            <Picker.Item label="4" value={4} />
+            <Picker.Item label="5" value={5} />
+            <Picker.Item label="6" value={6} />
+            <Picker.Item label="7" value={7} />
+            <Picker.Item label="8" value={8} />
+            <Picker.Item label="9" value={9} />
+          </Picker>
+          <Picker
+            style={[{ height: 200, width: pickWidth }]}
+            onValueChange={(itemValue, itemIndex) => {
+              setScore(itemValue)
+            }
+            }
+            selectedValue={score}
+          >
+            <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
+            <Picker.Item style={styles.pickerStyle} label="2" value={2} />
+            <Picker.Item label="3" value={3} />
+            <Picker.Item label="4" value={4} />
+            <Picker.Item label="5" value={5} />
+            <Picker.Item label="6" value={6} />
+            <Picker.Item label="7" value={7} />
+            <Picker.Item label="8" value={8} />
+            <Picker.Item label="9" value={9} />
           </Picker>
         </View>
         <View style={[styles.pickerHeader]}>
@@ -179,13 +235,13 @@ export default function Score({ holeNum, setHole }) {
           />
         </View>
         <View style={styles.pickerHeader}>
+            <TouchableHighlight onPress={(event) => handleScoreSubmit()}>
           <View style={[styles.checkSymbol]}>
-            <TouchableHighlight>
-              <Text onPress={(event) => handleScoreSubmit()}>
+              <Text >
                 <CheckSymbol />
               </Text>
-            </TouchableHighlight>
           </View>
+            </TouchableHighlight>
         </View>
       </View>
     </>
