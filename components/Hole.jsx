@@ -1,10 +1,9 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useRef, useCallback } from 'react';
-import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated,  Alert, Modal } from 'react-native';
+import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
 import holeListStyles from '../assets/styles/HoleSummaryStyles'
 import Colors from '../constants/Colors';
-import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import FlagSymbol from '../assets/svg/FlagSymbol'
@@ -15,6 +14,7 @@ import TargetSymbol from '../assets/svg/TargetSymbol'
 import LocationSymbol from '../assets/svg/LocationSymbol'
 import holeInfo from '../assets/holeInfo'
 import HoleList from './HoleList'
+import Score from './Score.jsx';
 
 const { width } = Dimensions.get('window');
 
@@ -27,32 +27,10 @@ export default function Hole({ location }) {
     longitude: undefined
   })
   const [holeView, setHoleView] = useState(false)
+  const [scoreView, setScoreView] = useState(false)
   const mapRef = useRef(null)
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
-
-  const [fadeAnim] = useState(new Animated.Value(0))
-
-  const fadeIn = () => {
-    setView('HoleList')
-    console.log('fadeIN called')
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      useNativeDriver: true,
-      duration: 3000
-    })
-      .start()
-  }
-
-  const fadeOut = () => {
-    // Will change fadeAnim value to 0 in 5 seconds
-    setView('Play')
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      useNativeDriver: true,
-      duration: 5000,
-    }).start();
-  };
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
@@ -63,7 +41,7 @@ export default function Hole({ location }) {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
-    return d * 1000 * 1.09361; // meters
+    return d * 1000 * 1.09361; // yards
   }
 
   const distanceToShotTarget = useCallback(
@@ -76,6 +54,7 @@ export default function Hole({ location }) {
     },
     [location, distanceMarker],
   );
+
   const distanceToFlagTarget = useCallback(
     () => {
       if (distanceMarker.latitude) {
@@ -92,7 +71,13 @@ export default function Hole({ location }) {
     setHoleView(!holeView)
   }
 
-  const setHole = async(num) => {
+  const handleScoreEnter = () => {
+    console.log('handle score enter')
+
+    setScoreView(!scoreView)
+  }
+
+  const setHole = async (num) => {
     mapRef.current.animateCamera(holeInfo[num].camera)
     console.log(`Setting hole to ${num}`)
     await setHoleNum(num)
@@ -140,10 +125,6 @@ export default function Hole({ location }) {
     })
 
   }
-  const handleScoreEnter = () => {
-    console.log('handle score enter')
-    mapRef.current.animateCamera(holeInfo[holeNum].camera)
-  }
 
   const handleRegionChange = async (reg) => {
     // const coords = await mapRef.current.getCamera()
@@ -168,20 +149,33 @@ export default function Hole({ location }) {
 
 
     <View style={styles.holeContainer}>
-      <Modal 
-      animationType="slide"
-      transparent={true}
-      visible={holeView}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={holeView}
       >
-      <View style={holeListStyles.container}>
-      <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
-        X
+        <View style={holeListStyles.container}>
+          <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
+            X
       </Text>
-     <HoleList setHole={setHole} />
-    </View>
-    
-        {/* <HoleList handleHoleChange={handleHoleChange} setHole={setHoleNum} mapRef={mapRef}/> */}
+          <HoleList setHole={setHole} />
+        </View>
       </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={scoreView}
+      >
+        <View style={holeListStyles.scoreContainer}>
+          <Text style={holeListStyles.header} onPress={() => handleScoreEnter()}>
+            X
+      </Text>
+          <Score holeNum={holeNum}/>
+        </View>
+      </Modal>
+
+
       <View style={styles.header}>
         <Text style={styles.title} onPress={() => handleHoleChange(1)}>Hole {holeNum}</Text>
         <Text style={styles.title}>Par {holeInfo[holeNum].par}</Text>
@@ -280,7 +274,7 @@ export default function Hole({ location }) {
         </View>
         <View style={[styles.floatingHoleMarker, styles.check]}>
           <TouchableHighlight>
-            <Text onPress={() => handleHoleReset()}>
+            <Text onPress={() => handleScoreEnter()}>
               <CheckSymbol />
             </Text>
           </TouchableHighlight>

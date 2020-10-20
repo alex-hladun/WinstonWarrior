@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     zIndex: 2,
     width: '100%',
-    padding: 5,
+    padding: 8,
     marginTop: 40,
     borderStyle: 'solid',
     borderColor: 'black',
