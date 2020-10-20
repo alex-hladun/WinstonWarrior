@@ -14,9 +14,9 @@ export default function Score({ holeNum, setHole }) {
   const [score, setScore] = useState(holeInfo[holeNum].par)
   const [putts, setPutts] = useState(2)
   const [teeShot, setTeeShot] = useState(50)
-  const [approach, setApproach] = useState(75)
-  const [chip, setChip] = useState(75)
-  const [putting, setPutting] = useState(75)
+  const [approach, setApproach] = useState(50)
+  const [chip, setChip] = useState(50)
+  const [putting, setPutting] = useState(50)
 
   const holes = new Array(9)
   const pickerItems = holes.map((arr, index) => {
@@ -53,7 +53,6 @@ export default function Score({ holeNum, setHole }) {
   return (
     <>
       <View style={styles.pickerContainer}>
-
         <View style={[styles.pickerHeader]}>
           <Text>
             Shots
@@ -61,7 +60,6 @@ export default function Score({ holeNum, setHole }) {
           <Text>
             Putts
         </Text>
-
         </View>
         <View style={styles.pickerRow}>
 

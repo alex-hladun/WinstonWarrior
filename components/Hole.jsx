@@ -39,6 +39,8 @@ export default function Hole({ location }) {
   const mapRef = useRef(null)
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
+  const trackAnim = useRef(new Animated.Value(0)).current
+
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
@@ -242,6 +244,8 @@ export default function Hole({ location }) {
         onRegionChangeComplete={(event) => handleRegionChange(event)}
         onLongPress={() => handleMapLongPress()}
         onPress={(event) => handleMapShortPress(event)}
+        onMarkerDrag={(event) => handleMapShortPress(event)}
+
       >
         <Marker
           coordinate={location}
