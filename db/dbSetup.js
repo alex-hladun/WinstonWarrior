@@ -32,12 +32,14 @@ export const dbCall = () => {
           if(result.rows.length !== 0) {
             existingGameAlert()
             console.log('There is an existing game! Reset?')
+            return true
           }
         },
         () => console.log("error fetching")
       );
     })
     console.log('done w DATABASE')
+    return false
   }
 
 

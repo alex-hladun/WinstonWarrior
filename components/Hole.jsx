@@ -16,6 +16,7 @@ import holeInfo from '../assets/holeInfo'
 import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'
+import ShotTrack from './ShotTrack'
 import { dbCall, existingGameAlert } from '../db/dbSetup'
 
 const { width } = Dimensions.get('window');
@@ -30,26 +31,18 @@ export default function Hole({ location }) {
   })
   const [holeView, setHoleView] = useState(false)
   const [scoreView, setScoreView] = useState(false)
+  const [shotTrackView, setShotTrackView] = useState(false)
   const [scoreCardView, setScoreCardView] = useState(false)
   const [startTrack, setStartTrack] = useState({
     latitude: undefined,
     longitude: undefined
   })
   const [tracking, setTracking] = useState(false)
+  const [trackDistance, setTrackDistance] = useState(null)
   const mapRef = useRef(null)
   const shotTargetRef = useRef(null)
   const holeTargetRef = useRef(null)
   const trackAnim = useRef(new Animated.Value(0.85)).current
-
-  // useEffect(() => {
-  //   if(tracking) {
-
-  //   } else {
-  //     trackAnim = 0.75
-  //   }
-
-  //     // console.log(trackAnim)
-  // , [trackAnim]})
 
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
@@ -87,14 +80,16 @@ export default function Hole({ location }) {
     } else {
       const distance = measure(startTrack.latitude, startTrack.longitude, location.latitude, location.longitude).toFixed(1);
       console.log('Measured a distance of ', distance, 'yds')
-      Alert.alert(
-        "Shot tracked",
-        `Your shot was ${distance} yds`,
-        [
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-        ],
-        { cancelable: false }
-      );
+      setTrackDistance(distance)
+      setShotTrackView(true)
+      // Alert.alert(
+      //   "Shot tracked",
+      //   `Your shot was ${distance} yds`,
+      //   [
+      //     { text: "OK", onPress: () => console.log("OK Pressed") }
+      //   ],
+      //   { cancelable: false }
+      // );
       trackAnim.stopAnimation()
 
       Animated.timing(trackAnim, {
@@ -103,15 +98,17 @@ export default function Hole({ location }) {
         useNativeDriver: true
       }).start()
 
-
       setTracking(false)
-
-
     }
   }
 
   useEffect(() => {
-    setTimeout(function () { dbCall() }, 2000)
+    setTimeout(function () {
+       dbCall() 
+
+      //  This function returns true if there is an existing existingGameAlert
+      // Hanlde sccordingly. 
+      }, 2000)
   }, [])
 
   const distanceToShotTarget = useCallback(
@@ -139,6 +136,10 @@ export default function Hole({ location }) {
   const handleHoleChange = (delta) => {
     console.log('changing hole')
     setHoleView(!holeView)
+  }
+
+  const handleTrackViewClose = () => {
+    setShotTrackView(!shotTrackView)
   }
 
   const handleScoreEnter = () => {
@@ -234,6 +235,15 @@ export default function Hole({ location }) {
             X
       </Text>
           <HoleList setHole={setHole} />
+        </View>
+      </Modal>
+
+      <Modal animationType="slide" transparent={true} visible={shotTrackView}>
+        <View style={holeListStyles.scoreContainer}>
+          <Text style={holeListStyles.header} onPress={() => handleTrackViewClose()}>
+            X
+      </Text>
+          <ShotTrack distance={trackDistance} handleTrackViewClose={() => handleTrackViewClose()}/>
         </View>
       </Modal>
 

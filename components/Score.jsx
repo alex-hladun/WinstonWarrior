@@ -50,7 +50,7 @@ export default function Score({ holeNum, setHole }) {
     console.log('entered score')
   }
 
-  const pickWidth = 100
+  const pickWidth = 50
 
   return (
     <>
@@ -84,6 +84,21 @@ export default function Score({ holeNum, setHole }) {
             <Picker.Item label="9" value={9} />
           </Picker>
 
+          <Picker
+            style={{ height: 200, width: pickWidth }}
+            onValueChange={(itemValue, itemIndex) => {
+              setPutts(itemValue)
+            }
+            }
+            selectedValue={putts}
+          >
+            <Picker.Item label="0" value={0} />
+            <Picker.Item label="1" value={1} />
+            <Picker.Item label="2" value={2} />
+            <Picker.Item label="3" value={3} />
+            <Picker.Item label="4" value={4} />
+            <Picker.Item label="5+" value={5} />
+          </Picker>
           <Picker
             style={{ height: 200, width: pickWidth }}
             onValueChange={(itemValue, itemIndex) => {
@@ -176,7 +191,7 @@ export default function Score({ holeNum, setHole }) {
             Left
         </Text>
           <Text>
-            Middle
+            Fairway
         </Text>
           <Text>
             Right

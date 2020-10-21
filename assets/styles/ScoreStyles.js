@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginTop: 10,
-    
+
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 5,
@@ -49,7 +49,39 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
     opacity: 0.85,
     color: '#4dc951',
+  },
+  distanceHeader: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  club: {
+    justifyContent: 'center',
+    // height: 40,
+    maxWidth: 80,
+    minWidth: 70,
+    // backgroundColor: 'green',
+    textAlign: 'center',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 0.5,
+    borderRadius: 15,
+    // alignSelf: 'center',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    flex: 1
+  },
+  selected: {
+    backgroundColor: '#4FC879'
+  },
+  clubContainer: {
+    flexWrap: 'wrap',
+    height: '60%',
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
+
 });
 
 export default styles;

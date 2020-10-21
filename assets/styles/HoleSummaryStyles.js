@@ -3,17 +3,19 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    zIndex: 4,
+    // zIndex: 4,
     backgroundColor: '#fff',
     alignSelf: 'center',
+    justifyContent: 'space-between',
     top: 100,
     width: 300,
-    height: 475,
-    opacity: 0.75,
+    // height: 475,
+    // opacity: 0.75,
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 0.5,
-    // borderRadius: 15,
+    borderRadius: 15,
+    padding: 10,
     // backgroundColor: 'red',
     position: 'absolute',
   },
@@ -44,18 +46,20 @@ export const styles = StyleSheet.create({
   },
   hole: {
     justifyContent: 'center',
-    height: 60,
-    width: 60,
+    // height: 40,
+    maxWidth: 80,
+    minWidth: 70,
     // backgroundColor: 'green',
     textAlign: 'center',
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 0.5,
     borderRadius: 15,
-    alignSelf: 'center',
-    alignItems: 'stretch',
-    padding: 25,
-    margin: 10
+    // alignSelf: 'center',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    flex: 1
   }
 });
 
