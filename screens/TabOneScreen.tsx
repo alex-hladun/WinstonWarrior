@@ -70,26 +70,7 @@ export default function TabOneScreen() {
   }, [locationUpdate])
 
   return (
-    // <View style={styles.container}>
       <Hole location={state.location}/>
-    // </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingTop: 20,
-    // height: '100%',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
