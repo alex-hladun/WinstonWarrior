@@ -30,7 +30,9 @@ const reducer = (state, action) => {
 const initialState = {
   auth_data: {},
   logged_in: false,
-  auth_message : ''
+  auth_message : '',
+  round_id: undefined,
+  hole_id: undefined
 }
 const AppContext = React.createContext(initialState);
 function AppProvider(props) {

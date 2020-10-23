@@ -5,15 +5,23 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { AppProvider } from './context/AppContext'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function App() {
 
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  // const context = React.useContext(AppContext)
+  // console.log('context in App.tsx', context)
+
+  
+  
 
   if (!isLoadingComplete) {
     return null;
   } else {
+  
+  
     return (
       <AppProvider>
         <SafeAreaProvider>

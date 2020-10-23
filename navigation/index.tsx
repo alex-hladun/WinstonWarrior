@@ -39,6 +39,32 @@ function RootNavigator() {
   // const context = React.useContext(AppContext)
   console.log('Context in index.tsx', context)
 
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const loginAsync = async () => {
+      let userToken;
+
+      try {
+        console.log('running asyncstorage')
+        userToken = await AsyncStorage.getItem('userToken');
+      } catch (e) {
+        // Restoring token failed
+      }
+
+      // After restoring token, we may need to validate it in production apps
+
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      context.dispatch({
+        type: 'authentication_done',
+        data: 'Alex'
+      })
+    };
+
+    loginAsync();
+  }, []);
+  
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, headerTransparent: true }}>
       {!context.value.state.logged_in ?
