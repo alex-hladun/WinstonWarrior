@@ -8,6 +8,17 @@ import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
 import db from '../db/dbSetup'
 
+const playerArray=['Alex','Carter','Paul','Will']
+const players = playerArray.map((player, index) => {
+  if (index !== 0) {
+    return (
+      <Text key={`${index}player`}>
+        {player}
+      </Text>
+    )
+
+  }
+})
 
 
 export default function Score({ holeNum, setHole }) {
@@ -57,11 +68,15 @@ export default function Score({ holeNum, setHole }) {
       <View style={styles.pickerContainer}>
         <View style={[styles.pickerHeader]}>
           <Text>
-            Shots
+            {playerArray[0]}
         </Text>
           <Text>
             Putts
         </Text>
+          <Text>
+            Penalty
+        </Text>
+        {players}
         </View>
         <View style={styles.pickerRow}>
 

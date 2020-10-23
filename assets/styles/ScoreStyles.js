@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   pickerHeader: {
     justifyContent: 'space-around',
     flexDirection: 'row',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     marginTop: 10
   },
   pickerRow: {

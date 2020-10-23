@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { Alert } from 'react-native'
+import { Alert, AsyncStorageStatic } from 'react-native'
 
 const db = SQLite.openDatabase('winstonGolfer.db');
 
@@ -45,7 +45,6 @@ export const dbCall = () => {
 
   const dropAndCreate = async () => {
     db.transaction(tx => {
-
       tx.executeSql(
         `DROP TABLE if exists SCORES`
       , null, null, null)
