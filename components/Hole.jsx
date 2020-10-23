@@ -17,7 +17,6 @@ import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'
 import ShotTrack from './ShotTrack'
-import { dbCall, existingGameAlert } from '../db/dbSetup'
 
 const { width } = Dimensions.get('window');
 
@@ -102,14 +101,7 @@ export default function Hole({ location }) {
     }
   }
 
-  useEffect(() => {
-    setTimeout(function () {
-       dbCall() 
-
-      //  This function returns true if there is an existing existingGameAlert
-      // Hanlde sccordingly. 
-      }, 2000)
-  }, [])
+  
 
   const distanceToShotTarget = useCallback(
     () => {

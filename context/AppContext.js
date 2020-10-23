@@ -17,6 +17,12 @@ const reducer = (state, action) => {
         auth_message: ''
       }
     break;
+    case "set_round_id":
+      return {
+        ...state,
+       round_id: action.data
+      }
+    break;
     case "authentication_failed":
       return {
         ...state,
@@ -35,6 +41,7 @@ const initialState = {
   hole_id: undefined
 }
 const AppContext = React.createContext(initialState);
+
 function AppProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 

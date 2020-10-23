@@ -11,11 +11,6 @@ export default function App() {
 
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  // const context = React.useContext(AppContext)
-  // console.log('context in App.tsx', context)
-
-  
-  
 
   if (!isLoadingComplete) {
     return null;

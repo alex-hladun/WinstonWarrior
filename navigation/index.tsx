@@ -37,7 +37,7 @@ function RootNavigator() {
 
   // const [loggedIn, setLoggedIn] = React.useState(false)
   // const context = React.useContext(AppContext)
-  console.log('Context in index.tsx', context)
+  // console.log('Context in index.tsx', context)
 
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -63,7 +63,7 @@ function RootNavigator() {
 
     loginAsync();
   }, []);
-  
+
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, headerTransparent: true }}>
