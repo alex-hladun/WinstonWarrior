@@ -4,6 +4,7 @@ import * as Linking from 'expo-linking';
 import styles from '../../assets/styles/MenuStyles'
 import { AppContext } from '../../context/AppContext'
 import { PlayContext } from '../../context/PlayContext'
+import { registerUser, createRound } from '../../db/dbSetup'
 
 
 export function PlayerAdd({ navigation }) {
@@ -40,12 +41,19 @@ export function PlayerAdd({ navigation }) {
       )
     }
   })
-  const handleStart = () => {
+  const handleStart = async() => {
     console.log('Starting Game!')
 
+    if(playContext.value.state.player_2) {
+      console.log('registering user')
+      const uid = await registerUser(playContext.value.state.player_2)
+
+      console.log('uid after register', uid)
+    }
+    
     appContext.dispatch({
       type: 'set_round_id',
-      data: 2
+      data: 1
     })
   }
 

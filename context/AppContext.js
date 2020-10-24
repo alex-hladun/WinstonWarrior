@@ -23,6 +23,12 @@ const reducer = (state, action) => {
        round_id: action.data
       }
     break;
+    case "set_user_2_round_id":
+      return {
+        ...state,
+       user_2_rd_id: action.data
+      }
+    break;
     case "authentication_failed":
       return {
         ...state,
@@ -38,7 +44,10 @@ const initialState = {
   logged_in: false,
   auth_message : '',
   round_id: undefined,
-  hole_id: undefined
+  hole_id: undefined,
+  user_2_rd_id: undefined,
+  user_3_rd_id: undefined,
+  user_4_rd_id: undefined
 }
 const AppContext = React.createContext(initialState);
 

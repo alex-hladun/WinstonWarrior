@@ -9,11 +9,12 @@ import { dbCall, existingGameAlert } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayProvider } from '../context/PlayContext'
+import {createWinston, setUpDB, removeDB, registerUser} from '../db/dbSetup'
 
 export default function TabOneScreen() {
   const context = React.useContext(AppContext)
   const contextState = context.value.state
-  console.log('context in TabOneScreen', contextState)
+  // console.log('context in TabOneScreen', context)
   const [existingRound, setExistingRound] = React.useState(false)
 
 
@@ -24,6 +25,17 @@ export default function TabOneScreen() {
     }
 
   }, [contextState])
+
+  React.useEffect(() => {
+    console.log('resetting DB SHOULD ONLY RUN ONCE')
+    removeDB()
+    setUpDB()
+    createWinston()
+    registerUser('Alex')
+
+    
+
+  }, [])
 
   const [state, setState] = React.useState({
     location: {

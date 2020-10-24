@@ -41,14 +41,16 @@ export default function Score({ holeNum, setHole }) {
       tx.executeSql(
         `
           INSERT INTO scores (
-            hole_number,
+            user_id,
+            hole_id,
             date_time,
             total_shots,
             total_putts,
             driver_direction,
             approach_rtg,
             chip_rtg,
-            putt_rtg
+            putt_rtg,
+            round_id
           ) VALUES (?, strftime('%Y-%m-%d %H:%M:%S','now'), ?, ?, ?, ?, ?, ?);
           `
         , [holeNum, score, putts, teeShot, approach, chip, putting], (txObj, result) => {
