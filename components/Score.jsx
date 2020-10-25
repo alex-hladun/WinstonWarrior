@@ -49,7 +49,7 @@ export default function Score({ holeNum, setHole }) {
   const players = playerArray.map((player, index) => {
     if (index !== 0) {
       return (
-        <Text key={`${index}player`}>
+        <Text style={styles.header} key={`${index}player`}>
           {player}
         </Text>
       )
@@ -60,7 +60,7 @@ export default function Score({ holeNum, setHole }) {
   const handleScoreSubmit = async () => {
 
     await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting)
-    
+
     if (appState["user_2_name"]) {
       await postScore(holeID, holeNum, appState.user_2_rd_id, p2score)
     }
@@ -69,7 +69,6 @@ export default function Score({ holeNum, setHole }) {
     }
     if (appState.user_4_name) {
       await postScore(holeID, holeNum, appState.user_4_rd_id, p4score)
-
     }
 
     setHole(holeNum + 1)
@@ -84,14 +83,14 @@ export default function Score({ holeNum, setHole }) {
   return (
     <>
       <View style={styles.pickerContainer}>
-        <View style={[styles.pickerHeader]}>
-          <Text>
+        <View style={[styles.scoreHeader]}>
+          <Text style={styles.header}>
             {playerArray[0]}
           </Text>
-          <Text>
+          <Text style={styles.header}>
             Putts
         </Text>
-          <Text>
+          <Text style={styles.header}>
             Penalty
         </Text>
           {players}

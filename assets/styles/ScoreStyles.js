@@ -21,6 +21,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly'
   },
+  header: {
+    transform: [{ rotate: "-45deg" }],
+    width: 50,
+    paddingVertical: 10,
+    // margin: 10,
+    textAlign: 'center',
+
+  },
+  scoreHeader: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    // marginHorizontal: 20,
+    textAlign: 'center',
+
+  },
   pickerHeader: {
     justifyContent: 'space-around',
     flexDirection: 'row',
