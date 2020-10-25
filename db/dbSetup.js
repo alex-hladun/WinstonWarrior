@@ -47,43 +47,67 @@ export const removeDB = () => {
   })
 }
 
-export const registerUser = (user) => {
-  let uid;
-  db.transaction(tx => {
+
+export const getUsers = async() => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT * FROM USERS
+    `, [], (txObj, result) => {
+      // console.log('result creating user', result.rows._array)
+      resolve(result.rows)
+    }, (err, mess) => reject)
+  }))
+}
+
+
+export const registerUser = async(user) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    console.log('inside reg user sql')
     tx.executeSql(`
     INSERT INTO users (user_name) VALUES (?);
     `, [user], (txObj, result) => {
-      // console.log('result creating user', result.rows._array)
-    }, (err, mess) => console.log('err creating user', mess))
-
-    tx.executeSql(`
-    SELECT last_insert_rowid()
-    `, null, (txObj, result) => {
-      console.log('result creating user', result.rows._array[0]['last_insert_rowid()'])
-      uid = result.rows._array[0]['last_insert_rowid()']
-    }, (err, mess) => console.log('err creating user', mess))
-
-
-    return uid
-
-
-
-  })
+      console.log('created user', result)
+      resolve(result.insertId)
+    }, (err, mess) => console.log('err creating user', reject(mess)))
+  }))
 }
 
-export const createRound = (course_id, user_id) => {
-  db.transaction(tx => {
+export const createRound = async(course_id, user_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    console.log('inside createRound')
     tx.executeSql(`
     INSERT INTO rounds (course_id, user_id) VALUES (?, ?);
-
     `, [course_id, user_id], (txObj, result) => {
       console.log('result creating round', result)
-      // console.log('transObj', txObj)
-      // setHole(holeNum + 1)
-      // console.log('txObj', txObj)
-    }, (err, mess) => console.log('err creating round', mess))
-
+      resolve(result.insertId)
+    }, (err, mess) => console.log('err creating round', reject(mess)))
   })
+  )
+}
+export const postScore = async(hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    INSERT INTO scores (
+      hole_id,
+      hole_num,
+      round_id,
+      date_time,
+      total_shots,
+      total_putts,
+      pentalty,
+      driver_direction,
+      approach_rtg,
+      chip_rtg,
+      putt_rtg
+    ) VALUES (?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'), ?, ?, ?, ?, ?, ?, ?);
+    `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg], (txObj, result) => {
+      console.log('result posting score', result)
+      resolve(result)
+    }, (err, mess) => {
+      console.log(`ERROR posting score: ${err}, ${mess}`)
+      reject(err)})
+  })
+  )
 }
 
 export const createWinston = () => {
@@ -162,10 +186,12 @@ export const setUpDB = () => {
     CREATE TABLE IF NOT EXISTS scores (
       score_id integer PRIMARY KEY AUTOINCREMENT,
       hole_id integer,
+      hole_num intefer,
       round_id integer,
       date_time datetime,
       total_shots integer,
       total_putts integer,
+      pentalty integer,
       driver_direction integer,
       approach_rtg integer,
       chip_rtg integer,
@@ -201,6 +227,18 @@ export const setUpDB = () => {
     );
     `, null, null, null)
   })
+}
+
+export const getScore = async(round_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT * FROM scores WHERE round_id = ?;
+    `, [round_id], (txObj, result) => {
+      console.log('result creating round', result)
+      resolve(result)
+    }, (err, mess) => console.log('err creating round', reject(mess)))
+  })
+  )
 }
 
 

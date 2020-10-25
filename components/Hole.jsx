@@ -17,12 +17,15 @@ import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'
 import ShotTrack from './ShotTrack'
+import { AppContext } from '../context/AppContext'
+
 
 const { width } = Dimensions.get('window');
 
-export default function Hole({ location }) {
+export default function Hole({ location, initialHole = 1 }) {
+  const appContext = React.useContext(AppContext)
   const [shotDiff, setShotDiff] = useState(3)
-  const [holeNum, setHoleNum] = useState(1)
+  const [holeNum, setHoleNum] = useState(initialHole)
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
     latitude: undefined,
@@ -101,7 +104,7 @@ export default function Hole({ location }) {
     }
   }
 
-  
+
 
   const distanceToShotTarget = useCallback(
     () => {
@@ -161,11 +164,34 @@ export default function Hole({ location }) {
     if (scoreView) {
       setScoreView(false)
     }
+    // CHANGE LATER
+    appContext.dispatch({
+      type: 'set_hole_id',
+      data: holeNum
+    })
+    // //////
+    appContext.dispatch({
+      type: 'set_hole_num',
+      data: holeNum
+    })
+
+
   }
 
   const handleHoleInc = () => {
     if (holeNum !== 19) {
+      appContext.dispatch({
+        type: 'set_hole_id',
+        data: holeNum + 1
+      })
+      // //////
+      appContext.dispatch({
+        type: 'set_hole_num',
+        data: holeNum + 1
+      })
+
       setHoleNum(holeNum + 1)
+
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined
@@ -178,6 +204,16 @@ export default function Hole({ location }) {
   }
   const handleHoleDec = () => {
     if (holeNum !== 1) {
+      appContext.dispatch({
+        type: 'set_hole_id',
+        data: holeNum - 1
+      })
+      // //////
+      appContext.dispatch({
+        type: 'set_hole_num',
+        data: holeNum - 1
+      })
+
       setHoleNum(holeNum - 1)
       setDistanceMarker({
         latitude: undefined,
@@ -197,7 +233,6 @@ export default function Hole({ location }) {
       latitude: undefined,
       longitude: undefined
     })
-
   }
 
   const handleRegionChange = async (reg) => {
@@ -235,7 +270,7 @@ export default function Hole({ location }) {
           <Text style={holeListStyles.header} onPress={() => handleTrackViewClose()}>
             X
       </Text>
-          <ShotTrack distance={trackDistance} handleTrackViewClose={() => handleTrackViewClose()}/>
+          <ShotTrack distance={trackDistance} handleTrackViewClose={() => handleTrackViewClose()} />
         </View>
       </Modal>
 
@@ -260,11 +295,11 @@ export default function Hole({ location }) {
 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => handleHoleChange(1)}>
-        <Text style={styles.title} >Hole {holeNum}</Text>
+          <Text style={styles.title} >Hole {holeNum}</Text>
 
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleScoreCardEnter()}>
-        <Text style={styles.title} >Par {holeInfo[holeNum].par}</Text>
+          <Text style={styles.title} >Par {holeInfo[holeNum].par}</Text>
         </TouchableOpacity>
         <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
       </View>

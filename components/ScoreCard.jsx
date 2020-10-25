@@ -3,42 +3,86 @@ import { Text, View } from './Themed';
 import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/ScoreCardStyles'
 import holeInfo from '../assets/holeInfo'
-import db from '../db/dbSetup'
+import db, { getScore } from '../db/dbSetup'
+import { AppContext } from '../context/AppContext'
 
 export default function ScoreCard({ holeNum }) {
   const [scoreState, setScoreState] = useState({})
+  const [p2scoreState, setP2ScoreState] = useState({})
+  const [p3scoreState, setP3ScoreState] = useState({})
+  const [p4scoreState, setP4ScoreState] = useState({})
+  const [playerArray, setPlayerArray] = useState([])
+  const appContext = React.useContext(AppContext)
+  let appState = appContext.value.state
 
-  const playerArray=['Alex','Carter','Paul','Will']
+  // console.log(playerArray)
+  // console.log(scoreState)
+  useEffect(() => {
+    // console.log(appContext.value.state)
+    let newArr = [appContext.value.state.user_name];
+    if (appContext.value.state["user_2_name"]) {
+      newArr.push(appContext.value.state["user_2_name"])
+    }
+    if (appContext.value.state.user_3_name) {
+      newArr.push(appContext.value.state.user_3_name)
+    }
+    if (appContext.value.state.user_4_name) {
+      newArr.push(appContext.value.state.user_4_name)
+    }
+
+    setPlayerArray(newArr)
+    // getUsersAsync()
+  }, [appContext.value.state])
 
   useEffect(() => {
-    db.transaction(tx => {
-      tx.executeSql(
-        `
-          SELECT * FROM scores;
-          `
-        , null, (txObj, result) => {
-          // console.log('score result', result.rows._array)
 
-          const scoreBoard = {}
-          result.rows._array.forEach(function (scoreObj) {
-            scoreBoard[scoreObj['hole_number']] = scoreObj['total_shots']
-            // newScore[scoreObj['hole_number']] = scoreObj['total_shots']
-            // console.log('newscore', newScore)
-          })
-          setScoreState(scoreBoard)
-          // console.log('scoreboard', scoreBoard)
-          // console.log('scoreState', scoreState)
-        }, (err, mess) => console.log('err', mess))
-    })
+    const getScores = async () => {
+      const scoreBoard = {}
+      const scoreResult = await getScore(appState.round_id);
+      // console.log('score result in scorecard', scoreResult)
+      scoreResult.rows._array.forEach(function (scoreObj) {
+        // console.log('scoreObj', scoreObj)
+        scoreBoard[scoreObj['hole_num']] = scoreObj['total_shots']
+      })
+      setScoreState(scoreBoard)
 
-  }, [])
+      if (appContext.value.state.user_2_name) {
+        const scb2 = {}
+        const scoreResult2 = await getScore(appState.user_2_rd_id);
+        scoreResult2.rows._array.forEach(function (scoreObj) {
+          // console.log('scoreObj', scoreObj)
+          scb2[scoreObj['hole_num']] = scoreObj['total_shots']
+        })
+        setP2ScoreState(scb2)
+      }
+      if (appContext.value.state.user_3_name) {
+        const scb3 = {}
+        const scoreResult3 = await getScore(appState.user_3_rd_id);
+        scoreResult3.rows._array.forEach(function (scoreObj) {
+          // console.log('scoreObj', scoreObj)
+          scb3[scoreObj['hole_num']] = scoreObj['total_shots']
+        })
+        setP3ScoreState(scb3)
+      }
+      if (appContext.value.state.user_4_name) {
+        const scb4 = {}
+        const scoreResult4 = await getScore(appState.user_4_rd_id);
+        scoreResult4.rows._array.forEach(function (scoreObj) {
+          // console.log('scoreObj', scoreObj)
+          scb4[scoreObj['hole_num']] = scoreObj['total_shots']
+        })
+        setP4ScoreState(scb4)
+      }
+    }
+    getScores()
+  }, [appContext.value.state])
 
-  let frontPar = 0
-  let backPar = 0
-  let frontScore = 0
-  let backScore = 0
-
-  const tableBuilder = (startIndex, endIndex, type, name = '') => {
+  
+  const tableBuilder = (startIndex, endIndex, type, name = '', scoreStateObj = {}) => {
+    let frontPar = 0
+    let backPar = 0
+    let frontScore = 0
+    let backScore = 0
     const newArr = [];
     for (let i = startIndex; i <= endIndex; i++) {
       if (type === 'header') {
@@ -51,7 +95,7 @@ export default function ScoreCard({ holeNum }) {
         } else if (i === endIndex) {
           if (startIndex < 3) {
             newArr.push(
-              <View key={`${i}ds`}style={[styles.headerCell, styles.holeHeader]}>
+              <View key={`${i}ds`} style={[styles.headerCell, styles.holeHeader]}>
                 <Text style={styles.holeHeader}>
                   Out
                 </Text>
@@ -121,7 +165,7 @@ export default function ScoreCard({ holeNum }) {
             backPar += holeInfo[i].par
           }
           newArr.push(
-            <View key={`k54es${i}`}  style={[styles.headerCell, styles.parCell]}>
+            <View key={`k54es${i}`} style={[styles.headerCell, styles.parCell]}>
               <Text style={styles.whiteText} key={i}>
                 {holeInfo[i].par}
               </Text>
@@ -132,7 +176,7 @@ export default function ScoreCard({ holeNum }) {
       } else if (type === 'Score') {
         if (i === startIndex) {
           newArr.push(
-            <View  key={`ke223s${i}`} style={[styles.score, styles.invisibleHeader]}>
+            <View key={`ke223s${i}`} style={[styles.score, styles.invisibleHeader]}>
               <Text key={i}>
                 {name}
               </Text>
@@ -149,14 +193,14 @@ export default function ScoreCard({ holeNum }) {
             )
           } else {
             newArr.push(
-              <View key={`k34es${i}`}  style={styles.headerCell}>
+              <View key={`k34es${i}`} style={styles.headerCell}>
                 <Text style={styles.score} key={i}>
                   {backScore}
                 </Text>
               </View>
             )
             newArr.push(
-              <View key={`ke323s${i}`}  style={styles.headerCell}>
+              <View key={`ke323s${i}`} style={styles.headerCell}>
                 <Text style={styles.score} key={i}>
                   {backScore + frontScore}
                 </Text>
@@ -165,21 +209,21 @@ export default function ScoreCard({ holeNum }) {
           }
         }
         else {
-          if (startIndex < 5 && scoreState[i]) {
-            frontScore += scoreState[i]
-          } else if (scoreState[i]) {
-            backScore += scoreState[i]
+          if (startIndex < 5 && scoreStateObj[i]) {
+            frontScore += scoreStateObj[i]
+          } else if (scoreStateObj[i]) {
+            backScore += scoreStateObj[i]
           }
           newArr.push(
-            <View key={`kesaas${i}`}  style={styles.headerCell}>
+            <View key={`kesaas${i}`} style={styles.headerCell}>
               <Text style={styles.score} key={i}>
-                {scoreState[i]}
+                {scoreStateObj[i]}
               </Text>
             </View>
           )
         }
       } else if (type === 'yards') {
-
+        // If I wanted to add yardage to scorecard
       }
     }
 
@@ -214,16 +258,16 @@ export default function ScoreCard({ holeNum }) {
             {par}
           </View>
           <View style={styles.tableRow}>
-            {playerArray.length > 0 && tableBuilder(0, 10, 'Score', playerArray[0])}
+            {tableBuilder(0, 10, 'Score', playerArray[0], scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {playerArray.length > 1 && tableBuilder(0, 10, 'Score', playerArray[1])}
+            {appState.user_2_name && tableBuilder(0, 10, 'Score', appState.user_2_name, p2scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {playerArray.length > 2 && tableBuilder(0, 10, 'Score', playerArray[2])}
+            {appState.user_3_name && tableBuilder(0, 10, 'Score', appState.user_3_name, p3scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {playerArray.length > 3 && tableBuilder(0, 10, 'Score', playerArray[3])}
+            {appState.user_4_name && tableBuilder(0, 10, 'Score', appState.user_4_name, p4scoreState)}
           </View>
         </View>
         <View style={styles.tableChild}>
@@ -234,16 +278,16 @@ export default function ScoreCard({ holeNum }) {
             {par2}
           </View>
           <View style={styles.tableRow}>
-            {tableBuilder(9, 19, 'Score', playerArray[0])}
+            {tableBuilder(9, 19, 'Score', playerArray[0], scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {playerArray.length > 1 && tableBuilder(9, 19, 'Score', playerArray[1])}
+            {appState.user_2_name && tableBuilder(9, 19, 'Score', appState.user_2_name, p2scoreState)}
           </View>
           <View style={styles.tableRow}>
-          {playerArray.length > 2 && tableBuilder(9, 19, 'Score', playerArray[2])}
+            {appState.user_3_name && tableBuilder(9, 19, 'Score', appState.user_3_name, p3scoreState)}
           </View>
           <View style={styles.tableRow}>
-          {playerArray.length > 3 && tableBuilder(9, 19, 'Score', playerArray[3])}
+            {appState.user_4_name && tableBuilder(9, 19, 'Score', appState.user_4_name, p4scoreState)}
           </View>
         </View>
       </View>

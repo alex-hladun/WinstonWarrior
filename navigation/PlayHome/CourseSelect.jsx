@@ -8,7 +8,7 @@ export function CourseSelect({ navigation }) {
   const playContext = React.useContext(PlayContext)
 
 
-  console.log('playContext in CourseSelect', playContext)
+  // console.log('playContext in CourseSelect', playContext)
   const handlePress = (courseID) => {
 
     playContext.dispatch({
@@ -25,8 +25,7 @@ export function CourseSelect({ navigation }) {
       name: 'The Winston Golf Club',
       id: 1
     },
-    { name: 'Trickle Creek',
-  id: 2}
+
   ]
 
   const courseItems = courseList.map((course, index) => {
