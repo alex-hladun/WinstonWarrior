@@ -5,6 +5,7 @@ import styles from '../assets/styles/ScoreCardStyles'
 import holeInfo from '../assets/holeInfo'
 import db, { getScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
+import { PlayContext } from '../context/PlayContext'
 
 export default function ScoreCard({ holeNum }) {
   const [scoreState, setScoreState] = useState({})
@@ -17,9 +18,11 @@ export default function ScoreCard({ holeNum }) {
   const [p3totalScore, setP3TotalScore] = useState(0)
   const [p4totalScore, setP4TotalScore] = useState(0)
   const appContext = React.useContext(AppContext)
+  const playContext = React.useContext(PlayContext)
   let appState = appContext.value.state
+  let playState = playContext.value.state
 
-  // console.log(playerArray)
+  console.log('appContext', appContext)
   // console.log(scoreState)
   useEffect(() => {
     // console.log(appContext.value.state)
@@ -39,11 +42,11 @@ export default function ScoreCard({ holeNum }) {
   }, [appContext.value.state])
 
   useEffect(() => {
-    console.log('appState', appState)
+    console.log('playContext', playState)
 
     const getScores = async () => {
       let totalScore = 0;
-      const scoreBoard = {}
+      // const scoreBoard = appContext
       const scoreResult = await getScore(appState.round_id);
       // console.log('score result in scorecard', scoreResult)
       scoreResult.rows._array.forEach(function (scoreObj) {
@@ -92,7 +95,7 @@ export default function ScoreCard({ holeNum }) {
       }
     }
     getScores()
-  }, [appContext.value.state])
+  }, [])
 
   
   let backPar = 0

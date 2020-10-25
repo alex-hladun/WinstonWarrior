@@ -8,9 +8,11 @@ import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
 import db, { getUsers, postScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
+import { PlayContext } from '../context/PlayContext'
 
 export default function Score({ holeNum, setHole }) {
   const appContext = React.useContext(AppContext)
+  const playContext = React.useContext(PlayContext)
   const [playerArray, setPlayerArray] = useState([])
   const [score, setScore] = useState(holeInfo[holeNum].par)
   const [p2score, setP2Score] = useState(holeInfo[holeNum].par)
@@ -30,7 +32,8 @@ export default function Score({ holeNum, setHole }) {
 
   useEffect(() => {
     holeID = appState.hole_id
-    console.log('appstate in score', appState)
+    // console.log('appstate in score', appState)
+
 
     let newArr = [appState.user_name];
     if (appState["user_2_name"]) {
@@ -60,15 +63,36 @@ export default function Score({ holeNum, setHole }) {
   const handleScoreSubmit = async () => {
 
     await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting)
+    console.log(playContext.value.state.p1score)
+    playContext.dispatch({
+      type: 'set_p1_score',
+      hole: holeNum,
+      score: score
+    })
 
     if (appState["user_2_name"]) {
       await postScore(holeID, holeNum, appState.user_2_rd_id, p2score)
+      playContext.dispatch({
+        type: 'set_p2_score',
+        hole: holeNum,
+        score: p2score
+      })
     }
     if (appState.user_3_name) {
       await postScore(holeID, holeNum, appState.user_3_rd_id, p3score)
+      playContext.dispatch({
+        type: 'set_p3_score',
+        hole: holeNum,
+        score: p3score
+      })
     }
     if (appState.user_4_name) {
       await postScore(holeID, holeNum, appState.user_4_rd_id, p4score)
+      playContext.dispatch({
+        type: 'set_p4_score',
+        hole: holeNum,
+        score: p4score
+      })
     }
 
     setHole(holeNum + 1)
@@ -77,7 +101,7 @@ export default function Score({ holeNum, setHole }) {
 
   const pickWidth = 50
 
-  console.log(playerArray)
+  // console.log(playerArray)
   // console.log(players)
 
   return (

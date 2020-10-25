@@ -101,7 +101,7 @@ export const postScore = async(hole_id, hole_num, round_id, total_shots, total_p
       putt_rtg
     ) VALUES (?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'), ?, ?, ?, ?, ?, ?, ?);
     `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg], (txObj, result) => {
-      console.log('result posting score', result)
+      // console.log('result posting score', result)
       resolve(result)
     }, (err, mess) => {
       console.log(`ERROR posting score: ${err}, ${mess}`)
@@ -234,14 +234,12 @@ export const getScore = async(round_id) => {
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ?;
     `, [round_id], (txObj, result) => {
-      console.log('result creating round', result)
+      // console.log('result getting score', result)
       resolve(result)
     }, (err, mess) => console.log('err creating round', reject(mess)))
   })
   )
 }
-
-
 
 export const dbCall = () => {
   db.transaction(tx => {
