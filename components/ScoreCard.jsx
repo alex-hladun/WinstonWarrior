@@ -7,25 +7,28 @@ import db, { getScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 
+
+const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+
 export default function ScoreCard({ holeNum }) {
-  const [scoreState, setScoreState] = useState({})
-  const [p2scoreState, setP2ScoreState] = useState({})
-  const [p3scoreState, setP3ScoreState] = useState({})
-  const [p4scoreState, setP4ScoreState] = useState({})
+  const playContext = React.useContext(PlayContext)
+  let playState = playContext.value.state
+  const [scoreState, setScoreState] = useState(playState.p1score)
+  const [p2scoreState, setP2ScoreState] = useState(playState.p2score)
+  const [p3scoreState, setP3ScoreState] = useState(playState.p3score)
+  const [p4scoreState, setP4ScoreState] = useState(playState.p4score)
   const [playerArray, setPlayerArray] = useState([])
   const [p1totalScore, setP1TotalScore] = useState(0)
   const [p2totalScore, setP2TotalScore] = useState(0)
   const [p3totalScore, setP3TotalScore] = useState(0)
   const [p4totalScore, setP4TotalScore] = useState(0)
   const appContext = React.useContext(AppContext)
-  const playContext = React.useContext(PlayContext)
   let appState = appContext.value.state
-  let playState = playContext.value.state
 
-  console.log('appContext', appContext)
-  // console.log(scoreState)
+  console.log('playState', playState)
+
   useEffect(() => {
-    // console.log(appContext.value.state)
+    // get array of user names
     let newArr = [appContext.value.state.user_name];
     if (appContext.value.state["user_2_name"]) {
       newArr.push(appContext.value.state["user_2_name"])
@@ -36,68 +39,33 @@ export default function ScoreCard({ holeNum }) {
     if (appContext.value.state.user_4_name) {
       newArr.push(appContext.value.state.user_4_name)
     }
-
     setPlayerArray(newArr)
-    // getUsersAsync()
+
   }, [appContext.value.state])
 
   useEffect(() => {
+    // Calculate total scores
     console.log('playContext', playState)
 
-    const getScores = async () => {
-      let totalScore = 0;
-      // const scoreBoard = appContext
-      const scoreResult = await getScore(appState.round_id);
-      // console.log('score result in scorecard', scoreResult)
-      scoreResult.rows._array.forEach(function (scoreObj) {
-        // console.log('scoreObj', scoreObj)
-        scoreBoard[scoreObj['hole_num']] = scoreObj['total_shots']
-        totalScore += scoreObj['total_shots']
-      })
-      setScoreState(scoreBoard)
-      setP1TotalScore(totalScore)
+    let totalScore = sumValues(scoreState)
+    setP1TotalScore(totalScore)
 
-      if (appContext.value.state.user_2_name) {
-        const scb2 = {}
-        let ts2 = 0
-        const scoreResult2 = await getScore(appState.user_2_rd_id);
-        scoreResult2.rows._array.forEach(function (scoreObj) {
-          // console.log('scoreObj', scoreObj)
-          scb2[scoreObj['hole_num']] = scoreObj['total_shots']
-          ts2 += scoreObj['total_shots']
-        })
-        setP2ScoreState(scb2)
-        setP2TotalScore(ts2)
-      }
-      if (appContext.value.state.user_3_name) {
-        const scb3 = {}
-        const scoreResult3 = await getScore(appState.user_3_rd_id);
-        let ts3 = 0
-        scoreResult3.rows._array.forEach(function (scoreObj) {
-          // console.log('scoreObj', scoreObj)
-          scb3[scoreObj['hole_num']] = scoreObj['total_shots']
-          ts3 += scoreObj['total_shots']
-        })
-        setP3ScoreState(scb3)
-        setP3TotalScore(ts3)
-      }
-      if (appContext.value.state.user_4_name) {
-        const scb4 = {}
-        let ts4 = 0
-        const scoreResult4 = await getScore(appState.user_4_rd_id);
-        scoreResult4.rows._array.forEach(function (scoreObj) {
-          // console.log('scoreObj', scoreObj)
-          scb4[scoreObj['hole_num']] = scoreObj['total_shots']
-          ts4 += scoreObj['total_shots']
-        })
-        setP4ScoreState(scb4)
-        setP4TotalScore(ts4)
-      }
+    if (appContext.value.state.user_2_name) {
+      let ts2 = sumValues(p2scoreState)
+      setP2TotalScore(ts2)
     }
-    getScores()
+    if (appContext.value.state.user_3_name) {
+      let ts3 = sumValues(p3scoreState)
+      setP3TotalScore(ts3)
+    }
+
+    if (appContext.value.state.user_4_name) {
+      let ts4 = sumValues(p4scoreState)
+      setP4TotalScore(ts4)
+    }
   }, [])
 
-  
+
   let backPar = 0
   let frontPar = 0
   const tableBuilder = (startIndex, endIndex, type, name = '', scoreStateObj = {}, setScoreStateObj = null) => {
@@ -224,7 +192,7 @@ export default function ScoreCard({ holeNum }) {
               </View>
             )
 
-            
+
             newArr.push(
               <View key={`ke323s${i}`} style={styles.headerCell}>
                 <Text style={styles.score} key={i}>

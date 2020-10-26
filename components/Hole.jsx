@@ -26,6 +26,8 @@ export default function Hole({ location, initialHole = 1 }) {
   const appContext = React.useContext(AppContext)
   const [shotDiff, setShotDiff] = useState(3)
   const [holeNum, setHoleNum] = useState(initialHole)
+
+  // const holeNum = appContext.value.state.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
     latitude: undefined,
@@ -47,6 +49,9 @@ export default function Hole({ location, initialHole = 1 }) {
   const trackAnim = useRef(new Animated.Value(0.85)).current
 
 
+  useEffect(() => {
+  console.log('appcontext', appContext)
+  })
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
     var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -84,16 +89,7 @@ export default function Hole({ location, initialHole = 1 }) {
       console.log('Measured a distance of ', distance, 'yds')
       setTrackDistance(distance)
       setShotTrackView(true)
-      // Alert.alert(
-      //   "Shot tracked",
-      //   `Your shot was ${distance} yds`,
-      //   [
-      //     { text: "OK", onPress: () => console.log("OK Pressed") }
-      //   ],
-      //   { cancelable: false }
-      // );
       trackAnim.stopAnimation()
-
       Animated.timing(trackAnim, {
         toValue: 0.85,
         duration: 1,
@@ -103,8 +99,6 @@ export default function Hole({ location, initialHole = 1 }) {
       setTracking(false)
     }
   }
-
-
 
   const distanceToShotTarget = useCallback(
     () => {
@@ -129,7 +123,6 @@ export default function Hole({ location, initialHole = 1 }) {
   );
 
   const handleHoleChange = (delta) => {
-    console.log('changing hole')
     setHoleView(!holeView)
   }
 
@@ -138,8 +131,6 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const handleScoreEnter = () => {
-    console.log('handle score enter')
-
     setScoreView(!scoreView)
   }
 
@@ -156,7 +147,7 @@ export default function Hole({ location, initialHole = 1 }) {
       latitude: undefined,
       longitude: undefined
     })
-    // await mapRef.current.animateCamera(holeInfo[holeNum].camera)
+
     if (holeView) {
       setHoleView(false)
     }
@@ -165,17 +156,14 @@ export default function Hole({ location, initialHole = 1 }) {
       setScoreView(false)
     }
     // CHANGE LATER
-    appContext.dispatch({
-      type: 'set_hole_id',
-      data: holeNum
-    })
+
+    appContext.value.setHole(num)
+    
     // //////
     appContext.dispatch({
-      type: 'set_hole_num',
-      data: holeNum
+      type: 'set_hole_id',
+      data: num
     })
-
-
   }
 
   const handleHoleInc = () => {
@@ -184,14 +172,8 @@ export default function Hole({ location, initialHole = 1 }) {
         type: 'set_hole_id',
         data: holeNum + 1
       })
-      // //////
-      appContext.dispatch({
-        type: 'set_hole_num',
-        data: holeNum + 1
-      })
-
+      appContext.value.setHole(holeNum + 1)
       setHoleNum(holeNum + 1)
-
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined
@@ -208,12 +190,7 @@ export default function Hole({ location, initialHole = 1 }) {
         type: 'set_hole_id',
         data: holeNum - 1
       })
-      // //////
-      appContext.dispatch({
-        type: 'set_hole_num',
-        data: holeNum - 1
-      })
-
+      appContext.value.setHole(holeNum - 1)
       setHoleNum(holeNum - 1)
       setDistanceMarker({
         latitude: undefined,

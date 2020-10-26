@@ -1,7 +1,9 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { AppContext } from '../context/AppContext'
+import { Video } from 'expo-av';
+import styles from '../assets/styles/PlayStyles'
 
 export function Login({ navigation }) {
   const context = React.useContext(AppContext)
@@ -21,12 +23,31 @@ export function Login({ navigation }) {
 
   return (
     <>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text onPress={() => handlePress()}>Go to signup Screen</Text>
-      </View>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text onPress={() => handleLogin()}>Click to login</Text>
-      </View>
+        <View>
+      {/* <ImageBackground source={require('../assets/images/cross-stripes.png')} imageStyle={{ resizeMode: 'repeat' }} style={styles.bgImage}> */}
+          <Video
+            source={require('../assets/golf.m4v')}
+            rate={1.0}
+            volume={0.0}
+            isMuted={true}
+            resizeMode="cover"
+            shouldPlay
+            isLooping
+            style={styles.video}
+          />
+      {/* </ImageBackground> */}
+        </View>
+        <View style={styles.modalContainer}>
+          <View style={styles.winstonText}>
+            <Text style={styles.txt}>W/W</Text>
+          </View>
+          <View style={styles.styledButton}>
+            <Text onPress={() => handlePress()} style={styles.buttonText}>Create Account</Text>
+          </View>
+          <View style={styles.styledButton}>
+            <Text onPress={() => handleLogin()} style={styles.buttonText}>Login</Text>
+          </View>
+        </View>
     </>
   );
 }

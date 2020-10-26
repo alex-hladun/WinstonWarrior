@@ -23,6 +23,8 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "description": "Golf Tracker",
+    "githubUrl": "https://github.com/alex-hladun/WinstonWarrior"
   }
 }

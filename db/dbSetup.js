@@ -8,14 +8,15 @@ export default db
 export const existingGameAlert = () => {
   Alert.alert(
     "Existing Round",
-    "Would you like to delete and start again?",
+    "Would you like to return to your game?",
     [
       {
         text: "No",
-        onPress: () => console.log("Cancel Pressed"),
+        onPress: () => dropAndCreate(),
+        
         style: "cancel"
       },
-      { text: "Yes", onPress: () => dropAndCreate() }
+      { text: "Yes", onPress: () => console.log("Cancel Pressed") }
     ],
     { cancelable: false }
   );

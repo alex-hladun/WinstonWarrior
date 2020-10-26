@@ -13,11 +13,19 @@ import { PlayContext } from '../context/PlayContext'
 export default function Score({ holeNum, setHole }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
+  let playState = playContext.value.state
   const [playerArray, setPlayerArray] = useState([])
-  const [score, setScore] = useState(holeInfo[holeNum].par)
-  const [p2score, setP2Score] = useState(holeInfo[holeNum].par)
-  const [p3score, setP3Score] = useState(holeInfo[holeNum].par)
-  const [p4score, setP4Score] = useState(holeInfo[holeNum].par)
+
+  const p1ps = playState.p1score[holeNum]
+  const p2ps = playState.p2score[holeNum]
+  const p3ps = playState.p3score[holeNum]
+  const p4ps = playState.p4score[holeNum]
+  console.log('prev score', p1ps)
+  console.log('playstate in score', playState)
+  const [score, setScore] = useState(p1ps ? p1ps : holeInfo[holeNum].par)
+  const [p2score, setP2Score] = useState(p2ps ? p2ps : holeInfo[holeNum].par)
+  const [p3score, setP3Score] = useState(p3ps ? p3ps : holeInfo[holeNum].par)
+  const [p4score, setP4Score] = useState(p4ps ? p4ps : holeInfo[holeNum].par)
   const [putts, setPutts] = useState(2)
   const [penalty, setPenalty] = useState(0)
   const [teeShot, setTeeShot] = useState(50)
@@ -25,16 +33,11 @@ export default function Score({ holeNum, setHole }) {
   const [chip, setChip] = useState(50)
   const [putting, setPutting] = useState(50)
 
-  const holes = new Array(9)
   let holeID = null
   let appState = appContext.value.state
 
-
   useEffect(() => {
     holeID = appState.hole_id
-    // console.log('appstate in score', appState)
-
-
     let newArr = [appState.user_name];
     if (appState["user_2_name"]) {
       newArr.push(appState["user_2_name"])
@@ -107,6 +110,11 @@ export default function Score({ holeNum, setHole }) {
   return (
     <>
       <View style={styles.pickerContainer}>
+        <View style={[styles.holeHeader]}>
+          <Text style={styles.holeNumber}>
+          Hole {holeNum}
+            </Text>
+          </View>
         <View style={[styles.scoreHeader]}>
           <Text style={styles.header}>
             {playerArray[0]}
@@ -129,15 +137,15 @@ export default function Score({ holeNum, setHole }) {
             }
             selectedValue={score}
           >
-            <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
-            <Picker.Item style={styles.pickerStyle} label="2" value={2} />
-            <Picker.Item label="3" value={3} />
-            <Picker.Item label="4" value={4} />
-            <Picker.Item label="5" value={5} />
-            <Picker.Item label="6" value={6} />
-            <Picker.Item label="7" value={7} />
-            <Picker.Item label="8" value={8} />
-            <Picker.Item label="9" value={9} />
+            <Picker.Item color={p1ps === 1 ? 'blue' : ''} style={[styles.pickerStyle, styles.prevScore]} label="1" value={1} />
+            <Picker.Item color={p1ps === 2 ? 'blue' : ''} style={styles.pickerStyle} label="2" value={2} />
+            <Picker.Item color={p1ps === 3 ? 'blue' : ''} label='3' value={3} />
+            <Picker.Item color={p1ps === 4 ? 'blue' : ''} label="4" value={4} />
+            <Picker.Item color={p1ps === 5 ? 'blue' : ''} label="5" value={5} />
+            <Picker.Item color={p1ps === 6 ? 'blue' : ''} label="6" value={6} />
+            <Picker.Item color={p1ps === 7 ? 'blue' : ''} label="7" value={7} />
+            <Picker.Item color={p1ps === 8 ? 'blue' : ''} label="8" value={8} />
+            <Picker.Item color={p1ps === 9 ? 'blue' : ''} label="9" value={9} />
           </Picker>
 
           <Picker
@@ -164,11 +172,11 @@ export default function Score({ holeNum, setHole }) {
             selectedValue={penalty}
           >
             <Picker.Item label="0" value={0} />
-            <Picker.Item label="1" value={1} />
-            <Picker.Item label="2" value={2} />
-            <Picker.Item label="3" value={3} />
-            <Picker.Item label="4" value={4} />
-            <Picker.Item label="5+" value={5} />
+            <Picker.Item color={'red'} label="1" value={1} />
+            <Picker.Item color={'red'} label="2" value={2} />
+            <Picker.Item color={'red'} label="3" value={3} />
+            <Picker.Item color={'red'} label="4" value={4} />
+            <Picker.Item color={'red'} label="5+" value={5} />
           </Picker>
 
           {appState.user_2_name &&
@@ -180,15 +188,15 @@ export default function Score({ holeNum, setHole }) {
               }
               selectedValue={p2score}
             >
-              <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
-              <Picker.Item style={styles.pickerStyle} label="2" value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-              <Picker.Item label="5" value={5} />
-              <Picker.Item label="6" value={6} />
-              <Picker.Item label="7" value={7} />
-              <Picker.Item label="8" value={8} />
-              <Picker.Item label="9" value={9} />
+              <Picker.Item color={p2ps === 1 ? 'blue' : ''} style={styles.pickerStyle} label="1" value={1} />
+              <Picker.Item color={p2ps === 2 ? 'blue' : ''} label="2" value={2} />
+              <Picker.Item color={p2ps === 3 ? 'blue' : ''} label="3" value={3} />
+              <Picker.Item color={p2ps === 4 ? 'blue' : ''} label="4" value={4} />
+              <Picker.Item color={p2ps === 5 ? 'blue' : ''} label="5" value={5} />
+              <Picker.Item color={p2ps === 6 ? 'blue' : ''} label="6" value={6} />
+              <Picker.Item color={p2ps === 7 ? 'blue' : ''} label="7" value={7} />
+              <Picker.Item color={p2ps === 8 ? 'blue' : ''} label="8" value={8} />
+              <Picker.Item color={p2ps === 9 ? 'blue' : ''} label="9" value={9} />
             </Picker>
           }
 
@@ -201,15 +209,15 @@ export default function Score({ holeNum, setHole }) {
               }
               selectedValue={p3score}
             >
-              <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
-              <Picker.Item style={styles.pickerStyle} label="2" value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-              <Picker.Item label="5" value={5} />
-              <Picker.Item label="6" value={6} />
-              <Picker.Item label="7" value={7} />
-              <Picker.Item label="8" value={8} />
-              <Picker.Item label="9" value={9} />
+              <Picker.Item color={p3ps === 1 ? 'blue' : ''} style={styles.pickerStyle} label="1" value={1} />
+              <Picker.Item color={p3ps === 2 ? 'blue' : ''} label="2" value={2} />
+              <Picker.Item color={p3ps === 3 ? 'blue' : ''} label="3" value={3} />
+              <Picker.Item color={p3ps === 4 ? 'blue' : ''} label="4" value={4} />
+              <Picker.Item color={p3ps === 5 ? 'blue' : ''} label="5" value={5} />
+              <Picker.Item color={p3ps === 6 ? 'blue' : ''} label="6" value={6} />
+              <Picker.Item color={p3ps === 7 ? 'blue' : ''} label="7" value={7} />
+              <Picker.Item color={p3ps === 8 ? 'blue' : ''} label="8" value={8} />
+              <Picker.Item color={p3ps === 9 ? 'blue' : ''} label="9" value={9} />
             </Picker>
           }
           {appState.user_4_name &&
@@ -221,15 +229,15 @@ export default function Score({ holeNum, setHole }) {
               }
               selectedValue={p4score}
             >
-              <Picker.Item color={'blue'} style={styles.pickerStyle} label="1" value={1} />
-              <Picker.Item style={styles.pickerStyle} label="2" value={2} />
-              <Picker.Item label="3" value={3} />
-              <Picker.Item label="4" value={4} />
-              <Picker.Item label="5" value={5} />
-              <Picker.Item label="6" value={6} />
-              <Picker.Item label="7" value={7} />
-              <Picker.Item label="8" value={8} />
-              <Picker.Item label="9" value={9} />
+              <Picker.Item color={p4ps === 1 ? 'blue' : ''} style={styles.pickerStyle} label="1" value={1} />
+              <Picker.Item color={p4ps === 2 ? 'blue' : ''} label="2" value={2} />
+              <Picker.Item color={p4ps === 3 ? 'blue' : ''} label="3" value={3} />
+              <Picker.Item color={p4ps === 4 ? 'blue' : ''} label="4" value={4} />
+              <Picker.Item color={p4ps === 5 ? 'blue' : ''} label="5" value={5} />
+              <Picker.Item color={p4ps === 6 ? 'blue' : ''} label="6" value={6} />
+              <Picker.Item color={p4ps === 7 ? 'blue' : ''} label="7" value={7} />
+              <Picker.Item color={p4ps === 8 ? 'blue' : ''} label="8" value={8} />
+              <Picker.Item color={p4ps === 9 ? 'blue' : ''} label="9" value={9} />
             </Picker>
           }
         </View>

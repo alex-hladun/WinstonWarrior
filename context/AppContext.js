@@ -1,4 +1,6 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "authentication_starting":
@@ -112,15 +114,26 @@ const login = ({username, password}) => {
     email: 'some@thing.com'
   }
 
+  // THIS LOGS IN AND SETS HOME SCREEN MAIN SCREEN
   dispatch({
     type: 'authentication_done',
     data: login_data
   })
 }
 
+const setHole = (holeNum) => {
+  AsyncStorage.setItem('holeNum', JSON.stringify(holeNum))
+// Need to retrieve & set hole_id here
+  console.log('setting HOLE in async to ', holeNum)
+  dispatch({
+    type: 'set_hole_num',
+    data: holeNum
+  })
+}
+
 
   const value = useMemo(() => {
-   return { state, login };
+   return { state, login, setHole };
   }, [state]);
 
   return (

@@ -21,6 +21,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly'
   },
+  prevScore: {
+    color: 'blue',
+  },
   header: {
     transform: [{ rotate: "-45deg" }],
     width: 50,
@@ -36,11 +39,24 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
 
   },
+  holeHeader: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    paddingBottom: 10
+  },
+  holeNumber: {
+    fontSize: 20,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+// fontStyle: 'underline'
+  },
   pickerHeader: {
     justifyContent: 'space-around',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    marginTop: 10
+    marginTop: 5
   },
   pickerRow: {
     justifyContent: 'space-evenly',

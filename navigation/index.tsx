@@ -58,10 +58,10 @@ function RootNavigator() {
 
 
       // This automatically logs user in!
-      context.dispatch({
-        type: 'authentication_done',
-        data: 'Alex'
-      })
+      // context.dispatch({
+      //   type: 'authentication_done',
+      //   data: 'Alex'
+      // })
     };
 
     loginAsync();

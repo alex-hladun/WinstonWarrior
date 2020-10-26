@@ -13,8 +13,8 @@ import { createWinston, setUpDB, removeDB, registerUser } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
-  const context = React.useContext(AppContext)
-  const contextState = context.value.state
+  const appContext = React.useContext(AppContext)
+  const contextState = appContext.value.state
   // console.log('context in TabOneScreen', context)
   const [existingRound, setExistingRound] = React.useState(false)
   const [initialHole, setInitialHole] = React.useState(1)
@@ -37,21 +37,22 @@ export default function TabOneScreen() {
         if (roundID) {
           Alert.alert(
             "Existing Round",
-            "Would you like to delete and start fresh?",
+            "Would you like to return to your game?",
             [
               {
                 text: "No",
-                onPress: () => {
-                  context.dispatch({
-                    type: 'set_round_id',
-                    data: JSON.parse(roundID) 
-                  })
-
-                  setHole()
-                },
+                onPress: () => console.log('NOT loading existing round'),
                 style: "cancel"
               },
-              { text: "Yes", onPress: () => console.log('NOT loading existing round') }
+              { text: "Yes", 
+              onPress: () => {
+                appContext.dispatch({
+                  type: 'set_round_id',
+                  data: JSON.parse(roundID) 
+                })
+
+                setHole()
+              } }
             ],
             { cancelable: false }
           );
@@ -65,20 +66,20 @@ export default function TabOneScreen() {
   }, [])
 
   const setHole = async() => {
-    const holeID = await AsyncStorage.getItem('holeNum')
-    console.log('Setting saved hole to ', holeID)
-    setInitialHole(JSON.parse(holeID))
+
+    const holeNum = await AsyncStorage.getItem('holeNum')
+    const holeNumDig = JSON.parse(holeNum)
+    console.log('Setting SAVED hole to ', holeNumDig)
+    setInitialHole(holeNumDig)
+    appContext.value.setHole(holeNumDig)
+
   }
 
   React.useEffect(() => {
     // Check for existing round
     if (contextState.round_id) {
-      // dbCall()
-      console.log('checking for existing round - round found')
-
       setExistingRound(true)
     } else {
-      console.log('checking for existing round - no round found')
     }
   }, [contextState.round_id])
 
@@ -126,7 +127,7 @@ export default function TabOneScreen() {
   return (
     <PlayProvider>
       {existingRound ?
-        <Hole location={state.location} initialHole={1} />
+        <Hole location={state.location} initialHole={initialHole} />
         :
         <NavigationPlay />}
     </PlayProvider>
