@@ -18,10 +18,10 @@ export function Home({ navigation }) {
         <Text style={styles.boxContent}>0</Text>
       </View>
       </View>
-    </View>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text onPress={() => handlePress()}>Play Now</Text>
+      <View style={[styles.styledButton, styles.playButton]}>
+        <Text onPress={() => handlePress()} style={styles.buttonText}>Play Now</Text>
       </View>
+    </View>
     </>
   );
 }

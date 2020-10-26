@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
     top: 100,
-    width: 300,
-    // height: 475,
+    width: '100%',
+    height: 475,
     // opacity: 0.75,
     borderColor: 'black',
-    borderStyle: 'solid',
+    // borderStyle: 'solid',
     borderWidth: 0.5,
     borderRadius: 15,
     padding: 10,
@@ -133,8 +133,12 @@ export const styles = StyleSheet.create({
     borderColor: "#f3f8ff",
     justifyContent: 'center',
     borderWidth: 1,
-    marginBottom: 20,
+    margin: 20,
     borderRadius: 24,
+    alignSelf: 'center'
+  },
+  playButton: {
+    backgroundColor: '#6fd94c'
   },
   buttonText: {
     textTransform: 'uppercase',

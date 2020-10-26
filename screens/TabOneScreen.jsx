@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 import EditScreenInfo from '../components/EditScreenInfo';
 import Hole from '../components/Hole'
 import { Text, View } from '../components/Themed';
-import { dbCall, existingGameAlert } from '../db/dbSetup'
+import { dbCall, existingGameAlert, getScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayProvider } from '../context/PlayContext'
@@ -66,22 +66,30 @@ export default function TabOneScreen() {
   }, [])
 
   const setHole = async() => {
-
+    // Also put scores into state
     const holeNum = await AsyncStorage.getItem('holeNum')
     const holeNumDig = JSON.parse(holeNum)
     console.log('Setting SAVED hole to ', holeNumDig)
     setInitialHole(holeNumDig)
     appContext.value.setHole(holeNumDig)
 
+    const p2roundID = await AsyncStorage.getItem('u2roundid')
+    if(p2roundID) {
+      const p2Score = await getScore(p2roundID)
+      console.log(`p2 score: ${JSON.stringify(p2Score.rows._array)}`)
+    }
+
+
   }
 
   React.useEffect(() => {
     // Check for existing round
-    if (contextState.round_id) {
+    // console.log('contextstate', contextState)
+    if (contextState.round_id && contextState.hole_num) {
       setExistingRound(true)
     } else {
     }
-  }, [contextState.round_id])
+  }, [contextState])
 
   const [state, setState] = React.useState({
     location: {

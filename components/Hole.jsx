@@ -25,9 +25,9 @@ const { width } = Dimensions.get('window');
 export default function Hole({ location, initialHole = 1 }) {
   const appContext = React.useContext(AppContext)
   const [shotDiff, setShotDiff] = useState(3)
-  const [holeNum, setHoleNum] = useState(initialHole)
+  // const [holeNum, setHoleNum] = useState(initialHole)
 
-  // const holeNum = appContext.value.state.hole_num
+  const holeNum = appContext.value.state.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
     latitude: undefined,
@@ -48,9 +48,8 @@ export default function Hole({ location, initialHole = 1 }) {
   const holeTargetRef = useRef(null)
   const trackAnim = useRef(new Animated.Value(0.85)).current
 
-
   useEffect(() => {
-  console.log('appcontext', appContext)
+  // console.log('appcontext', appContext)
   })
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
@@ -142,7 +141,7 @@ export default function Hole({ location, initialHole = 1 }) {
   const setHole = async (num) => {
     mapRef.current.animateCamera(holeInfo[num].camera)
     console.log(`Setting hole to ${num}`)
-    await setHoleNum(num)
+    // await setHoleNum(num)
     setDistanceMarker({
       latitude: undefined,
       longitude: undefined
@@ -173,14 +172,14 @@ export default function Hole({ location, initialHole = 1 }) {
         data: holeNum + 1
       })
       appContext.value.setHole(holeNum + 1)
-      setHoleNum(holeNum + 1)
+      // setHoleNum(holeNum + 1)
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined
       })
       mapRef.current.animateCamera(holeInfo[holeNum + 1].camera)
     } else {
-      setHoleNum(1)
+      // setHoleNum(1)
       mapRef.current.animateCamera(holeInfo[1].camera)
     }
   }
@@ -191,14 +190,17 @@ export default function Hole({ location, initialHole = 1 }) {
         data: holeNum - 1
       })
       appContext.value.setHole(holeNum - 1)
-      setHoleNum(holeNum - 1)
+      // setHoleNum(holeNum - 1)
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined
       })
       mapRef.current.animateCamera(holeInfo[holeNum - 1].camera)
     } else {
-      setHoleNum(6)
+      // setHoleNum(6)
+      // END OF ROUND CONDITIONS
+      appContext.value.setHole(1)
+
       mapRef.current.animateCamera(holeInfo[6].camera)
     }
   }

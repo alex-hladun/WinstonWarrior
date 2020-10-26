@@ -15,15 +15,29 @@ export const styles = StyleSheet.create({
   courseText: {
     textAlign: 'center'
   },
+  img: {
+    width: 50,
+    height: 50
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  column: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   courseContainer: {
-    backgroundColor: '#7CFC00',
+    backgroundColor: '#b5dff7',
     padding: 20,
     marginHorizontal: 20,
     marginTop: 10,
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 0.5,
-    borderRadius: 30
+    // borderRadius: 30
   },
   addPlayer: {
     alignSelf: 'flex-start',
@@ -83,6 +97,27 @@ export const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 0.5,
     borderRadius: 0
+  },
+  styledButton: {
+    width: 100,
+    backgroundColor: "#f3f8ff",
+    padding: 10,
+    borderColor: "black",
+    justifyContent: 'center',
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 24,
+    alignSelf: 'center'
+  },
+  playButton: {
+    backgroundColor: '#4c8bd9'
+  },
+  buttonText: {
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    letterSpacing: 3,
+    // color: "#f4f4f4"
   }
 
 

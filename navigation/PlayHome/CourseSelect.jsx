@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { PlayContext } from '../../context/PlayContext'
@@ -23,18 +23,27 @@ export function CourseSelect({ navigation }) {
   const courseList = [
     {
       name: 'The Winston Golf Club',
-      id: 1
+      id: 1,
+      img: '../../assets/images/winston.jpg'
     },
 
   ]
 
   const courseItems = courseList.map((course, index) => {
     return (
-      <TouchableOpacity key={`course${index}`} onPress={() => handlePress(course.id)}>
+      <TouchableOpacity key={`course${index}`} >
         <View style={styles.courseContainer} key={`coursse${index}`}>
-          <Text style={styles.courseText}>
-            {course.name}
-        </Text>
+          <View style={styles.row}>
+            <Image style={styles.img} source={require('../../assets/images/winston.jpg')} />
+            <View style={styles.column}>
+              <Text style={styles.courseText}>
+                {course.name}
+              </Text>
+              <View style={[styles.styledButton, styles.playButton]}>
+                <Text onPress={() => handlePress(course.id)} style={[styles.buttonText]}>Play</Text>
+              </View>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
     )
