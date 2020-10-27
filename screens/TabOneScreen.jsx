@@ -5,11 +5,10 @@ import * as Permissions from 'expo-permissions';
 import EditScreenInfo from '../components/EditScreenInfo';
 import Hole from '../components/Hole'
 import { Text, View } from '../components/Themed';
-import { dbCall, existingGameAlert, getScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayProvider } from '../context/PlayContext'
-import { createWinston, setUpDB, removeDB, registerUser } from '../db/dbSetup'
+import { createWinston, setUpDB, removeDB, registerUser, getClubs, createClubs, getScore } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -26,7 +25,7 @@ export default function TabOneScreen() {
     setUpDB()
     createWinston()
     registerUser('Alex')
-
+    createClubs()
 
     let roundID
 
@@ -62,7 +61,17 @@ export default function TabOneScreen() {
       }
     }
 
+    const getAllClubs = async() => {
+      const clubs = await getClubs()
+      appContext.dispatch({
+        type: 'set_club_list',
+        data: clubs
+      })
+      console.log('clubs set')
+    }
+
     checkExisting()
+    getAllClubs()
   }, [])
 
   const setHole = async() => {

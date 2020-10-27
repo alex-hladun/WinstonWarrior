@@ -1,64 +1,50 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View } from './Themed';
 import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/ScoreStyles'
-import holeInfo from '../assets/holeInfo'
-import { Picker } from '@react-native-community/picker';
 import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
-import db from '../db/dbSetup'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { AppContext } from '../context/AppContext'
+import { postShot } from '../db/dbSetup'
 
 
 export default function ShotTrack({ distance, handleTrackViewClose }) {
+  const appContext = React.useContext(AppContext)
+  const appState = appContext
   const [club, setClub] = useState(null)
   const [effort, setEffort] = useState(100)
 
+  let clubArray
+  let clubList;
+  clubArray = appState.value.state.clubList
+  if (clubArray) {
+    clubList = clubArray.map((clb, i) => {
+      // console.log('map', clb)
+      // console.log('map', i)
+      return (
+        <View key={`cl${i}`} style={[clb.club_id === club && styles.selected, styles.club]} >
+          <Text key={`club${i}`} onPress={() => setClub(clb.club_id)}>
+            {clb.name}
+          </Text>
+        </View>
+      )
+    })
+  }
+
+  useEffect(() => {
+    // console.log('appstate in shottrack', appState.value.state)
+  }, [])
+
+
   const handleSubmit = async () => {
     console.log('handle distance submit')
-    // await db.transaction(tx => {
-    //   tx.executeSql(
-    //     `
-    //       INSERT INTO scores (
-    //         hole_number,
-    //         date_time,
-    //         total_shots,
-    //         total_putts,
-    //         driver_direction,
-    //         approach_rtg,
-    //         chip_rtg,
-    //         putt_rtg
-    //       ) VALUES (?, strftime('%Y-%m-%d %H:%M:%S','now'), ?, ?, ?, ?, ?, ?);
-    //       `
-    //     , [holeNum, score, putts, teeShot, approach, chip, putting], (txObj, result) => {
-    //       // console.log('result', result.rows._array)
-    //       // console.log('transObj', txObj)
-    //       setHole(holeNum + 1)
-    //       // console.log('txObj', txObj)
-    //     }, (err, mess) => console.log('err', mess))
-    // })
+
+    await postShot(1, club, effort)
 
     handleTrackViewClose()
   }
+  // const clubArray = ['D', '2W', '3W', '4W', '5W', 'HY', 'DI', '3I', '4I', '5I', '6I', '7I', '8I', '9I', 'PW', 'AW', '52', '54', '56', '58', '60']
 
-  const pickWidth = 50
-
-  const clubArray = ['D', '2W', '3W', '4W', '5W', 'HY', 'DI', '3I', '4I', '5I', '6I', '7I', '8I', '9I', 'PW', 'AW', '52', '54', '56', '58', '60']
-
-  const clubList = []
-
-  for (let i = 0; i < clubArray.length; i++) {
-    clubList.push(
-      // <TouchableWithoutFeedback >
-      <View key={`cl${i}`} style={[i === club && styles.selected, styles.club]} >
-        <Text key={`club${i}`} onPress={() => setClub(i)}>
-          {clubArray[i]}
-        </Text>
-      </View>
-      // </TouchableWithoutFeedback>
-    )
-
-  }
   return (
     <>
       <View style={styles.pickerContainer}>
@@ -85,14 +71,13 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
             minimumTrackTintColor="#000000"
             maximumTrackTintColor="#000000"
             value={effort}
-            onSlidingStart={(val) => setEffort(val)}
+            onSlidingComplete={(val) => setEffort(val)}
           />
         </View>
         <View style={[styles.pickerHeader]}>
           <Text>
             Easy
         </Text>
-
           <Text>
             Hard
         </Text>

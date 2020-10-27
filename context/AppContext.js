@@ -74,6 +74,12 @@ const reducer = (state, action) => {
        hole_num: action.data
       }
     break;
+    case "set_club_list":
+      return {
+        ...state,
+       clubList: action.data
+      }
+    break;
     case "authentication_failed":
       return {
         ...state,
@@ -97,7 +103,8 @@ const initialState = {
   user_3_rd_id: undefined,
   user_3_name: undefined,
   user_4_rd_id: undefined,
-  user_4_name: undefined
+  user_4_name: undefined,
+  clubList: []
 }
 const AppContext = React.createContext(initialState);
 

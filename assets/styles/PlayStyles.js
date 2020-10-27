@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
     top: 100,
-    width: '100%',
+    // width: '100%',
     height: 475,
     // opacity: 0.75,
     borderColor: 'black',
@@ -87,16 +87,21 @@ export const styles = StyleSheet.create({
   boxContainer: {
     flexDirection: 'column',
     borderColor: 'black',
-    borderWidth: 4,
-    borderStyle: 'solid',
+    // borderWidth: 1,
+    borderRadius: 15,
+    // borderStyle: 'solid',
+    padding: 10,
     width: 150,
-    height: 150
+    // height: 150
   },
   boxHeader: {
     textAlign: 'center'
   },
   boxContent: {
     textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 10,
+    fontSize: 30,
   },
   video: {
     width: 400,

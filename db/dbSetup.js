@@ -13,7 +13,7 @@ export const existingGameAlert = () => {
       {
         text: "No",
         onPress: () => dropAndCreate(),
-        
+
         style: "cancel"
       },
       { text: "Yes", onPress: () => console.log("Cancel Pressed") }
@@ -49,7 +49,7 @@ export const removeDB = () => {
 }
 
 
-export const getUsers = async() => {
+export const getUsers = async () => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     SELECT * FROM USERS
@@ -60,8 +60,34 @@ export const getUsers = async() => {
   }))
 }
 
+export const createClubs = async (user) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    const clubArray = ['D', '2W', '3W', '4W', '5W', 'HY', 'DI', '3I', '4I', '5I', '6I', '7I', '8I', '9I', 'PW', 'AW', '52', '54', '56', '58', '60']
+    for (const club of clubArray) {
+      tx.executeSql(`
+      INSERT INTO clubs (name) VALUES (?);
+    `, [club], (txObj, result) => {
+        // console.log('registered', club)
+      }, (err, mess) => console.log('err creating club', reject(mess)))
+    }
 
-export const registerUser = async(user) => {
+    resolve('done with clubs')
+  }))
+}
+
+export const getClubs = async () => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+      tx.executeSql(`
+      SELECT * FROM CLUBS;
+    `, [], (txObj, result) => {
+        // console.log('getting clubs', result.rows._array)
+        resolve(result.rows._array)
+      }, (err, mess) => console.log('err creating club', reject(mess)))
+
+  }))
+}
+
+export const registerUser = async (user) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     console.log('inside reg user sql')
     tx.executeSql(`
@@ -73,7 +99,7 @@ export const registerUser = async(user) => {
   }))
 }
 
-export const createRound = async(course_id, user_id) => {
+export const createRound = async (course_id, user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     console.log('inside createRound')
     tx.executeSql(`
@@ -85,7 +111,28 @@ export const createRound = async(course_id, user_id) => {
   })
   )
 }
-export const postScore = async(hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
+
+export const postShot = async (user_id, club_id, effort) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    // console.log('inside createRound')
+    tx.executeSql(`
+    INSERT INTO distances (user_id, club_id, effort, date_time) VALUES (?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+    `, [user_id, club_id, effort], (txObj, result) => {
+      console.log('shot successfully saved')
+      resolve(result)
+    }, (err, mess) => console.log('err saving shot', reject(mess)))
+
+    // tx.executeSql(`
+    // SELECT * FROM distances;
+    // `, [], (txObj, result) => {
+    //   console.log('all shots', result.rows._array)
+
+    //   resolve(result)
+    // }, (err, mess) => console.log('err saving shot', reject(mess)))
+  })
+  )
+}
+export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     INSERT INTO scores (
@@ -106,7 +153,8 @@ export const postScore = async(hole_id, hole_num, round_id, total_shots, total_p
       resolve(result)
     }, (err, mess) => {
       console.log(`ERROR posting score: ${err}, ${mess}`)
-      reject(err)})
+      reject(err)
+    })
   })
   )
 }
@@ -218,6 +266,7 @@ export const setUpDB = () => {
       distance_id integer PRIMARY KEY AUTOINCREMENT,
       user_id integer,
       club_id integer,
+      effort real,
       date_time datetime,
       CONSTRAINT fk_users
       FOREIGN KEY(user_id)
@@ -230,7 +279,7 @@ export const setUpDB = () => {
   })
 }
 
-export const getScore = async(round_id) => {
+export const getScore = async (round_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ?;
