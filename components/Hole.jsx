@@ -26,7 +26,6 @@ export default function Hole({ location, initialHole = 1 }) {
   const appContext = React.useContext(AppContext)
   const [shotDiff, setShotDiff] = useState(3)
   // const [holeNum, setHoleNum] = useState(initialHole)
-
   const holeNum = appContext.value.state.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
@@ -79,8 +78,6 @@ export default function Hole({ location, initialHole = 1 }) {
             toValue: 0.85,
             duration: 550,
             useNativeDriver: true
-
-
           })
         ])).start()
     } else {
