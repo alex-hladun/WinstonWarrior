@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from '../styles/Theme'
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,6 +16,24 @@ export const styles = StyleSheet.create({
     // borderStyle: 'solid',
     borderWidth: 0.5,
     borderRadius: 15,
+    padding: 10,
+    // backgroundColor: 'red',
+    position: 'absolute',
+  },
+  homePageContainer: {
+    flex: 1,
+    // zIndex: 4,
+    backgroundColor: Theme.spinGreen1,
+    alignSelf: 'center',
+    justifyContent: 'space-evenly',
+    paddingTop: 100,
+    width: '100%',
+    height: '100%',
+    // opacity: 0.75,
+    borderColor: 'black',
+    // borderStyle: 'solid',
+    borderWidth: 0.5,
+    // borderRadius: 15,
     padding: 10,
     // backgroundColor: 'red',
     position: 'absolute',
@@ -88,10 +107,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     borderColor: 'black',
     // borderWidth: 1,
+    backgroundColor: Theme.iconStroke,
     borderRadius: 15,
     // borderStyle: 'solid',
     padding: 10,
-    width: 150,
+    width: 120,
     // height: 150
   },
   boxHeader: {
@@ -133,17 +153,17 @@ export const styles = StyleSheet.create({
   },
   styledButton: {
     width: 250,
-    backgroundColor: "#f3f8ff",
+    backgroundColor: Theme.ogButtonGreen,
     padding: 15,
     borderColor: "#f3f8ff",
     justifyContent: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
     margin: 20,
     borderRadius: 24,
     alignSelf: 'center'
   },
   playButton: {
-    backgroundColor: '#6fd94c'
+    backgroundColor: Theme.spinGreen2,
   },
   buttonText: {
     textTransform: 'uppercase',

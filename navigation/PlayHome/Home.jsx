@@ -2,16 +2,15 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import styles from '../../assets/styles/PlayStyles'
-
 export function Home({ navigation }) {
 
   const handlePress = () => {
-    navigation.push('Course Select')
+    navigation.push('Course')
   }
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.homePageContainer}>
         <View style={styles.holeRow}>
           <View style={styles.boxContainer}>
             <Text style={styles.boxHeader}>Rounds</Text>
@@ -28,7 +27,7 @@ export function Home({ navigation }) {
             <Text style={styles.boxContent}>32</Text>
           </View>
           <View style={styles.boxContainer}>
-            <Text style={styles.boxHeader}>Best Round*</Text>
+            <Text style={styles.boxHeader}>Best Round</Text>
             <Text style={styles.boxContent}>74</Text>
           </View>
         </View>

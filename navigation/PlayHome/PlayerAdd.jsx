@@ -181,7 +181,7 @@ export function PlayerAdd({ navigation }) {
         {playerCount < 4 &&
           <TouchableOpacity onPress={() => addPlayer(playerCount + 1)}>
             <View style={styles.addPlayer}>
-              <Text>
+              <Text style={styles.stroke}>
                 +
 </Text>
 
@@ -190,7 +190,7 @@ export function PlayerAdd({ navigation }) {
         }
 
         <TouchableOpacity onPress={() => handleStart()}>
-          <View style={[styles.styledButton, styles.startButton]}>
+          <View style={[styles.startRoundButton, styles.startButton]}>
             <Text style={styles.buttonText}>
               Start Round
 </Text>

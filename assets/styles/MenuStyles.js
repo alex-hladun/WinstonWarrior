@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from '../styles/Theme'
 
 export const styles = StyleSheet.create({
   container: {
@@ -6,7 +7,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     // zIndex: 4,
-    backgroundColor: '#fff',
+    backgroundColor: Theme.spinGreen1,
     alignSelf: 'center',
     top: 100,
     justifyContent: 'flex-start',
@@ -30,14 +31,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   courseContainer: {
-    backgroundColor: '#b5dff7',
+    backgroundColor: Theme.iconStroke,
     padding: 20,
     marginHorizontal: 20,
     marginTop: 10,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
-    // borderRadius: 30
+    // borderWidth: 0.5,
+    borderRadius: 20
+  },
+  stroke: {
+    color: Theme.iconStroke,
   },
   addPlayer: {
     alignSelf: 'flex-start',
@@ -51,8 +55,9 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
-    borderRadius: 100
+    // borderWidth: 0.5,
+    borderRadius: 100,
+    backgroundColor: Theme.spinGreen2,
   },
   playerRow: {
     justifyContent: 'space-between',
@@ -62,22 +67,23 @@ export const styles = StyleSheet.create({
     // padding: 10,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
+    backgroundColor: Theme.iconStroke,
+    // borderWidth: 0.5,
     borderRadius: 100,
     marginVertical: 7
   },
   removePlayer: {
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderRadius: 100,
-    width: 30,
-    height: 30,
-    backgroundColor: 'red',
+    width: 45,
+    height: 45,
+    backgroundColor: Theme.yellow,
     justifyContent: 'center',
     alignItems: 'center',
     // padding: 5
-    marginHorizontal: 10
+    marginHorizontal: 6
   },
   player: {
     padding: 20,
@@ -104,13 +110,24 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderColor: "black",
     justifyContent: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
+    margin: 10,
+    borderRadius: 24,
+    alignSelf: 'center'
+  },
+  startRoundButton: {
+    width: 225,
+    backgroundColor: "#f3f8ff",
+    padding: 15,
+    borderColor: "black",
+    justifyContent: 'center',
+    // borderWidth: 1,
     margin: 10,
     borderRadius: 24,
     alignSelf: 'center'
   },
   playButton: {
-    backgroundColor: '#4c8bd9'
+    backgroundColor: Theme.spinGreen2,
   },
   startButton: {
     marginTop: 30,
@@ -122,7 +139,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     letterSpacing: 3,
-    // color: "#f4f4f4"
+    color: Theme.iconStroke
   }
 });
 

@@ -6,8 +6,6 @@ import styles from '../../assets/styles/MenuStyles'
 
 export function CourseSelect({ navigation }) {
   const playContext = React.useContext(PlayContext)
-
-
   // console.log('playContext in CourseSelect', playContext)
   const handlePress = (courseID) => {
 

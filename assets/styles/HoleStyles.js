@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from '../styles/Theme'
 
 export const styles = StyleSheet.create({
   container: {
@@ -35,21 +36,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     // marginHorizontal: 10,
-    opacity: 0.75,
+    opacity: 0.85,
     position: 'absolute',
-    backgroundColor: 'white',
+    backgroundColor: Theme.spinGreen3,
     zIndex: 2,
     width: '100%',
     padding: 6,
     marginTop: 45,
     borderStyle: 'solid',
     borderColor: 'black',
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
-    // marginLeft: 20,
+    // borderTopWidth: 0.5,
+    // borderBottomWidth: 0.5,
     marginRight: 20
-
-    // width: '100%'
   },
   homeScreenFilename: {
     marginVertical: 7,
@@ -77,9 +75,12 @@ export const styles = StyleSheet.create({
   },
   helpLinkText: {
     textAlign: 'center',
-  }, title: {
+  }, 
+  title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    color: 'white',
+    color: Theme.iconStroke
   },
   separator: {
     marginTop: 10,
@@ -124,22 +125,22 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderRadius: 100,
     opacity: 0.85,
     color: '#000000',
   },
   flag: {
-    backgroundColor: '#5d97e8'
+    backgroundColor: Theme.spinGreen3
   },
   check: {
-    backgroundColor: '#4fd163'
+    backgroundColor: Theme.spinGreen2
   },
   target: {
-    backgroundColor: '#d15f4d'
+    backgroundColor: Theme.spinGreen3
   },
   move: {
-    backgroundColor: '#ccdee3'
+    backgroundColor: Theme.spinGreen3
   },
   shotDiff: {
     margin: 20,

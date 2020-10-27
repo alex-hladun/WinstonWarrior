@@ -28,7 +28,7 @@ function PlayNavigator() {
   return (
     <PlayStack.Navigator screenOptions={{ headerShown: true, headerTransparent: true }}>
       <PlayStack.Screen name="Home" component={Home} />
-      <PlayStack.Screen name="Course Select" component={CourseSelect} />
+      <PlayStack.Screen name="Course" component={CourseSelect} />
       <PlayStack.Screen name="Add Players" component={PlayerAdd} />
     </PlayStack.Navigator>
   );

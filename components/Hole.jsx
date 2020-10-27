@@ -272,7 +272,6 @@ export default function Hole({ location, initialHole = 1 }) {
       <View style={styles.header}>
         <TouchableOpacity onPress={() => handleHoleChange(1)}>
           <Text style={styles.title} >Hole {holeNum}</Text>
-
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleScoreCardEnter()}>
           <Text style={styles.title} >Par {holeInfo[holeNum].par}</Text>

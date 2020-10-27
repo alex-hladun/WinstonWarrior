@@ -1,5 +1,6 @@
 import Svg, { Path, Polyline, Circle } from 'react-native-svg';
 import React, { useState, useRef } from 'react';
+import { Theme } from '../styles/Theme'
 
 
 export default function LocationSymbol(props) {
