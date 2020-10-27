@@ -16,8 +16,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center'
   },
   img: {
-    width: 50,
-    height: 50
+    width: 75,
+    height: 75
   },
   row: {
     flexDirection: 'row',
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
     borderRadius: 0
   },
   styledButton: {
-    width: 100,
+    width: 175,
     backgroundColor: "#f3f8ff",
     padding: 10,
     borderColor: "black",
@@ -112,6 +112,11 @@ export const styles = StyleSheet.create({
   playButton: {
     backgroundColor: '#4c8bd9'
   },
+  startButton: {
+    marginTop: 30,
+    // padding: 10,
+    backgroundColor: '#33cc33'
+  },
   buttonText: {
     textTransform: 'uppercase',
     textAlign: 'center',
@@ -119,8 +124,6 @@ export const styles = StyleSheet.create({
     letterSpacing: 3,
     // color: "#f4f4f4"
   }
-
-
 });
 
 export default styles;

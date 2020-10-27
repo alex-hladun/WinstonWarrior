@@ -80,6 +80,12 @@ const reducer = (state, action) => {
        clubList: action.data
       }
     break;
+    case "set_view_mode":
+      return {
+        ...state,
+       viewMode: action.data
+      }
+    break;
     case "authentication_failed":
       return {
         ...state,
@@ -92,6 +98,7 @@ const reducer = (state, action) => {
 }
 const initialState = {
   auth_data: {},
+  viewMode: 'menu',
   logged_in: false,
   auth_message : '',
   round_id: undefined,

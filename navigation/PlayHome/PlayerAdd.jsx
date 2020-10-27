@@ -40,7 +40,7 @@ export function PlayerAdd({ navigation }) {
       )
     }
   })
-  const handleStart = async() => {
+  const handleStart = async () => {
     console.log('Starting Game!')
 
     const userRoundID = await createRound(1, 1)
@@ -50,46 +50,46 @@ export function PlayerAdd({ navigation }) {
       const uid = await registerUser(playContext.value.state.player_2)
       // Course ID always 1
       const u2roundid = await createRound(1, uid)
-      
+
       console.log('uid after register', uid)
       console.log('u2roundid after register', u2roundid)
-      
-      
+
+
       await appContext.dispatch({
         type: 'set_user_2_round_id',
         data: u2roundid
       })
 
       await AsyncStorage.setItem('u2roundid', `${u2roundid}`)
-      
+
       await appContext.dispatch({
         type: 'set_user_2_name',
         data: playContext.value.state.player_2
       })
     }
-    
+
     if (playContext.value.state.player_3) {
       console.log('registering user 3')
       const uid = await registerUser(playContext.value.state.player_3)
       const u3roundid = await createRound(1, uid)
-      
+
       await appContext.dispatch({
         type: 'set_user_3_round_id',
         data: u3roundid
       })
       await AsyncStorage.setItem('u3roundid', `${u3roundid}`)
-      
+
       await appContext.dispatch({
         type: 'set_user_3_name',
         data: playContext.value.state.player_3
       })
     }
-    
+
     if (playContext.value.state.player_4) {
       console.log('registering user 4')
       const uid = await registerUser(playContext.value.state.player_4)
       const u4roundid = await createRound(1, uid)
-      
+
       await AsyncStorage.setItem('u4roundid', `${u4roundid}`)
 
       await appContext.dispatch({
@@ -102,7 +102,7 @@ export function PlayerAdd({ navigation }) {
         data: playContext.value.state.player_4
       })
     }
-    
+
     console.log('Setting user round ID - should not see this before register')
     await appContext.dispatch({
       type: 'set_round_id',
@@ -117,6 +117,11 @@ export function PlayerAdd({ navigation }) {
       data: 1
     })
 
+    await appContext.dispatch({
+      type: 'set_view_mode',
+      data: 'play'
+    })
+
     const saveItems = [['roundID', `${userRoundID}`], ['holeNum', '1']]
     await AsyncStorage.multiSet(saveItems)
 
@@ -125,7 +130,7 @@ export function PlayerAdd({ navigation }) {
 
 
   const addPlayer = (num) => {
-    if(!playContext.value.state.player_2) {
+    if (!playContext.value.state.player_2) {
       playContext.dispatch({
         type: `set_player_2`,
         data: `Player ${nameCount + 1}`
@@ -154,7 +159,7 @@ export function PlayerAdd({ navigation }) {
         type: `remove_player_${num}`
       })
 
-      setPlayerCount(playerCount - 1) 
+      setPlayerCount(playerCount - 1)
     }
   }
 
@@ -163,7 +168,7 @@ export function PlayerAdd({ navigation }) {
       type: `set_player_${num}`,
       data: name
     })
-  } 
+  }
 
   return (
     <>
@@ -184,14 +189,13 @@ export function PlayerAdd({ navigation }) {
           </TouchableOpacity>
         }
 
-          <TouchableOpacity onPress={() => handleStart()}>
-            <View style={styles.startRound}>
-              <Text>
-                Start Round
+        <TouchableOpacity onPress={() => handleStart()}>
+          <View style={[styles.styledButton, styles.startButton]}>
+            <Text style={styles.buttonText}>
+              Start Round
 </Text>
-
-            </View>
-          </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
       </View>
     </>
   );

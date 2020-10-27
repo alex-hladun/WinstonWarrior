@@ -60,6 +60,27 @@ export const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     flex: 1
+  },
+  styledButton: {
+    width: 250,
+    backgroundColor: "#f3f8ff",
+    padding: 10,
+    borderColor: "black",
+    justifyContent: 'center',
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 24,
+    alignSelf: 'center'
+  },
+  playButton: {
+    backgroundColor: '#4c8bd9'
+  },
+  buttonText: {
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    letterSpacing: 3,
+    // color: "#f4f4f4"
   }
 });
 

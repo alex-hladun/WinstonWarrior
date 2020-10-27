@@ -46,6 +46,10 @@ export default function TabOneScreen() {
               { text: "Yes", 
               onPress: () => {
                 appContext.dispatch({
+                  type: 'set_view_mode',
+                  data: 'play'
+                })
+                appContext.dispatch({
                   type: 'set_round_id',
                   data: JSON.parse(roundID) 
                 })
@@ -87,18 +91,7 @@ export default function TabOneScreen() {
       const p2Score = await getScore(p2roundID)
       console.log(`p2 score: ${JSON.stringify(p2Score.rows._array)}`)
     }
-
-
   }
-
-  React.useEffect(() => {
-    // Check for existing round
-    // console.log('contextstate', contextState)
-    if (contextState.round_id && contextState.hole_num) {
-      setExistingRound(true)
-    } else {
-    }
-  }, [contextState])
 
   const [state, setState] = React.useState({
     location: {
@@ -143,7 +136,7 @@ export default function TabOneScreen() {
 
   return (
     <PlayProvider>
-      {existingRound ?
+      {contextState.viewMode ==='play' ?
         <Hole location={state.location} initialHole={initialHole} />
         :
         <NavigationPlay />}
