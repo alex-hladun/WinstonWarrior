@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: Theme.spinGreen3,
     zIndex: 2,
-    right: '-43%',
+    right: '-41%',
     top: '-15%',
     // padding: 10,
     // marginTop: 45,

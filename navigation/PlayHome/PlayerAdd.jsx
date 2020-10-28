@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 export function PlayerAdd({ navigation }) {
   const playContext = React.useContext(PlayContext)
 
-  console.log('playcontext in playerAdd', playContext.value.state)
+  // console.log('playcontext in playerAdd', playContext.value.state)
   const appContext = React.useContext(AppContext)
   // console.log('appcontext in playerAdd', appContext.value.state)
   const [playerCount, setPlayerCount] = React.useState(1)

@@ -61,7 +61,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   header: {
-    fontSize: 20
+    fontSize: 20,
+    alignSelf: 'center',
   },
   hole: {
     justifyContent: 'center',
@@ -180,6 +181,18 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 3,
     // color: "#f4f4f4"
+  },
+  scoreContent: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 10,
+    fontSize: 30,
+    padding: 20,
+    backgroundColor: Theme.spinGreen3,
+    borderRadius: 15,
+  },
+  whiteText: {
+    color: Theme.iconStroke
   }
 });
 

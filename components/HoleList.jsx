@@ -4,22 +4,13 @@ import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighl
 import holeListStyles from '../assets/styles/HoleSummaryStyles'
 import { AppContext } from '../context/AppContext'
 
-export default function HoleList({ setHole }) {
+export default function HoleList({ setHole, handleRoundSummary }) {
   const appContext = useContext(AppContext)
+  
   const handleSave = () => {
     console.log('save game')
-    appContext.dispatch({
-      type: 'set_round_id',
-      data: null
-    })
-    appContext.dispatch({
-      type: 'set_round_id',
-      data: null
-    })
-    appContext.dispatch({
-      type: 'set_view_mode',
-      data: 'menu'
-    })
+    handleRoundSummary()
+    
   }
 
   return (

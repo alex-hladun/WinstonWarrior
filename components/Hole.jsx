@@ -16,6 +16,7 @@ import holeInfo from '../assets/holeInfo'
 import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'
+import RoundSummary from './RoundSummary'
 import ShotTrack from './ShotTrack'
 import { AppContext } from '../context/AppContext'
 
@@ -34,6 +35,7 @@ export default function Hole({ location, initialHole = 1 }) {
   })
   const [holeView, setHoleView] = useState(false)
   const [scoreView, setScoreView] = useState(false)
+  const [endRoundView, setEndRouondView] = useState(false)
   const [shotTrackView, setShotTrackView] = useState(false)
   const [scoreCardView, setScoreCardView] = useState(false)
   const [startTrack, setStartTrack] = useState({
@@ -133,6 +135,13 @@ export default function Hole({ location, initialHole = 1 }) {
   const handleScoreCardEnter = () => {
     console.log('handle score enter')
     setScoreCardView(!scoreCardView)
+  }
+
+  const handleRoundSummary = () => {
+    if(holeView) {
+      setHoleView(false)
+    }
+    setEndRouondView(!endRoundView)
   }
 
   const setHole = async (num) => {
@@ -237,7 +246,7 @@ export default function Hole({ location, initialHole = 1 }) {
           <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
             X
       </Text>
-          <HoleList setHole={setHole} />
+          <HoleList setHole={setHole} handleRoundSummary={handleRoundSummary}/>
         </View>
       </Modal>
 
@@ -265,6 +274,15 @@ export default function Hole({ location, initialHole = 1 }) {
             X
       </Text>
           <ScoreCard holeNum={holeNum} />
+        </View>
+      </Modal>
+
+      <Modal animationType="slide" transparent={true} visible={endRoundView}>
+        <View style={holeListStyles.scoreContainer}>
+          <Text style={holeListStyles.header} onPress={() => handleRoundSummary()}>
+            X
+      </Text>
+          <RoundSummary />
         </View>
       </Modal>
 
