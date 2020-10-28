@@ -4,15 +4,20 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Home } from '../navigation/PlayHome/Home'
+import { Holes } from '../navigation/Stats/Holes'
+import { Trends } from '../navigation/Stats/Trends'
+import { Clubs } from '../navigation/Stats/Clubs'
+import { Rounds } from '../navigation/Stats/Rounds'
 import { CourseSelect } from '../navigation/PlayHome/CourseSelect'
 const Tab = createMaterialTopTabNavigator();
 
 export default function TabTwoScreen() {
   return (
     <Tab.Navigator>
-    <Tab.Screen name="Home" component={Home} />
-    <Tab.Screen name="Settings" component={CourseSelect} />
+    <Tab.Screen name="Hole" component={Holes} />
+    <Tab.Screen name="Trends" component={Trends} />
+    <Tab.Screen name="Clubs" component={Clubs} />
+    <Tab.Screen name="Rounds" component={Rounds} />
   </Tab.Navigator>
 
     // <View style={styles.container}>

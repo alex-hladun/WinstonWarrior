@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: 'black',
     paddingBottom: 20,
-    paddingLeft: 15,
+    paddingLeft: 25,
     alignItems: 'flex-start',
     borderRadius: 50,
   },

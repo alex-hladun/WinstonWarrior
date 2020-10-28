@@ -21,14 +21,14 @@ export default function BottomTabNavigator() {
         name="Play"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={Theme.spinGreen4} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={Theme.spinGreen1} />,
         }}
       />
       <BottomTab.Screen
         name="Stats"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={Theme.spinGreen4} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={Theme.spinGreen1} />,
         }}
       />
     </BottomTab.Navigator>
