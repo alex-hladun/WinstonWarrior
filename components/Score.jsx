@@ -20,8 +20,8 @@ export default function Score({ holeNum, setHole }) {
   const p2ps = playState.p2score[holeNum]
   const p3ps = playState.p3score[holeNum]
   const p4ps = playState.p4score[holeNum]
-  console.log('prev score', p1ps)
-  console.log('playstate in score', playState)
+  // console.log('prev score', p1ps)
+  // console.log('playstate in score', playState)
   const [score, setScore] = useState(p1ps ? p1ps : holeInfo[holeNum].par)
   const [p2score, setP2Score] = useState(p2ps ? p2ps : holeInfo[holeNum].par)
   const [p3score, setP3Score] = useState(p3ps ? p3ps : holeInfo[holeNum].par)

@@ -145,9 +145,26 @@ const setHole = (holeNum) => {
   })
 }
 
+const doneRound = () => {
+  dispatch({
+    type: 'set_round_id',
+    data: null
+  })
+
+  dispatch({
+    type: 'set_view_mode',
+    data: 'menu'
+  })
+
+  AsyncStorage.removeItem('holeNum')
+  AsyncStorage.removeItem('roundID')
+
+  console.log('all info cleared from AppContext')
+}
+
 
   const value = useMemo(() => {
-   return { state, login, setHole };
+   return { state, login, setHole, doneRound };
   }, [state]);
 
   return (

@@ -141,12 +141,25 @@ export const styles = StyleSheet.create({
     opacity: 0.2,
     resizeMode: 'contain',
   },
+  bgTrophy: {
+    flex: 1,
+    width: '150%',
+    // height: '50%',
+    left: '5%',
+    bottom: '-80%',
+    position: 'absolute',
+    // zIndex: 10,
+    opacity: 0.2,
+    resizeMode: 'contain',
+  },
   background: {
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-    width: '100%',
-    height: '100%',
-    position: 'absolute'
+    alignItems: 'center',
+    paddingTop: 20,
+    // width: '100%',
+    // height: '100%',
+    // position: 'absolute'
   },
   winstonText: {
     justifyContent: 'center',
@@ -186,13 +199,64 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     marginTop: 10,
+    width: 250,
     fontSize: 30,
     padding: 20,
     backgroundColor: Theme.spinGreen3,
     borderRadius: 15,
   },
+  playerRow: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: 300,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    // padding: 10,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    backgroundColor: Theme.iconStroke,
+    // borderWidth: 0.5,
+    borderRadius: 100,
+    marginVertical: 7
+  },
+  bold: {
+    fontWeight: 'bold'
+  },
+  player: {
+    padding: 20,
+    marginRight:5
+  },
+  playerPosition: {
+    borderRadius: 100,
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 5
+    marginHorizontal: 6
+  },
+  win: {
+    backgroundColor: 'gold', 
+  },
+  second: {
+    backgroundColor: 'silver', 
+  },
+  third: {
+    backgroundColor: 'yellow', 
+  },
+  fourth: {
+    // backgroundColor: 'yellow', 
+  },
   whiteText: {
     color: Theme.iconStroke
+  },
+  rankingContainer: {
+    position: 'absolute',
+    alignSelf: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    paddingTop: 100,
+    alignItems: 'center',
   }
 });
 

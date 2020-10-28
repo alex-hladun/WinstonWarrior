@@ -60,6 +60,7 @@ export function PlayerAdd({ navigation }) {
       })
 
       await AsyncStorage.setItem('u2roundid', `${u2roundid}`)
+      await AsyncStorage.setItem('u2name', `${playContext.value.state.player_2}`)
 
       await appContext.dispatch({
         type: 'set_user_2_name',
@@ -77,6 +78,7 @@ export function PlayerAdd({ navigation }) {
         data: u3roundid
       })
       await AsyncStorage.setItem('u3roundid', `${u3roundid}`)
+      await AsyncStorage.setItem('u3name', `${playContext.value.state.player_3}`)
 
       await appContext.dispatch({
         type: 'set_user_3_name',
@@ -90,6 +92,7 @@ export function PlayerAdd({ navigation }) {
       const u4roundid = await createRound(1, uid)
 
       await AsyncStorage.setItem('u4roundid', `${u4roundid}`)
+      await AsyncStorage.setItem('u4name', `${playContext.value.state.player_4}`)
 
       await appContext.dispatch({
         type: 'set_user_4_round_id',

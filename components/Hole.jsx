@@ -145,13 +145,6 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const setHole = async (num) => {
-    mapRef.current.animateCamera(holeInfo[num].camera)
-    console.log(`Setting hole to ${num}`)
-    // await setHoleNum(num)
-    setDistanceMarker({
-      latitude: undefined,
-      longitude: undefined
-    })
 
     if (holeView) {
       setHoleView(false)
@@ -160,15 +153,29 @@ export default function Hole({ location, initialHole = 1 }) {
     if (scoreView) {
       setScoreView(false)
     }
-    // CHANGE LATER
+    console.log('set hole to', num)
+    if (num !== 20) {
+      mapRef.current.animateCamera(holeInfo[num].camera)
+      console.log(`Setting hole to ${num}`)
+      // await setHoleNum(num)
+      setDistanceMarker({
+        latitude: undefined,
+        longitude: undefined
+      })
+  
+      // CHANGE LATER
+  
+      appContext.value.setHole(num)
+      
+      // //////
+      appContext.dispatch({
+        type: 'set_hole_id',
+        data: num
+      })
+    } else {
+      handleRoundSummary()
 
-    appContext.value.setHole(num)
-    
-    // //////
-    appContext.dispatch({
-      type: 'set_hole_id',
-      data: num
-    })
+    }
   }
 
   const handleHoleInc = () => {
@@ -186,7 +193,7 @@ export default function Hole({ location, initialHole = 1 }) {
       mapRef.current.animateCamera(holeInfo[holeNum + 1].camera)
     } else {
       // setHoleNum(1)
-      mapRef.current.animateCamera(holeInfo[1].camera)
+      handleRoundSummary()
     }
   }
   const handleHoleDec = () => {
@@ -206,8 +213,7 @@ export default function Hole({ location, initialHole = 1 }) {
       // setHoleNum(6)
       // END OF ROUND CONDITIONS
       appContext.value.setHole(1)
-
-      mapRef.current.animateCamera(holeInfo[6].camera)
+      mapRef.current.animateCamera(holeInfo[1].camera)
     }
   }
 

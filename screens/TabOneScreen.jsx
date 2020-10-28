@@ -45,10 +45,7 @@ export default function TabOneScreen() {
               },
               { text: "Yes", 
               onPress: () => {
-                appContext.dispatch({
-                  type: 'set_view_mode',
-                  data: 'play'
-                })
+                
                 appContext.dispatch({
                   type: 'set_round_id',
                   data: JSON.parse(roundID) 
@@ -86,10 +83,16 @@ export default function TabOneScreen() {
     setInitialHole(holeNumDig)
     appContext.value.setHole(holeNumDig)
 
+    appContext.dispatch({
+      type: 'set_view_mode',
+      data: 'play'
+    })
+
     const p2roundID = await AsyncStorage.getItem('u2roundid')
+    const p2name = await AsyncStorage.getItem('u2name')
     if(p2roundID) {
       const p2Score = await getScore(p2roundID)
-      console.log(`p2 score: ${JSON.stringify(p2Score.rows._array)}`)
+      console.log(`p2 score pre-existing: ${JSON.stringify(p2Score.rows._array)}`)
     }
   }
 

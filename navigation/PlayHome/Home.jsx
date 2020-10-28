@@ -14,6 +14,7 @@ export function Home({ navigation }) {
   return (
     <>
       <View style={styles.background}>
+     
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage}/>
           <View style={styles.homePageContainer}>
             <View style={styles.holeRow}>

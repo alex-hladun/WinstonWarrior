@@ -70,6 +70,63 @@ const reducer = (state, action) => {
         p4score: {...state.p4score, [action.hole] : action.score}
       }
     break;
+    case "clear_p1_score":
+      return {
+        ...state,
+        p1score: initialState.p1score,
+      }
+    break;
+    case "clear_p2_score":
+
+      return {
+        ...state,
+        p2score: initialState.p2score,
+        player_2: undefined
+      }
+    break;
+    case "clear_p3_score":
+
+      return {
+        ...state,
+        p3score: initialState.p3score,
+        player_3: undefined
+      }
+    break;
+    case "clear_p4_score":
+
+      return {
+        ...state,
+        p4score: initialState.p4score,
+        player_4: undefined
+      }
+    break;
+    case "restore_p1_score":
+      return {
+        ...state,
+        p1score: action.data
+      }
+    break;
+    case "restore_p2_score":
+
+      return {
+        ...state,
+        p2score: action.data
+      }
+    break;
+    case "restore_p3_score":
+
+      return {
+        ...state,
+        p3score: action.data
+      }
+    break;
+    case "restore_p4_score":
+
+      return {
+        ...state,
+        p4score: action.data
+      }
+    break;
   }
 }
 const initialState = {
@@ -162,9 +219,26 @@ const PlayContext = React.createContext(initialState);
 
 function PlayProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  
+  const doneRound = () => {
+    dispatch({
+      type: 'clear_p1_score'
+    })
+    dispatch({
+      type: 'clear_p2_score'
+    })
+    dispatch({
+      type: 'clear_p3_score'
+    })
+    dispatch({
+      type: 'clear_p4_score'
+    })
+  
+    console.log('all info cleared from PlayContext')
+  }
 
   const value = useMemo(() => {
-   return { state };
+   return { state, doneRound };
   }, [state]);
 
   return (
