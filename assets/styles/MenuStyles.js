@@ -7,11 +7,28 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     // zIndex: 4,
-    backgroundColor: Theme.spinGreen1,
+    // backgroundColor: Theme.spinGreen1,
     alignSelf: 'center',
     top: 100,
     justifyContent: 'flex-start',
-
+  },
+  bgImage: {
+    flex: 1,
+    width: '150%',
+    // height: '50%',
+    right: '5%',
+    top: '-20%',
+    position: 'absolute',
+    // zIndex: 10,
+    opacity: 0.15,
+    resizeMode: 'contain',
+  },
+  background: {
+    backgroundColor: Theme.spinGreen1,
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'absolute'
   },
   courseText: {
     textAlign: 'center'
@@ -77,9 +94,9 @@ export const styles = StyleSheet.create({
     borderStyle: 'solid',
     // borderWidth: 0.5,
     borderRadius: 100,
-    width: 45,
-    height: 45,
-    backgroundColor: Theme.yellow,
+    width: 48,
+    height: 48,
+    backgroundColor: Theme.red,
     justifyContent: 'center',
     alignItems: 'center',
     // padding: 5

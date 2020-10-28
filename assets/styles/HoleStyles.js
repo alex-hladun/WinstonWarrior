@@ -31,23 +31,50 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginHorizontal: 50,
   },
+  scoreBox: {
+    alignItems: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
+    backgroundColor: Theme.spinGreen3
+  },
   header: {
-    // position: 'absolute',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    flexDirection: 'column',
     // marginHorizontal: 10,
+    width: 270,
+    height: 270,
     opacity: 0.85,
     position: 'absolute',
     backgroundColor: Theme.spinGreen3,
     zIndex: 2,
-    width: '100%',
-    padding: 6,
-    marginTop: 45,
+    right: '-43%',
+    top: '-15%',
+    // padding: 10,
+    // marginTop: 45,
     borderStyle: 'solid',
     borderColor: 'black',
-    // borderTopWidth: 0.5,
-    // borderBottomWidth: 0.5,
-    marginRight: 20
+    paddingBottom: 20,
+    paddingLeft: 15,
+    alignItems: 'flex-start',
+    borderRadius: 50,
+  },
+  title: {
+    fontSize: 20,
+    // fontWeight: 'bold',
+    color: 'white',
+    color: Theme.iconStroke
+  },
+  holeTitle: {
+    fontSize: 35,
+    // fontWeight: 'bold',
+    // color: 'white',
+    color: Theme.iconStroke
+  },
+  parTitle: {
+    fontSize: 30,
+    // fontWeight: 'bold',
+    color: 'white',
+    color: Theme.iconStroke
   },
   homeScreenFilename: {
     marginVertical: 7,
@@ -76,12 +103,6 @@ export const styles = StyleSheet.create({
   helpLinkText: {
     textAlign: 'center',
   }, 
-  title: {
-    fontSize: 20,
-    // fontWeight: 'bold',
-    color: 'white',
-    color: Theme.iconStroke
-  },
   separator: {
     marginTop: 10,
     height: 1,
@@ -109,10 +130,11 @@ export const styles = StyleSheet.create({
     width: '90%',
     height: '7%',
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
     position: 'absolute',
     zIndex: 100,
-    top: '91%',
+    top: '90%',
     alignSelf: 'center',
     backgroundColor: 'transparent'
 
@@ -123,18 +145,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 5,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    // borderWidth: 0.5,
     borderRadius: 100,
-    opacity: 0.85,
-    color: '#000000',
+    opacity: 0.89,
+  },
+  icon: {
+width: 50,
+height: 50
   },
   flag: {
     backgroundColor: Theme.spinGreen3
   },
   check: {
-    backgroundColor: Theme.spinGreen2
+    backgroundColor: Theme.spinGreen2,
+    width: 65,
+    height: 65,
   },
   target: {
     backgroundColor: Theme.spinGreen3

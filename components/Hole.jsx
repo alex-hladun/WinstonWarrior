@@ -270,13 +270,15 @@ export default function Hole({ location, initialHole = 1 }) {
 
 
       <View style={styles.header}>
+        <View style={styles.scoreBox}>
         <TouchableOpacity onPress={() => handleHoleChange(1)}>
-          <Text style={styles.title} >Hole {holeNum}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleScoreCardEnter()}>
-          <Text style={styles.title} >Par {holeInfo[holeNum].par}</Text>
+          <Text style={styles.holeTitle} >{holeNum}</Text>
         </TouchableOpacity>
         <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
+        <TouchableOpacity onPress={() => handleScoreCardEnter()}>
+          <Text style={styles.parTitle} >Par {holeInfo[holeNum].par}</Text>
+        </TouchableOpacity>
+        </View>
       </View>
 
 
@@ -368,8 +370,8 @@ export default function Hole({ location, initialHole = 1 }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleScoreEnter()}>
           <View style={[styles.floatingHoleMarker, styles.check]}>
-            <Text >
-              <CheckSymbol />
+            <Text  >
+              <CheckSymbol style={styles.icon} />
             </Text>
           </View>
         </TouchableOpacity>

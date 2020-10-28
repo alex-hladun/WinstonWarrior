@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   homePageContainer: {
     flex: 1,
     // zIndex: 4,
-    backgroundColor: Theme.spinGreen1,
+    // backgroundColor: Theme.spinGreen1,
     alignSelf: 'center',
     justifyContent: 'space-evenly',
     paddingTop: 100,
@@ -131,12 +131,21 @@ export const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    width: '100%',
-    height: 1400,
+    width: '170%',
+    // height: '50%',
+    left: '5%',
+    bottom: '-37%',
     position: 'absolute',
-    zIndex: 10,
-    resizeMode: 'repeat',
-    justifyContent: 'center',
+    // zIndex: 10,
+    opacity: 0.2,
+    resizeMode: 'contain',
+  },
+  background: {
+    backgroundColor: Theme.spinGreen1,
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'absolute'
   },
   winstonText: {
     justifyContent: 'center',

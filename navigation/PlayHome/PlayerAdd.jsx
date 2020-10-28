@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import styles from '../../assets/styles/MenuStyles'
@@ -6,7 +6,6 @@ import { AppContext } from '../../context/AppContext'
 import { PlayContext } from '../../context/PlayContext'
 import { registerUser, createRound } from '../../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
-
 
 export function PlayerAdd({ navigation }) {
   const playContext = React.useContext(PlayContext)
@@ -172,6 +171,8 @@ export function PlayerAdd({ navigation }) {
 
   return (
     <>
+     <View style={styles.background}>
+    <Image source={require('../../assets/images/vectors/Asset34.png')} style={styles.bgImage}/>
       <View style={styles.container}>
         {player(appContext.value.state.auth_data, 1)}
         {playContext.value.state.player_2 ? player(playContext.value.state.player_2, 2) : null}
@@ -192,10 +193,11 @@ export function PlayerAdd({ navigation }) {
         <TouchableOpacity onPress={() => handleStart()}>
           <View style={[styles.startRoundButton, styles.startButton]}>
             <Text style={styles.buttonText}>
-              Start Round
+              Tee Off
 </Text>
           </View>
         </TouchableOpacity>
+      </View>
       </View>
     </>
   );

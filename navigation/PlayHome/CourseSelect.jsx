@@ -48,8 +48,11 @@ export function CourseSelect({ navigation }) {
   })
 
   return (
+    <View style={styles.background}>
+    <Image source={require('../../assets/images/vectors/Asset54.png')} style={styles.bgImage}/>
     <View style={styles.container}>
       {courseItems}
+    </View>
     </View>
   );
 }
