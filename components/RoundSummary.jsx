@@ -1,12 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Text, View } from './Themed';
-import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
+import { StyleSheet, Easing, TouchableOpacity, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/PlayStyles'
-import holeInfo from '../assets/holeInfo'
-import { Picker } from '@react-native-community/picker';
-import Slider from '@react-native-community/slider';
-import CheckSymbol from '../assets/svg/CheckSymbol'
-import db, { getUsers, postScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 
@@ -131,7 +126,7 @@ export default function RoundSummary() {
     setScoreArr(sortedArray)
     // setScoreObj(newObj)
 
-  }, [p1totalScore, p2totalScore, p3totalScore, p4totalScore])
+  }, [playState])
 
   let players;
 
@@ -160,18 +155,6 @@ export default function RoundSummary() {
     console.log(playContext)
     appContext.value.doneRound()
     playContext.value.doneRound()
-    // appContext.dispatch({
-    //   type: 'set_round_id',
-    //   data: null
-    // })
-    // appContext.dispatch({
-    //   type: 'set_round_id',
-    //   data: null
-    // })
-    // appContext.dispatch({
-    //   type: 'set_view_mode',
-    //   data: 'menu'
-    // })
   }
 
   return (
@@ -182,7 +165,6 @@ export default function RoundSummary() {
           Final Scores
     </Text>
         {players}
-
         <TouchableOpacity onPress={() => handleScoreSubmit()}>
           <View style={[styles.styledButton, styles.playButton]}>
             <Text style={styles.buttonText}>
@@ -193,5 +175,4 @@ export default function RoundSummary() {
       </View>
     </>
   )
-
 }

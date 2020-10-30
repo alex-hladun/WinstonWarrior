@@ -122,13 +122,6 @@ export const postShot = async (user_id, club_id, effort) => {
       resolve(result)
     }, (err, mess) => console.log('err saving shot', reject(mess)))
 
-    // tx.executeSql(`
-    // SELECT * FROM distances;
-    // `, [], (txObj, result) => {
-    //   console.log('all shots', result.rows._array)
-
-    //   resolve(result)
-    // }, (err, mess) => console.log('err saving shot', reject(mess)))
   })
   )
 }
@@ -284,8 +277,8 @@ export const getScore = async (round_id) => {
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ?;
     `, [round_id], (txObj, result) => {
-      // console.log('result getting score', result)
-      resolve(result)
+      // console.warn('result getting score', result)
+      resolve(result.rows._array)
     }, (err, mess) => console.log('err creating round', reject(mess)))
   })
   )

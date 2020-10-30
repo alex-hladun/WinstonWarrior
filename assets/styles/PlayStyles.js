@@ -156,7 +156,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Theme.spinGreen1,
     flex: 1,
     alignItems: 'center',
-    paddingTop: 20,
+    // paddingTop: 20,
     // width: '100%',
     // height: '100%',
     // position: 'absolute'

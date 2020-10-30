@@ -19,14 +19,16 @@ import ScoreCard from './ScoreCard'
 import RoundSummary from './RoundSummary'
 import ShotTrack from './ShotTrack'
 import { AppContext } from '../context/AppContext'
-
+import { PlayContext } from '../context/PlayContext'
+import AsyncStorage from '@react-native-community/async-storage';
+import { getScore } from '../db/dbSetup'
 
 const { width } = Dimensions.get('window');
 
 export default function Hole({ location, initialHole = 1 }) {
   const appContext = React.useContext(AppContext)
+  const playContext = React.useContext(PlayContext)
   const [shotDiff, setShotDiff] = useState(3)
-  // const [holeNum, setHoleNum] = useState(initialHole)
   const holeNum = appContext.value.state.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
@@ -50,8 +52,13 @@ export default function Hole({ location, initialHole = 1 }) {
   const trackAnim = useRef(new Animated.Value(0.85)).current
 
   useEffect(() => {
-  // console.log('appcontext', appContext)
-  })
+    // retrieve and set all scores?
+
+    
+
+  }, [])
+
+
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
     var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -138,7 +145,7 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const handleRoundSummary = () => {
-    if(holeView) {
+    if (holeView) {
       setHoleView(false)
     }
     setEndRouondView(!endRoundView)
@@ -162,11 +169,11 @@ export default function Hole({ location, initialHole = 1 }) {
         latitude: undefined,
         longitude: undefined
       })
-  
+
       // CHANGE LATER
-  
+
       appContext.value.setHole(num)
-      
+
       // //////
       appContext.dispatch({
         type: 'set_hole_id',
@@ -252,7 +259,7 @@ export default function Hole({ location, initialHole = 1 }) {
           <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
             X
       </Text>
-          <HoleList setHole={setHole} handleRoundSummary={handleRoundSummary}/>
+          <HoleList setHole={setHole} handleRoundSummary={handleRoundSummary} />
         </View>
       </Modal>
 
@@ -295,13 +302,13 @@ export default function Hole({ location, initialHole = 1 }) {
 
       <View style={styles.header}>
         <View style={styles.scoreBox}>
-        <TouchableOpacity onPress={() => handleHoleChange(1)}>
-          <Text style={styles.holeTitle} >{holeNum}</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
-        <TouchableOpacity onPress={() => handleScoreCardEnter()}>
-          <Text style={styles.parTitle} >Par {holeInfo[holeNum].par}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleHoleChange(1)}>
+            <Text style={styles.holeTitle} >{holeNum}</Text>
+          </TouchableOpacity>
+          <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
+          <TouchableOpacity onPress={() => handleScoreCardEnter()}>
+            <Text style={styles.parTitle} >Par {holeInfo[holeNum].par}</Text>
+          </TouchableOpacity>
         </View>
       </View>
 

@@ -110,21 +110,23 @@ const reducer = (state, action) => {
 
       return {
         ...state,
-        p2score: action.data
+        p2score: action.data,
+        player_2: action.name
       }
     break;
     case "restore_p3_score":
 
       return {
         ...state,
-        p3score: action.data
+        p3score: action.data,
+        player_3: action.name
       }
     break;
     case "restore_p4_score":
-
       return {
         ...state,
-        p4score: action.data
+        p4score: action.data,
+        player_4: action.name
       }
     break;
   }

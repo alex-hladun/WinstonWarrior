@@ -104,9 +104,6 @@ export default function Score({ holeNum, setHole }) {
 
   const pickWidth = 50
 
-  // console.log(playerArray)
-  // console.log(players)
-
   return (
     <>
       <View style={styles.pickerContainer}>

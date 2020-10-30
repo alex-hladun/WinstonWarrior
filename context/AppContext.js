@@ -158,6 +158,12 @@ const doneRound = () => {
 
   AsyncStorage.removeItem('holeNum')
   AsyncStorage.removeItem('roundID')
+  AsyncStorage.removeItem('u2roundid')
+  AsyncStorage.removeItem('u2name')
+  AsyncStorage.removeItem('u3roundid')
+  AsyncStorage.removeItem('u3name')
+  AsyncStorage.removeItem('u4roundid')
+  AsyncStorage.removeItem('u4name')
 
   console.log('all info cleared from AppContext')
 }

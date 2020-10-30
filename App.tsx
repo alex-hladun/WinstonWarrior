@@ -5,7 +5,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { AppProvider } from './context/AppContext'
-import AsyncStorage from '@react-native-community/async-storage';
+import { PlayProvider } from './context/PlayContext'
 
 export default function App() {
 
@@ -15,14 +15,17 @@ export default function App() {
   if (!isLoadingComplete) {
     return null;
   } else {
-  
-  
+
+
     return (
       <AppProvider>
-        <SafeAreaProvider >
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
+        <PlayProvider>
+
+          <SafeAreaProvider >
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </SafeAreaProvider>
+        </PlayProvider>
       </AppProvider>
     );
   }

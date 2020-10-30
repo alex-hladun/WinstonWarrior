@@ -25,9 +25,9 @@ export default function ScoreCard({ holeNum }) {
   const appContext = React.useContext(AppContext)
   let appState = appContext.value.state
 
-  console.log('playState', playState)
-
+  
   useEffect(() => {
+    // console.log('playState', playState)
     // get array of user names
     let newArr = [appContext.value.state.user_name];
     if (appContext.value.state["user_2_name"]) {
@@ -45,7 +45,7 @@ export default function ScoreCard({ holeNum }) {
 
   useEffect(() => {
     // Calculate total scores
-    console.log('playContext', playState)
+    // console.log('playContext', playState)
 
     let totalScore = sumValues(scoreState)
     setP1TotalScore(totalScore)

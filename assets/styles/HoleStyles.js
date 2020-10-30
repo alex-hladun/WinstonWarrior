@@ -153,7 +153,7 @@ width: 50,
 height: 50
   },
   flag: {
-    backgroundColor: Theme.spinGreen3
+    backgroundColor: Theme.spinGreen2
   },
   check: {
     backgroundColor: Theme.spinGreen2,
@@ -161,10 +161,10 @@ height: 50
     height: 65,
   },
   target: {
-    backgroundColor: Theme.spinGreen3
+    backgroundColor: Theme.spinGreen2
   },
   move: {
-    backgroundColor: Theme.spinGreen3
+    backgroundColor: Theme.spinGreen2
   },
   shotDiff: {
     margin: 20,

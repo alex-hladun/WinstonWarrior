@@ -53,7 +53,6 @@ export function PlayerAdd({ navigation }) {
       console.log('uid after register', uid)
       console.log('u2roundid after register', u2roundid)
 
-
       await appContext.dispatch({
         type: 'set_user_2_round_id',
         data: u2roundid
@@ -105,7 +104,6 @@ export function PlayerAdd({ navigation }) {
       })
     }
 
-    console.log('Setting user round ID - should not see this before register')
     await appContext.dispatch({
       type: 'set_round_id',
       data: userRoundID
