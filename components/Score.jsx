@@ -6,7 +6,7 @@ import holeInfo from '../assets/holeInfo'
 import { Picker } from '@react-native-community/picker';
 import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
-import db, { getUsers, postScore } from '../db/dbSetup'
+import db, { getScore, getUsers, postScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 
@@ -14,7 +14,10 @@ export default function Score({ holeNum, setHole }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   let playState = playContext.value.state
+  let appState = appContext.value.state
+
   const [playerArray, setPlayerArray] = useState([])
+  const [holeID, setHoleID] = useState(appState.hole_id)
 
   const p1ps = playState.p1score[holeNum]
   const p2ps = playState.p2score[holeNum]
@@ -33,11 +36,11 @@ export default function Score({ holeNum, setHole }) {
   const [chip, setChip] = useState(50)
   const [putting, setPutting] = useState(50)
 
-  let holeID = null
-  let appState = appContext.value.state
+  // let holeID = null
 
   useEffect(() => {
-    holeID = appState.hole_id
+    // holeID = appState.hole_id
+    console.log(`HOLE ID OF ${holeID}`)
     let newArr = [appState.user_name];
     if (appState["user_2_name"]) {
       newArr.push(appState["user_2_name"])
@@ -50,7 +53,7 @@ export default function Score({ holeNum, setHole }) {
     }
 
     setPlayerArray(newArr)
-  }, [appContext.value.state])
+  }, [appContext])
 
   const players = playerArray.map((player, index) => {
     if (index !== 0) {
@@ -66,7 +69,8 @@ export default function Score({ holeNum, setHole }) {
   const handleScoreSubmit = async () => {
 
     await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting)
-    console.log(playContext.value.state.p1score)
+    console.log(`POSTING WITH HOLEID OF ${holeID}`)
+    // console.log(playContext.value.state.p1score)
     playContext.dispatch({
       type: 'set_p1_score',
       hole: holeNum,
@@ -97,6 +101,8 @@ export default function Score({ holeNum, setHole }) {
         score: p4score
       })
     }
+
+    getScore(appState.round_id)
 
     setHole(holeNum + 1)
     console.log('entered scores')

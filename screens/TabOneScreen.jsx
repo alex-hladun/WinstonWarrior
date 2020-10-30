@@ -8,7 +8,7 @@ import { Text, View } from '../components/Themed';
 import { AppContext } from '../context/AppContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, setUpDB, removeDB, registerUser, getClubs, createClubs, getScore } from '../db/dbSetup'
+import { createWinston, setUpDB, testDB, removeDB, registerUser, getClubs, createClubs, getScore } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -30,7 +30,8 @@ export default function TabOneScreen() {
       createWinston()
       registerUser('Alex')
       createClubs()
-    } else {
+      // testDB()
+    // } else {
 
     }
 
@@ -106,16 +107,13 @@ export default function TabOneScreen() {
     const p3roundID = await AsyncStorage.getItem('u3roundid')
     const p4roundID = await AsyncStorage.getItem('u4roundid')
     console.log('p2 round iD; ', p2roundID)
-    const p3name = await AsyncStorage.getItem('u3name')
-    const p4name = await AsyncStorage.getItem('u4name')
-
     const p1Score = await getScore(JSON.parse(p1roundID))
 
     console.log('p1 score returned should be array', p1Score)
 
     let scoreObj = {}
     for (const score of p1Score) {
-      console.log(score)
+      console.log(`p1 score ${score}`)
       scoreObj[score.hole_num] = score.total_shots
     }
     playContext.dispatch({
@@ -146,6 +144,7 @@ export default function TabOneScreen() {
     if (p3roundID) {
       const p3name = await AsyncStorage.getItem('u3name')
       let scoreObj3 = {}
+      console.log('RESTORING P3 SCORE')
       const p3Score = await getScore(JSON.parse(p3roundID))
       for (const score of p3Score) {
         console.log(score)
@@ -213,10 +212,6 @@ export default function TabOneScreen() {
     }, (loc) => {
       setState({ ...state, location: { latitudeDelta: 0.05, longitudeDelta: 0.05, latitude: loc.coords.latitude, longitude: loc.coords.longitude } });
     })
-
-    // const { latitude , longitude } = location.coords
-    // getGeocodeAsync({latitude, longitude})
-
   };
 
   React.useEffect(() => {

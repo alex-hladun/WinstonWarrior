@@ -150,7 +150,31 @@ const doneRound = () => {
     type: 'set_round_id',
     data: null
   })
-
+  
+  dispatch({
+    type: 'set_user_2_name',
+    data: null
+  })
+  dispatch({
+    type: 'set_user_2_round_id',
+    data: null
+  })
+  dispatch({
+    type: 'set_user_3_name',
+    data: null
+  })
+  dispatch({
+    type: 'set_user_3_round_id',
+    data: null
+  })
+  dispatch({
+    type: 'set_user_4_name',
+    data: null
+  })
+  dispatch({
+    type: 'set_user_4_round_id',
+    data: null
+  })
   dispatch({
     type: 'set_view_mode',
     data: 'menu'

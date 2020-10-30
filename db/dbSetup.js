@@ -127,30 +127,54 @@ export const postShot = async (user_id, club_id, effort) => {
 }
 export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
+
+    let scoreID;
+
     tx.executeSql(`
-    INSERT INTO scores (
-      hole_id,
-      hole_num,
-      round_id,
-      date_time,
-      total_shots,
-      total_putts,
-      pentalty,
-      driver_direction,
-      approach_rtg,
-      chip_rtg,
-      putt_rtg
-    ) VALUES (?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'), ?, ?, ?, ?, ?, ?, ?);
-    `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg], (txObj, result) => {
-      // console.log('result posting score', result)
-      resolve(result)
-    }, (err, mess) => {
-      console.log(`ERROR posting score: ${err}, ${mess}`)
-      reject(err)
+    SELECT * FROM scores WHERE round_id = ? AND hole_id = ?;`, [round_id, hole_id], (txObj, result) => {
+      if (result.rows._array[0]) {
+        console.log('EXISTING SCORE for this hole!')
+        tx.executeSql(`
+        UPDATE scores SET total_shots = ?, total_putts = ?, penalty = ?, driver_direction = ?,
+        approach_rtg = ?,
+        chip_rtg = ?,
+        putt_rtg = ?
+        WHERE score_id = ?;
+        `, [total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, result.rows._array[0].score_id], (txObj, result) => {
+          console.log('result updating score', result)
+          resolve(result)
+        }, (err, mess) => {
+          console.log(`ERROR posting score: ${JSON.stringify(err)}, ${mess}`)
+          reject(err)
+        })
+      } else {
+         tx.executeSql(`
+      INSERT INTO scores (
+            hole_id,
+            hole_num,
+            round_id,
+            total_shots,
+            total_putts,
+            penalty,
+            driver_direction,
+            approach_rtg,
+            chip_rtg,
+            putt_rtg,
+            date_time
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+      `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg], (txObj, result) => {
+        console.log('result posting NEW score', result)
+        resolve(result)
+      }, (err, mess) => {
+        console.log(`ERROR posting score: ${JSON.stringify(err)}, ${mess}`)
+        reject(err)
+      }
+         )}
     })
   })
   )
 }
+
 
 export const createWinston = () => {
   db.transaction(tx => {
@@ -233,7 +257,7 @@ export const setUpDB = () => {
       date_time datetime,
       total_shots integer,
       total_putts integer,
-      pentalty integer,
+      penalty integer,
       driver_direction integer,
       approach_rtg integer,
       chip_rtg integer,
@@ -277,7 +301,7 @@ export const getScore = async (round_id) => {
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ?;
     `, [round_id], (txObj, result) => {
-      // console.warn('result getting score', result)
+      console.log('result getting score', result.rows._array)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err creating round', reject(mess)))
   })
