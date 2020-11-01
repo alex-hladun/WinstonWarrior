@@ -68,8 +68,8 @@ export default function Score({ holeNum, setHole }) {
 
   const handleScoreSubmit = async () => {
 
-    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting)
     console.log(`POSTING WITH HOLEID OF ${holeID}`)
+    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting)
     // console.log(playContext.value.state.p1score)
     playContext.dispatch({
       type: 'set_p1_score',

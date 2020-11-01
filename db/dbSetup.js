@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Alert, AsyncStorageStatic } from 'react-native'
+import holeInfo from '../assets/holeInfo'
 
 const db = SQLite.openDatabase('winstonGolfer.db');
 
@@ -89,11 +90,11 @@ export const getClubs = async () => {
 
 export const registerUser = async (user) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
-    console.log('inside reg user sql')
+    // console.log('inside reg user sql')
     tx.executeSql(`
     INSERT INTO users (user_name) VALUES (?);
     `, [user], (txObj, result) => {
-      console.log('created user', result)
+      // console.log('created user', result)
       resolve(result.insertId)
     }, (err, mess) => console.log('err creating user', reject(mess)))
   }))
@@ -126,6 +127,8 @@ export const postShot = async (user_id, club_id, effort) => {
   )
 }
 export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
+  console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}`)
+  
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     let scoreID;
@@ -144,7 +147,7 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
           console.log('result updating score', result)
           resolve(result)
         }, (err, mess) => {
-          console.log(`ERROR posting score: ${JSON.stringify(err)}, ${mess}`)
+          console.log(`ERROR posting score PPOINT 1: ${JSON.stringify(err)}, ${mess}`)
           reject(err)
         })
       } else {
@@ -166,7 +169,7 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
         console.log('result posting NEW score', result)
         resolve(result)
       }, (err, mess) => {
-        console.log(`ERROR posting score: ${JSON.stringify(err)}, ${mess}`)
+        console.log(`ERROR posting score PRE-EXISTING: ${JSON.stringify(err)}, ${mess}`)
         reject(err)
       }
          )}
@@ -185,7 +188,29 @@ export const createWinston = () => {
       // console.log('transObj', txObj)
       // setHole(holeNum + 1)
       // console.log('txObj', txObj)
-    }, (err, mess) => console.log('err creating user', mess))
+    }, (err, mess) => console.log('err creating Winston course', mess))
+
+
+    const holeArray = Object.keys(holeInfo);
+
+    holeArray.forEach((val, index) => {
+      console.log(`creating hole ${val}`)
+      tx.executeSql(
+        `
+      INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [1, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
+      holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom], (txObj, result) => {
+        console.log('done creating hole')
+      }, (err, mess) => console.log('err creating hole', err, mess))
+
+    })
+
+    tx.executeSql(
+      `
+    SELECT * FROM holes;`, [], (txObj, result) => {
+      console.log(`final holes result, ${JSON.stringify(result.rows._array)}`)
+    }, (err, mess) => console.log('err creating hole', err, mess))
+
 
   })
 }

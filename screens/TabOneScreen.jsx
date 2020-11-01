@@ -21,10 +21,10 @@ export default function TabOneScreen() {
 
 
   React.useEffect(() => {
-    console.log('resetting DB SHOULD ONLY RUN ONCE')
-
+    
     let reset = false;
     if (reset) {
+      console.log('resetting DB SHOULD ONLY RUN ONCE')
       removeDB()
       setUpDB()
       createWinston()
@@ -124,10 +124,11 @@ export default function TabOneScreen() {
 // TODO: this can be refactored in a loop
     if (p2roundID) {
       const p2name = await AsyncStorage.getItem('u2name')
+      console.log('RESTOING PLAYER 2, ROUNDID; ', p2roundID)
       let scoreObj2 = {}
       const p2Score = await getScore(JSON.parse(p2roundID))
       for (const score of p2Score) {
-        console.log(score)
+        console.log('p2 SCORE OBJ', score)
         scoreObj2[score.hole_num] = score.total_shots
       }
       playContext.dispatch({
@@ -140,6 +141,10 @@ export default function TabOneScreen() {
         type: 'set_user_2_name',
         data: p2name
       })
+      appContext.dispatch({
+        type: 'set_user_2_round_id',
+        data: p2roundID
+      })
     }
     if (p3roundID) {
       const p3name = await AsyncStorage.getItem('u3name')
@@ -147,7 +152,7 @@ export default function TabOneScreen() {
       console.log('RESTORING P3 SCORE')
       const p3Score = await getScore(JSON.parse(p3roundID))
       for (const score of p3Score) {
-        console.log(score)
+        console.log('p3 SCORE OBJ', score)
         scoreObj3[score.hole_num] = score.total_shots
       }
       playContext.dispatch({
@@ -160,13 +165,18 @@ export default function TabOneScreen() {
         type: 'set_user_3_name',
         data: p3name
       })
+
+      appContext.dispatch({
+        type: 'set_user_3_round_id',
+        data: p3roundID
+      })
     }
     if (p4roundID) {
       const p4name = await AsyncStorage.getItem('u4name')
       let scoreObj4 = {}
       const p4Score = await getScore(JSON.parse(p4roundID))
       for (const score of p4Score) {
-        console.log(score)
+        console.log('p4 SCORE OBJ', score)
         scoreObj4[score.hole_num] = score.total_shots
       }
       playContext.dispatch({
@@ -178,6 +188,11 @@ export default function TabOneScreen() {
       appContext.dispatch({
         type: 'set_user_4_name',
         data: p4name
+      })
+
+      appContext.dispatch({
+        type: 'set_user_4_round_id',
+        data: p4roundID
       })
     }
   }

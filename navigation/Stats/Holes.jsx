@@ -4,7 +4,6 @@ import * as Linking from 'expo-linking';
 import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/StatStyles'
 
-
 export function Holes({ navigation }) {
 
   const handlePress = () => {
