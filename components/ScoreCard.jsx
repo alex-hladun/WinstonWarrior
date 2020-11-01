@@ -220,7 +220,6 @@ export default function ScoreCard({ holeNum }) {
         // If I wanted to add yardage to scorecard
       }
     }
-
     return newArr
   }
 

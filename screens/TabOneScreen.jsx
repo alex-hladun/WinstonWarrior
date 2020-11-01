@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext'
 import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, seedData, setUpDB, loadStats, removeDB, registerUser, getClubs, createClubs, getScore } from '../db/dbSetup'
+import { createWinston, seedData, setUpDB, loadStats, removeDB, registerUser, getClubs, loadHoleStats, createClubs, getScore, loadBirds, loadHoleHistory } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -106,6 +106,48 @@ export default function TabOneScreen() {
     statContext.dispatch({
       type: 'set_round_history',
       data: statsArray
+    })
+
+
+    // Get individual TOTAL hole stats
+    const holeStats = await loadHoleStats(1, 1)
+    let holeObj = {}
+    for (let i = 1; i <20; i++) {
+      holeObj[i] = {}
+    }
+
+    holeStats.forEach((hole) => {
+      holeObj[hole.hole_num]['avgShots'] = hole.avg_shots
+      holeObj[hole.hole_num]['avgPutts'] = hole.avg_putts
+    })
+
+    // console.log(holeObj)
+
+    statContext.dispatch({
+      type: 'set_hole_stats',
+      data: holeObj
+    })
+
+    // Get counts of birdie, par, eagle for each hole
+    const birdieCount = await loadBirds(1, 1, -1)
+    const parCount = await loadBirds(1, 1, 0)
+    const eagleCount = await loadBirds(1, 1, -2)
+
+    // Get hole history (historical total shots & putts)
+    const holeHistory = await loadHoleHistory(1, 1)
+    holeObj = {}
+    for (let i = 1; i <20; i++) {
+      holeObj[i] = {score: [], putts: [] }
+    }
+
+    holeHistory.forEach((hole) => {
+      holeObj[hole.hole_num].score.push(hole.total_shots)
+      holeObj[hole.hole_num].putts.push(hole.total_putts)
+
+    })
+    statContext.dispatch({
+      type: 'set_hole_history',
+      data: holeObj
     })
 
   }

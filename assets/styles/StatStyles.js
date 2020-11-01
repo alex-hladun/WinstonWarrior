@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     // zIndex: 4,
     // backgroundColor: Theme.spinGreen1,
     alignSelf: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     paddingTop: 0,
     width: '100%',
     height: '100%',
@@ -61,7 +61,23 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   header: {
-    fontSize: 20
+    fontSize: 20,
+    alignSelf: 'center'
+  },
+  headerContainer: {
+    flexDirection: 'column',
+    borderColor: 'black',
+    // borderWidth: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    backgroundColor: Theme.iconStroke,
+    borderRadius: 15,
+    // borderStyle: 'solid',
+    margin: 10,
+    padding: 10,
+    width: '60%',
+    // height: 150
   },
   hole: {
     justifyContent: 'center',
@@ -103,6 +119,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     // borderStyle: 'solid',
     padding: 10,
+    margin: 5,
     width: 100,
     // height: 150
   },
@@ -114,6 +131,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Theme.iconStroke,
     borderRadius: 15,
     // borderStyle: 'solid',
+    margin: 20,
     padding: 10,
     width: '95%',
     height: 150

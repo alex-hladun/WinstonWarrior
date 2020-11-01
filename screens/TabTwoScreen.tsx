@@ -9,13 +9,20 @@ import { Trends } from '../navigation/Stats/Trends'
 import { Clubs } from '../navigation/Stats/Clubs'
 import { Rounds } from '../navigation/Stats/Rounds'
 import { CourseSelect } from '../navigation/PlayHome/CourseSelect'
+import { AppContext } from '../context/AppContext'
+
 const Tab = createMaterialTopTabNavigator();
 
 export default function TabTwoScreen() {
+  const appContext = React.useContext(AppContext)
+  const appState = appContext.value.state
+  const holeNum = appState.hole_num
+
   return (
     <Tab.Navigator>
+    {holeNum && <Tab.Screen name="Hole" component={Holes} />}
     <Tab.Screen name="Trends" component={Trends} />
-    <Tab.Screen name="Hole" component={Holes} />
+
     <Tab.Screen name="Clubs" component={Clubs} />
     <Tab.Screen name="Rounds" component={Rounds} />
   </Tab.Navigator>

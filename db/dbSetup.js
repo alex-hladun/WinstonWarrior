@@ -264,22 +264,78 @@ export const seedData = async () => {
 }
 
 export const loadStats = async (user_id) => {
+  // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
-    // console.log('inside createRound')
-    // tx.executeSql(`
-    // SELECT * FROM scores;
-    // `, [user_id], (txObj, result) => {
-    //   console.log(`all scores: ${JSON.stringify(result.rows._array)}`)
-    //   // resolve(result)
-    // }, (err, mess) => console.log('err getting scores', mess, err))
-
     tx.executeSql(`
-    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.end_date DESC LIMIT 10;
+    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date 
+    FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id 
+    WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.end_date DESC LIMIT 10;
     `, [user_id,], (txObj, result) => {
-      // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
+  })
+  )
+}
+export const loadHoleStats = async (course_id, user_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT
+    scores.hole_num, holes.hole_par, AVG(scores.total_shots) AS avg_shots, AVG(scores.total_putts) AS avg_putts
+    FROM ROUNDS 
+    JOIN scores 
+    ON rounds.round_id = scores.round_id 
+    JOIN holes 
+    ON holes.hole_id = scores.hole_id
+    WHERE rounds.course_id = ? AND rounds.user_id = ?
+    GROUP BY scores.hole_num
+    ORDER BY scores.hole_num ASC;
+    `, [course_id, user_id], (txObj, result) => {
+      // console.log(`Overall hole info: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadHoleHistory = async (course_id, user_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT
+    scores.hole_num, holes.hole_par, scores.total_shots AS total_shots, scores.total_putts AS total_putts
+    FROM ROUNDS 
+    JOIN scores 
+    ON rounds.round_id = scores.round_id
+    JOIN holes 
+    ON holes.hole_id = scores.hole_id
+    WHERE rounds.course_id = ? AND rounds.user_id = ?
+    ORDER BY rounds.round_id ASC;
+    `, [course_id, user_id], (txObj, result) => {
+      // console.log(`all hole history: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadBirds = async (course_id, user_id, targetNum) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT DISTINCT
+    scores.hole_num, count((holes.hole_par - scores.total_shots) == 0) AS pars, count((holes.hole_par - scores.total_shots) == ?) AS targetCount
+    FROM ROUNDS 
+    JOIN scores 
+    ON rounds.round_id = scores.round_id 
+    JOIN holes 
+    ON holes.hole_id = scores.hole_id
+    WHERE rounds.course_id = ? AND rounds.user_id = ? AND (holes.hole_par - scores.total_shots) == -2
+    GROUP BY scores.hole_num
+    ORDER BY holes.hole_num ASC;
+    `, [targetNum, course_id, user_id], (txObj, result) => {
+      // console.log(`all birdie info: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting birds', reject(mess)))
   })
   )
 }
@@ -395,7 +451,7 @@ export const getScore = async (round_id) => {
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ?;
     `, [round_id], (txObj, result) => {
-      console.log('result getting score', result.rows._array)
+      // console.log('result getting score', result.rows._array)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err creating round', reject(mess)))
   })
