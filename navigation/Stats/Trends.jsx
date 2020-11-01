@@ -21,26 +21,28 @@ export function Trends({ navigation }) {
   const statState = statContext.value.state
   const roundHistory = statState.roundHistory
 
-
   let roundData;
   let data;
   React.useEffect(() => {
-    // console.log('roundhistory', roundHistory)
-    roundData = roundHistory.map((round) => {
-      return (round.total_score)
-    })
+    console.log('roundhistory', roundHistory)
+    if(statState && statState.roundHistory) {
+      roundData = roundHistory.map((round) => {
+        return (round.total_score)
+      })
+  
+      data = {
+        labels: ['test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'],
+        datasets: [{
+          data: roundData
+        }]
+      }
+  
+      setDataChart(data)
+      // console.log('roundData', roundData)
+      // console.log('data', data)
+      setLoading(true)
 
-    data = {
-      labels: ['test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'],
-      datasets: [{
-        data: roundData
-      }]
     }
-
-    setDataChart(data)
-    // console.log('roundData', roundData)
-    // console.log('data', data)
-    setLoading(true)
   }, [])
   const handlePress = () => {
     navigation.push('Hole')

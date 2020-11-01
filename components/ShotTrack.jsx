@@ -39,7 +39,7 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
   const handleSubmit = async () => {
     console.log('handle distance submit')
 
-    await postShot(1, club, effort)
+    await postShot(1, club, effort, distance)
 
     handleTrackViewClose()
   }

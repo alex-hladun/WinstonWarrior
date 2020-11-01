@@ -113,13 +113,13 @@ export const createRound = async (course_id, user_id) => {
   )
 }
 
-export const postShot = async (user_id, club_id, effort) => {
+export const postShot = async (user_id, club_id, effort, distance) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     // console.log('inside createRound')
     tx.executeSql(`
-    INSERT INTO distances (user_id, club_id, effort, date_time) VALUES (?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
-    `, [user_id, club_id, effort], (txObj, result) => {
-      console.log('shot successfully saved')
+    INSERT INTO distances (user_id, club_id, effort, distance, date_time) VALUES (?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+    `, [user_id, club_id, effort, distance], (txObj, result) => {
+      console.log('shot successfully saved', result.rows._array[0])
       resolve(result)
     }, (err, mess) => console.log('err saving shot', reject(mess)))
 
@@ -271,7 +271,20 @@ export const loadStats = async (user_id) => {
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id 
     WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.end_date DESC LIMIT 10;
     `, [user_id,], (txObj, result) => {
-      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadShots = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT * FROM distances;
+    `, [], (txObj, result) => {
+      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
@@ -313,6 +326,25 @@ export const loadHoleHistory = async (course_id, user_id) => {
     ORDER BY rounds.round_id ASC;
     `, [course_id, user_id], (txObj, result) => {
       // console.log(`all hole history: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadLow = async (course_id, user_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT DISTINCT
+    scores.hole_num, min(scores.total_shots) AS min_score
+    FROM ROUNDS
+    JOIN scores 
+    ON rounds.round_id = scores.round_id
+    WHERE rounds.course_id = ? AND rounds.user_id = ?
+    GROUP BY scores.hole_num
+    ORDER BY scores.hole_num ASC;
+    `, [course_id, user_id], (txObj, result) => {
+      console.log(`low hole history: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
@@ -433,6 +465,7 @@ export const setUpDB = () => {
       distance_id integer PRIMARY KEY AUTOINCREMENT,
       user_id integer,
       club_id integer,
+      distance real,
       effort real,
       date_time datetime,
       CONSTRAINT fk_users

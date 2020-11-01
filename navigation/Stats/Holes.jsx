@@ -16,7 +16,7 @@ export function Holes({ navigation }) {
   const holeNum = appState.hole_num
 
   React.useEffect(() => {
-    console.log('statState', statState.holes)
+    // console.log('statState', statState.holes)
   }, [])
 
 
@@ -29,7 +29,7 @@ export function Holes({ navigation }) {
             <Text style={styles.header}>Hole {holeNum}</Text>
           </View>
 
-          {holeNum ?
+          {holeNum && statState ?
           <>
             <LineChart
               data={{
@@ -70,7 +70,7 @@ export function Holes({ navigation }) {
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Best Score</Text>
-              <Text style={styles.boxContent}>2</Text>
+              <Text style={styles.boxContent}>{statState.lowScores[holeNum]}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>

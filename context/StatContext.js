@@ -21,12 +21,19 @@ const reducer = (state, action) => {
         holeHistory: action.data
       }
     break;
+    case "set_low_scores":
+      return {
+        ...state,
+        lowScores: action.data
+      }
+    break;
   }
 }
 const initialState = {
   roundHistory: [],
   holes: {},
   holeHistory: {},
+  lowScores: {}
 }
 const StatContext = React.createContext(initialState);
 

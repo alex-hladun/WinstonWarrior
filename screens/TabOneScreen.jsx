@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext'
 import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, seedData, setUpDB, loadStats, removeDB, registerUser, getClubs, loadHoleStats, createClubs, getScore, loadBirds, loadHoleHistory } from '../db/dbSetup'
+import { createWinston, seedData, setUpDB, loadStats, removeDB, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -108,6 +108,8 @@ export default function TabOneScreen() {
       data: statsArray
     })
 
+    // console.log('round history', statsArray)
+
 
     // Get individual TOTAL hole stats
     const holeStats = await loadHoleStats(1, 1)
@@ -120,8 +122,6 @@ export default function TabOneScreen() {
       holeObj[hole.hole_num]['avgShots'] = hole.avg_shots
       holeObj[hole.hole_num]['avgPutts'] = hole.avg_putts
     })
-
-    // console.log(holeObj)
 
     statContext.dispatch({
       type: 'set_hole_stats',
@@ -150,6 +150,25 @@ export default function TabOneScreen() {
       data: holeObj
     })
 
+    // Shot data logic here
+    // const shotData = await loadShots(1)
+
+    // Retrieve low
+    const lowHoleData = await loadLow(1, 1)
+    holeObj = {}
+    for (let i = 1; i <20; i++) {
+      holeObj[i] = {}
+    }
+
+    lowHoleData.forEach((hole) => {
+      holeObj[hole.hole_num] = hole.min_score
+    })
+    statContext.dispatch({
+      type: 'set_low_scores',
+      data: holeObj
+    })
+
+    console.log('ALL STATS SAVED INTO STATSTATE')
   }
 
   const checkAndRestoreScores = async () => {
