@@ -78,12 +78,12 @@ export const createClubs = async (user) => {
 
 export const getClubs = async () => {
   return new Promise((resolve, reject) => db.transaction(tx => {
-      tx.executeSql(`
+    tx.executeSql(`
       SELECT * FROM CLUBS;
     `, [], (txObj, result) => {
-        // console.log('getting clubs', result.rows._array)
-        resolve(result.rows._array)
-      }, (err, mess) => console.log('err creating club', reject(mess)))
+      // console.log('getting clubs', result.rows._array)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err creating club', reject(mess)))
 
   }))
 }
@@ -128,7 +128,7 @@ export const postShot = async (user_id, club_id, effort) => {
 }
 export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
   console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}`)
-  
+
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     let scoreID;
@@ -151,7 +151,7 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
           reject(err)
         })
       } else {
-         tx.executeSql(`
+        tx.executeSql(`
       INSERT INTO scores (
             hole_id,
             hole_num,
@@ -166,13 +166,14 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
             date_time
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
       `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg], (txObj, result) => {
-        console.log('result posting NEW score', result)
-        resolve(result)
-      }, (err, mess) => {
-        console.log(`ERROR posting score PRE-EXISTING: ${JSON.stringify(err)}, ${mess}`)
-        reject(err)
+          console.log('result posting NEW score', result)
+          resolve(result)
+        }, (err, mess) => {
+          console.log(`ERROR posting score PRE-EXISTING: ${JSON.stringify(err)}, ${mess}`)
+          reject(err)
+        }
+        )
       }
-         )}
     })
   })
   )
@@ -199,9 +200,9 @@ export const createWinston = () => {
         `
       INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [1, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
-      holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom], (txObj, result) => {
-        console.log('done creating hole')
-      }, (err, mess) => console.log('err creating hole', err, mess))
+        holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom], (txObj, result) => {
+          console.log('done creating hole')
+        }, (err, mess) => console.log('err creating hole', err, mess))
 
     })
 
@@ -210,9 +211,77 @@ export const createWinston = () => {
     SELECT * FROM holes;`, [], (txObj, result) => {
       console.log(`final holes result, ${JSON.stringify(result.rows._array)}`)
     }, (err, mess) => console.log('err creating hole', err, mess))
+  })
+}
 
+
+export const seedData = async () => {
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < 19; i++) {
+      db.transaction(tx => {
+        // console.log('inside createRound')
+        tx.executeSql(`
+        INSERT OR REPLACE INTO rounds (round_id, course_id, user_id, end_date) VALUES (?, 1, 1, strftime('%Y-%m-%d %H:%M:%S','now'));
+      `, [i + 5000], (txObj, result) => {
+          // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
+          // resolve(result)
+        }, (err, mess) => console.log('err seeding stats', err, mess))
+      })
+    }
+
+    for (let i = 0; i < 19; i++) {
+      for (let j = 0; j < 19; j++) {
+        db.transaction(tx => {
+          // console.log('inside createRound')
+          tx.executeSql(`
+          INSERT OR REPLACE INTO scores (
+            hole_id,
+            hole_num,
+            round_id,
+            total_shots,
+            total_putts,
+            penalty,
+            driver_direction,
+            approach_rtg,
+            chip_rtg,
+            putt_rtg,
+            date_time
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+        `, [j+1, j+1, i + 5000, Math.round(Math.random() * 10), Math.round(Math.random() * 3), Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)], (txObj, result) => {
+            // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
+            // resolve(result)
+          }, (err, mess) => console.log('err seeding stats', err, mess))
+        })
+
+      }
+      
+    }
+    console.log('ALL SEED DATA LOADED')
+    
+    resolve()
+  }
+  )
+}
+
+export const loadStats = async (user_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    // console.log('inside createRound')
+    // tx.executeSql(`
+    // SELECT * FROM scores;
+    // `, [user_id], (txObj, result) => {
+    //   console.log(`all scores: ${JSON.stringify(result.rows._array)}`)
+    //   // resolve(result)
+    // }, (err, mess) => console.log('err getting scores', mess, err))
+
+    tx.executeSql(`
+    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.end_date DESC LIMIT 10;
+    `, [user_id,], (txObj, result) => {
+      // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
 
   })
+  )
 }
 
 export const setUpDB = () => {

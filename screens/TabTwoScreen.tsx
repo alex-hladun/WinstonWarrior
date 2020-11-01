@@ -14,8 +14,8 @@ const Tab = createMaterialTopTabNavigator();
 export default function TabTwoScreen() {
   return (
     <Tab.Navigator>
-    <Tab.Screen name="Hole" component={Holes} />
     <Tab.Screen name="Trends" component={Trends} />
+    <Tab.Screen name="Hole" component={Holes} />
     <Tab.Screen name="Clubs" component={Clubs} />
     <Tab.Screen name="Rounds" component={Rounds} />
   </Tab.Navigator>

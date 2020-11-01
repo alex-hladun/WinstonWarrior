@@ -6,17 +6,18 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import Hole from '../components/Hole'
 import { Text, View } from '../components/Themed';
 import { AppContext } from '../context/AppContext'
+import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, setUpDB, testDB, removeDB, registerUser, getClubs, createClubs, getScore } from '../db/dbSetup'
+import { createWinston, seedData, setUpDB, loadStats, removeDB, registerUser, getClubs, createClubs, getScore } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
+  const statContext = React.useContext(StatContext)
   const contextState = appContext.value.state
-  // console.log('context in TabOneScreen', context)
-  const [existingRound, setExistingRound] = React.useState(false)
+  // const [existingRound, setExistingRound] = React.useState(false)
   const [initialHole, setInitialHole] = React.useState(1)
 
 
@@ -30,10 +31,10 @@ export default function TabOneScreen() {
       createWinston()
       registerUser('Alex')
       createClubs()
-      // testDB()
-    // } else {
-
+      seedData()
     }
+    retrieveStats()
+
 
     let roundID
 
@@ -98,6 +99,15 @@ export default function TabOneScreen() {
       type: 'set_view_mode',
       data: 'play'
     })
+  }
+
+  const retrieveStats = async() => {
+    const statsArray = await loadStats(1)
+    statContext.dispatch({
+      type: 'set_round_history',
+      data: statsArray
+    })
+
   }
 
   const checkAndRestoreScores = async () => {

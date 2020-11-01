@@ -6,6 +6,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { AppProvider } from './context/AppContext'
 import { PlayProvider } from './context/PlayContext'
+import { StatProvider } from './context/StatContext'
 
 export default function App() {
 
@@ -16,15 +17,15 @@ export default function App() {
     return null;
   } else {
 
-
     return (
       <AppProvider>
         <PlayProvider>
-
-          <SafeAreaProvider >
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-          </SafeAreaProvider>
+          <StatProvider>
+            <SafeAreaProvider >
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </SafeAreaProvider>
+          </StatProvider>
         </PlayProvider>
       </AppProvider>
     );
