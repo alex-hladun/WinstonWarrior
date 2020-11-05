@@ -4,6 +4,7 @@ import { StyleSheet, Easing, TouchableOpacity, Image, TouchableHighlight, Animat
 import styles from '../assets/styles/PlayStyles'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
+import XSymbol from '../assets/svg/XSymbol';
 
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
@@ -29,7 +30,7 @@ const sumBack = obj => {
   return sum
 }
 
-export default function RoundSummary() {
+export default function RoundSummary({handleRoundSummary}) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   let playState = playContext.value.state
@@ -159,8 +160,17 @@ export default function RoundSummary() {
 
   return (
     <>
-      <View style={styles.background}>
+      <View style={styles.backgroundContainer}>
         <Image source={require('../assets/images/vectors/Asset40.png')} style={styles.bgTrophy} />
+        <TouchableOpacity onPress={()=> handleRoundSummary()}>
+
+        <View style={styles.headerContainer}>
+
+        <Text>
+        <XSymbol />
+        </Text>
+        </View>
+        </TouchableOpacity>
         <Text style={styles.header}>
           Final Scores
     </Text>

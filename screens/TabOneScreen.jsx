@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext'
 import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, seedData, setUpDB, loadStats, removeDB, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots } from '../db/dbSetup'
+import { createWinston, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -130,8 +130,33 @@ export default function TabOneScreen() {
 
     // Get counts of birdie, par, eagle for each hole
     const birdieCount = await loadBirds(1, 1, -1)
+    console.log('birdieCount', birdieCount)
+    let birdieObj = {}
+    birdieCount.forEach((hole) => {
+      birdieObj[hole.hole_num] = hole.targetCount
+    })
+    statContext.dispatch({
+      type: 'set_birdies',
+      data: birdieObj
+    })
     const parCount = await loadBirds(1, 1, 0)
+    let parObj = {}
+    parCount.forEach((hole) => {
+      parObj[hole.hole_num] = hole.targetCount
+    })
+    statContext.dispatch({
+      type: 'set_pars',
+      data: parObj
+    })
     const eagleCount = await loadBirds(1, 1, -2)
+    let eagleObj = {}
+    eagleCount.forEach((hole) => {
+      eagleObj[hole.hole_num] = hole.targetCount
+    })
+    statContext.dispatch({
+      type: 'set_eagles',
+      data: eagleObj
+    })
 
     // Get hole history (historical total shots & putts)
     const holeHistory = await loadHoleHistory(1, 1)
@@ -166,6 +191,31 @@ export default function TabOneScreen() {
     statContext.dispatch({
       type: 'set_low_scores',
       data: holeObj
+    })
+
+    const hitFwData = await loadFairwayData(1,1)
+    const allFwData = await loadFairwayDataTotal(1,1)
+    let hitFwObj = {}
+    allFwData.forEach((hole) => {
+      hitFwObj[hole.hole_num] = {
+        totalFairways: hole.total_fairways,
+        driverDirection: hole.driver_direction,
+        approachRtg: hole.approach_rtg,
+        chipRtg: hole.chip_rtg,
+        puttRtg: hole.putt_rtg
+
+      }
+    })
+
+    hitFwData.forEach(hole => {
+      hitFwObj[hole.hole_num] = {...hitFwObj[hole.hole_num], fairwaysHit: hole.total_fairways_hit
+      }
+    })
+
+    console.log('FINal FW OBJ', hitFwObj)
+    statContext.dispatch({
+      type: 'set_fw_data',
+      data: hitFwObj
     })
 
     console.log('ALL STATS SAVED INTO STATSTATE')

@@ -61,7 +61,7 @@ export function Holes({ navigation }) {
             
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Score Avg</Text>
+              <Text style={styles.boxHeader}>Avg Score</Text>
               <Text style={styles.boxContent}>{statState.holes[holeNum].avgShots.toFixed(1)}</Text>
             </View>
             <View style={styles.boxContainer}>
@@ -76,28 +76,28 @@ export function Holes({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Eagles</Text>
-              <Text style={styles.boxContent}>12</Text>
+              <Text style={styles.boxContent}>{statState.eagles[holeNum]}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Birds</Text>
-              <Text style={styles.boxContent}>12</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum]}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Pars</Text>
-              <Text style={styles.boxContent}>3</Text>
-            </View>
+              <Text style={styles.boxContent}>{statState.pars[holeNum]}</Text>
+          </View>
           </View>
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>FWY</Text>
-              <Text style={styles.boxContent}>32%</Text>
+              <Text style={styles.boxContent}>{(100 * statState.fwData[holeNum].fairwaysHit / statState.fwData[holeNum].totalFairways).toFixed(0)}%</Text>
+            </View>
+            <View style={styles.boxContainer}>
+              <Text style={styles.boxHeader}>AVG FW</Text>
+            <Text style={styles.boxContent}>{statState.fwData[holeNum].driverDirection.toFixed(1)}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>GIR</Text>
-              <Text style={styles.boxContent}>22%</Text>
-            </View>
-            <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>U&D</Text>
               <Text style={styles.boxContent}>22%</Text>
             </View>
           </View>

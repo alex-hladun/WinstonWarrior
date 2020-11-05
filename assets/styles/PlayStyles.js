@@ -64,6 +64,17 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
   },
+  headerContainer: {
+    backgroundColor: Theme.red,
+    alignItems: 'center',
+    alignSelf: 'center',
+    paddingTop: 5,
+    marginVertical: 20,
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 100
+  },
   hole: {
     justifyContent: 'center',
     // height: 40,
@@ -156,10 +167,17 @@ export const styles = StyleSheet.create({
     backgroundColor: Theme.spinGreen1,
     flex: 1,
     alignItems: 'center',
+    // paddingTop: 50,
     // paddingTop: 20,
     // width: '100%',
     // height: '100%',
     // position: 'absolute'
+  },
+  backgroundContainer: {
+    backgroundColor: Theme.spinGreen1,
+    flex: 1,
+    alignItems: 'center',
+    paddingTop: 50,
   },
   winstonText: {
     justifyContent: 'center',

@@ -8,6 +8,7 @@ import { Text, View } from './Themed';
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import FlagSymbol from '../assets/svg/FlagSymbol'
 import CheckSymbol from '../assets/svg/CheckSymbol'
+import XSymbol from '../assets/svg/XSymbol'
 import LeftSymbol from '../assets/svg/LeftSymbol'
 import RightSymbol from '../assets/svg/RightSymbol'
 import TargetSymbol from '../assets/svg/TargetSymbol'
@@ -54,7 +55,7 @@ export default function Hole({ location, initialHole = 1 }) {
   useEffect(() => {
     // retrieve and set all scores?
 
-    
+
 
   }, [])
 
@@ -145,6 +146,7 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const handleRoundSummary = () => {
+    console.log('Round Summary Toggle')
     if (holeView) {
       setHoleView(false)
     }
@@ -256,47 +258,63 @@ export default function Hole({ location, initialHole = 1 }) {
     <View style={styles.holeContainer}>
       <Modal animationType="slide" transparent={true} visible={holeView}>
         <View style={holeListStyles.container}>
-          <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
-            X
-      </Text>
+        <TouchableOpacity onPress={() => handleHoleChange()}>
+          
+          <View style={holeListStyles.headerContainer}>
+            <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
+              <XSymbol />
+            </Text>
+          </View>
+          </TouchableOpacity>
           <HoleList setHole={setHole} handleRoundSummary={handleRoundSummary} />
         </View>
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={shotTrackView}>
         <View style={holeListStyles.scoreContainer}>
-          <Text style={holeListStyles.header} onPress={() => handleTrackViewClose()}>
-            X
-      </Text>
+        <TouchableOpacity onPress={() => handleTrackViewClose()}>
+
+          <View style={holeListStyles.headerContainer}>
+
+            <Text style={holeListStyles.header} onPress={() => handleTrackViewClose()}>
+              <XSymbol />
+            </Text>
+          </View>
+          </TouchableOpacity>
           <ShotTrack distance={trackDistance} handleTrackViewClose={() => handleTrackViewClose()} />
         </View>
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreView}>
         <View style={holeListStyles.scoreContainer}>
-          <Text style={holeListStyles.header} onPress={() => handleScoreEnter()}>
-            X
-      </Text>
+        <TouchableOpacity onPress={() => handleScoreEnter()}>
+          <View style={holeListStyles.headerContainer}>
+            <Text style={holeListStyles.header} onPress={() => handleScoreEnter()}>
+              <XSymbol />
+            </Text>
+          </View>
+          </TouchableOpacity>
           <Score holeNum={holeNum} setHole={setHole} />
         </View>
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreCardView}>
-        <View style={holeListStyles.scoreContainer}>
-          <Text style={holeListStyles.header} onPress={() => handleScoreCardEnter()}>
-            X
-      </Text>
-          <ScoreCard holeNum={holeNum} />
-        </View>
+          <ScoreCard holeNum={holeNum} handleScoreCardEnter={handleScoreCardEnter}/>
+        {/* <View style={holeListStyles.scoreContainer}>
+        <TouchableOpacity onPress={() => handleScoreCardEnter()}>
+
+          <View style={holeListStyles.headerContainer}>
+            <Text style={holeListStyles.header} onPress={() => handleScoreCardEnter()}>
+              <XSymbol />
+            </Text>
+          </View>
+          </TouchableOpacity>
+
+        </View> */}
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={endRoundView}>
-        <View style={holeListStyles.scoreContainer}>
-          <Text style={holeListStyles.header} onPress={() => handleRoundSummary()}>
-            X
-      </Text>
-          <RoundSummary />
-        </View>
+          <RoundSummary handleRoundSummary={handleRoundSummary}/>
       </Modal>
 
 

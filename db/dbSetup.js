@@ -269,10 +269,10 @@ export const loadStats = async (user_id) => {
     tx.executeSql(`
     SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date 
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id 
-    WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.end_date DESC LIMIT 10;
+    WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.round_id DESC LIMIT 10;
     `, [user_id,], (txObj, result) => {
       console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array)
+      resolve(result.rows._array.reverse())
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
   })
@@ -285,6 +285,51 @@ export const loadShots = async (user_id) => {
     SELECT * FROM distances;
     `, [], (txObj, result) => {
       console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+
+export const loadFairwayData = async (user_id, course_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT
+    scores.hole_num, COUNT(*) as total_fairways_hit
+    FROM ROUNDS 
+    JOIN scores 
+    ON rounds.round_id = scores.round_id 
+    JOIN holes 
+    ON holes.hole_id = scores.hole_id
+    WHERE rounds.course_id = ? AND rounds.user_id = ? AND scores.driver_direction == 50
+    GROUP BY scores.hole_num
+    ORDER BY scores.hole_num ASC;
+    `, [user_id, course_id], (txObj, result) => {
+      console.log(`all Fairway stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadFairwayDataTotal = async (user_id, course_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT
+    scores.hole_num, COUNT(*) as total_fairways, avg(scores.driver_direction) as driver_direction, avg(scores.approach_rtg) as approach_rtg, avg(scores.chip_rtg) as chip_rtg, avg(scores.putt_rtg) AS putt_rtg
+    FROM ROUNDS 
+    JOIN scores 
+    ON rounds.round_id = scores.round_id 
+    JOIN holes 
+    ON holes.hole_id = scores.hole_id
+    WHERE rounds.course_id = ? AND rounds.user_id = ?
+    GROUP BY scores.hole_num
+    ORDER BY scores.hole_num ASC;
+    `, [user_id, course_id], (txObj, result) => {
+      console.log(`TOTAL FW stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
@@ -344,7 +389,7 @@ export const loadLow = async (course_id, user_id) => {
     GROUP BY scores.hole_num
     ORDER BY scores.hole_num ASC;
     `, [course_id, user_id], (txObj, result) => {
-      console.log(`low hole history: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`low hole history: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
@@ -381,7 +426,11 @@ export const setUpDB = () => {
     tx.executeSql(`
       CREATE TABLE IF NOT EXISTS courses (
         course_id integer PRIMARY KEY AUTOINCREMENT,
-        name text
+        name text,
+        lat varchar,
+        lng varchar, 
+        blue_rtg varchar, 
+        blue_slp varchar
       );
       `, null, null, null)
 

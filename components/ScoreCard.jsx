@@ -6,11 +6,15 @@ import holeInfo from '../assets/holeInfo'
 import db, { getScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
+import XSymbol from '../assets/svg/XSymbol';
 
+const sumValues = obj => {
+  if (obj) {
+    return Object.values(obj).reduce((a, b) => a + b)
+  }
+};
 
-const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
-
-export default function ScoreCard({ holeNum }) {
+export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
   const playContext = React.useContext(PlayContext)
   let playState = playContext.value.state
   const [scoreState, setScoreState] = useState(playState.p1score)
@@ -25,7 +29,7 @@ export default function ScoreCard({ holeNum }) {
   const appContext = React.useContext(AppContext)
   let appState = appContext.value.state
 
-  
+
   useEffect(() => {
     // console.log('playState', playState)
     // get array of user names
@@ -226,7 +230,16 @@ export default function ScoreCard({ holeNum }) {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.backgroundContainer}>
+      <View style={styles.rowContainer}>
+      <TouchableOpacity onPress={() => handleScoreCardEnter()}>
+        <View style={styles.headerContainer}>
+          <Text>
+          <XSymbol />
+          </Text>
+        </View>
+      </TouchableOpacity>
+        </View>
       <View key={`id2`} style={styles.table}>
         <View style={styles.tableChild}>
           <View style={styles.tableRow}>

@@ -102,7 +102,7 @@ export const styles = StyleSheet.create({
   },
   helpLinkText: {
     textAlign: 'center',
-  }, 
+  },
   separator: {
     marginTop: 10,
     height: 1,
@@ -149,8 +149,8 @@ export const styles = StyleSheet.create({
     opacity: 0.89,
   },
   icon: {
-width: 50,
-height: 50
+    width: 50,
+    height: 50
   },
   flag: {
     backgroundColor: Theme.spinGreen2

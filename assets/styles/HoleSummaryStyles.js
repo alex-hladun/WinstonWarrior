@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from '../styles/Theme'
 
 export const styles = StyleSheet.create({
   container: {
@@ -42,7 +43,22 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   header: {
-    fontSize: 20
+    fontSize: 20,
+
+  },
+  headerContainer: {
+    backgroundColor: Theme.red,
+    alignItems: 'center',
+    alignSelf: 'center',
+    paddingTop: 5,
+    zIndex: 3,
+    // position: 'absolute',
+    // top: 500,
+    // marginLeft: 20,
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 100
   },
   hole: {
     justifyContent: 'center',

@@ -179,6 +179,10 @@ const doneRound = () => {
     type: 'set_view_mode',
     data: 'menu'
   })
+  dispatch({
+    type: 'set_hole_num',
+    data: undefined
+  })
 
   AsyncStorage.removeItem('holeNum')
   AsyncStorage.removeItem('roundID')
