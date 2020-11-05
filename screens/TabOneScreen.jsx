@@ -140,6 +140,8 @@ export default function TabOneScreen() {
       data: birdieObj
     })
     const parCount = await loadBirds(1, 1, 0)
+    console.log('parCount', parCount)
+
     let parObj = {}
     parCount.forEach((hole) => {
       parObj[hole.hole_num] = hole.targetCount
@@ -149,6 +151,8 @@ export default function TabOneScreen() {
       data: parObj
     })
     const eagleCount = await loadBirds(1, 1, -2)
+    console.log('eagleCount', eagleCount)
+
     let eagleObj = {}
     eagleCount.forEach((hole) => {
       eagleObj[hole.hole_num] = hole.targetCount

@@ -81,12 +81,12 @@ export const styles = StyleSheet.create({
   invisibleHeader: {
     width: 80,
     height: headerHeight,
+    paddingVertical: 4,
     marginHorizontal: 1,
     marginVertical: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: Theme.spinGreen1,
-
     borderStyle: 'solid',
     borderWidth: 0.5,
     // borderColor: '#a19f9f',
@@ -97,18 +97,17 @@ export const styles = StyleSheet.create({
   
     backgroundColor: Theme.spinGreen,
 
-    marginTop: 350,
+    marginTop: 300,
     transform: [{ rotate: "270deg" }]
   },
   tableChild: {
     flexDirection: 'column',
-    // alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    marginBottom: '10%'
+    marginBottom: '10%',
   },
   tableRow: {
+    backgroundColor: Theme.spinGreen1,
     flexDirection: 'row',
-    // justifyContent: 'space-eve'
   }
 });
 

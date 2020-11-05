@@ -267,9 +267,9 @@ export const loadStats = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date 
+    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id 
-    WHERE rounds.user_id = ? GROUP BY rounds.round_id ORDER BY rounds.round_id DESC LIMIT 10;
+    WHERE rounds.user_id = ? GROUP BY rounds.round_id HAVING count(scores.hole_num) = 19 ORDER BY rounds.round_id DESC LIMIT 10;
     `, [user_id,], (txObj, result) => {
       console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array.reverse())
@@ -399,18 +399,19 @@ export const loadLow = async (course_id, user_id) => {
 export const loadBirds = async (course_id, user_id, targetNum) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT DISTINCT
-    scores.hole_num, count((holes.hole_par - scores.total_shots) == 0) AS pars, count((holes.hole_par - scores.total_shots) == ?) AS targetCount
+    SELECT
+    scores.hole_num, scores.total_shots, holes.hole_par, count((holes.hole_par - scores.total_shots) == 0) AS pars, count((holes.hole_par - scores.total_shots) == ?) AS targetCount
     FROM ROUNDS 
     JOIN scores 
     ON rounds.round_id = scores.round_id 
     JOIN holes 
     ON holes.hole_id = scores.hole_id
-    WHERE rounds.course_id = ? AND rounds.user_id = ? AND (holes.hole_par - scores.total_shots) == -2
-    GROUP BY scores.hole_num
+    WHERE rounds.course_id = ? AND rounds.user_id = ?
+    
+    HAVING (holes.hole_par - scores.total_shots == ?)
     ORDER BY holes.hole_num ASC;
-    `, [targetNum, course_id, user_id], (txObj, result) => {
-      // console.log(`all birdie info: ${JSON.stringify(result.rows._array)}`)
+    `, [targetNum, course_id, user_id,targetNum], (txObj, result) => {
+      // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting birds', reject(mess)))
   })
