@@ -396,21 +396,20 @@ export const loadLow = async (course_id, user_id) => {
   })
   )
 }
-export const loadBirds = async (course_id, user_id, targetNum) => {
+export const loadBirds = async (course_id, user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     SELECT
-    scores.hole_num, scores.total_shots, holes.hole_par, count((holes.hole_par - scores.total_shots) == 0) AS pars, count((holes.hole_par - scores.total_shots) == ?) AS targetCount
-    FROM ROUNDS 
+    scores.hole_num, scores.total_shots, holes.hole_par
+    FROM ROUNDS
     JOIN scores 
     ON rounds.round_id = scores.round_id 
     JOIN holes 
     ON holes.hole_id = scores.hole_id
     WHERE rounds.course_id = ? AND rounds.user_id = ?
-    
-    HAVING (holes.hole_par - scores.total_shots == ?)
+    GROUP BY scores.hole_num
     ORDER BY holes.hole_num ASC;
-    `, [targetNum, course_id, user_id,targetNum], (txObj, result) => {
+    `, [course_id, user_id], (txObj, result) => {
       // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting birds', reject(mess)))

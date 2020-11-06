@@ -129,38 +129,54 @@ export default function TabOneScreen() {
     })
 
     // Get counts of birdie, par, eagle for each hole
-    const birdieCount = await loadBirds(1, 1, -1)
+    const birdieCount = await loadBirds(1, 1)
     console.log('birdieCount', birdieCount)
     let birdieObj = {}
+    for (let i = 1; i <= 18; i++) {
+      birdieObj[i] = {
+        pars: 0,
+        birdies: 0,
+        eagles: 0
+      }
+    }
     birdieCount.forEach((hole) => {
-      birdieObj[hole.hole_num] = hole.targetCount
+      console.log('scoreObj', hole)
+      if (hole.total_shots - hole.hole_par === -1) {
+        birdieObj[hole.hole_num].birdies ++
+      } else if (hole.total_shots - hole.hole_par === 0) {
+        birdieObj[hole.hole_num].pars ++
+      } else if (hole.total_shots - hole.hole_par === -2) {
+        birdieObj[hole.hole_num].eagles ++
+      }
     })
+
+    console.log('BIRDIEOBJ', birdieObj)
     statContext.dispatch({
       type: 'set_birdies',
       data: birdieObj
     })
-    const parCount = await loadBirds(1, 1, 0)
-    console.log('parCount', parCount)
+    // const parCount = await loadBirds(1, 1, 0)
+    // console.log('parCount', parCount)
 
-    let parObj = {}
-    parCount.forEach((hole) => {
-      parObj[hole.hole_num] = hole.targetCount
-    })
-    statContext.dispatch({
-      type: 'set_pars',
-      data: parObj
-    })
-    const eagleCount = await loadBirds(1, 1, -2)
-    console.log('eagleCount', eagleCount)
+    // let parObj = {}
+    // parCount.forEach((hole) => {
+    //   parObj[hole.hole_num] = hole.targetCount
+    // })
+    // statContext.dispatch({
+    //   type: 'set_pars',
+    //   data: parObj
+    // })
+    // const eagleCount = await loadBirds(1, 1, -2)
+    // console.log('eagleCount', eagleCount)
 
-    let eagleObj = {}
-    eagleCount.forEach((hole) => {
-      eagleObj[hole.hole_num] = hole.targetCount
-    })
-    statContext.dispatch({
-      type: 'set_eagles',
-      data: eagleObj
-    })
+    // let eagleObj = {}
+    // eagleCount.forEach((hole) => {
+    //   eagleObj[hole.hole_num] = hole.targetCount
+    // })
+    // statContext.dispatch({
+    //   type: 'set_eagles',
+    //   data: eagleObj
+    // })
 
     // Get hole history (historical total shots & putts)
     const holeHistory = await loadHoleHistory(1, 1)

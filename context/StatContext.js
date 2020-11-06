@@ -33,18 +33,6 @@ const reducer = (state, action) => {
         birdies: action.data
       }
     break;
-    case "set_pars":
-      return {
-        ...state,
-        pars: action.data
-      }
-    break;
-    case "set_eagles":
-      return {
-        ...state,
-        eagles: action.data
-      }
-    break;
     case "set_fw_data":
       return {
         ...state,
@@ -59,8 +47,6 @@ const initialState = {
   holeHistory: {},
   lowScores: {},
   birdies: {},
-  pars: {},
-  eagles: {},
   fwData: {}
 }
 const StatContext = React.createContext(initialState);

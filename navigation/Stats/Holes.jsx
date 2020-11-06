@@ -76,15 +76,15 @@ export function Holes({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Eagles</Text>
-              <Text style={styles.boxContent}>{statState.eagles[holeNum]}</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum].eagles}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Birds</Text>
-              <Text style={styles.boxContent}>{statState.birdies[holeNum]}</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum].birdies}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Pars</Text>
-              <Text style={styles.boxContent}>{statState.pars[holeNum]}</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum].pars}</Text>
           </View>
           </View>
           <View style={styles.holeRow}>
