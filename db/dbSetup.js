@@ -126,6 +126,20 @@ export const postShot = async (user_id, club_id, effort, distance) => {
   })
   )
 }
+export const postRound = async (score, round_id, diff) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    // console.log('inside createRound')
+    tx.executeSql(`
+    UPDATE rounds SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now')
+     WHERE round_id = ?;
+    `, [score, diff, round_id], (txObj, result) => {
+      console.log('Round successfully saved', result.rows._array[0])
+      resolve(result)
+    }, (err, mess) => console.log('err saving shot', reject(mess)))
+
+  })
+  )
+}
 export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
   console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}`)
 
@@ -257,7 +271,6 @@ export const seedData = async () => {
       
     }
     console.log('ALL SEED DATA LOADED')
-    
     resolve()
   }
   )
@@ -504,6 +517,7 @@ export const setUpDB = () => {
     course_id integer,
     user_id integer,
     total_score integer,
+    hcp_diff,
     end_date datetime,
     CONSTRAINT fk_courses
     FOREIGN KEY(course_id)

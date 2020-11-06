@@ -5,6 +5,7 @@ import styles from '../assets/styles/PlayStyles'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
+import { postRound } from '../db/dbSetup'
 
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
@@ -30,10 +31,17 @@ const sumBack = obj => {
   return sum
 }
 
-export default function RoundSummary({handleRoundSummary}) {
+const diffCalc = (score, rtg, slp) => {
+  // (Adjusted Gross Score - Course Rating) X 113 ÷ Slope Rating
+
+  return ((score - rtg) * 113 / slp)
+}
+
+export default function RoundSummary({ handleRoundSummary }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   let playState = playContext.value.state
+  let appState = appContext.value.state
   const [scoreArr, setScoreArr] = useState([])
   const [scoreObj, setScoreObj] = useState({})
   const [p1totalScore, setP1TotalScore] = useState(0)
@@ -41,7 +49,6 @@ export default function RoundSummary({handleRoundSummary}) {
   const [p3totalScore, setP3TotalScore] = useState(0)
   const [p4totalScore, setP4TotalScore] = useState(0)
 
-  let appState = appContext.value.state
 
   useEffect(() => {
     console.log(playState.p1score)
@@ -121,7 +128,6 @@ export default function RoundSummary({handleRoundSummary}) {
         leadScore = sortedArray[i].totalScore
         sortedArray[i]['position'] = position;
       }
-
     console.log('sorted positions', sortedArray)
 
     setScoreArr(sortedArray)
@@ -152,8 +158,7 @@ export default function RoundSummary({handleRoundSummary}) {
   }
 
   const handleScoreSubmit = async () => {
-    console.log(appContext)
-    console.log(playContext)
+    await postRound(sumValues(playState.p1score), appState.round_id, diffCalc(sumValues(playState.p1score), 71.8, 127))
     appContext.value.doneRound()
     playContext.value.doneRound()
   }
@@ -162,14 +167,14 @@ export default function RoundSummary({handleRoundSummary}) {
     <>
       <View style={styles.backgroundContainer}>
         <Image source={require('../assets/images/vectors/Asset40.png')} style={styles.bgTrophy} />
-        <TouchableOpacity onPress={()=> handleRoundSummary()}>
+        <TouchableOpacity onPress={() => handleRoundSummary()}>
 
-        <View style={styles.headerContainer}>
+          <View style={styles.headerContainer}>
 
-        <Text>
-        <XSymbol />
-        </Text>
-        </View>
+            <Text>
+              <XSymbol />
+            </Text>
+          </View>
         </TouchableOpacity>
         <Text style={styles.header}>
           Final Scores

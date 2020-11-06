@@ -102,6 +102,8 @@ const initialState = {
   logged_in: false,
   auth_message : '',
   round_id: undefined,
+  course_slp: undefined,
+  coourse_rtg: undefined,
   user_name: undefined,
   hole_num: undefined,
   hole_id: undefined,
