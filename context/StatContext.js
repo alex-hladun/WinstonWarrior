@@ -39,6 +39,12 @@ const reducer = (state, action) => {
         fwData: action.data
       }
     break;
+    case "set_shot_data":
+      return {
+        ...state,
+        shotData: action.data
+      }
+    break;
   }
 }
 const initialState = {
@@ -47,7 +53,8 @@ const initialState = {
   holeHistory: {},
   lowScores: {},
   birdies: {},
-  fwData: {}
+  fwData: {},
+  shotData: []
 }
 const StatContext = React.createContext(initialState);
 

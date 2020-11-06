@@ -158,26 +158,6 @@ export default function TabOneScreen() {
     // const parCount = await loadBirds(1, 1, 0)
     // console.log('parCount', parCount)
 
-    // let parObj = {}
-    // parCount.forEach((hole) => {
-    //   parObj[hole.hole_num] = hole.targetCount
-    // })
-    // statContext.dispatch({
-    //   type: 'set_pars',
-    //   data: parObj
-    // })
-    // const eagleCount = await loadBirds(1, 1, -2)
-    // console.log('eagleCount', eagleCount)
-
-    // let eagleObj = {}
-    // eagleCount.forEach((hole) => {
-    //   eagleObj[hole.hole_num] = hole.targetCount
-    // })
-    // statContext.dispatch({
-    //   type: 'set_eagles',
-    //   data: eagleObj
-    // })
-
     // Get hole history (historical total shots & putts)
     const holeHistory = await loadHoleHistory(1, 1)
     holeObj = {}
@@ -196,7 +176,12 @@ export default function TabOneScreen() {
     })
 
     // Shot data logic here
-    // const shotData = await loadShots(1)
+    const shotData = await loadShots(1)
+    console.log('ALL SHOTDATA', shotData)
+    statContext.dispatch({
+      type:'set_shot_data',
+      data: shotData
+    })
 
     // Retrieve low
     const lowHoleData = await loadLow(1, 1)

@@ -50,7 +50,6 @@ export function Trends({ navigation }) {
 
   if (data) {
     console.log(data.labels, 'data.LABELS')
-
   }
 
   return (

@@ -20,18 +20,12 @@ export default function TabTwoScreen() {
 
   return (
     <Tab.Navigator>
-    {holeNum && <Tab.Screen name="Hole" component={Holes} />}
-    <Tab.Screen name="Trends" component={Trends} />
+      {holeNum && <Tab.Screen name="Hole" component={Holes} />}
+      <Tab.Screen name="Trends" component={Trends} />
 
-    <Tab.Screen name="Clubs" component={Clubs} />
-    <Tab.Screen name="Rounds" component={Rounds} />
-  </Tab.Navigator>
-
-    // <View style={styles.container}>
-    //   <Text style={styles.title}>Tab Two</Text>
-    //   <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    //   <EditScreenInfo path="/screens/TabTwoScreen.js" />
-    // </View>
+      <Tab.Screen name="Clubs" component={Clubs} />
+      <Tab.Screen name="Rounds" component={Rounds} />
+    </Tab.Navigator>
   );
 }
 

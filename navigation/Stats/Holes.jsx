@@ -6,7 +6,6 @@ import styles from '../../assets/styles/StatStyles'
 import { LineChart } from 'react-native-chart-kit'
 import { Theme } from '../../assets/styles/Theme'
 import { StatContext } from '../../context/StatContext'
-
 import { AppContext } from '../../context/AppContext'
 export function Holes({ navigation }) {
   const appContext = React.useContext(AppContext)
@@ -18,7 +17,6 @@ export function Holes({ navigation }) {
   React.useEffect(() => {
     // console.log('statState', statState.holes)
   }, [])
-
 
   return (
     <>

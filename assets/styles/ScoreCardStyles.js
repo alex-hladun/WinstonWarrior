@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Theme } from './Theme'
 
 const headerHeight = 'auto'
+
+const cellBorder = 0
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -50,6 +52,7 @@ export const styles = StyleSheet.create({
   },
   holeHeader: {
     backgroundColor: 'rgb(14,96,44)',
+    borderRadius: cellBorder,
 
     color: 'white'
   },

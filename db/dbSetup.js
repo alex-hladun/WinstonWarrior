@@ -282,8 +282,43 @@ export const loadShots = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT * FROM distances;
-    `, [], (txObj, result) => {
+    SELECT clubs.name, avg(distance) AS avg, max(distance) AS max, count(*) AS count
+    FROM distances
+    JOIN clubs ON clubs.club_id = distances.club_id
+    WHERE user_id = ?
+    GROUP BY clubs.club_id
+    ORDER BY clubs.club_id ASC;
+    `, [user_id], (txObj, result) => {
+      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadGIRs = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+
+    PUT CODE HERE
+    `, [user_id], (txObj, result) => {
+      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+
+  })
+  )
+}
+export const loadShotHistory = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT distance, effort 
+    FROM distances
+    WHERE user_id = ?
+    ORDER BY date_time DESC
+    `, [user_id], (txObj, result) => {
       console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
