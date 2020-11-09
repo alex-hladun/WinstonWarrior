@@ -13,11 +13,7 @@ export function Clubs({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
 const shotData = statState.shotData
-
-console.log('87SHOT DATAAA', shotData)
-
-
-
+// console.log('87SHOT DATAAA', shotData)
 
   const [clubView, setClubView] = React.useState(false)
   const carRef = React.useRef(null)

@@ -9,7 +9,8 @@ export const Theme = {
   spinGreen3: '#06A10B',
   spinGreen4: '#1D800E',
   ogButtonGreen: "#f3f8ff",
-  chartBackgroundColor: '#e26a00',
-  chartBGGradientFrom: '#fb8c00',
-  chartBGGradientTo: '#ffa726'
+  chartBackgroundColor: '#2D7DD2',
+  chartBGGradientFrom: '#1F5A98',
+  chartBGGradientTo: '#2D7DD2',
+  darkGrey: '33F3F37'
 }

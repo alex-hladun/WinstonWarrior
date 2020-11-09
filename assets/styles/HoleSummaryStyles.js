@@ -12,12 +12,9 @@ export const styles = StyleSheet.create({
     width: 300,
     // height: 475,
     // opacity: 0.75,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 0.5,
     borderRadius: 15,
     padding: 10,
-    // backgroundColor: 'red',
+    backgroundColor: Theme.spinGreen1,
     position: 'absolute',
   },
   scoreContainer: {
@@ -40,7 +37,9 @@ export const styles = StyleSheet.create({
   holeRow: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: Theme.spinGreen1,
+
   },
   header: {
     fontSize: 20,
@@ -60,36 +59,42 @@ export const styles = StyleSheet.create({
     height: 50,
     borderRadius: 100
   },
-  hole: {
-    justifyContent: 'center',
-    // height: 40,
-    maxWidth: 80,
-    minWidth: 70,
-    // backgroundColor: 'green',
-    textAlign: 'center',
+  holebg: {
+    backgroundColor: '#FFF',
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderRadius: 15,
-    // alignSelf: 'center',
     alignItems: 'center',
     padding: 10,
     margin: 10,
     flex: 1
   },
+  hole: {
+    justifyContent: 'center',
+    // height: 40,
+    maxWidth: 80,
+    minWidth: 70,
+    // backgroundColor: '#FFF',
+    textAlign: 'center',
+    // alignSelf: 'center',
+    
+  },
   styledButton: {
     width: 250,
-    backgroundColor: "#f3f8ff",
+    // backgroundColor: "#f3f8ff",
+    backgroundColor: Theme.spinGreen2,
     padding: 10,
     borderColor: "black",
     justifyContent: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
     margin: 10,
     borderRadius: 24,
     alignSelf: 'center'
   },
   playButton: {
-    backgroundColor: '#4c8bd9'
+    backgroundColor: Theme.spinGreen2,
+    // backgroundColor: '#4c8bd9'
   },
   buttonText: {
     textTransform: 'uppercase',
