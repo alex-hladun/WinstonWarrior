@@ -4,24 +4,6 @@ const holeInfo = {
     par: 4,
     distance: 420,
     pinCoords: {
-      latitude: 51.043448,
-      longitude: -114.072521
-    },
-    camera: {
-      center: {
-        latitude: 51.041553,
-        longitude: -114.072797
-      },
-      pitch: 0,
-      heading: 0,
-      altitude: 1500,
-      zoom: 16.5
-    }
-  },
-  2: {
-    par: 4,
-    distance: 420,
-    pinCoords: {
       latitude: 51.078795,
       longitude: -114.046645
     },
@@ -37,7 +19,7 @@ const holeInfo = {
       zoom: 16.90067481994629
     }
   },
-  3: {
+  2: {
     par: 4,
     distance: 420,
     pinCoords: {
@@ -55,7 +37,7 @@ const holeInfo = {
       zoom: 17.196332931518555
     }
   },
-  4: {
+  3: {
     par: 5,
     distance: 520,
     pinCoords: {
@@ -73,7 +55,7 @@ const holeInfo = {
       zoom: 16.68106460571289
     }
   },
-  5: {
+  4: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -91,7 +73,7 @@ const holeInfo = {
       zoom: 17.119640350341797,
     }
   },
-  6: {
+  5: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -109,7 +91,7 @@ const holeInfo = {
       zoom: 17.061800003051758,
     }
   },
-  7: {
+  6: {
     par: 3,
     distance: 520,
     pinCoords: {
@@ -127,7 +109,7 @@ const holeInfo = {
       "zoom": 18.200658798217773,
     }
   },
-  8: {
+  7: {
     par: 5,
     distance: 520,
     pinCoords: {
@@ -145,7 +127,7 @@ const holeInfo = {
       "zoom": 16.926986694335938,
     }
   },
-  9: {
+  8: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -163,7 +145,7 @@ const holeInfo = {
       "zoom": 17.03177261352539,
     }
   },
-  10: {
+  9: {
     par: 3,
     distance: 520,
     pinCoords: {
@@ -181,7 +163,7 @@ const holeInfo = {
       "zoom": 18.03515625,
     }
   },
-  11: {
+  10: {
     par: 5,
     distance: 520,
     pinCoords: {
@@ -199,7 +181,7 @@ const holeInfo = {
       "zoom": 16.70266342163086,
     }
   },
-  12: {
+  11: {
     par: 3,
     distance: 520,
     pinCoords: {
@@ -217,7 +199,7 @@ const holeInfo = {
       "zoom": 18.042125701904297,
     }
   },
-  13: {
+  12: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -235,7 +217,7 @@ const holeInfo = {
       "zoom": 17.619762420654297,
     }
   },
-  14: {
+  13: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -253,7 +235,7 @@ const holeInfo = {
       "zoom": 17.23520851135254,
     }
   },
-  15: {
+  14: {
     par: 5,
     distance: 520,
     pinCoords: {
@@ -271,7 +253,7 @@ const holeInfo = {
       "zoom": 16.57166862487793,
     }
   },
-  16: {
+  15: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -289,7 +271,7 @@ const holeInfo = {
       "zoom": 16.99885368347168,
     }
   },
-  17: {
+  16: {
     par: 4,
     distance: 520,
     pinCoords: {
@@ -307,7 +289,7 @@ const holeInfo = {
       "zoom": 17.002683639526367,
     }
   },
-  18: {
+  17: {
     par: 3,
     distance: 520,
     pinCoords: {
@@ -325,7 +307,7 @@ const holeInfo = {
       "zoom": 17.67271614074707,
     }
   },
-  19: {
+  18: {
     par: 4,
     distance: 520,
     pinCoords: {

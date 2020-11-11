@@ -9,14 +9,13 @@ import { StatContext } from '../../context/StatContext'
 import { AppContext } from '../../context/AppContext'
 import { LinearGradient } from 'expo-linear-gradient';
 
-
+import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
 const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
   const appContext = React.useContext(AppContext)
   const appState = appContext.value.state
-  const clubArray = appState.clubList
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const shotData = statState.shotData
@@ -41,26 +40,24 @@ export function Clubs({ navigation }) {
   const [index, setIndex] = React.useState(0)
 
   const shotDataArray = shotData
-  console.log(shotDataArray)
+  // console.log(shotDataArray)
 
   let clubList;
   if (shotDataArray) {
-    
+
 
     clubList = shotDataArray.map((clb, i) => {
       return (
         <View key={`cl${i}`} style={[clb.club_id === club && styles.selected, styles.club]} >
-              {/* <LinearGradient colors={[Theme.iconStroke, Theme.clubGradientTo]}> */}
-            <TouchableOpacity onPress={() => handleClubSelect(i)}>
-
-          <Text key={`club${i}`}>
-            {clb.name}
+          {/* <LinearGradient colors={[Theme.iconStroke, Theme.clubGradientTo]}> */}
+          <TouchableOpacity onPress={() => handleClubSelect(i)}>
+            <Text key={`club${i}`} style={styles.medTxt}>
+              {clb.name}
+            </Text>
+            <Text key={`clubss${i}`} style={styles.smallTxt}>
+              {clb.avg} yds
           </Text>
-          <Text key={`clubss${i}`}>
-            {clb.avg} yds
-          </Text>
-
-        </TouchableOpacity>
+          </TouchableOpacity>
           {/* </LinearGradient> */}
         </View>
       )
@@ -110,13 +107,23 @@ export function Clubs({ navigation }) {
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
           <Modal animationType="slide" transparent={true} visible={clubView}>
+            <View style={styles.xContainer}>
+              <TouchableOpacity onPress={() => handleClubView()}>
+                <Text>
+                  <XSymbol />
+                </Text>
+              </TouchableOpacity>
+            </View>
             <_clubView />
           </Modal>
           <View style={styles.clubmasterContainer}>
-            <Text onPress={() => handleClubView()}>Open Club list</Text>
-        <View style={styles.clubContainer}>
-            {clubList}
-</View>
+            {/* <Text onPress={() => handleClubView()}>Open Club list</Text> */}
+            <View style={styles.clubContainer}>
+              {shotDataArray[0] ? clubList : 
+              <Text>
+                Save some shots to see your distances!
+              </Text> }
+            </View>
           </View>
         </View>
       </View>

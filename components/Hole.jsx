@@ -163,7 +163,7 @@ export default function Hole({ location, initialHole = 1 }) {
       setScoreView(false)
     }
     console.log('set hole to', num)
-    if (num !== 20) {
+    if (num !== 19) {
       mapRef.current.animateCamera(holeInfo[num].camera)
       console.log(`Setting hole to ${num}`)
       // await setHoleNum(num)
@@ -183,12 +183,11 @@ export default function Hole({ location, initialHole = 1 }) {
       })
     } else {
       handleRoundSummary()
-
     }
   }
 
   const handleHoleInc = () => {
-    if (holeNum !== 19) {
+    if (holeNum !== 18) {
       appContext.dispatch({
         type: 'set_hole_id',
         data: holeNum + 1

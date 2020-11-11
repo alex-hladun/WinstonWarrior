@@ -103,6 +103,7 @@ export default function TabOneScreen() {
 
   const retrieveStats = async() => {
     const statsArray = await loadStats(1)
+    console.log("TabOneScreen -> statsArray with roundHistory", statsArray)
     statContext.dispatch({
       type: 'set_round_history',
       data: statsArray
@@ -113,8 +114,9 @@ export default function TabOneScreen() {
 
     // Get individual TOTAL hole stats
     const holeStats = await loadHoleStats(1, 1)
+    console.log("TabOneScreen -> holeStats", holeStats)
     let holeObj = {}
-    for (let i = 1; i <20; i++) {
+    for (let i = 1; i <= 18; i++) {
       holeObj[i] = {}
     }
 
@@ -139,6 +141,8 @@ export default function TabOneScreen() {
         eagles: 0
       }
     }
+    console.log("TabOneScreen -> birdieObj", birdieObj)
+
     birdieCount.forEach((hole) => {
       console.log('scoreObj', hole)
       if (hole.total_shots - hole.hole_par === -1) {
@@ -161,7 +165,7 @@ export default function TabOneScreen() {
     // Get hole history (historical total shots & putts)
     const holeHistory = await loadHoleHistory(1, 1)
     holeObj = {}
-    for (let i = 1; i <20; i++) {
+    for (let i = 1; i <= 18; i++) {
       holeObj[i] = {score: [], putts: [] }
     }
 
@@ -186,7 +190,7 @@ export default function TabOneScreen() {
     // Retrieve low
     const lowHoleData = await loadLow(1, 1)
     holeObj = {}
-    for (let i = 1; i <20; i++) {
+    for (let i = 1; i <= 18; i++) {
       holeObj[i] = {}
     }
 
@@ -232,9 +236,8 @@ export default function TabOneScreen() {
     const p2roundID = await AsyncStorage.getItem('u2roundid')
     const p3roundID = await AsyncStorage.getItem('u3roundid')
     const p4roundID = await AsyncStorage.getItem('u4roundid')
-    console.log('p2 round iD; ', p2roundID)
     const p1Score = await getScore(JSON.parse(p1roundID))
-
+    
     console.log('p1 score returned should be array', p1Score)
 
     let scoreObj = {}

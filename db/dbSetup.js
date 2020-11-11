@@ -277,13 +277,15 @@ export const seedData = async () => {
 }
 
 export const loadStats = async (user_id) => {
-  // Loads overall user round history
+  // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
   return new Promise((resolve, reject) => db.transaction(tx => {
+
     tx.executeSql(`
-    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played
-    FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id 
-    WHERE rounds.user_id = ? GROUP BY rounds.round_id HAVING count(scores.hole_num) = 19 ORDER BY rounds.round_id DESC LIMIT 10;
-    `, [user_id,], (txObj, result) => {
+    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff
+    FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
+    JOIN courses ON rounds.course_id = courses.course_id
+    WHERE rounds.user_id = ? GROUP BY rounds.round_id HAVING count(scores.hole_num) = 18 ORDER BY rounds.round_id DESC LIMIT 10;
+    `, [user_id], (txObj, result) => {
       console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array.reverse())
     }, (err, mess) => console.log('err getting stats', reject(mess)))
