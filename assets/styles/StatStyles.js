@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '../styles/Theme'
 
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -59,6 +60,30 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center'
+  },
+  club: {
+    justifyContent: 'center',
+    // height: 40,
+    maxWidth: 80,
+    minWidth: 70,
+    // backgroundColor: 'green',
+    textAlign: 'center',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 0.5,
+    borderRadius: 15,
+    // alignSelf: 'center',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    flex: 1
+  },
+  clubContainer: {
+    flexWrap: 'wrap',
+    height: '60%',
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   header: {
     fontSize: 20,
@@ -135,6 +160,19 @@ export const styles = StyleSheet.create({
     padding: 10,
     width: '95%',
     height: 150
+  },
+  clubmasterContainer: {
+    flexDirection: 'column',
+    borderColor: 'black',
+    // borderWidth: 1,
+    alignSelf: 'center',
+    // backgroundColor: Theme.iconStroke,
+    borderRadius: 15,
+    // borderStyle: 'solid',
+    margin: 20,
+    padding: 10,
+    // width: '95%',
+    // height: 150
   },
   boxHeader: {
     textAlign: 'center'

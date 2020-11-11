@@ -12,5 +12,7 @@ export const Theme = {
   chartBackgroundColor: '#2D7DD2',
   chartBGGradientFrom: '#1F5A98',
   chartBGGradientTo: '#2D7DD2',
-  darkGrey: '33F3F37'
+  darkGrey: '33F3F37',
+  clubGradientFrom: '#1F5A98',
+  clubGradientTo: '#2D7DD2',
 }
