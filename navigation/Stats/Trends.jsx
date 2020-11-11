@@ -19,29 +19,39 @@ export function Trends({ navigation }) {
   const [dataChart, setDataChart] = React.useState({})
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
+  // console.log("Trends -> statState", statState)
   const roundHistory = statState.roundHistory
+  console.log("Trends -> roundHistory", roundHistory)
 
   let roundData;
   let data;
   React.useEffect(() => {
-    console.log('roundhistory', roundHistory)
-    if(statState && statState.roundHistory) {
+    console.log("Trends -> roundHistory", roundHistory)
+    if (statState && statState.roundHistory[0]) {
       roundData = roundHistory.map((round) => {
         return (round.total_score)
       })
-  
+
       data = {
         labels: ['test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'],
         datasets: [{
           data: roundData
         }]
       }
-  
+
       setDataChart(data)
       // console.log('roundData', roundData)
       // console.log('data', data)
       setLoading(true)
 
+    } else {
+      data = {
+        labels: ['test'],
+        datasets: [{
+          data: [0]
+        }]
+      }
+      setDataChart(data)
     }
   }, [])
   const handlePress = () => {
@@ -57,11 +67,17 @@ export function Trends({ navigation }) {
       <View style={styles.background}>
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
-         <View style={styles.headerContainer}>
-           <Text style={styles.header}>Scoring</Text>
-           </View>
+          <View style={styles.headerContainer}>
+          {loading && roundHistory[0] ?
+            
+            <Text style={styles.header}>Scoring</Text>
+            :
+            <Text style={styles.header}>
+              Start playing to see your stats!
+            </Text>}
+          </View>
 
-          {loading &&
+          {loading && roundHistory[0] &&
             <LineChart
               data={{
                 labels: roundHistory.map((round, index) => {
@@ -73,7 +89,7 @@ export function Trends({ navigation }) {
                   })
                 }]
               }}
-              width={Dimensions.get('window').width*0.9} // from react-native
+              width={Dimensions.get('window').width * 0.9} // from react-native
               height={220}
               chartConfig={{
                 backgroundColor: Theme.chartBackgroundColor,
@@ -95,7 +111,9 @@ export function Trends({ navigation }) {
             />
             // </View>
           }
-        <View style={styles.holeRow}>
+          {loading && roundHistory[0] &&
+          <>
+          <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
               <Text style={styles.boxContent}>88.3</Text>
@@ -108,8 +126,8 @@ export function Trends({ navigation }) {
               <Text style={styles.boxHeader}>GIRs</Text>
               <Text style={styles.boxContent}>28</Text>
             </View>
-            </View>
-        <View style={styles.holeRow}>
+          </View>
+          <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
               <Text style={styles.boxContent}>22</Text>
@@ -122,8 +140,8 @@ export function Trends({ navigation }) {
               <Text style={styles.boxHeader}>GIRs</Text>
               <Text style={styles.boxContent}>28</Text>
             </View>
-            </View>
-        <View style={styles.holeRow}>
+          </View>
+          <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Eagles</Text>
               <Text style={styles.boxContent}>0</Text>
@@ -136,9 +154,10 @@ export function Trends({ navigation }) {
               <Text style={styles.boxHeader}>Pars</Text>
               <Text style={styles.boxContent}>28</Text>
             </View>
-            </View>
-      </View>
+          </View>
+          </>}
         </View>
+      </View>
     </>
   );
 }

@@ -9,8 +9,10 @@ import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 
 const sumValues = obj => {
-  if (obj) {
+  if (obj[0]) {
     return Object.values(obj).reduce((a, b) => a + b)
+  } else {
+    return 0
   }
 };
 
@@ -51,8 +53,12 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
     // Calculate total scores
     // console.log('playContext', playState)
 
-    let totalScore = sumValues(scoreState)
-    setP1TotalScore(totalScore)
+    if(scoreState) {
+      console.log("ScoreCard -> scoreState", scoreState)
+      let totalScore = sumValues(scoreState)
+      setP1TotalScore(totalScore)
+
+    }
 
     if (appContext.value.state.user_2_name) {
       let ts2 = sumValues(p2scoreState)

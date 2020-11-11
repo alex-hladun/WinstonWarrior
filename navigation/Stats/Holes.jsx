@@ -27,7 +27,7 @@ export function Holes({ navigation }) {
             <Text style={styles.header}>Hole {holeNum}</Text>
           </View>
 
-          {holeNum && statState ?
+          {holeNum && statState && statState.holeHistory[holeNum] ?
           <>
             <LineChart
               data={{
@@ -74,7 +74,7 @@ export function Holes({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Eagles</Text>
-              <Text style={styles.boxContent}>{statState.birdies[holeNum].eagles}</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum].eagles ? statState.birdies[holeNum].eagles : 0 }</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Birds</Text>
@@ -102,7 +102,7 @@ export function Holes({ navigation }) {
           </>
           :
           <View style={styles.chartContainer}>
-              <Text>Start a round to see hole stats</Text>
+              <Text>Play a round to see hole stats</Text>
             </View>
           }
         </View>
