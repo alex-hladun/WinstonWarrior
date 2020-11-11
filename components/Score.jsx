@@ -117,7 +117,6 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
     <>
       <View style={styles.backgroundContainer}>
       <Image source={require('../assets/images/vectors/Asset37.png')} style={styles.bgImage} />
-
         <TouchableOpacity onPress={() => handleScoreEnter()}>
           <View style={styles.exitHeader}>
             <Text style={{alignSelf: 'center'}}>

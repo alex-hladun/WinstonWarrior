@@ -170,6 +170,8 @@ export default function TabOneScreen() {
     }
 
     holeHistory.forEach((hole) => {
+    console.log("TabOneScreen -> hole history", hole)
+      
       holeObj[hole.hole_num].score.push(hole.total_shots)
       holeObj[hole.hole_num].putts.push(hole.total_putts)
 

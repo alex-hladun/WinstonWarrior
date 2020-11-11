@@ -8,7 +8,7 @@ import { StatContext } from '../../context/StatContext'
 
 const RoundItem = ({round}) => {
   
-  console.log('round in RoundItem', round.item)
+  // console.log('round in RoundItem', round.item)
   
   return(
   <View style={styles.roundItem}>
@@ -30,8 +30,8 @@ const RoundItem = ({round}) => {
 export function Rounds({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
-  const roundHistory = statState.roundHistory
-  console.log("Trends -> roundHistory", roundHistory)
+  const roundHistory = statState.roundHistory.reverse()
+  // console.log("Trends -> roundHistory", roundHistory)
 
 const renderItem = (round) => {
   // console.log('Render item in Rounds.js', round)

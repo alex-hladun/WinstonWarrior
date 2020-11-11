@@ -450,14 +450,13 @@ export const loadBirds = async (course_id, user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     SELECT
-    scores.hole_num, scores.total_shots, holes.hole_par
+    scores.hole_num, scores.total_shots, holes.hole_par, scores.total_putts
     FROM ROUNDS
     JOIN scores 
     ON rounds.round_id = scores.round_id 
     JOIN holes 
     ON holes.hole_id = scores.hole_id
     WHERE rounds.course_id = ? AND rounds.user_id = ?
-    GROUP BY scores.hole_num
     ORDER BY holes.hole_num ASC;
     `, [course_id, user_id], (txObj, result) => {
       // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
