@@ -5,55 +5,41 @@ const headerHeight = 'auto'
 
 const cellBorder = 0
 export const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   backgroundContainer: {
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-    // alignItems: 'center',
-    flexDirection: 'column',
-    // alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    // paddingTop: 300,
+    // flexDirection: 'column',
+    // justifyContent: 'center',
   },
   rowContainer: {
     backgroundColor: Theme.spinGreen1,
-
-    // top: -400,
-    // width: '100%',
     paddingTop: 20,
-    // marginVertical: 20,
     alignSelf: 'center',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // transform: [{ rotate: "-270deg" }]
-
-
+  },
+  bgImage: {
+    flex: 1,
+    width: '150%',
+    // height: '50%',
+    left: '15%',
+    top: '-15%',
+    position: 'absolute',
+    // zIndex: 10,
+    opacity: 0.2,
+    resizeMode: 'contain',
   },
   headerContainer: {
     backgroundColor: Theme.red,
     alignItems: 'center',
-    // alignSelf: 'center',
     paddingTop: 5,
-    // zIndex: 20,
-    // top: 200,
-    // left: 200,
-    // position: 'absolute',
-    // marginVertical: 20,
-    // justifyContent: 'center',
     margin: 20,
     width: 50,
     height: 50,
-    borderRadius: 100
+    borderRadius: 100,
+    // marginBottom: 2
   },
   holeHeader: {
     backgroundColor: 'rgb(14,96,44)',
     borderRadius: cellBorder,
-
     color: 'white'
   },
   parCell: {
@@ -68,9 +54,7 @@ export const styles = StyleSheet.create({
     height: headerHeight,
     justifyContent: 'center',
     alignItems: 'center',
-    // borderColor: '#a19f9f',
     borderColor: Theme.spinGreen1,
-
     borderStyle: 'solid',
     borderWidth: 0.5,
     marginHorizontal: 0.3,
@@ -78,8 +62,6 @@ export const styles = StyleSheet.create({
   },
   score: {
     fontWeight: 'bold',
-    
-    // backgroundColor: 
   },
   invisibleHeader: {
     width: 80,
@@ -92,21 +74,24 @@ export const styles = StyleSheet.create({
     borderColor: Theme.spinGreen1,
     borderStyle: 'solid',
     borderWidth: 0.5,
-    // borderColor: '#a19f9f',
-    // borderStyle: 'solid',
-    // borderWidth: 0.5,
   },
   table: {
-  
-    backgroundColor: Theme.spinGreen,
-
-    marginTop: 300,
+    backgroundColor: 'transparent',
+    width: '90%',
+    height: '90%',
+    marginTop: 100,
+    // left: 20,
+    // marginLeft: 30,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    // paddingTop: 40,
+    // paddingRight: 20,
     transform: [{ rotate: "270deg" }]
   },
   tableChild: {
-    flexDirection: 'column',
+    // flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginBottom: '10%',
+    marginBottom: 20,
   },
   tableRow: {
     backgroundColor: Theme.spinGreen1,

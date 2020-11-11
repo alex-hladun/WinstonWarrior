@@ -37,18 +37,11 @@ export const styles = StyleSheet.create({
   },
   homePageContainer: {
     flex: 1,
-    // zIndex: 4,
-    // backgroundColor: Theme.spinGreen1,
     alignSelf: 'center',
     justifyContent: 'flex-start',
     paddingTop: 0,
     width: '100%',
     height: '100%',
-    // opacity: 0.75,
-    // borderColor: 'black',
-    // borderStyle: 'solid',
-    // borderWidth: 0.5,
-    // borderRadius: 15,
     padding: 10,
     // backgroundColor: 'red',
     position: 'absolute',
@@ -76,23 +69,28 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   club: {
-    height: 80,
-    width: 100,
-    backgroundColor: Theme.spinGreen3,
-    color: 'white',
-    textAlign: 'center',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderRadius: 15,
+    height: 100,
+    width: '30%',
+    borderWidth: 2,
     padding: 10,
-    margin: 10,
+    backgroundColor: Theme.iconStroke,
+    color: Theme.spinGreen4,
+    justifyContent: 'center',
+    textAlign: 'center',
+    borderStyle: 'solid',
+    borderColor: Theme.spinGreen4,
+    borderBottomWidth: 4,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    margin: 5,
     // flex: 1
   },
   clubContainer: {
+    // width: '95%',
     flexWrap: 'wrap',
     // height: '60%',
     margin: 10,
-    // flexDirection: 'row',
+    flexDirection: 'row',
     justifyContent: 'flex-start'
   },
   header: {
@@ -148,14 +146,24 @@ export const styles = StyleSheet.create({
   },
   boxContainer: {
     flexDirection: 'column',
-    borderColor: 'black',
+    // borderColor: 'black',
     // borderWidth: 1,
     backgroundColor: Theme.iconStroke,
-    borderRadius: 15,
+    // borderRadius: 15,
     // borderStyle: 'solid',
     padding: 10,
     margin: 5,
     width: 100,
+
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: Theme.spinGreen4,
+    borderBottomWidth: 4,
+    // backgroundColor: 'white',
+    borderRadius: 20,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    // flexDirection: 'row'
     // height: 150
   },
   chartContainer: {
@@ -171,8 +179,9 @@ export const styles = StyleSheet.create({
     width: '95%',
     height: 150
   },
-  clubmasterContainer: {
+  clubMasterContainer: {
     alignSelf: 'center',
+    width: '100%'
   },
   boxHeader: {
     textAlign: 'center'
@@ -222,13 +231,14 @@ export const styles = StyleSheet.create({
     // fontFamily: 'tacoma'
   },
   medTxt: {
-    color: 'white',
+    color: Theme.spinGreen4,
     fontSize: 30,
     textAlign: 'center'
     // fontFamily: 'tacoma'
   },
   smallTxt: {
-    color: 'white',
+    color: Theme.spinGreen4,
+
     fontSize: 20,
     textAlign: 'center'
     // fontFamily: 'tacoma'
@@ -258,7 +268,7 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 20,
     margin: 10,
-    width: '90%',
+    width: '97%',
     borderStyle: 'solid',
     borderColor: Theme.spinGreen4,
     borderBottomWidth: 4,

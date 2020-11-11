@@ -38,16 +38,7 @@ export function Home({ navigation }) {
                 <Text style={styles.boxContent}>74</Text>
               </View>
             </View>
-            <View style={styles.holeRow}>
-              <View style={styles.boxContainer}>
-                <Text style={styles.boxHeader}>FWY</Text>
-                <Text style={styles.boxContent}>32%</Text>
-              </View>
-              <View style={styles.boxContainer}>
-                <Text style={styles.boxHeader}>Avg Putts</Text>
-                <Text style={styles.boxContent}>1.7</Text>
-              </View>
-            </View>
+          
             <View style={[styles.styledButton, styles.playButton]}>
               <Text onPress={() => handlePress()} style={styles.buttonText}>Play Now</Text>
             </View>

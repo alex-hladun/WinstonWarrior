@@ -120,11 +120,12 @@ export const styles = StyleSheet.create({
     borderColor: 'black',
     // borderWidth: 1,
     backgroundColor: Theme.iconStroke,
-    borderRadius: 15,
+    borderRadius: 100,
     // borderStyle: 'solid',
     padding: 10,
     width: 120,
-    // height: 150
+    height: 120,
+    justifyContent: 'center'
   },
   boxHeader: {
     textAlign: 'center'

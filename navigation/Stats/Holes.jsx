@@ -40,8 +40,8 @@ export function Holes({ navigation }) {
               height={220}
               chartConfig={{
                 backgroundColor: Theme.chartBackgroundColor,
-                backgroundGradientFrom: Theme.chartBGGradientFrom,
-                backgroundGradientTo: Theme.chartBGGradientTo,
+                backgroundGradientFrom: Theme.holeBGGFrom,
+                backgroundGradientTo: Theme.holeBGGTo,
                 decimalPlaces: 0, // optional, defaults to 2dp
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {

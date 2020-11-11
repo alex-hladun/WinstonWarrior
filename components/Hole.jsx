@@ -285,31 +285,20 @@ export default function Hole({ location, initialHole = 1 }) {
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreView}>
-        <View style={holeListStyles.scoreContainer}>
+        {/* <View style={holeListStyles.scoreContainer}>
         <TouchableOpacity onPress={() => handleScoreEnter()}>
           <View style={holeListStyles.headerContainer}>
             <Text style={holeListStyles.header} onPress={() => handleScoreEnter()}>
               <XSymbol />
             </Text>
           </View>
-          </TouchableOpacity>
-          <Score holeNum={holeNum} setHole={setHole} />
-        </View>
+          </TouchableOpacity> */}
+          <Score holeNum={holeNum} setHole={setHole} handleScoreEnter={handleScoreEnter} />
+        {/* </View> */}
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreCardView}>
           <ScoreCard holeNum={holeNum} handleScoreCardEnter={handleScoreCardEnter}/>
-        {/* <View style={holeListStyles.scoreContainer}>
-        <TouchableOpacity onPress={() => handleScoreCardEnter()}>
-
-          <View style={holeListStyles.headerContainer}>
-            <Text style={holeListStyles.header} onPress={() => handleScoreCardEnter()}>
-              <XSymbol />
-            </Text>
-          </View>
-          </TouchableOpacity>
-
-        </View> */}
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={endRoundView}>
@@ -349,7 +338,7 @@ export default function Hole({ location, initialHole = 1 }) {
       >
         <Marker
           coordinate={location}
-          title={'Alex Loc'}
+          title={'User Loc'}
           description={'A full description'}
           pinColor={'#FFFFFF'}
           style={styles.customMarker}>

@@ -9,8 +9,11 @@ import CheckSymbol from '../assets/svg/CheckSymbol'
 import db, { getScore, getUsers, postScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
+import XSymbol from '../assets/svg/XSymbol';
+import { Theme } from '../assets/styles/Theme'
 
-export default function Score({ holeNum, setHole }) {
+
+export default function Score({ holeNum, setHole, handleScoreEnter }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   let playState = playContext.value.state
@@ -112,12 +115,21 @@ export default function Score({ holeNum, setHole }) {
 
   return (
     <>
-      <View style={styles.pickerContainer}>
-        <View style={[styles.holeHeader]}>
-          <Text style={styles.holeNumber}>
-          Hole {holeNum}
+      <View style={styles.backgroundContainer}>
+      <Image source={require('../assets/images/vectors/Asset37.png')} style={styles.bgImage} />
+
+        <TouchableOpacity onPress={() => handleScoreEnter()}>
+          <View style={styles.exitHeader}>
+            <Text style={{alignSelf: 'center'}}>
+              <XSymbol />
             </Text>
           </View>
+        </TouchableOpacity>
+        <View style={[styles.holeHeader]}>
+          <Text style={styles.holeNumber}>
+            Hole {holeNum}
+          </Text>
+        </View>
         <View style={[styles.scoreHeader]}>
           <Text style={styles.header}>
             {playerArray[0]}
@@ -133,7 +145,7 @@ export default function Score({ holeNum, setHole }) {
         <View style={styles.pickerRow}>
 
           <Picker
-            style={[{ height: 200, width: pickWidth }]}
+            style={styles.pickerMaster}
             onValueChange={(itemValue, itemIndex) => {
               setScore(itemValue)
             }
@@ -152,7 +164,7 @@ export default function Score({ holeNum, setHole }) {
           </Picker>
 
           <Picker
-            style={{ height: 200, width: pickWidth }}
+            style={styles.pickerMaster}
             onValueChange={(itemValue, itemIndex) => {
               setPutts(itemValue)
             }
@@ -167,7 +179,7 @@ export default function Score({ holeNum, setHole }) {
             <Picker.Item label="5+" value={5} />
           </Picker>
           <Picker
-            style={{ height: 200, width: pickWidth }}
+            style={styles.pickerMaster}
             onValueChange={(itemValue, itemIndex) => {
               setPenalty(itemValue)
             }
@@ -184,7 +196,7 @@ export default function Score({ holeNum, setHole }) {
 
           {appState.user_2_name &&
             <Picker
-              style={[{ height: 200, width: pickWidth }]}
+              style={styles.pickerMaster}
               onValueChange={(itemValue, itemIndex) => {
                 setP2Score(itemValue)
               }
@@ -205,7 +217,7 @@ export default function Score({ holeNum, setHole }) {
 
           {appState.user_3_name &&
             <Picker
-              style={[{ height: 200, width: pickWidth }]}
+              style={styles.pickerMaster}
               onValueChange={(itemValue, itemIndex) => {
                 setP3Score(itemValue)
               }
@@ -254,8 +266,10 @@ export default function Score({ holeNum, setHole }) {
             style={{ width: 250, height: 40 }}
             minimumValue={0}
             maximumValue={100}
+            thumbTintColor={Theme.spinGreen3}
             minimumTrackTintColor="#000000"
             maximumTrackTintColor="#000000"
+
             value={teeShot}
             step={25}
             onSlidingStart={(val) => setTeeShot(val)}
@@ -272,7 +286,7 @@ export default function Score({ holeNum, setHole }) {
             Right
         </Text>
         </View>
-        <View style={[styles.pickerHeader, { marginTop: 40 }]}>
+        {/* <View style={[styles.pickerHeader, { marginTop: 40 }]}>
           <Text>
             Approach
         </Text>
@@ -283,6 +297,7 @@ export default function Score({ holeNum, setHole }) {
             style={{ width: 250, height: 40 }}
             minimumValue={0}
             maximumValue={100}
+            thumbTintColor={Theme.spinGreen3}
             minimumTrackTintColor="#4dc951"
             maximumTrackTintColor="#000000"
             value={approach}
@@ -303,7 +318,7 @@ export default function Score({ holeNum, setHole }) {
             minimumTrackTintColor="#4dc951"
             maximumTrackTintColor="#000000"
             value={chip}
-            // step={0.25}
+            thumbTintColor={Theme.spinGreen3}
             onSlidingStart={(val) => setChip(val)}
           />
         </View>
@@ -320,10 +335,11 @@ export default function Score({ holeNum, setHole }) {
             minimumTrackTintColor="#4dc951"
             maximumTrackTintColor="#000000"
             value={putting}
+            thumbTintColor={Theme.spinGreen3}
             // step={0.25}
             onSlidingStart={(val) => setPutting(val)}
           />
-        </View>
+        </View> */}
         <View style={styles.pickerHeader}>
           <TouchableHighlight onPress={(event) => handleScoreSubmit()}>
             <View style={[styles.checkSymbol]}>

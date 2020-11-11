@@ -37,18 +37,14 @@ export function Clubs({ navigation }) {
     setClubView(!clubView)
   }
 
-  const [index, setIndex] = React.useState(0)
+
 
   const shotDataArray = shotData
-  // console.log(shotDataArray)
-
   let clubList;
   if (shotDataArray) {
-
-
     clubList = shotDataArray.map((clb, i) => {
       return (
-        <View key={`cl${i}`} style={[clb.club_id === club && styles.selected, styles.club]} >
+        <View key={`cl${i}`} style={[styles.club]} >
           {/* <LinearGradient colors={[Theme.iconStroke, Theme.clubGradientTo]}> */}
           <TouchableOpacity onPress={() => handleClubSelect(i)}>
             <Text key={`club${i}`} style={styles.medTxt}>
@@ -106,6 +102,7 @@ export function Clubs({ navigation }) {
       <View style={styles.background}>
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
+
           <Modal animationType="slide" transparent={true} visible={clubView}>
             <View style={styles.xContainer}>
               <TouchableOpacity onPress={() => handleClubView()}>
@@ -116,8 +113,8 @@ export function Clubs({ navigation }) {
             </View>
             <_clubView />
           </Modal>
-          <View style={styles.clubmasterContainer}>
-            {/* <Text onPress={() => handleClubView()}>Open Club list</Text> */}
+
+          {/* <View style={styles.clubMasterContainer}> */}
             <View style={styles.clubContainer}>
               {shotDataArray[0] ? clubList : 
               <Text>
@@ -125,7 +122,7 @@ export function Clubs({ navigation }) {
               </Text> }
             </View>
           </View>
-        </View>
+        {/* </View> */}
       </View>
     </>
   );

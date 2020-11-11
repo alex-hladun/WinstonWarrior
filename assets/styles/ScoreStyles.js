@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     zIndex: 4,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     alignSelf: 'center',
     top: 100,
     width: 300,
@@ -18,6 +18,14 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'red',
     position: 'absolute',
   },
+  backgroundContainer: {
+    // marginTop: 5,
+    backgroundColor: Theme.spinGreen1,
+    flex: 1,
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
   pickerContainer: {
     flexDirection: 'column',
     justifyContent: 'space-evenly'
@@ -29,15 +37,36 @@ export const styles = StyleSheet.create({
     transform: [{ rotate: "-45deg" }],
     width: 50,
     paddingVertical: 10,
+    backgroundColor: Theme.spinGreen1,
     // margin: 10,
     textAlign: 'center',
 
+  },
+  exitHeader: {
+    // marginTop: 50,
+    // justifyContent: 'space-evenly',
+    // flexDirection: 'row',
+    // // marginHorizontal: 20,
+    // textAlign: 'center',
+    // backgroundColor: Theme.spinGreen1
+
+    backgroundColor: Theme.red,
+    alignSelf: 'center',
+    justifyContent: 'center',
+
+    paddingTop: 5,
+    marginTop: 50,
+    marginBottom: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 100
   },
   scoreHeader: {
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     // marginHorizontal: 20,
     textAlign: 'center',
+    backgroundColor: Theme.spinGreen1
 
   },
   holeHeader: {
@@ -45,7 +74,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     marginBottom: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    backgroundColor: 'transparent'
+
   },
   holeNumber: {
     fontSize: 20,
@@ -57,30 +88,49 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    marginTop: 5
+    marginVertical: 10,
+    backgroundColor: 'transparent'
+
+
   },
   pickerRow: {
     justifyContent: 'space-evenly',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: 'transparent'
   },
   pickerStyle: {
     color: 'red',
     backgroundColor: 'orange'
   },
-  checkSymbol: {
+  pickerMaster: {
+    // backgroundColor: Theme.spinGreen1,
     width: 50,
-    height: 50,
+    height: 200
+  },
+  bgImage: {
+    flex: 1,
+    width: '120%',
+    // height: '50%',
+    left: '10%',
+    bottom: '-90%',
+    position: 'absolute',
+    // zIndex: 10,
+    opacity: 0.08,
+    resizeMode: 'contain',
+  },
+  checkSymbol: {
+    width: 70,
+    height: 70,
     marginTop: 10,
-
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 5,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 2,
+    // borderColor: 'black',
+    // borderStyle: 'solid',
+    // borderWidth: 2,
     borderRadius: 100,
     opacity: 0.85,
-    color: '#4dc951',
+    backgroundColor: Theme.spinGreen3,
   },
   distanceHeader: {
     fontSize: 20,

@@ -9,7 +9,8 @@ import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 
 const sumValues = obj => {
-  if (obj[0]) {
+  console.log("obj", obj)
+  if (Object.keys(obj).length) {
     return Object.values(obj).reduce((a, b) => a + b)
   } else {
     return 0
@@ -237,6 +238,8 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
 
   return (
     <View style={styles.backgroundContainer}>
+      <Image source={require('../assets/images/vectors/Asset35.png')} style={styles.bgImage} />
+
       <View style={styles.rowContainer}>
       <TouchableOpacity onPress={() => handleScoreCardEnter()}>
         <View style={styles.headerContainer}>
