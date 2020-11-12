@@ -146,25 +146,31 @@ export const styles = StyleSheet.create({
   },
   boxContainer: {
     flexDirection: 'column',
-    // borderColor: 'black',
-    // borderWidth: 1,
     backgroundColor: Theme.iconStroke,
-    // borderRadius: 15,
-    // borderStyle: 'solid',
     padding: 10,
     margin: 5,
     width: 100,
-
     borderWidth: 2,
     borderStyle: 'solid',
     borderColor: Theme.spinGreen4,
     borderBottomWidth: 4,
-    // backgroundColor: 'white',
     borderRadius: 20,
     alignSelf: 'center',
     justifyContent: 'space-between',
-    // flexDirection: 'row'
-    // height: 150
+  },
+  trendContainer: {
+    flexDirection: 'column',
+    backgroundColor: Theme.iconStroke,
+    padding: 10,
+    margin: 5,
+    width: 100,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: Theme.chartBGGradientFrom,
+    borderBottomWidth: 4,
+    borderRadius: 20,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
   },
   chartContainer: {
     flexDirection: 'column',
@@ -267,7 +273,7 @@ export const styles = StyleSheet.create({
   roundItem: {
     borderWidth: 2,
     padding: 20,
-    margin: 10,
+    margin: 6,
     width: '97%',
     borderStyle: 'solid',
     borderColor: Theme.spinGreen4,

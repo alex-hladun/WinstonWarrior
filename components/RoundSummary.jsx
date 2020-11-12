@@ -5,7 +5,8 @@ import styles from '../assets/styles/PlayStyles'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
-import { postRound } from '../db/dbSetup'
+import { getPct, postRound } from '../db/dbSetup'
+
 
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
@@ -158,7 +159,10 @@ export default function RoundSummary({ handleRoundSummary }) {
   }
 
   const handleScoreSubmit = async () => {
-    await postRound(sumValues(playState.p1score), appState.round_id, diffCalc(sumValues(playState.p1score), 71.8, 127))
+    // const pctObj = await getPct(appState.round_id)
+
+// FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
+    await postRound(sumValues(playState.p1score), appState.round_id, diffCalc(sumValues(playState.p1score), 71.8, 127), 30, 20, 20)
     appContext.value.doneRound()
     playContext.value.doneRound()
   }

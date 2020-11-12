@@ -121,6 +121,11 @@ export const styles = StyleSheet.create({
     // borderWidth: 1,
     backgroundColor: Theme.iconStroke,
     borderRadius: 100,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'black',
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
     // borderStyle: 'solid',
     padding: 10,
     width: 120,
@@ -168,11 +173,6 @@ export const styles = StyleSheet.create({
     backgroundColor: Theme.spinGreen1,
     flex: 1,
     alignItems: 'center',
-    // paddingTop: 50,
-    // paddingTop: 20,
-    // width: '100%',
-    // height: '100%',
-    // position: 'absolute'
   },
   backgroundContainer: {
     backgroundColor: Theme.spinGreen1,
@@ -191,7 +191,6 @@ export const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontSize: 40,
-    // fontFamily: 'tacoma'
   },
   styledButton: {
     width: 250,
@@ -199,7 +198,6 @@ export const styles = StyleSheet.create({
     padding: 15,
     borderColor: "#f3f8ff",
     justifyContent: 'center',
-    // borderWidth: 1,
     margin: 20,
     borderRadius: 24,
     alignSelf: 'center'
@@ -212,7 +210,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     letterSpacing: 3,
-    // color: "#f4f4f4"
   },
   scoreContent: {
     textAlign: 'center',

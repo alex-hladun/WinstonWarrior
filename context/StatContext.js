@@ -45,10 +45,17 @@ const reducer = (state, action) => {
         shotData: action.data
       }
     break;
+    case "set_total_info":
+      return {
+        ...state,
+        totalInfo: action.data
+      }
+    break;
   }
 }
 const initialState = {
   roundHistory: [],
+  totalInfo: {},
   holes: {},
   holeHistory: {},
   lowScores: {},

@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext'
 import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal } from '../db/dbSetup'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -17,12 +17,11 @@ export default function TabOneScreen() {
   const playContext = React.useContext(PlayContext)
   const statContext = React.useContext(StatContext)
   const contextState = appContext.value.state
-  // const [existingRound, setExistingRound] = React.useState(false)
   const [initialHole, setInitialHole] = React.useState(1)
 
 
   React.useEffect(() => {
-    
+
     let reset = false;
     if (reset) {
       console.log('resetting DB SHOULD ONLY RUN ONCE')
@@ -39,7 +38,7 @@ export default function TabOneScreen() {
     let roundID
 
     const checkExisting = async () => {
-      console.log('checking existing round')
+      // console.log('checking existing round')
       try {
         roundID = await AsyncStorage.getItem('roundID')
         if (roundID) {
@@ -80,7 +79,7 @@ export default function TabOneScreen() {
         type: 'set_club_list',
         data: clubs
       })
-      console.log('clubs set')
+      // console.log('clubs set')
     }
 
     checkExisting()
@@ -101,9 +100,9 @@ export default function TabOneScreen() {
     })
   }
 
-  const retrieveStats = async() => {
+  const retrieveStats = async () => {
     const statsArray = await loadStats(1)
-    console.log("TabOneScreen -> statsArray with roundHistory", statsArray)
+    // console.log("TabOneScreen -> statsArray with roundHistory", statsArray)
     statContext.dispatch({
       type: 'set_round_history',
       data: statsArray
@@ -114,7 +113,7 @@ export default function TabOneScreen() {
 
     // Get individual TOTAL hole stats
     const holeStats = await loadHoleStats(1, 1)
-    console.log("TabOneScreen -> holeStats", holeStats)
+    // console.log("TabOneScreen -> holeStats", holeStats)
     let holeObj = {}
     for (let i = 1; i <= 18; i++) {
       holeObj[i] = {}
@@ -132,46 +131,60 @@ export default function TabOneScreen() {
 
     // Get counts of birdie, par, eagle for each hole
     const birdieCount = await loadBirds(1, 1)
-    console.log('birdieCount', birdieCount)
+    // console.log('birdieCount', birdieCount)
     let birdieObj = {}
     for (let i = 1; i <= 18; i++) {
       birdieObj[i] = {
         pars: 0,
         birdies: 0,
-        eagles: 0
+        eagles: 0,
+        rounds: 0,
+        GIRs: 0
       }
     }
-    console.log("TabOneScreen -> birdieObj", birdieObj)
+
+    const totalBirds = {
+      eagles: 0,
+      birdies: 0,
+      pars: 0
+    }
 
     birdieCount.forEach((hole) => {
-      console.log('scoreObj', hole)
+      // console.log('scoreObj', hole)
+      birdieObj[hole.hole_num].rounds++
+
       if (hole.total_shots - hole.hole_par === -1) {
-        birdieObj[hole.hole_num].birdies ++
+        birdieObj[hole.hole_num].birdies++
+        totalBirds.birdies ++
       } else if (hole.total_shots - hole.hole_par === 0) {
-        birdieObj[hole.hole_num].pars ++
+        birdieObj[hole.hole_num].pars++
+        totalBirds.pars ++
       } else if (hole.total_shots - hole.hole_par === -2) {
-        birdieObj[hole.hole_num].eagles ++
+        birdieObj[hole.hole_num].eagles++
+        totalBirds.eagles ++
+      }
+
+      if ((hole.total_shots - hole.total_putts + 2) <= hole.hole_par) {
+        birdieObj[hole.hole_num].GIRs++
+
       }
     })
 
-    console.log('BIRDIEOBJ', birdieObj)
     statContext.dispatch({
       type: 'set_birdies',
       data: birdieObj
     })
-    // const parCount = await loadBirds(1, 1, 0)
-    // console.log('parCount', parCount)
 
     // Get hole history (historical total shots & putts)
     const holeHistory = await loadHoleHistory(1, 1)
     holeObj = {}
     for (let i = 1; i <= 18; i++) {
-      holeObj[i] = {score: [], putts: [] }
+      holeObj[i] = { score: [], putts: [] }
     }
 
     holeHistory.forEach((hole) => {
-    console.log("TabOneScreen -> hole history", hole)
-      
+      // console.log("TabOneScreen -> hole history", hole)
+
       holeObj[hole.hole_num].score.push(hole.total_shots)
       holeObj[hole.hole_num].putts.push(hole.total_putts)
 
@@ -183,9 +196,9 @@ export default function TabOneScreen() {
 
     // Shot data logic here
     const shotData = await loadShots(1)
-    console.log('ALL SHOTDATA', shotData)
+    // console.log('ALL SHOTDATA', shotData)
     statContext.dispatch({
-      type:'set_shot_data',
+      type: 'set_shot_data',
       data: shotData
     })
 
@@ -204,8 +217,8 @@ export default function TabOneScreen() {
       data: holeObj
     })
 
-    const hitFwData = await loadFairwayData(1,1)
-    const allFwData = await loadFairwayDataTotal(1,1)
+    const hitFwData = await loadFairwayData(1, 1)
+    const allFwData = await loadFairwayDataTotal(1, 1)
     let hitFwObj = {}
     allFwData.forEach((hole) => {
       hitFwObj[hole.hole_num] = {
@@ -214,20 +227,37 @@ export default function TabOneScreen() {
         approachRtg: hole.approach_rtg,
         chipRtg: hole.chip_rtg,
         puttRtg: hole.putt_rtg
-
       }
     })
 
     hitFwData.forEach(hole => {
-      hitFwObj[hole.hole_num] = {...hitFwObj[hole.hole_num], fairwaysHit: hole.total_fairways_hit
+      hitFwObj[hole.hole_num] = {
+        ...hitFwObj[hole.hole_num], fairwaysHit: hole.total_fairways_hit
       }
     })
 
-    console.log('FINal FW OBJ', hitFwObj)
+    // console.log('FINal FW OBJ', hitFwObj)
     statContext.dispatch({
       type: 'set_fw_data',
       data: hitFwObj
     })
+
+    const totalRounds = await loadTotalRounds(1)
+    const avgScore = await loadAvgScore(1)
+    const bestScore = await loadBestScore(1)
+    const avgPutts = await loadAvgPutts(1)
+    console.log(totalRounds, avgScore, bestScore)
+    statContext.dispatch({
+      type: 'set_total_info',
+      data: {
+        totalRounds,
+        avgScore,
+        avgPutts,
+        bestScore,
+        totalBirds
+      }
+    })
+    // const testFwyPct = await getPct(5005)
 
     console.log('ALL STATS SAVED INTO STATSTATE')
   }
@@ -239,8 +269,8 @@ export default function TabOneScreen() {
     const p3roundID = await AsyncStorage.getItem('u3roundid')
     const p4roundID = await AsyncStorage.getItem('u4roundid')
     const p1Score = await getScore(JSON.parse(p1roundID))
-    
-    console.log('p1 score returned should be array', p1Score)
+
+    // console.log('p1 score returned should be array', p1Score)
 
     let scoreObj = {}
     for (const score of p1Score) {
@@ -252,7 +282,7 @@ export default function TabOneScreen() {
       data: scoreObj
     })
 
-// TODO: this can be refactored in a loop
+    // TODO: this can be refactored in a loop
     if (p2roundID) {
       const p2name = await AsyncStorage.getItem('u2name')
       console.log('RESTOING PLAYER 2, ROUNDID; ', p2roundID)

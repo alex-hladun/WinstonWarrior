@@ -126,13 +126,17 @@ export const postShot = async (user_id, club_id, effort, distance) => {
   })
   )
 }
-export const postRound = async (score, round_id, diff) => {
+export const postRound = async (score, round_id, diff, fwy_pct, gir_pct, total_putts) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     // console.log('inside createRound')
     tx.executeSql(`
-    UPDATE rounds SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now')
+    UPDATE rounds 
+    SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now'), 
+    fwy_pct=?,
+    gir_pct=?,
+    total_putts=?
      WHERE round_id = ?;
-    `, [score, diff, round_id], (txObj, result) => {
+    `, [score, diff, round_id, fwy_pct, gir_pct, total_putts], (txObj, result) => {
       console.log('Round successfully saved', result.rows._array[0])
       resolve(result)
     }, (err, mess) => console.log('err saving shot', reject(mess)))
@@ -284,12 +288,14 @@ export const loadStats = async (user_id) => {
     SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
     JOIN courses ON rounds.course_id = courses.course_id
-    WHERE rounds.user_id = ? GROUP BY rounds.round_id HAVING count(scores.hole_num) = 18 ORDER BY rounds.round_id DESC LIMIT 10;
+    WHERE rounds.user_id = ? 
+    GROUP BY rounds.round_id
+    HAVING count(scores.hole_num) = 18 
+    ORDER BY rounds.round_id DESC LIMIT 20;
     `, [user_id], (txObj, result) => {
-      console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array.reverse())
     }, (err, mess) => console.log('err getting stats', reject(mess)))
-
   })
   )
 }
@@ -304,27 +310,106 @@ export const loadShots = async (user_id) => {
     GROUP BY clubs.club_id
     ORDER BY clubs.club_id ASC;
     `, [user_id], (txObj, result) => {
-      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
-
   })
   )
 }
-export const loadGIRs = async (user_id) => {
+export const loadTotalRounds = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT DISTINCT count(rounds.round_id) AS total_rounds
+    FROM ROUNDS
+    WHERE rounds.user_id = ?
+    GROUP BY rounds.user_id;
+    `, [user_id], (txObj, result) => {
+      // console.log(`total overall stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array[0].total_rounds)
+    }, (err, mess) => console.log('err getting total stats', reject(mess)))
+  })
+  )
+}
+export const loadAvgScore = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT AVG(total.sum) AS avg FROM (SELECT SUM(scores.total_shots) as sum, count(scores.hole_num) AS holes_played
+    FROM scores
+    JOIN rounds ON rounds.round_id = scores.round_id
+    WHERE rounds.user_id = ?
+    GROUP BY scores.round_id HAVING holes_played = 18) AS total;
+    `, [user_id], (txObj, result) => {
+      console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array[0].avg)
+    }, (err, mess) => console.log('err getting total stats', reject(mess)))
+  })
+  )
+}
+export const loadAvgPutts = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT AVG(total.sum) AS avg FROM (SELECT SUM(scores.total_putts) as sum, count(scores.hole_num) AS holes_played
+    FROM scores
+    JOIN rounds ON rounds.round_id = scores.round_id
+    WHERE rounds.user_id = ?
+    GROUP BY scores.round_id HAVING holes_played = 18) AS total;
+    `, [user_id], (txObj, result) => {
+      console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array[0].avg)
+    }, (err, mess) => console.log('err getting total stats', reject(mess)))
+  })
+  )
+}
+export const loadBestScore = async (user_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT MIN(total.sum) AS tot FROM (SELECT SUM(scores.total_shots) as sum, count(scores.hole_num) AS holes_played
+    FROM scores
+    JOIN rounds ON rounds.round_id = scores.round_id
+    WHERE rounds.user_id = ?
+    GROUP BY scores.round_id HAVING holes_played = 18) AS total;
+    `, [user_id], (txObj, result) => {
+      console.log(`best score: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array[0].tot)
+    }, (err, mess) => console.log('err getting total stats', reject(mess)))
+  })
+  )
+}
+
+export const getPct = async (round_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
 
-    PUT CODE HERE
-    `, [user_id], (txObj, result) => {
-      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array)
-    }, (err, mess) => console.log('err getting stats', reject(mess)))
+    SELECT AVG(total.fwy) FROM (SELECT COUNT(scores.hole_num) as hit, count(scores.hole_num) AS holes_played
+    FROM scores
+    JOIN rounds ON rounds.round_id = scores.round_id
+    WHERE rounds.user_id = ?
+    GROUP BY scores.round_id HAVING holes_played = 18) AS total;
 
+    SELECT count(scores.hole_num) AS total_holes, AVG(fwy.hit), FROM (
+      SELECT COUNT(scores.hole_num) AS hit
+      FROM scores
+      JOIN rounds ON rounds.round_id = scores.round_id
+      WHERE scores.driver_direction == 50
+    ) AS fwy
+    FROM scores 
+    JOIN rounds 
+    ON scores.round_id = rounds.round_id
+    WHERE scores.round_id = ?
+    ;
+    `, [round_id], (txObj, result) => {
+      console.log(`pct obj: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array[0])
+    }, (err, mess) => console.log('err getting acg pct', reject(mess)))
   })
   )
 }
+
 export const loadShotHistory = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
@@ -334,13 +419,14 @@ export const loadShotHistory = async (user_id) => {
     WHERE user_id = ?
     ORDER BY date_time DESC
     `, [user_id], (txObj, result) => {
-      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
-
   })
   )
 }
+
+
 
 export const loadFairwayData = async (user_id, course_id) => {
   // Loads overall user round history
@@ -357,7 +443,7 @@ export const loadFairwayData = async (user_id, course_id) => {
     GROUP BY scores.hole_num
     ORDER BY scores.hole_num ASC;
     `, [user_id, course_id], (txObj, result) => {
-      console.log(`all Fairway stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`all Fairway stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
 
@@ -379,13 +465,12 @@ export const loadFairwayDataTotal = async (user_id, course_id) => {
     GROUP BY scores.hole_num
     ORDER BY scores.hole_num ASC;
     `, [user_id, course_id], (txObj, result) => {
-      console.log(`TOTAL FW stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`TOTAL FW stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
-
-  })
-  )
+  }))
 }
+
 export const loadHoleStats = async (course_id, user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
@@ -403,7 +488,6 @@ export const loadHoleStats = async (course_id, user_id) => {
       // console.log(`Overall hole info: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
-
   })
   )
 }
@@ -518,7 +602,10 @@ export const setUpDB = () => {
     course_id integer,
     user_id integer,
     total_score integer,
-    hcp_diff,
+    hcp_diff REAL,
+    fwy_pct REAL,
+    gir_pct REAL,
+    total_putts REAL,
     end_date datetime,
     CONSTRAINT fk_courses
     FOREIGN KEY(course_id)

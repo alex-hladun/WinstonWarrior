@@ -114,45 +114,45 @@ export function Trends({ navigation }) {
           {loading && roundHistory[0] &&
           <>
           <View style={styles.holeRow}>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>88.3</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.avgScore}</Text>
             </View>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Putts</Text>
-              <Text style={styles.boxContent}>32.1</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.avgPutts.toFixed(1)}</Text>
             </View>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>GIRs</Text>
               <Text style={styles.boxContent}>28</Text>
             </View>
           </View>
           <View style={styles.holeRow}>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
               <Text style={styles.boxContent}>22</Text>
             </View>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
               <Text style={styles.boxContent}>10.2</Text>
             </View>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>GIRs</Text>
               <Text style={styles.boxContent}>28</Text>
             </View>
           </View>
           <View style={styles.holeRow}>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Eagles</Text>
-              <Text style={styles.boxContent}>0</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.totalBirds.eagles}</Text>
             </View>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Birdies</Text>
-              <Text style={styles.boxContent}>12</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.totalBirds.birdies}</Text>
             </View>
-            <View style={styles.boxContainer}>
+            <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Pars</Text>
-              <Text style={styles.boxContent}>28</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.totalBirds.pars}</Text>
             </View>
           </View>
           </>}
