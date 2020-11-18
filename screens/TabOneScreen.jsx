@@ -246,6 +246,7 @@ export default function TabOneScreen() {
     const avgScore = await loadAvgScore(1)
     const bestScore = await loadBestScore(1)
     const avgPutts = await loadAvgPutts(1)
+    const fwyPct = await getPct(1)
     console.log(totalRounds, avgScore, bestScore)
     statContext.dispatch({
       type: 'set_total_info',
@@ -254,10 +255,10 @@ export default function TabOneScreen() {
         avgScore,
         avgPutts,
         bestScore,
-        totalBirds
+        totalBirds,
+        fwyPct
       }
     })
-    // const testFwyPct = await getPct(5005)
 
     console.log('ALL STATS SAVED INTO STATSTATE')
   }

@@ -380,31 +380,36 @@ export const loadBestScore = async (user_id) => {
   )
 }
 
-export const getPct = async (round_id) => {
+export const getPct = async (user_id) => {
   // Loads overall user round history
+
+  let hitNum;
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-
-    SELECT AVG(total.fwy) FROM (SELECT COUNT(scores.hole_num) as hit, count(scores.hole_num) AS holes_played
-    FROM scores
-    JOIN rounds ON rounds.round_id = scores.round_id
-    WHERE rounds.user_id = ?
-    GROUP BY scores.round_id HAVING holes_played = 18) AS total;
-
-    SELECT count(scores.hole_num) AS total_holes, AVG(fwy.hit), FROM (
       SELECT COUNT(scores.hole_num) AS hit
       FROM scores
       JOIN rounds ON rounds.round_id = scores.round_id
       WHERE scores.driver_direction == 50
-    ) AS fwy
-    FROM scores 
-    JOIN rounds 
-    ON scores.round_id = rounds.round_id
-    WHERE scores.round_id = ?
+      AND rounds.user_id = ?
     ;
-    `, [round_id], (txObj, result) => {
-      console.log(`pct obj: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array[0])
+    `, [user_id], (txObj, result) => {
+      console.log(`pct obj: ${JSON.stringify(result.rows._array[0].hit)}`)
+      hitNum = result.rows._array[0].hit
+      // resolve(result.rows._array[0])
+    }, (err, mess) => console.log('err getting acg pct', reject(mess)))
+    
+    tx.executeSql(`
+      SELECT COUNT(scores.hole_num) AS total
+      FROM scores
+      JOIN rounds ON rounds.round_id = scores.round_id
+      WHERE rounds.user_id = ?
+      AND scores.driver_direction >= 0
+    ;
+    `, [user_id], (txObj, result) => {
+      console.log(`total holes: ${JSON.stringify(result.rows._array[0].total)}`)
+      const total = result.rows._array[0].total
+      console.log(`found ${hitNum} fairways hit out of ${total} holes`)
+      resolve(hitNum * 100 / result.rows._array[0].total)
     }, (err, mess) => console.log('err getting acg pct', reject(mess)))
   })
   )

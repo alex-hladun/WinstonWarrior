@@ -41,11 +41,11 @@ export function Login({ navigation }) {
           <View style={styles.winstonText}>
             <Text style={styles.txt}>W/W</Text>
           </View>
-          <View style={styles.styledButton}>
+          {/* <View style={styles.styledButton}>
             <Text onPress={() => handlePress()} style={styles.buttonText}>Create Account</Text>
-          </View>
+          </View> */}
           <View style={styles.styledButton}>
-            <Text onPress={() => handleLogin()} style={styles.buttonText}>Login</Text>
+            <Text onPress={() => handleLogin()} style={styles.buttonText}>Create Profile</Text>
           </View>
         </View>
     </>

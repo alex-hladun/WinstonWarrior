@@ -123,14 +123,14 @@ export function Trends({ navigation }) {
               <Text style={styles.boxContent}>{statState.totalInfo.avgPutts.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>GIRs</Text>
+              <Text style={styles.boxHeader}>GIR %</Text>
               <Text style={styles.boxContent}>28</Text>
             </View>
           </View>
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
-              <Text style={styles.boxContent}>22</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.fwyPct.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
