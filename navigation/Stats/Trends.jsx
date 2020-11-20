@@ -21,12 +21,12 @@ export function Trends({ navigation }) {
   const statState = statContext.value.state
   // console.log("Trends -> statState", statState)
   const roundHistory = statState.roundHistory
-  console.log("Trends -> roundHistory", roundHistory)
+  // console.log("Trends -> roundHistory", roundHistory)
 
   let roundData;
   let data;
   React.useEffect(() => {
-    console.log("Trends -> roundHistory", roundHistory)
+    // console.log("Trends -> roundHistory", roundHistory)
     if (statState && statState.roundHistory[0]) {
       roundData = roundHistory.map((round) => {
         return (round.total_score)
@@ -116,29 +116,29 @@ export function Trends({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.avgScore}</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.avgScore &&  statState.totalInfo.avgScore.toFixed(0)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Putts</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.avgPutts.toFixed(1)}</Text>
-            </View>
-            <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>GIR %</Text>
-              <Text style={styles.boxContent}>28</Text>
-            </View>
-          </View>
-          <View style={styles.holeRow}>
-            <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>FWY %</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.fwyPct.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.avgPutts && statState.totalInfo.avgPutts.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
               <Text style={styles.boxContent}>10.2</Text>
             </View>
+          </View>
+          <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>GIRs</Text>
-              <Text style={styles.boxContent}>28</Text>
+              <Text style={styles.boxHeader}>FWY %</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.fwyPct && statState.totalInfo.fwyPct.toFixed(1)}</Text>
+            </View>
+            <View style={styles.trendContainer}>
+              <Text style={styles.boxHeader}>GIR%</Text>
+              <Text style={styles.boxContent}>{statState.totalInfo.girPct && statState.totalInfo.girPct.toFixed(1)}</Text>
+            </View>
+            <View style={styles.trendContainer}>
+              <Text style={styles.boxHeader}>U&D%</Text>
+              <Text style={styles.boxContent}>?</Text>
             </View>
           </View>
           <View style={styles.holeRow}>

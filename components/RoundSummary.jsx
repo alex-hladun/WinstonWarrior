@@ -34,7 +34,6 @@ const sumBack = obj => {
 
 const diffCalc = (score, rtg, slp) => {
   // (Adjusted Gross Score - Course Rating) X 113 ÷ Slope Rating
-
   return ((score - rtg) * 113 / slp)
 }
 
@@ -45,10 +44,10 @@ export default function RoundSummary({ handleRoundSummary }) {
   let appState = appContext.value.state
   const [scoreArr, setScoreArr] = useState([])
   const [scoreObj, setScoreObj] = useState({})
-  const [p1totalScore, setP1TotalScore] = useState(0)
-  const [p2totalScore, setP2TotalScore] = useState(0)
-  const [p3totalScore, setP3TotalScore] = useState(0)
-  const [p4totalScore, setP4TotalScore] = useState(0)
+  // const [p1totalScore, setP1TotalScore] = useState(0)
+  // const [p2totalScore, setP2TotalScore] = useState(0)
+  // const [p3totalScore, setP3TotalScore] = useState(0)
+  // const [p4totalScore, setP4TotalScore] = useState(0)
 
 
   useEffect(() => {

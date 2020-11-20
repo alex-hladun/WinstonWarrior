@@ -72,7 +72,12 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
   const handleScoreSubmit = async () => {
 
     console.log(`POSTING WITH HOLEID OF ${holeID}`)
-    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting)
+
+    let gir = false;
+    if (score - putts  + 2 <= holeInfo[holeNum].par) {
+      gir = true
+    }
+    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting, gir)
     // console.log(playContext.value.state.p1score)
     playContext.dispatch({
       type: 'set_p1_score',
@@ -268,7 +273,6 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
             thumbTintColor={Theme.spinGreen3}
             minimumTrackTintColor="#000000"
             maximumTrackTintColor="#000000"
-
             value={teeShot}
             step={25}
             onSlidingStart={(val) => setTeeShot(val)}

@@ -13,7 +13,7 @@ export function Home({ navigation }) {
     navigation.push('Course')
   }
 
-  console.log("Home -> statState.totalInfo", statState.roundHistory)
+  // console.log("Home -> statState.totalInfo", statState.roundHistory)
 
   return (
     <>
@@ -35,7 +35,7 @@ export function Home({ navigation }) {
             <View style={styles.holeRow}>
               <View style={styles.boxContainer}>
                 <Text style={styles.boxHeader}>Avg Score</Text>
-                <Text style={styles.boxContent}>{statState.totalInfo.avgScore}</Text>
+                <Text style={styles.boxContent}>{statState.totalInfo.avgScore && statState.totalInfo.avgScore.toFixed(1)}</Text>
               </View>
               <View style={styles.boxContainer}>
                 <Text style={styles.boxHeader}>Best Round</Text>

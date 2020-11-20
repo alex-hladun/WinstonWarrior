@@ -144,12 +144,13 @@ export const postRound = async (score, round_id, diff, fwy_pct, gir_pct, total_p
   })
   )
 }
-export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null) => {
+export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null, gir = null) => {
   console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}`)
 
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     let scoreID;
+    console.log('db posting score with following vars: ', hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir)
 
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ? AND hole_id = ?;`, [round_id, hole_id], (txObj, result) => {
@@ -159,9 +160,10 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
         UPDATE scores SET total_shots = ?, total_putts = ?, penalty = ?, driver_direction = ?,
         approach_rtg = ?,
         chip_rtg = ?,
-        putt_rtg = ?
+        putt_rtg = ?,
+        gir = ?
         WHERE score_id = ?;
-        `, [total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, result.rows._array[0].score_id], (txObj, result) => {
+        `, [total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir, result.rows._array[0].score_id], (txObj, result) => {
           console.log('result updating score', result)
           resolve(result)
         }, (err, mess) => {
@@ -181,13 +183,14 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
             approach_rtg,
             chip_rtg,
             putt_rtg,
+            gir,
             date_time
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
-      `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg], (txObj, result) => {
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+      `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir], (txObj, result) => {
           console.log('result posting NEW score', result)
           resolve(result)
         }, (err, mess) => {
-          console.log(`ERROR posting score PRE-EXISTING: ${JSON.stringify(err)}, ${mess}`)
+          console.log(`ERROR posting score NOT pre-EXISTING: ${JSON.stringify(err)}, ${mess}`)
           reject(err)
         }
         )
@@ -347,6 +350,7 @@ export const loadAvgScore = async (user_id) => {
   })
   )
 }
+
 export const loadAvgPutts = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
@@ -357,7 +361,7 @@ export const loadAvgPutts = async (user_id) => {
     WHERE rounds.user_id = ?
     GROUP BY scores.round_id HAVING holes_played = 18) AS total;
     `, [user_id], (txObj, result) => {
-      console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array[0].avg)
     }, (err, mess) => console.log('err getting total stats', reject(mess)))
   })
@@ -373,13 +377,46 @@ export const loadBestScore = async (user_id) => {
     WHERE rounds.user_id = ?
     GROUP BY scores.round_id HAVING holes_played = 18) AS total;
     `, [user_id], (txObj, result) => {
-      console.log(`best score: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`best score: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array[0].tot)
     }, (err, mess) => console.log('err getting total stats', reject(mess)))
   })
   )
 }
 
+export const loadGirPct = async (user_id) => {
+  // Loads overall user round history
+
+  let hitNum;
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+      SELECT COUNT(scores.gir) AS green_in_reg
+      FROM scores
+      JOIN rounds ON rounds.round_id = scores.round_id
+      WHERE scores.gir == True
+      AND rounds.user_id = ?
+    ;
+    `, [user_id], (txObj, result) => {
+      console.log(`GIR pct obj: ${JSON.stringify(result.rows._array[0].green_in_reg)}`)
+      hitNum = result.rows._array[0].green_in_reg
+      // resolve(result.rows._array[0])
+    }, (err, mess) => console.log('err getting GIR pct', reject(mess)))
+    
+    tx.executeSql(`
+      SELECT COUNT(scores.hole_num) AS total
+      FROM scores
+      JOIN rounds ON rounds.round_id = scores.round_id
+      WHERE rounds.user_id = ?
+    ;
+    `, [user_id], (txObj, result) => {
+      console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
+      const total = result.rows._array[0].total
+      console.log(`found ${hitNum} fairways hit out of ${total} holes`)
+      resolve(hitNum * 100 / result.rows._array[0].total)
+    }, (err, mess) => console.log('err getting acg pct', reject(mess)))
+  })
+  )
+}
 export const getPct = async (user_id) => {
   // Loads overall user round history
 
@@ -393,7 +430,7 @@ export const getPct = async (user_id) => {
       AND rounds.user_id = ?
     ;
     `, [user_id], (txObj, result) => {
-      console.log(`pct obj: ${JSON.stringify(result.rows._array[0].hit)}`)
+      // console.log(`pct obj: ${JSON.stringify(result.rows._array[0].hit)}`)
       hitNum = result.rows._array[0].hit
       // resolve(result.rows._array[0])
     }, (err, mess) => console.log('err getting acg pct', reject(mess)))
@@ -406,9 +443,9 @@ export const getPct = async (user_id) => {
       AND scores.driver_direction >= 0
     ;
     `, [user_id], (txObj, result) => {
-      console.log(`total holes: ${JSON.stringify(result.rows._array[0].total)}`)
+      // console.log(`total holes: ${JSON.stringify(result.rows._array[0].total)}`)
       const total = result.rows._array[0].total
-      console.log(`found ${hitNum} fairways hit out of ${total} holes`)
+      // console.log(`found ${hitNum} fairways hit out of ${total} holes`)
       resolve(hitNum * 100 / result.rows._array[0].total)
     }, (err, mess) => console.log('err getting acg pct', reject(mess)))
   })
@@ -635,6 +672,7 @@ export const setUpDB = () => {
       approach_rtg integer,
       chip_rtg integer,
       putt_rtg integer,
+      gir boolean,
       CONSTRAINT fk_rounds
       FOREIGN KEY(round_id)
       REFERENCES rounds(round_id)

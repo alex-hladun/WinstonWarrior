@@ -60,15 +60,15 @@ export function Holes({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>{statState.holes[holeNum].avgShots.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{statState.holes[holeNum].avgShots ? statState.holes[holeNum].avgShots.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Putts</Text>
-              <Text style={styles.boxContent}>{statState.holes[holeNum].avgPutts.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{statState.holes[holeNum].avgPutts ? statState.holes[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>GIR %</Text>
-            <Text style={styles.boxContent}>{(statState.birdies[holeNum].GIRs * 100/ statState.birdies[holeNum].rounds).toFixed(0)}</Text>
+            <Text style={styles.boxContent}>{statState.birdies[holeNum].GIRs ? (statState.birdies[holeNum].GIRs * 100 / statState.birdies[holeNum].rounds).toFixed(0) : 0}</Text>
             </View>
            
           </View>
@@ -79,21 +79,21 @@ export function Holes({ navigation }) {
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Birds</Text>
-              <Text style={styles.boxContent}>{statState.birdies[holeNum].birdies}</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum].birdies ? statState.birdies[holeNum].birdies : 0}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Pars</Text>
-              <Text style={styles.boxContent}>{statState.birdies[holeNum].pars}</Text>
+              <Text style={styles.boxContent}>{statState.birdies[holeNum].pars ? statState.birdies[holeNum].pars : 0}</Text>
           </View>
           </View>
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
-              <Text style={styles.boxContent}>{(100 * statState.fwData[holeNum].fairwaysHit / statState.fwData[holeNum].totalFairways).toFixed(0)}</Text>
+              <Text style={styles.boxContent}>{statState.fwData[holeNum].fairwaysHit ? (100 * statState.fwData[holeNum].fairwaysHit / statState.fwData[holeNum].totalFairways).toFixed(0) : 0}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>AVG FW</Text>
-            <Text style={styles.boxContent}>{statState.fwData[holeNum].driverDirection.toFixed(1)}</Text>
+            <Text style={styles.boxContent}>{statState.fwData[holeNum].driverDirection && statState.fwData[holeNum].driverDirection.toFixed(1)}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Best Score</Text>

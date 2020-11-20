@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext'
 import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct } from '../db/dbSetup'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function TabOneScreen() {
@@ -236,13 +236,13 @@ export default function TabOneScreen() {
       }
     })
 
-    // console.log('FINal FW OBJ', hitFwObj)
     statContext.dispatch({
       type: 'set_fw_data',
       data: hitFwObj
     })
 
     const totalRounds = await loadTotalRounds(1)
+    const girPct = await loadGirPct(1)
     const avgScore = await loadAvgScore(1)
     const bestScore = await loadBestScore(1)
     const avgPutts = await loadAvgPutts(1)
@@ -256,7 +256,8 @@ export default function TabOneScreen() {
         avgPutts,
         bestScore,
         totalBirds,
-        fwyPct
+        fwyPct,
+        girPct
       }
     })
 
