@@ -51,6 +51,13 @@ const reducer = (state, action) => {
         totalInfo: action.data
       }
     break;
+    case "trigger_club_update":
+      return {
+        ...state,
+        clubDataUpdate: Math.random()
+      }
+    break;
+
   }
 }
 const initialState = {
@@ -61,7 +68,8 @@ const initialState = {
   lowScores: {},
   birdies: {},
   fwData: {},
-  shotData: []
+  shotData: [],
+  clubDataUpdate: false
 }
 const StatContext = React.createContext(initialState);
 

@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
+import { useShotData } from '../../hooks/useShotData';
 const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
@@ -18,15 +19,13 @@ export function Clubs({ navigation }) {
   const appState = appContext.value.state
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
-  const shotData = statState.shotData
+  // const shotData = statState.shotData
+
+  const shotData = useShotData(1)
   const [club, setClub] = React.useState(null)
   const [clubView, setClubView] = React.useState(false)
   // Carousel ref
   const carRef = React.useRef(null)
-
-  const handlePress = () => {
-    navigation.push('Hole')
-  }
 
   const handleClubSelect = (clubindex) => {
     setClub(clubindex)
@@ -37,11 +36,9 @@ export function Clubs({ navigation }) {
     setClubView(!clubView)
   }
 
-
-
   const shotDataArray = shotData
   let clubList;
-  if (shotDataArray) {
+  if (shotDataArray[0]) {
     clubList = shotDataArray.map((clb, i) => {
       return (
         <View key={`cl${i}`} style={[styles.club]} >

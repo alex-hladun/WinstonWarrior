@@ -5,11 +5,13 @@ import styles from '../assets/styles/ScoreStyles'
 import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
 import { AppContext } from '../context/AppContext'
+import { StatContext } from '../context/StatContext'
 import { postShot } from '../db/dbSetup'
 
 
 export default function ShotTrack({ distance, handleTrackViewClose }) {
   const appContext = React.useContext(AppContext)
+  const statContext = React.useContext(StatContext)
   const appState = appContext
   const [club, setClub] = useState(null)
   const [effort, setEffort] = useState(100)
@@ -38,9 +40,10 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
 
   const handleSubmit = async () => {
     console.log('handle distance submit')
-
     await postShot(1, club, effort, distance)
-
+    statContext.dispatch({
+      type: 'trigger_club_update'
+    })
     handleTrackViewClose()
   }
   // const clubArray = ['D', '2W', '3W', '4W', '5W', 'HY', 'DI', '3I', '4I', '5I', '6I', '7I', '8I', '9I', 'PW', 'AW', '52', '54', '56', '58', '60']

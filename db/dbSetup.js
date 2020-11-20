@@ -126,17 +126,14 @@ export const postShot = async (user_id, club_id, effort, distance) => {
   })
   )
 }
-export const postRound = async (score, round_id, diff, fwy_pct, gir_pct, total_putts) => {
+export const postRound = async (score, round_id, diff) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     // console.log('inside createRound')
     tx.executeSql(`
     UPDATE rounds 
-    SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now'), 
-    fwy_pct=?,
-    gir_pct=?,
-    total_putts=?
-     WHERE round_id = ?;
-    `, [score, diff, round_id, fwy_pct, gir_pct, total_putts], (txObj, result) => {
+    SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now')
+    WHERE round_id = ?;
+    `, [score, diff, round_id], (txObj, result) => {
       console.log('Round successfully saved', result.rows._array[0])
       resolve(result)
     }, (err, mess) => console.log('err saving shot', reject(mess)))
@@ -266,9 +263,10 @@ export const seedData = async () => {
             approach_rtg,
             chip_rtg,
             putt_rtg,
+            gir,
             date_time
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
-        `, [j+1, j+1, i + 5000, Math.round(Math.random() * 10), Math.round(Math.random() * 3), Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)], (txObj, result) => {
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+        `, [j+1, j+1, i + 5000, Math.floor(Math.random() * (10-2) + 2), Math.floor(Math.random() * (10-0)), Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.random() > 0.5], (txObj, result) => {
             // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
             // resolve(result)
           }, (err, mess) => console.log('err seeding stats', err, mess))
@@ -278,6 +276,14 @@ export const seedData = async () => {
       
     }
     console.log('ALL SEED DATA LOADED')
+    db.transaction(tx => {
+      // console.log('inside createRound')
+      tx.executeSql(`
+      SELECT gir FROM scores;
+    `, [], (txObj, result) => {
+        console.log(`all scores: ${JSON.stringify(result.rows._array)}`)
+      }, (err, mess) => console.log('err seeding stats', err, mess))
+    })
     resolve()
   }
   )
@@ -297,6 +303,25 @@ export const loadStats = async (user_id) => {
     ORDER BY rounds.round_id DESC LIMIT 20;
     `, [user_id], (txObj, result) => {
       // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array.reverse())
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+  })
+  )
+}
+export const loadFwHistory = async (user_id) => {
+  // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
+  return new Promise((resolve, reject) => db.transaction(tx => {
+
+    tx.executeSql(`
+    SELECT count(scores.hole_num)
+    FROM ROUNDS
+    JOIN scores ON rounds.round_id = scores.round_id
+    WHERE rounds.user_id = ? 
+    GROUP BY rounds.round_id 
+    HAVING scores.driver_direction = 50
+    ORDER BY rounds.round_id DESC LIMIT 20;
+    `, [user_id], (txObj, result) => {
+      console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array.reverse())
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
@@ -393,7 +418,7 @@ export const loadGirPct = async (user_id) => {
       SELECT COUNT(scores.gir) AS green_in_reg
       FROM scores
       JOIN rounds ON rounds.round_id = scores.round_id
-      WHERE scores.gir == True
+      WHERE scores.gir == 1
       AND rounds.user_id = ?
     ;
     `, [user_id], (txObj, result) => {
