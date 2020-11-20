@@ -4,10 +4,12 @@ import * as Linking from 'expo-linking';
 import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/PlayStyles'
 import { StatContext } from '../../context/StatContext'
+import { useTotalInfo } from '../../hooks/useTotalInfo';
 
 export function Home({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
+  const totalInfo = useTotalInfo(1, 1)
 
   const handlePress = () => {
     navigation.push('Course')
@@ -24,7 +26,7 @@ export function Home({ navigation }) {
             <View style={styles.holeRow}>
               <View style={styles.boxContainer}>
                 <Text style={styles.boxHeader}>Rounds</Text>
-                <Text style={styles.boxContent}>{statState.totalInfo.totalRounds}</Text>
+                <Text style={styles.boxContent}>{totalInfo.totalRounds}</Text>
 
               </View>
               <View style={styles.boxContainer}>
@@ -35,11 +37,11 @@ export function Home({ navigation }) {
             <View style={styles.holeRow}>
               <View style={styles.boxContainer}>
                 <Text style={styles.boxHeader}>Avg Score</Text>
-                <Text style={styles.boxContent}>{statState.totalInfo.avgScore && statState.totalInfo.avgScore.toFixed(1)}</Text>
+                <Text style={styles.boxContent}>{totalInfo.avgScore && totalInfo.avgScore.toFixed(1)}</Text>
               </View>
               <View style={styles.boxContainer}>
                 <Text style={styles.boxHeader}>Best Round</Text>
-                <Text style={styles.boxContent}>{statState.totalInfo.bestScore}</Text>
+                <Text style={styles.boxContent}>{totalInfo.bestScore}</Text>
               </View>
             </View>
           

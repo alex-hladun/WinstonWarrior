@@ -21,7 +21,6 @@ export default function TabOneScreen() {
   const [initialHole, setInitialHole] = React.useState(1)
   const stats = useStats(1, 1)
 
-
   React.useEffect(() => {
     let reset = false;
     if (reset) {
@@ -34,7 +33,6 @@ export default function TabOneScreen() {
       seedData()
     }
 
-    // useStats(1, 1)
     // retrieveStats()
 
 

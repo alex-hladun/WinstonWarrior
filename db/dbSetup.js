@@ -303,7 +303,7 @@ export const loadStats = async (user_id) => {
     ORDER BY rounds.round_id DESC LIMIT 20;
     `, [user_id], (txObj, result) => {
       // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array.reverse())
+      resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
   )

@@ -12,11 +12,14 @@ import {
   ProgressChart,
   ContributionGraph
 } from 'react-native-chart-kit'
+import { useTotalInfo } from '../../hooks/useTotalInfo';
 
 export function Trends({ navigation }) {
 
+
   const [loading, setLoading] = React.useState(false)
   const [dataChart, setDataChart] = React.useState({})
+  const totalInfo = useTotalInfo(1, 1)
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   // console.log("Trends -> statState", statState)
@@ -40,8 +43,6 @@ export function Trends({ navigation }) {
       }
 
       setDataChart(data)
-      // console.log('roundData', roundData)
-      // console.log('data', data)
       setLoading(true)
 
     } else {
@@ -116,11 +117,11 @@ export function Trends({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.avgScore &&  statState.totalInfo.avgScore.toFixed(0)}</Text>
+              <Text style={styles.boxContent}>{totalInfo.avgScore &&  totalInfo.avgScore.toFixed(0)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Putts</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.avgPutts && statState.totalInfo.avgPutts.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{totalInfo.avgPutts && totalInfo.avgPutts.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
@@ -130,11 +131,11 @@ export function Trends({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.fwyPct && statState.totalInfo.fwyPct.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{totalInfo.fwyPct && totalInfo.fwyPct.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>GIR%</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.girPct && statState.totalInfo.girPct.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>U&D%</Text>
@@ -144,15 +145,15 @@ export function Trends({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Eagles</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.totalBirds.eagles}</Text>
+              <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.eagles}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Birdies</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.totalBirds.birdies}</Text>
+              <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.birdies}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Pars</Text>
-              <Text style={styles.boxContent}>{statState.totalInfo.totalBirds.pars}</Text>
+              <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.pars}</Text>
             </View>
           </View>
           </>}

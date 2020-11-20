@@ -35,52 +35,6 @@ export function useStats(user_id, course_id) {
         data: holeObj
       })
   
-      // Get counts of birdie, par, eagle for each hole
-      const birdieCount = await loadBirds(course_id, user_id)
-      // console.log('birdieCount', birdieCount)
-      let birdieObj = {}
-      for (let i = 1; i <= 18; i++) {
-        birdieObj[i] = {
-          pars: 0,
-          birdies: 0,
-          eagles: 0,
-          rounds: 0,
-          GIRs: 0
-        }
-      }
-  
-      const totalBirds = {
-        eagles: 0,
-        birdies: 0,
-        pars: 0
-      }
-  
-      birdieCount.forEach((hole) => {
-        // console.log('scoreObj', hole)
-        birdieObj[hole.hole_num].rounds++
-  
-        if (hole.total_shots - hole.hole_par === -1) {
-          birdieObj[hole.hole_num].birdies++
-          totalBirds.birdies ++
-        } else if (hole.total_shots - hole.hole_par === 0) {
-          birdieObj[hole.hole_num].pars++
-          totalBirds.pars ++
-        } else if (hole.total_shots - hole.hole_par === -2) {
-          birdieObj[hole.hole_num].eagles++
-          totalBirds.eagles ++
-        }
-  
-        if ((hole.total_shots - hole.total_putts + 2) <= hole.hole_par) {
-          birdieObj[hole.hole_num].GIRs++
-  
-        }
-      })
-  
-      statContext.dispatch({
-        type: 'set_birdies',
-        data: birdieObj
-      })
-  
       // Get hole history (historical total shots & putts)
       const holeHistory = await loadHoleHistory(course_id, user_id)
       holeObj = {}
@@ -90,7 +44,6 @@ export function useStats(user_id, course_id) {
   
       holeHistory.forEach((hole) => {
         // console.log("TabOneScreen -> hole history", hole)
-  
         holeObj[hole.hole_num].score.push(hole.total_shots)
         holeObj[hole.hole_num].putts.push(hole.total_putts)
   
@@ -147,30 +100,12 @@ export function useStats(user_id, course_id) {
         data: hitFwObj
       })
   
-      const totalRounds = await loadTotalRounds(1)
-      const girPct = await loadGirPct(1)
-      const avgScore = await loadAvgScore(1)
-      const bestScore = await loadBestScore(1)
-      const avgPutts = await loadAvgPutts(1)
-      const fwyPct = await getPct(1)
-      console.log(totalRounds, avgScore, bestScore)
-      statContext.dispatch({
-        type: 'set_total_info',
-        data: {
-          totalRounds,
-          avgScore,
-          avgPutts,
-          bestScore,
-          totalBirds,
-          fwyPct,
-          girPct
-        }
-      })
+      
       console.log('ALL STATS SAVED INTO STATSTATE')
     }
 
     retrieveStats()
-  }, [])
+  }, [statContext.value.state.allDataUpdate])
 
     return(null)
   }

@@ -6,6 +6,7 @@ import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 import { getPct, postRound } from '../db/dbSetup'
+import { StatContext } from '../context/StatContext';
 
 
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
@@ -40,6 +41,8 @@ const diffCalc = (score, rtg, slp) => {
 export default function RoundSummary({ handleRoundSummary }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
+  const statContext = React.useContext(StatContext)
+
   let playState = playContext.value.state
   let appState = appContext.value.state
   const [scoreArr, setScoreArr] = useState([])
@@ -164,6 +167,9 @@ export default function RoundSummary({ handleRoundSummary }) {
     await postRound(sumValues(playState.p1score), appState.round_id, diffCalc(sumValues(playState.p1score), 71.8, 127))
     appContext.value.doneRound()
     playContext.value.doneRound()
+    statContext.dispatch({
+      type: 'trigger_total_info_update'
+    })
   }
 
   return (
