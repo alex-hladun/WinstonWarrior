@@ -5,17 +5,17 @@ import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/PlayStyles'
 import { StatContext } from '../../context/StatContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
+import { useHandicap } from '../../hooks/useHandicap';
 
 export function Home({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const totalInfo = useTotalInfo(1, 1)
+  const hcp = useHandicap(1)
 
   const handlePress = () => {
     navigation.push('Course')
   }
-
-  // console.log("Home -> statState.totalInfo", statState.roundHistory)
 
   return (
     <>
@@ -31,7 +31,7 @@ export function Home({ navigation }) {
               </View>
               <View style={styles.boxContainer}>
                 <Text style={styles.boxHeader}>HCP</Text>
-                <Text style={styles.boxContent}>10.2</Text>
+                <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
               </View>
             </View>
             <View style={styles.holeRow}>

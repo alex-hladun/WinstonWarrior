@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { Alert, AsyncStorageStatic } from 'react-native'
 import holeInfo from '../assets/holeInfo'
+import { handicapDiffCalc } from '../helpers/handicap';
 
 const db = SQLite.openDatabase('winstonGolfer.db');
 
@@ -94,7 +95,7 @@ export const registerUser = async (user) => {
     tx.executeSql(`
     INSERT INTO users (user_name) VALUES (?);
     `, [user], (txObj, result) => {
-      // console.log('created user', result)
+      console.log('created user', user)
       resolve(result.insertId)
     }, (err, mess) => console.log('err creating user', reject(mess)))
   }))
@@ -203,7 +204,7 @@ export const createWinston = () => {
     tx.executeSql(`
     INSERT INTO courses (name) VALUES (?);
     `, ['The Winston'], (txObj, result) => {
-      console.log('result creating winston', result.rows._array)
+      console.log('result creating winston', result)
       // console.log('transObj', txObj)
       // setHole(holeNum + 1)
       // console.log('txObj', txObj)
@@ -236,19 +237,23 @@ export const createWinston = () => {
 export const seedData = async () => {
   return new Promise((resolve, reject) => {
     for (let i = 0; i < 19; i++) {
+      let score = Math.floor(Math.random() * (100-70) + 70)
+      let diff = handicapDiffCalc(score, 71.8, 127)
       db.transaction(tx => {
         // console.log('inside createRound')
         tx.executeSql(`
-        INSERT OR REPLACE INTO rounds (round_id, course_id, user_id, end_date) VALUES (?, 1, 1, strftime('%Y-%m-%d %H:%M:%S','now'));
-      `, [i + 5000], (txObj, result) => {
-          // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
-          // resolve(result)
-        }, (err, mess) => console.log('err seeding stats', err, mess))
+        INSERT OR REPLACE INTO rounds (round_id, course_id, user_id, end_date, hcp_diff) VALUES (?, 1, 1, strftime('%Y-%m-%d %H:%M:%S','now'), ?);
+      `, [i + 5000, diff], (txObj, result) => {
+          console.log(`success creating round`)
+        }, (err, mess) => console.log('err seeding round', err, mess))
       })
     }
 
-    for (let i = 0; i < 19; i++) {
-      for (let j = 0; j < 19; j++) {
+
+    for (let i = 0; i < 18; i++) {
+      for (let j = 0; j < 18; j++) {
+        let score = Math.floor(Math.random() * (10-2) + 2)
+        let putts = Math.floor(Math.random() * (10-0))
         db.transaction(tx => {
           // console.log('inside createRound')
           tx.executeSql(`
@@ -266,15 +271,16 @@ export const seedData = async () => {
             gir,
             date_time
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
-        `, [j+1, j+1, i + 5000, Math.floor(Math.random() * (10-2) + 2), Math.floor(Math.random() * (10-0)), Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.random() > 0.5], (txObj, result) => {
+        `, [j+1, j+1, i + 5000, score, putts, Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.random() > 0.5], (txObj, result) => {
             // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
+            console.log('Created score')
             // resolve(result)
-          }, (err, mess) => console.log('err seeding stats', err, mess))
+          }, (err, mess) => console.log('err seeding score', err, mess))
         })
-
       }
-      
     }
+
+
     console.log('ALL SEED DATA LOADED')
     db.transaction(tx => {
       // console.log('inside createRound')

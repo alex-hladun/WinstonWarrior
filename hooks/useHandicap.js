@@ -1,0 +1,36 @@
+import * as React from 'react';
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
+import { StatContext } from '../context/StatContext'
+
+export function useHandicap(user_id) {
+  const statContext = React.useContext(StatContext)
+  const [handicap, setHandicap] = React.useState(0)
+
+
+  React.useEffect(() => {
+    const getHandicap = async (user_id) => {
+      const roundHistory = await loadStats(user_id)
+
+      const sortedHistory = roundHistory.sort((a,b) => a.hcp_diff - b.hcp_diff)
+      console.log("useHandicap -> sortedHistory", sortedHistory)
+
+      let count = 0;
+      let hcpIndex = 0;
+      sortedHistory.forEach(score => {
+        if(count < 8) {
+          count += 1
+          hcpIndex += score.hcp_diff
+        }
+      })
+
+      if(count) {
+        setHandicap(hcpIndex / count)
+      }
+
+    }
+
+    getHandicap(1)
+  }, [statContext.value.state.allDataUpdate])
+
+  return handicap
+}

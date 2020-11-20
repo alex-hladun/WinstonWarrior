@@ -7,7 +7,7 @@ import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 import { getPct, postRound } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext';
-
+import { handicapDiffCalc } from '../helpers/handicap';
 
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
@@ -33,10 +33,6 @@ const sumBack = obj => {
   return sum
 }
 
-const diffCalc = (score, rtg, slp) => {
-  // (Adjusted Gross Score - Course Rating) X 113 ÷ Slope Rating
-  return ((score - rtg) * 113 / slp)
-}
 
 export default function RoundSummary({ handleRoundSummary }) {
   const appContext = React.useContext(AppContext)
@@ -47,11 +43,6 @@ export default function RoundSummary({ handleRoundSummary }) {
   let appState = appContext.value.state
   const [scoreArr, setScoreArr] = useState([])
   const [scoreObj, setScoreObj] = useState({})
-  // const [p1totalScore, setP1TotalScore] = useState(0)
-  // const [p2totalScore, setP2TotalScore] = useState(0)
-  // const [p3totalScore, setP3TotalScore] = useState(0)
-  // const [p4totalScore, setP4TotalScore] = useState(0)
-
 
   useEffect(() => {
     console.log(playState.p1score)
@@ -164,7 +155,7 @@ export default function RoundSummary({ handleRoundSummary }) {
     // const pctObj = await getPct(appState.round_id)
 
 // FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
-    await postRound(sumValues(playState.p1score), appState.round_id, diffCalc(sumValues(playState.p1score), 71.8, 127))
+    await postRound(sumValues(playState.p1score), appState.round_id, handicapDiffCal(sumValues(playState.p1score), 71.8, 127))
     appContext.value.doneRound()
     playContext.value.doneRound()
     statContext.dispatch({

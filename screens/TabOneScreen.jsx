@@ -19,23 +19,11 @@ export default function TabOneScreen() {
   const statContext = React.useContext(StatContext)
   const contextState = appContext.value.state
   const [initialHole, setInitialHole] = React.useState(1)
-  const stats = useStats(1, 1)
+  // const stats = useStats(1, 1)
 
   React.useEffect(() => {
-    let reset = false;
-    if (reset) {
-      console.log('resetting DB SHOULD ONLY RUN ONCE')
-      removeDB()
-      setUpDB()
-      createWinston()
-      registerUser('Alex')
-      createClubs()
-      seedData()
-    }
 
     // retrieveStats()
-
-
     let roundID
 
     const checkExisting = async () => {

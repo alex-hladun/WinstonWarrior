@@ -4,10 +4,29 @@ import * as Linking from 'expo-linking';
 import { AppContext } from '../context/AppContext'
 import { Video } from 'expo-av';
 import styles from '../assets/styles/PlayStyles'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 
 export function Login({ navigation }) {
   const context = React.useContext(AppContext)
   console.log('context in Login.tsx', context.dispatch)
+
+  React.useEffect(() => {
+    let reset = false;
+    let seed = false;
+    if (reset) {
+      console.log('resetting DB SHOULD ONLY RUN ONCE')
+      removeDB()
+      setUpDB()
+      createWinston()
+      registerUser('Alex')
+      createClubs()
+    }
+    
+    if(seed) {
+      seedData()
+
+    }
+  }, [])
 
   const handlePress = () => {
     console.log('going to root')
