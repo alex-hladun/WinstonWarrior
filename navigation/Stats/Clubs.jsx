@@ -8,19 +8,12 @@ import { Dimensions } from 'react-native';
 import { StatContext } from '../../context/StatContext'
 import { AppContext } from '../../context/AppContext'
 import { LinearGradient } from 'expo-linear-gradient';
-
 import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
 import { useShotData } from '../../hooks/useShotData';
 const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
-  const appContext = React.useContext(AppContext)
-  const appState = appContext.value.state
-  const statContext = React.useContext(StatContext)
-  const statState = statContext.value.state
-  // const shotData = statState.shotData
-
   const shotData = useShotData(1)
   const [club, setClub] = React.useState(null)
   const [clubView, setClubView] = React.useState(false)
@@ -59,13 +52,12 @@ export function Clubs({ navigation }) {
 
   const _renderItem = ({ item, index }) => {
     return (
-      <View style={{
-        width: width - 100, margin: 25, height: 500, borderRadius: 50, backgroundColor: 'white', alignSelf: 'center', alignItems: 'center', justifyContent: 'center',
-        //  borderColor: 'black', borderWidth: 2, borderStyle: 'solid'
-      }}>
-        <Text style={{ color: 'black' }} onPress={() => handleClubView()}>{item.name}</Text>
+      <View style={styles.clubCardContainer}>
+        <View style={styles.clubCardHeader}>
+          <Text style={styles.clubTypeText} onPress={() => handleClubView()}>{item.name}</Text>
+          <Text style={styles.clubAvgText} onPress={() => handleClubView()}>{item.avg} yds</Text>
+        </View>
         <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max}</Text>
-        <Text style={{ color: 'black' }} onPress={() => handleClubView()}>Avg -  {item.avg}</Text>
         <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Shots - {item.count}</Text>
       </View>
     );
@@ -112,13 +104,13 @@ export function Clubs({ navigation }) {
           </Modal>
 
           {/* <View style={styles.clubMasterContainer}> */}
-            <View style={styles.clubContainer}>
-              {shotDataArray[0] ? clubList : 
+          <View style={styles.clubContainer}>
+            {shotDataArray[0] ? clubList :
               <Text>
                 Save some shots to see your distances!
-              </Text> }
-            </View>
+              </Text>}
           </View>
+        </View>
         {/* </View> */}
       </View>
     </>

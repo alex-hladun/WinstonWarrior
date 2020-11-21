@@ -20,35 +20,41 @@ export function Home({ navigation }) {
   return (
     <>
       <View style={styles.background}>
-     
-        <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage}/>
-          <View style={styles.homePageContainer}>
-            <View style={styles.holeRow}>
-              <View style={styles.boxContainer}>
-                <Text style={styles.boxHeader}>Rounds</Text>
-                <Text style={styles.boxContent}>{totalInfo.totalRounds}</Text>
 
-              </View>
-              <View style={styles.boxContainer}>
-                <Text style={styles.boxHeader}>HCP</Text>
-                <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
-              </View>
+        <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
+        <View style={styles.homePageContainer}>
+          <View style={styles.winstonLogoContainer}>
+            <Image source={require('../../assets/images/gradientWinston.png')} />
+            <Text style={styles.winstonTxtHome}>
+              Winston Warrior
+              </Text>
+          </View>
+
+          <View style={styles.holeRow}>
+            <View style={styles.boxContainer}>
+              <Text style={styles.boxHeader}>Rounds</Text>
+              <Text style={styles.boxContent}>{totalInfo.totalRounds}</Text>
+
             </View>
-            <View style={styles.holeRow}>
-              <View style={styles.boxContainer}>
-                <Text style={styles.boxHeader}>Avg Score</Text>
-                <Text style={styles.boxContent}>{totalInfo.avgScore && totalInfo.avgScore.toFixed(1)}</Text>
-              </View>
-              <View style={styles.boxContainer}>
-                <Text style={styles.boxHeader}>Best Round</Text>
-                <Text style={styles.boxContent}>{totalInfo.bestScore}</Text>
-              </View>
+            <View style={styles.boxContainer}>
+              <Text style={styles.boxHeader}>HCP</Text>
+              <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
             </View>
-          
-            <View style={[styles.styledButton, styles.playButton]}>
-              <Text onPress={() => handlePress()} style={styles.buttonText}>Play Now</Text>
+            <View style={styles.boxContainer}>
+              <Text style={styles.boxHeader}>Avg Score</Text>
+              <Text style={styles.boxContent}>{totalInfo.avgScore && totalInfo.avgScore.toFixed(1)}</Text>
+            </View>
+            <View style={styles.boxContainer}>
+              <Text style={styles.boxHeader}>Best Round</Text>
+              <Text style={styles.boxContent}>{totalInfo.bestScore}</Text>
             </View>
           </View>
+
+
+          <View style={[styles.styledButton, styles.playButton]}>
+            <Text onPress={() => handlePress()} style={styles.buttonText}>Play Golf</Text>
+          </View>
+        </View>
       </View>
     </>
   );

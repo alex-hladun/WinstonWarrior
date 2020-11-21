@@ -30,7 +30,11 @@ export function PlayerAdd({ navigation }) {
 
           <TouchableOpacity key={`player1${index}`}>
             <View style={styles.player} key={`player2${index}`}>
-              <TextInput style={styles.playerText} onChangeText={text => changePlayerName(index, text)}>
+              <TextInput style={styles.playerText} 
+               autoFocus={index > 1 && true} 
+               selectTextOnFocus={true}
+               multiline={true}
+               onChangeText={text => changePlayerName(index, text)}>
                 {player}
               </TextInput>
             </View>

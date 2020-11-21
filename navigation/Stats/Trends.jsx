@@ -13,10 +13,11 @@ import {
   ContributionGraph
 } from 'react-native-chart-kit'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
+import { useHandicap } from '../../hooks/useHandicap';
 
 export function Trends({ navigation }) {
 
-
+  const hcp = useHandicap(1)
   const [loading, setLoading] = React.useState(false)
   const [dataChart, setDataChart] = React.useState({})
   const totalInfo = useTotalInfo(1, 1)
@@ -24,8 +25,9 @@ export function Trends({ navigation }) {
   const statState = statContext.value.state
   // console.log("Trends -> statState", statState)
   const roundHistory = statState.roundHistory
-  // console.log("Trends -> roundHistory", roundHistory)
+  console.log("Trends -> roundHistory", roundHistory)
 
+  
   let roundData;
   let data;
   React.useEffect(() => {
@@ -59,9 +61,6 @@ export function Trends({ navigation }) {
     navigation.push('Hole')
   }
 
-  if (data) {
-    console.log(data.labels, 'data.LABELS')
-  }
 
   return (
     <>
@@ -82,7 +81,7 @@ export function Trends({ navigation }) {
             <LineChart
               data={{
                 labels: roundHistory.map((round, index) => {
-                  return (index)
+                  return (round.end_date.slice(5,10))
                 }),
                 datasets: [{
                   data: roundHistory.map((round) => {
@@ -91,11 +90,14 @@ export function Trends({ navigation }) {
                 }]
               }}
               width={Dimensions.get('window').width * 0.9} // from react-native
-              height={220}
+              height={240}
               chartConfig={{
                 backgroundColor: Theme.chartBackgroundColor,
                 backgroundGradientFrom: Theme.chartBGGradientFrom,
                 backgroundGradientTo: Theme.chartBGGradientTo,
+                propsForVerticalLabels: {
+                  rotation: -90
+                },
                 decimalPlaces: 0, // optional, defaults to 2dp
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
@@ -117,7 +119,7 @@ export function Trends({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>{totalInfo.avgScore &&  totalInfo.avgScore.toFixed(0)}</Text>
+              <Text style={styles.boxContent}>{totalInfo.avgScore &&  totalInfo.avgScore.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>Avg Putts</Text>
@@ -125,7 +127,7 @@ export function Trends({ navigation }) {
             </View>
             <View style={styles.trendContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
-              <Text style={styles.boxContent}>10.2</Text>
+              <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>

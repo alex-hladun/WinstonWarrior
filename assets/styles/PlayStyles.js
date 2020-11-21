@@ -24,19 +24,21 @@ export const styles = StyleSheet.create({
     flex: 1,
     // zIndex: 4,
     // backgroundColor: Theme.spinGreen1,
-    alignSelf: 'center',
+    // alignSelf: 'center',
     justifyContent: 'space-evenly',
-    paddingTop: 100,
+    // flexDirection: 'column',
+    // paddingTop: 100,
     width: '100%',
     height: '100%',
     // opacity: 0.75,
-    borderColor: 'black',
+    // borderColor: 'black',
     // borderStyle: 'solid',
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     // borderRadius: 15,
     padding: 10,
+    // marginTop: 100,
     // backgroundColor: 'red',
-    position: 'absolute',
+    // position: 'absolute',
   },
   scoreContainer: {
     flex: 1,
@@ -58,7 +60,8 @@ export const styles = StyleSheet.create({
   holeRow: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginHorizontal: 10
   },
   header: {
     fontSize: 20,
@@ -128,8 +131,8 @@ export const styles = StyleSheet.create({
     borderRightWidth: 4,
     // borderStyle: 'solid',
     padding: 10,
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     justifyContent: 'center'
   },
   boxHeader: {
@@ -190,6 +193,10 @@ export const styles = StyleSheet.create({
   },
   txt: {
     color: 'white',
+    fontSize: 40,
+  },
+  winstonTxtHome: {
+    color: 'black',
     fontSize: 40,
   },
   styledButton: {
@@ -265,6 +272,15 @@ export const styles = StyleSheet.create({
   },
   whiteText: {
     color: Theme.iconStroke
+  },
+  winstonLogoContainer: {
+    alignSelf: 'center',
+    flexDirection: 'column',
+    // justifyContent: 'flex-start',
+    // paddingTop: 100,
+    // height: 300,
+    marginVertical: 20,
+    alignItems: 'center',
   },
   rankingContainer: {
     position: 'absolute',

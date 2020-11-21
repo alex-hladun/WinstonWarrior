@@ -104,7 +104,8 @@ export const styles = StyleSheet.create({
   },
   player: {
     padding: 20,
-    marginRight:10
+    width: 200,
+    // marginRight:10
   },
   startRound: {
     alignSelf: 'flex-start',

@@ -270,7 +270,7 @@ export default function Hole({ location, initialHole = 1 }) {
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={shotTrackView}>
-        <View style={holeListStyles.scoreContainer}>
+        {/* <View style={holeListStyles.scoreContainer}>
         <TouchableOpacity onPress={() => handleTrackViewClose()}>
 
           <View style={holeListStyles.headerContainer}>
@@ -279,9 +279,9 @@ export default function Hole({ location, initialHole = 1 }) {
               <XSymbol />
             </Text>
           </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <ShotTrack distance={trackDistance} handleTrackViewClose={() => handleTrackViewClose()} />
-        </View>
+        {/* </View> */}
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreView}>

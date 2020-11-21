@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
+import { useTotalInfo } from './useTotalInfo';
 
 export function useStats(user_id, course_id) {
   const statContext = React.useContext(StatContext)
@@ -16,10 +17,8 @@ export function useStats(user_id, course_id) {
   
       const fwHistoryArray = await loadFwHistory(1)
   
-      // console.log('round history', statsArray)
       // Get individual TOTAL hole stats
       const holeStats = await loadHoleStats(course_id, user_id)
-      // console.log("TabOneScreen -> holeStats", holeStats)
       let holeObj = {}
       for (let i = 1; i <= 18; i++) {
         holeObj[i] = {}
@@ -39,13 +38,14 @@ export function useStats(user_id, course_id) {
       const holeHistory = await loadHoleHistory(course_id, user_id)
       holeObj = {}
       for (let i = 1; i <= 18; i++) {
-        holeObj[i] = { score: [], putts: [] }
+        holeObj[i] = { score: [], putts: [], date: []}
       }
   
       holeHistory.forEach((hole) => {
         // console.log("TabOneScreen -> hole history", hole)
         holeObj[hole.hole_num].score.push(hole.total_shots)
         holeObj[hole.hole_num].putts.push(hole.total_putts)
+        holeObj[hole.hole_num].date.push(hole.date)
   
       })
       statContext.dispatch({

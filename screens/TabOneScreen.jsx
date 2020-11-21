@@ -19,7 +19,7 @@ export default function TabOneScreen() {
   const statContext = React.useContext(StatContext)
   const contextState = appContext.value.state
   const [initialHole, setInitialHole] = React.useState(1)
-  // const stats = useStats(1, 1)
+  const stats = useStats(1, 1)
 
   React.useEffect(() => {
 

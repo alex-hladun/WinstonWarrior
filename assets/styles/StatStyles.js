@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '../styles/Theme'
+import { Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 
 export const styles = StyleSheet.create({
@@ -45,6 +48,26 @@ export const styles = StyleSheet.create({
     padding: 10,
     // backgroundColor: 'red',
     position: 'absolute',
+  },
+  clubCardContainer: {
+     width: width - 100,
+      margin: 25, 
+      height: 500, 
+      borderRadius: 50, 
+      backgroundColor: 'white',
+       alignSelf: 'center', 
+  },
+  clubCardHeader: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    padding: 20
+  },
+  clubTypeText: {
+    fontSize: 20
+  },
+  clubAvgText: {
+    fontSize: 30
   },
   scoreContainer: {
     flex: 1,
@@ -147,7 +170,7 @@ export const styles = StyleSheet.create({
   boxContainer: {
     flexDirection: 'column',
     backgroundColor: Theme.iconStroke,
-    padding: 10,
+    padding: 7,
     margin: 5,
     width: 100,
     borderWidth: 2,
@@ -161,7 +184,7 @@ export const styles = StyleSheet.create({
   trendContainer: {
     flexDirection: 'column',
     backgroundColor: Theme.iconStroke,
-    padding: 10,
+    padding: 7,
     margin: 5,
     width: 100,
     borderWidth: 2,
@@ -244,7 +267,6 @@ export const styles = StyleSheet.create({
   },
   smallTxt: {
     color: Theme.spinGreen4,
-
     fontSize: 20,
     textAlign: 'center'
     // fontFamily: 'tacoma'

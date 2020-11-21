@@ -155,11 +155,14 @@ export default function RoundSummary({ handleRoundSummary }) {
     // const pctObj = await getPct(appState.round_id)
 
 // FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
-    await postRound(sumValues(playState.p1score), appState.round_id, handicapDiffCal(sumValues(playState.p1score), 71.8, 127))
+    await postRound(sumValues(playState.p1score), appState.round_id, handicapDiffCalc(sumValues(playState.p1score), 71.8, 127))
     appContext.value.doneRound()
     playContext.value.doneRound()
     statContext.dispatch({
       type: 'trigger_total_info_update'
+    })
+    statContext.dispatch({
+      type: 'trigger_all_data_update'
     })
   }
 

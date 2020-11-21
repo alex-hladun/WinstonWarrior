@@ -63,6 +63,12 @@ const reducer = (state, action) => {
         totalInfoUpdate: Math.random()
       }
     break;
+    case "trigger_all_data_update":
+      return {
+        ...state,
+        allDataUpdate: Math.random()
+      }
+    break;
 
   }
 }

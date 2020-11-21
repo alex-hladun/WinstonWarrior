@@ -20,8 +20,6 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
   React.useEffect(() => {
     const getTotalInfo = async (user_id, course_id) => {
       console.log('RETRIEVING ALL TOTALINFO STATS!')
-
-
       // Get counts of birdie, par, eagle for each hole
       const birdieCount = await loadBirds(course_id, user_id)
       // console.log('birdieCount', birdieCount)
@@ -44,9 +42,9 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
       }
   
 
-      console.log("useTotalInfo -> birdieCount", birdieCount)
+      // console.log("useTotalInfo -> birdieCount", birdieCount)
       birdieCount.forEach((hole) => {
-        console.log('scoreObj', hole)
+        // console.log('scoreObj', hole)
         birdieObj[hole.hole_num].rounds++
   
         if (hole.total_shots - hole.hole_par === -1) {
@@ -62,7 +60,6 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
   
         if ((hole.total_shots - hole.total_putts + 2) <= hole.hole_par) {
           birdieObj[hole.hole_num].GIRs++
-  
         }
       })
 
@@ -72,7 +69,7 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
       const bestScore = await loadBestScore(1)
       const avgPutts = await loadAvgPutts(1)
       const fwyPct = await getPct(1)
-      console.log(totalRounds, avgScore, bestScore)
+      // console.log(totalRounds, avgScore, bestScore)
 
       setTotalInfo({
           totalRounds,
@@ -81,7 +78,8 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
           bestScore,
           totalBirds,
           fwyPct,
-          girPct
+          girPct,
+          birdieObj
       })
     }
 

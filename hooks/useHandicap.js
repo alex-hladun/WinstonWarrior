@@ -8,11 +8,11 @@ export function useHandicap(user_id) {
 
 
   React.useEffect(() => {
+    console.log('RETREVING HCPP')
     const getHandicap = async (user_id) => {
       const roundHistory = await loadStats(user_id)
 
       const sortedHistory = roundHistory.sort((a,b) => a.hcp_diff - b.hcp_diff)
-      console.log("useHandicap -> sortedHistory", sortedHistory)
 
       let count = 0;
       let hcpIndex = 0;

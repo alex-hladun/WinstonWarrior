@@ -28,7 +28,11 @@ export const styles = StyleSheet.create({
   },
   pickerContainer: {
     flexDirection: 'column',
-    justifyContent: 'space-evenly'
+    // paddingTop: 20,
+    justifyContent: 'flex-start',
+    backgroundColor: Theme.spinGreen1,
+    flex: 1
+
   },
   prevScore: {
     color: 'blue',
@@ -43,23 +47,16 @@ export const styles = StyleSheet.create({
 
   },
   exitHeader: {
-    // marginTop: 50,
-    // justifyContent: 'space-evenly',
-    // flexDirection: 'row',
-    // // marginHorizontal: 20,
-    // textAlign: 'center',
-    // backgroundColor: Theme.spinGreen1
-
     backgroundColor: Theme.red,
-    alignSelf: 'center',
-    justifyContent: 'center',
-
+    alignItems: 'center',
     paddingTop: 5,
     marginTop: 50,
     marginBottom: 20,
+    // margin: 20,
     width: 50,
     height: 50,
-    borderRadius: 100
+    borderRadius: 100,
+    alignSelf: 'center'
   },
   scoreHeader: {
     justifyContent: 'space-evenly',
@@ -88,10 +85,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    marginVertical: 10,
+    marginVertical: 5,
     backgroundColor: 'transparent'
-
-
   },
   pickerRow: {
     justifyContent: 'space-evenly',
@@ -125,27 +120,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 5,
-    // borderColor: 'black',
-    // borderStyle: 'solid',
-    // borderWidth: 2,
     borderRadius: 100,
     opacity: 0.85,
     backgroundColor: Theme.spinGreen3,
   },
   distanceHeader: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    
   },
   club: {
     justifyContent: 'center',
     // height: 40,
     maxWidth: 80,
     minWidth: 70,
-    // backgroundColor: 'green',
+    backgroundColor: 'white',
     textAlign: 'center',
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     borderRadius: 15,
     // alignSelf: 'center',
     alignItems: 'center',
@@ -154,14 +147,23 @@ export const styles = StyleSheet.create({
     flex: 1
   },
   selected: {
-    backgroundColor: '#4FC879'
+    backgroundColor: Theme.spinGreen3
+  },
+  text: {
+    backgroundColor: 'transparent'
+
   },
   clubContainer: {
     flexWrap: 'wrap',
-    height: '60%',
-    margin: 10,
+    // height: '60%',
+    marginTop: 20,
+    borderColor: 'black',
+    // borderWidth: 20,
+    marginHorizontal: 10,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: Theme.spinGreen1
+
   }
 
 });

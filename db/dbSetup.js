@@ -328,7 +328,7 @@ export const loadFwHistory = async (user_id) => {
     ORDER BY rounds.round_id DESC LIMIT 20;
     `, [user_id], (txObj, result) => {
       console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array.reverse())
+      resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
   )
@@ -568,9 +568,9 @@ export const loadHoleHistory = async (course_id, user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     SELECT
-    scores.hole_num, holes.hole_par, scores.total_shots AS total_shots, scores.total_putts AS total_putts
-    FROM ROUNDS 
-    JOIN scores 
+    scores.hole_num, holes.hole_par, scores.total_shots AS total_shots, scores.total_putts AS total_putts, scores.date_time AS date
+    FROM ROUNDS
+    JOIN scores
     ON rounds.round_id = scores.round_id
     JOIN holes 
     ON holes.hole_id = scores.hole_id
