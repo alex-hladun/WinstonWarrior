@@ -8,6 +8,9 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import { Theme } from '../assets/styles/Theme'
+import  GolfFlag  from '../assets/svg/GolfFlag'
+import ChartLogo from '../assets/svg/ChartLogo'
+
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
@@ -21,14 +24,14 @@ export default function BottomTabNavigator() {
         name="Play"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={Theme.spinGreen1} />,
+          tabBarIcon: ({ color }) => <GolfFlag name="ios-code" color={Theme.spinGreen1} />,
         }}
       />
       <BottomTab.Screen
         name="Stats"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={Theme.spinGreen1} />,
+          tabBarIcon: ({ color }) => <ChartLogo name="ios-code" color={Theme.spinGreen1} />,
         }}
       />
     </BottomTab.Navigator>

@@ -24,8 +24,8 @@ export function Home({ navigation }) {
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
           <View style={styles.winstonLogoContainer}>
-            <Image source={require('../../assets/images/gradientWinston.png')} />
-            <Text style={styles.winstonTxtHome}>
+            <Image source={require('../../assets/images/winstonLogo.png')} style={styles.winnyImage}/>
+            <Text style={[styles.winstonTxtLogin, styles.buttonText]}>
               Winston Warrior
               </Text>
           </View>

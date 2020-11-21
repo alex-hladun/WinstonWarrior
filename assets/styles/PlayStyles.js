@@ -20,25 +20,24 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'red',
     position: 'absolute',
   },
+  winnyImage: {
+    height: 150,
+    width: 175
+  },
   homePageContainer: {
     flex: 1,
-    // zIndex: 4,
-    // backgroundColor: Theme.spinGreen1,
-    // alignSelf: 'center',
     justifyContent: 'space-evenly',
-    // flexDirection: 'column',
-    // paddingTop: 100,
     width: '100%',
     height: '100%',
-    // opacity: 0.75,
-    // borderColor: 'black',
-    // borderStyle: 'solid',
-    // borderWidth: 0.5,
-    // borderRadius: 15,
     padding: 10,
-    // marginTop: 100,
-    // backgroundColor: 'red',
-    // position: 'absolute',
+    marginBottom: 30
+  },
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'space-evenly',
+    width: '100%',
+    height: '100%',
+    padding: 10,
   },
   scoreContainer: {
     flex: 1,
@@ -199,6 +198,10 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontSize: 40,
   },
+  winstonTxtLogin: {
+    color: 'black',
+    fontSize: 27,
+  },
   styledButton: {
     width: 250,
     backgroundColor: Theme.ogButtonGreen,
@@ -277,7 +280,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'column',
     // justifyContent: 'flex-start',
-    // paddingTop: 100,
+    paddingTop: 50,
     // height: 300,
     marginVertical: 20,
     alignItems: 'center',

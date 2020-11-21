@@ -344,13 +344,13 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
           />
         </View> */}
         <View style={styles.pickerHeader}>
-          <TouchableHighlight onPress={(event) => handleScoreSubmit()}>
+          <TouchableOpacity onPress={(event) => handleScoreSubmit()}>
             <View style={[styles.checkSymbol]}>
               <Text >
                 <CheckSymbol />
               </Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       </View>
     </>

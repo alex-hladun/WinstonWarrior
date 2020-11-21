@@ -25,7 +25,7 @@ export function Trends({ navigation }) {
   const statState = statContext.value.state
   // console.log("Trends -> statState", statState)
   const roundHistory = statState.roundHistory
-  console.log("Trends -> roundHistory", roundHistory)
+  // console.log("Trends -> roundHistory", roundHistory)
 
   
   let roundData;
@@ -108,7 +108,7 @@ export function Trends({ navigation }) {
               style={{
                 // top: -100,
                 alignSelf: 'center',
-                marginVertical: 8,
+                marginVertical: 5,
                 borderRadius: 16
               }}
             />

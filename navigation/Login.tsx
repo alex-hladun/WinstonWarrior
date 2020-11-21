@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { AppContext } from '../context/AppContext'
@@ -56,15 +56,21 @@ export function Login({ navigation }) {
           />
       {/* </ImageBackground> */}
         </View>
-        <View style={styles.modalContainer}>
-          <View style={styles.winstonText}>
-            <Text style={styles.txt}>W/W</Text>
+        <View style={styles.loginContainer}>
+        <View style={styles.winstonLogoContainer}>
+            <Image source={require('../assets/images/winstonLogo.png')} style={styles.winnyImage}/>
+            <Text style={[styles.buttonText, styles.winstonTxtLogin]}>
+              Winston Warrior
+              </Text>
           </View>
+          {/* <View style={styles.winstonText}>
+            <Text style={styles.txt}>W/W</Text>
+          </View> */}
           {/* <View style={styles.styledButton}>
             <Text onPress={() => handlePress()} style={styles.buttonText}>Create Account</Text>
           </View> */}
           <View style={styles.styledButton}>
-            <Text onPress={() => handleLogin()} style={styles.buttonText}>Create Profile</Text>
+            <Text onPress={() => handleLogin()} style={styles.buttonText}>Login</Text>
           </View>
         </View>
     </>

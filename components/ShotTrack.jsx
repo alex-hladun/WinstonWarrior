@@ -23,7 +23,7 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
   if (clubArray) {
     clubList = clubArray.map((clb, i) => {
       return (
-        <TouchableOpacity style={[styles.club, clb.club_id === club && styles.selected]} onPress={() => setClub(clb.club_id)}>
+        <TouchableOpacity key={`clubchoice${i}`} style={[styles.club, clb.club_id === club && styles.selected]} onPress={() => setClub(clb.club_id)}>
         <View key={`cl${i}`} >
           <Text key={`club${i}`} onPress={() => setClub(clb.club_id)} style={[styles.text, clb.club_id === club && styles.selected]}>
             {clb.name}
@@ -90,13 +90,13 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
         </View>
 
         <View style={styles.pickerHeader}>
-          <TouchableHighlight onPress={(event) => handleSubmit()}>
+          <TouchableOpacity onPress={(event) => handleSubmit()}>
             <View style={[styles.checkSymbol]}>
               <Text >
                 <CheckSymbol />
               </Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       </View>
     </>

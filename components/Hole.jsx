@@ -172,11 +172,8 @@ export default function Hole({ location, initialHole = 1 }) {
         longitude: undefined
       })
 
-      // CHANGE LATER
-
       appContext.value.setHole(num)
 
-      // //////
       appContext.dispatch({
         type: 'set_hole_id',
         data: num
@@ -239,10 +236,6 @@ export default function Hole({ location, initialHole = 1 }) {
     // console.log(coords)
   }
 
-  const handleShotDiff = (diff) => {
-    setShotDiff(shotDiff + diff)
-  }
-
   const handleMapLongPress = () => {
     console.log('map long press')
   }
@@ -265,36 +258,16 @@ export default function Hole({ location, initialHole = 1 }) {
             </Text>
           </View>
           </TouchableOpacity>
-          <HoleList setHole={setHole} handleRoundSummary={handleRoundSummary} />
+          <HoleList setHole={setHole} handleRoundSummary={handleRoundSummary} currentHole={holeNum} />
         </View>
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={shotTrackView}>
-        {/* <View style={holeListStyles.scoreContainer}>
-        <TouchableOpacity onPress={() => handleTrackViewClose()}>
-
-          <View style={holeListStyles.headerContainer}>
-
-            <Text style={holeListStyles.header} onPress={() => handleTrackViewClose()}>
-              <XSymbol />
-            </Text>
-          </View>
-          </TouchableOpacity> */}
           <ShotTrack distance={trackDistance} handleTrackViewClose={() => handleTrackViewClose()} />
-        {/* </View> */}
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreView}>
-        {/* <View style={holeListStyles.scoreContainer}>
-        <TouchableOpacity onPress={() => handleScoreEnter()}>
-          <View style={holeListStyles.headerContainer}>
-            <Text style={holeListStyles.header} onPress={() => handleScoreEnter()}>
-              <XSymbol />
-            </Text>
-          </View>
-          </TouchableOpacity> */}
           <Score holeNum={holeNum} setHole={setHole} handleScoreEnter={handleScoreEnter} />
-        {/* </View> */}
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreCardView}>

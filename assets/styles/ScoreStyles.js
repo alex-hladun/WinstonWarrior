@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
     bottom: '-90%',
     position: 'absolute',
     // zIndex: 10,
-    opacity: 0.08,
+    opacity: 0.04,
     resizeMode: 'contain',
   },
   checkSymbol: {
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 5,
     borderRadius: 100,
-    opacity: 0.85,
+    // opacity: 0.85,
     backgroundColor: Theme.spinGreen3,
   },
   distanceHeader: {

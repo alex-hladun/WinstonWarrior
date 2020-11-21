@@ -41,7 +41,7 @@ export function Clubs({ navigation }) {
               {clb.name}
             </Text>
             <Text key={`clubss${i}`} style={styles.smallTxt}>
-              {clb.avg} yds
+              {clb.avg.toFixed(0)} yds
           </Text>
           </TouchableOpacity>
           {/* </LinearGradient> */}
@@ -55,9 +55,9 @@ export function Clubs({ navigation }) {
       <View style={styles.clubCardContainer}>
         <View style={styles.clubCardHeader}>
           <Text style={styles.clubTypeText} onPress={() => handleClubView()}>{item.name}</Text>
-          <Text style={styles.clubAvgText} onPress={() => handleClubView()}>{item.avg} yds</Text>
+          <Text style={styles.clubAvgText} onPress={() => handleClubView()}>{item.avg.toFixed(0)} yds</Text>
         </View>
-        <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max}</Text>
+        <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max.toFixed(0)}</Text>
         <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Shots - {item.count}</Text>
       </View>
     );

@@ -61,9 +61,14 @@ export const styles = StyleSheet.create({
   },
   holebg: {
     backgroundColor: '#FFF',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    // borderWidth: 0.5,
+    borderRadius: 15,
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    flex: 1
+  },
+  holebgSelected: {
+    backgroundColor: Theme.spinGreen2,
     borderRadius: 15,
     alignItems: 'center',
     padding: 10,
