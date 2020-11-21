@@ -24,7 +24,7 @@ export function Home({ navigation }) {
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
           <View style={styles.winstonLogoContainer}>
-            <Image source={require('../../assets/images/winstonLogo.png')} style={styles.winnyImage}/>
+            <Image source={require('../../assets/images/winstonLogo.png')} style={styles.winnyImage} />
             <Text style={[styles.winstonTxtLogin, styles.buttonText]}>
               Winston Warrior
               </Text>
@@ -50,10 +50,11 @@ export function Home({ navigation }) {
             </View>
           </View>
 
-
-          <View style={[styles.styledButton, styles.playButton]}>
-            <Text onPress={() => handlePress()} style={styles.buttonText}>Play Golf</Text>
-          </View>
+          <TouchableOpacity onPress={() => handlePress()}>
+            <View style={[styles.styledButton, styles.playButton]}>
+              <Text style={styles.buttonText}>Play Golf</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </>
