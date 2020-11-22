@@ -72,9 +72,12 @@ export function Trends({ navigation }) {
             
             <Text style={styles.header}>Scoring</Text>
             :
-            <Text style={styles.header}>
+            // <View style={styles.styledButton}>
+            <Text>
               Start playing to see your stats!
-            </Text>}
+            </Text>
+            // </View>
+            }
           </View>
 
           {loading && roundHistory[0] &&

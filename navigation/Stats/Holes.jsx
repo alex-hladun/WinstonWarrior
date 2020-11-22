@@ -15,21 +15,7 @@ export function Holes({ navigation }) {
   const statState = statContext.value.state
   const holeNum = appState.hole_num
   const totalInfo = useTotalInfo(1,1)
-  // console.log("Holes -> totalInfo", totalInfo)
-
-  let dateLabels;
-  React.useEffect(() => {
-    // console.log('statState', statState.holeHistory)
-
-    // if(statState.holeHistory[holeNum].date) {
-    //   console.log('FOUND DATES')
-    //   statState.holeHistory[holeNum].date.forEach(holeDate => {
-    //     dateLabels.push(holeDate.slice(5,10))
-    //   })
-    // }
-
-    console.log('datelabels', dateLabels)
-  }, [statState.holeHistory])
+  // console.log("🚀 ~ file: Holes.jsx ~ line 16 ~ Holes ~ statState", statState)
 
   return (
     <>
@@ -40,7 +26,7 @@ export function Holes({ navigation }) {
             <Text style={styles.header}>Hole {holeNum}</Text>
           </View>
 
-          {holeNum && statState && statState.holeHistory[holeNum] ?
+          {holeNum && statState && statState.holeHistory[holeNum] && statState.holeHistory[holeNum].score[0] ?
           <>
             <LineChart
               data={{
@@ -105,11 +91,11 @@ export function Holes({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
-              <Text style={styles.boxContent}>{statState.fwData[holeNum].fairwaysHit ? (100 * statState.fwData[holeNum].fairwaysHit / statState.fwData[holeNum].totalFairways).toFixed(0) : 0}</Text>
+              <Text style={styles.boxContent}>{statState.fwData[holeNum] ? (100 * statState.fwData[holeNum].fairwaysHit / statState.fwData[holeNum].totalFairways).toFixed(0) : 0}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>AVG FW</Text>
-            <Text style={styles.boxContent}>{statState.fwData[holeNum].driverDirection && statState.fwData[holeNum].driverDirection.toFixed(1)}</Text>
+            <Text style={styles.boxContent}>{statState.fwData[holeNum] && statState.fwData[holeNum].driverDirection.toFixed(1)}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Best Score</Text>
@@ -119,7 +105,7 @@ export function Holes({ navigation }) {
           </>
           :
           <View style={styles.chartContainer}>
-              <Text>Play a round to see hole stats</Text>
+              <Text>Save a score to this hole to see hole stats</Text>
             </View>
           }
         </View>

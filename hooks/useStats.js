@@ -63,14 +63,17 @@ export function useStats(user_id, course_id) {
   
       // Retrieve low
       const lowHoleData = await loadLow(1, 1)
+      // console.log("🚀 ~ file: useStats.js ~ line 66 ~ useStats ~ lowHoleData", lowHoleData)
+
       holeObj = {}
       for (let i = 1; i <= 18; i++) {
-        holeObj[i] = {}
+        holeObj[i] = 'NA'
       }
   
       lowHoleData.forEach((hole) => {
         holeObj[hole.hole_num] = hole.min_score
       })
+        // console.log("🚀 ~ file: useStats.js ~ line 76 ~ useStats ~ holeObj", holeObj)
       statContext.dispatch({
         type: 'set_low_scores',
         data: holeObj

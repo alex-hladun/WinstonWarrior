@@ -337,7 +337,7 @@ export const loadShots = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT clubs.name, avg(distance) AS avg, max(distance) AS max, count(*) AS count
+    SELECT clubs.name, clubs.club_id AS id, avg(distance) AS avg, max(distance) AS max, count(*) AS count
     FROM distances
     JOIN clubs ON clubs.club_id = distances.club_id
     WHERE user_id = ?
@@ -356,11 +356,15 @@ export const loadTotalRounds = async (user_id) => {
     tx.executeSql(`
     SELECT DISTINCT count(rounds.round_id) AS total_rounds
     FROM ROUNDS
-    WHERE rounds.user_id = ?
+    WHERE rounds.user_id = ? AND end_date NOT NULL AND end_date != ""
     GROUP BY rounds.user_id;
     `, [user_id], (txObj, result) => {
-      // console.log(`total overall stats: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array[0].total_rounds)
+      console.log(`total overall stats: ${JSON.stringify(result.rows._array)}`)
+      if(result.rows._array[0]) {
+        resolve(result.rows._array[0].total_rounds)
+      } else {
+        resolve(0)
+      }
     }, (err, mess) => console.log('err getting total stats', reject(mess)))
   })
   )

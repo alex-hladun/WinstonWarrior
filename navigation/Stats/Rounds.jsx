@@ -51,15 +51,17 @@ export function Rounds({ navigation }) {
       <View style={styles.background}>
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
-
-          {/* <View style={styles.chartContainer}> */}
           <SafeAreaView>
+            {roundHistory[0] ? 
             <FlatList data={roundHistory} renderItem={renderItem} keyExtractor={item => `${item.round_id}`} />
+            :
+            <View style={styles.styledButton}>
+            <Text>
+              Play a round to see your history. 
+            </Text>
+            </View>
+          }
           </SafeAreaView>
-
-          {/* </View> */}
-
-
         </View>
       </View>
     </>

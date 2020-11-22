@@ -17,4 +17,28 @@ export const Theme = {
   darkGrey: '33F3F37',
   clubGradientFrom: '#1F5A98',
   clubGradientTo: '#2D7DD2',
+  palette: [
+    '#EEBAB2',
+    '#E7CBA9',
+    '#F5E2E4',
+    '#CCD4BF',
+    '#F5F3E7',
+    '#BEB4C5',
+    '#E5DB9C',
+    '#E6A57E',
+    '#9AD9DB',
+    '#E5DBD9',
+    '#C47482',
+    '#F27348',
+    '#76CDCD',
+    '#B8E0F6',
+    '#A4CCE3',
+    '#DEC4D6',
+    '#4382BB',
+    '#84A6D6',
+    '#F7CE76',
+    '#E8D6CF',
+    '#9C9359'
+  ],
+  
 }

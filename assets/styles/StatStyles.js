@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '../styles/Theme'
 import { Dimensions } from 'react-native';
+import { color } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
@@ -50,24 +51,61 @@ export const styles = StyleSheet.create({
     position: 'absolute',
   },
   clubCardContainer: {
-     width: width - 100,
-      margin: 25, 
-      height: 500, 
-      borderRadius: 50, 
-      backgroundColor: 'white',
-       alignSelf: 'center', 
+    width: width - 50,
+    margin: 25,
+    height: 500,
+    borderRadius: 50,
+    // borderBottomRightRadius: 0,
+    // borderBottomLeftRadius: 0,
+    // backgroundColor: '#EEBAB2',
+    alignSelf: 'center',
   },
   clubCardHeader: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+    backgroundColor: 'black',
+    alignItems: 'center',
+    opacity: 0.35,
+    height: 100,
+    // borderRadius: 50,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50
+    // marginHorizontal: 10,
+    // padding: 20
+  },
+  clubTypeText: {
+    fontSize: 30,
+    color: '#FFF',
+    opacity: 1,
     marginHorizontal: 10,
     padding: 20
   },
-  clubTypeText: {
-    fontSize: 20
-  },
   clubAvgText: {
-    fontSize: 30
+    fontSize: 30,
+    color: '#FFF',
+    opacity: 1,
+    marginHorizontal: 10,
+    padding: 20,
+    // fontStyle: 'italic'
+  },
+  clubCardText: {
+    fontSize: 20,
+    color: '#FFF',
+    opacity: 1,
+
+  },
+  barChartStyle: {
+    opacity: 1,
+    padding: 10,
+    margin: 10
+    // borderBottomRightRadius: 50,
+    // borderBottomEndRadius: 50,
+    // borderRadius: 50,
+    // borderTopLeftRadius: 0,
+    // borderTopRightRadius: 0
+    // borderBottomLeftRadius: 50
+    // margin: 10
+   
   },
   scoreContainer: {
     flex: 1,
@@ -305,7 +343,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row'
-// filter: drop-shadow(0px 0px 40px rgba(0, 0, 0, 0.2));
+    // filter: drop-shadow(0px 0px 40px rgba(0, 0, 0, 0.2));
   },
   roundLeft: {
     flexDirection: 'column',

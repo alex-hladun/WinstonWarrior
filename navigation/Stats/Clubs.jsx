@@ -1,16 +1,15 @@
-import { View, Text, TouchableOpacity, SafeAreaView, FlatList, Image, Modal, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, FlatList, Image, Modal, ImageBackground, Dimensions } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/StatStyles'
 import Carousel from 'react-native-snap-carousel';
-import { Dimensions } from 'react-native';
-import { StatContext } from '../../context/StatContext'
-import { AppContext } from '../../context/AppContext'
 import { LinearGradient } from 'expo-linear-gradient';
 import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
 import { useShotData } from '../../hooks/useShotData';
+import { BarChart } from 'react-native-chart-kit'
+
 const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
@@ -50,15 +49,46 @@ export function Clubs({ navigation }) {
     })
   }
 
+
+
+
+  const shotDataForChart = {
+    datasets: [{
+      data: [20, 30, 55]
+    }],
+    labels: ['1', '2', '3']
+  }
+
+  const barChartConfig = {
+    backgroundColor: Theme.chartBackgroundColor,
+    paddingTop: 0,
+    decimalPlaces: 0, // optional, defaults to 2dp
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0.0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.0,
+    color: (opacity = 1) => `rgba(35, 36, 36, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  }
+
   const _renderItem = ({ item, index }) => {
+    console.log(Theme.palette)
     return (
-      <View style={styles.clubCardContainer}>
+      <View style={[styles.clubCardContainer, { backgroundColor: Theme.palette[item.id]}]}>
         <View style={styles.clubCardHeader}>
           <Text style={styles.clubTypeText} onPress={() => handleClubView()}>{item.name}</Text>
           <Text style={styles.clubAvgText} onPress={() => handleClubView()}>{item.avg.toFixed(0)} yds</Text>
         </View>
-        <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max.toFixed(0)}</Text>
-        <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Shots - {item.count}</Text>
+        {/* <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max.toFixed(0)}</Text> */}
+        <BarChart
+          style={styles.barChartStyle}
+          chartConfig={barChartConfig}
+          data={shotDataForChart}
+          width={Dimensions.get("window").width -125}
+          height={370}
+        />
       </View>
     );
   }
@@ -102,16 +132,15 @@ export function Clubs({ navigation }) {
             </View>
             <_clubView />
           </Modal>
-
-          {/* <View style={styles.clubMasterContainer}> */}
           <View style={styles.clubContainer}>
             {shotDataArray[0] ? clubList :
-              <Text>
-                Save some shots to see your distances!
-              </Text>}
+              <View style={styles.styledButton}>
+                <Text>
+                  Save some shots to see your distances!
+              </Text>
+              </View>}
           </View>
         </View>
-        {/* </View> */}
       </View>
     </>
   );

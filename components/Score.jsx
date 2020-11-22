@@ -165,6 +165,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
             <Picker.Item color={p1ps === 7 ? 'blue' : ''} label="7" value={7} />
             <Picker.Item color={p1ps === 8 ? 'blue' : ''} label="8" value={8} />
             <Picker.Item color={p1ps === 9 ? 'blue' : ''} label="9" value={9} />
+            <Picker.Item color={p1ps === 10 ? 'blue' : ''} label="10" value={10} />
           </Picker>
 
           <Picker

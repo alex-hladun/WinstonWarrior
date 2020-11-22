@@ -1,16 +1,18 @@
 {
   "expo": {
-    "name": "WinstonWarrior2",
+    "name": "Winston Warrior",
     "slug": "WinstonWarrior2",
     "version": "1.0.0",
+    "privacy": "public",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "primaryColor": "#99D969",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#99D969"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,7 +21,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.alexhladun.winstonwarrior",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to measure distance to the pin."
+      }
+    },
+    "android": {
+      "package": "com.alexhladun.winstorwarrior",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
