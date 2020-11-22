@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   pickerContainer: {
     flexDirection: 'column',
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 5,
     marginTop: 50,
-    marginBottom: 20,
+    marginBottom: 40,
     // margin: 20,
     width: 50,
     height: 50,
@@ -86,6 +86,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     marginVertical: 5,
+    backgroundColor: 'transparent'
+  },
+  bottomScoreHeader: {
+    width: '80%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    marginVertical: 25,
     backgroundColor: 'transparent'
   },
   pickerRow: {
@@ -123,6 +133,16 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
     // opacity: 0.85,
     backgroundColor: Theme.spinGreen3,
+  },
+  moveSymbol: {
+    width: 60,
+    height: 60,
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 5,
+    borderRadius: 100,
+    backgroundColor: Theme.spinGreen2
   },
   distanceHeader: {
     fontSize: 20,

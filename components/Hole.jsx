@@ -153,13 +153,13 @@ export default function Hole({ location, initialHole = 1 }) {
     setEndRouondView(!endRoundView)
   }
 
-  const setHole = async (num) => {
+  const setHole = async (num, hideModal = true) => {
 
     if (holeView) {
       setHoleView(false)
     }
 
-    if (scoreView) {
+    if (scoreView && hideModal) {
       setScoreView(false)
     }
     console.log('set hole to', num)
@@ -267,7 +267,7 @@ export default function Hole({ location, initialHole = 1 }) {
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreView}>
-          <Score holeNum={holeNum} setHole={setHole} handleScoreEnter={handleScoreEnter} />
+          <Score holeNum={holeNum} setHole={setHole} handleScoreEnter={handleScoreEnter} handleHoleInc={handleHoleInc} handleHoleDec={handleHoleDec} />
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={scoreCardView}>
@@ -387,13 +387,11 @@ export default function Hole({ location, initialHole = 1 }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={(event) => handleTracking()}>
           <Animated.View style={[styles.floatingHoleMarker, styles.target, { opacity: trackAnim }]} >
-            {/* <View > */}
             <Text >
               <TargetSymbol />
             </Text>
           </Animated.View>
         </TouchableOpacity>
-        {/* </View> */}
         <TouchableOpacity onPress={() => handleHoleInc()}>
           <View style={[styles.floatingHoleMarker, styles.move]}>
             <Text >

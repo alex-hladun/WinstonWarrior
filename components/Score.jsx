@@ -6,15 +6,18 @@ import holeInfo from '../assets/holeInfo'
 import { Picker } from '@react-native-community/picker';
 import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
+
 import db, { getScore, getUsers, postScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import { StatContext } from '../context/StatContext'
 import XSymbol from '../assets/svg/XSymbol';
 import { Theme } from '../assets/styles/Theme'
+import LeftSymbol from '../assets/svg/LeftSymbol';
+import RightSymbol from '../assets/svg/RightSymbol';
 
 
-export default function Score({ holeNum, setHole, handleScoreEnter }) {
+export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleInc, handleHoleDec }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   const statContext = React.useContext(StatContext)
@@ -71,20 +74,30 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
     }
   })
 
+  const resetSliders = () => {
+    setScore(holeInfo[holeNum].par)
+    setP2Score(holeInfo[holeNum].par)
+    setP3Score(holeInfo[holeNum].par)
+    setP4Score(holeInfo[holeNum].par)
+    setPutts(2)
+    setPenalty(0)
+    setTeeShot(50)
+  }
 
-  const handleScoreSubmit = async () => {
+
+  const handleScoreSubmit = async (hideModal = true, delta = 0) => {
 
     console.log(`POSTING WITH HOLEID OF ${holeID}`)
 
     let gir = 0;
-    if (score - putts  + 2 <= holeInfo[holeNum].par) {
+    if (score - putts + 2 <= holeInfo[holeNum].par) {
       gir = 1
     }
 
     let ud = null;
     if (gir === 0 && score <= holeInfo[holeNum].par) {
       ud = 1;
-    } else if (gir === 0 &&  score > holeInfo[holeNum].par) {
+    } else if (gir === 0 && score > holeInfo[holeNum].par) {
       ud = 0;
     }
 
@@ -124,7 +137,15 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
 
     getScore(appState.round_id)
 
-    setHole(holeNum + 1)
+    if (delta === 0) {
+      setHole(holeNum + 1)
+    } else if (delta === 1) {
+      setHole(holeNum + 1, false)
+      resetSliders()
+    } else if (delta === -1) {
+      setHole(holeNum - 1, false)
+      resetSliders()
+    }
 
     statContext.dispatch({
       type: 'trigger_hole_data_update'
@@ -139,10 +160,10 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
   return (
     <>
       <View style={styles.backgroundContainer}>
-      <Image source={require('../assets/images/vectors/Asset37.png')} style={styles.bgImage} />
+        <Image source={require('../assets/images/vectors/Asset37.png')} style={styles.bgImage} />
         <TouchableOpacity onPress={() => handleScoreEnter()}>
           <View style={styles.exitHeader}>
-            <Text style={{alignSelf: 'center'}}>
+            <Text style={{ alignSelf: 'center' }}>
               <XSymbol />
             </Text>
           </View>
@@ -165,7 +186,6 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
           {players}
         </View>
         <View style={styles.pickerRow}>
-
           <Picker
             style={styles.pickerMaster}
             onValueChange={(itemValue, itemIndex) => {
@@ -362,11 +382,25 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
             onSlidingStart={(val) => setPutting(val)}
           />
         </View> */}
-        <View style={styles.pickerHeader}>
+        <View style={styles.bottomScoreHeader}>
+          <TouchableOpacity onPress={(event) => handleScoreSubmit(false, -1)}>
+            <View style={[styles.checkSymbol, styles.moveSymbol]}>
+              <Text>
+                <LeftSymbol />
+              </Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity onPress={(event) => handleScoreSubmit()}>
             <View style={[styles.checkSymbol]}>
               <Text >
                 <CheckSymbol />
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={(event) => handleScoreSubmit(false, 1)}>
+            <View style={[styles.checkSymbol, styles.moveSymbol]}>
+              <Text>
+                <RightSymbol />
               </Text>
             </View>
           </TouchableOpacity>
