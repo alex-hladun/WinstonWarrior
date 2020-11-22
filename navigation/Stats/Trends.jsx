@@ -143,8 +143,8 @@ export function Trends({ navigation }) {
               <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>U&D%</Text>
-              <Text style={styles.boxContent}>?</Text>
+              <Text style={styles.boxHeader}>SCR%</Text>
+              <Text style={styles.boxContent}>{totalInfo.scramblePct && totalInfo.scramblePct.toFixed(1)}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>

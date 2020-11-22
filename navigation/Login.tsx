@@ -24,7 +24,6 @@ export function Login({ navigation }) {
     
     if(seed) {
       seedData()
-
     }
   }, [])
 

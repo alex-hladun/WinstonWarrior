@@ -74,7 +74,6 @@ export function Clubs({ navigation }) {
   }
 
   const _renderItem = ({ item, index }) => {
-    console.log(Theme.palette)
     return (
       <View style={[styles.clubCardContainer, { backgroundColor: Theme.palette[item.id]}]}>
         <View style={styles.clubCardHeader}>

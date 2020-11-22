@@ -142,7 +142,7 @@ export const postRound = async (score, round_id, diff) => {
   })
   )
 }
-export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null, gir = null) => {
+export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null, gir = null, ud = null) => {
   console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}`)
 
   return new Promise((resolve, reject) => db.transaction(tx => {
@@ -159,9 +159,10 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
         approach_rtg = ?,
         chip_rtg = ?,
         putt_rtg = ?,
-        gir = ?
+        gir = ?,
+        ud = ?
         WHERE score_id = ?;
-        `, [total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir, result.rows._array[0].score_id], (txObj, result) => {
+        `, [total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir, ud, result.rows._array[0].score_id], (txObj, result) => {
           console.log('result updating score', result)
           resolve(result)
         }, (err, mess) => {
@@ -182,9 +183,10 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
             chip_rtg,
             putt_rtg,
             gir,
+            ud,
             date_time
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
-      `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir], (txObj, result) => {
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,strftime('%Y-%m-%d %H:%M:%S','now'));
+      `, [hole_id, hole_num, round_id, total_shots, total_putts, penalty, driver_direction, approach_rtg, chip_rtg, putt_rtg, gir, ud], (txObj, result) => {
           console.log('result posting NEW score', result)
           resolve(result)
         }, (err, mess) => {
@@ -269,9 +271,10 @@ export const seedData = async () => {
             chip_rtg,
             putt_rtg,
             gir,
+            ud,
             date_time
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
-        `, [j+1, j+1, i + 5000, score, putts, Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.random() > 0.5], (txObj, result) => {
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
+        `, [j+1, j+1, i + 5000, score, putts, Math.round(Math.random() * 1), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.random() > 0.5, Math.random() > 0.5], (txObj, result) => {
             // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
             console.log('Created score')
             // resolve(result)
@@ -420,8 +423,6 @@ export const loadBestScore = async (user_id) => {
 }
 
 export const loadGirPct = async (user_id) => {
-  // Loads overall user round history
-
   let hitNum;
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
@@ -447,6 +448,38 @@ export const loadGirPct = async (user_id) => {
       console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
       const total = result.rows._array[0].total
       console.log(`found ${hitNum} fairways hit out of ${total} holes`)
+      resolve(hitNum * 100 / result.rows._array[0].total)
+    }, (err, mess) => console.log('err getting acg pct', reject(mess)))
+  })
+  )
+}
+
+export const loadScramblePct = async (user_id) => {
+  let hitNum;
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+      SELECT COUNT(scores.ud) AS scramble
+      FROM scores
+      JOIN rounds ON rounds.round_id = scores.round_id
+      WHERE scores.ud == 1
+      AND rounds.user_id = ?
+    ;
+    `, [user_id], (txObj, result) => {
+      console.log(`Scramble pct obj: ${JSON.stringify(result.rows._array[0].scramble)}`)
+      hitNum = result.rows._array[0].scramble
+      // resolve(result.rows._array[0])
+    }, (err, mess) => console.log('err getting GIR pct', reject(mess)))
+    
+    tx.executeSql(`
+      SELECT COUNT(scores.hole_num) AS total
+      FROM scores
+      JOIN rounds ON rounds.round_id = scores.round_id
+      WHERE rounds.user_id = ? AND scores.ud NOT NULL
+    ;
+    `, [user_id], (txObj, result) => {
+      console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
+      const total = result.rows._array[0].total
+      console.log(`found ${hitNum} scrambles hit out of ${total} holes`)
       resolve(hitNum * 100 / result.rows._array[0].total)
     }, (err, mess) => console.log('err getting acg pct', reject(mess)))
   })
@@ -708,6 +741,7 @@ export const setUpDB = () => {
       chip_rtg integer,
       putt_rtg integer,
       gir boolean,
+      ud boolean,
       CONSTRAINT fk_rounds
       FOREIGN KEY(round_id)
       REFERENCES rounds(round_id)

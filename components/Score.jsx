@@ -77,7 +77,16 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
     if (score - putts  + 2 <= holeInfo[holeNum].par) {
       gir = 1
     }
-    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting, gir)
+
+    let ud = null;
+    if (gir === 0 && score <= holeInfo[holeNum].par) {
+      ud = 1;
+    } else if (gir === 0 &&  score > holeInfo[holeNum].par) {
+      ud = 0;
+    }
+
+
+    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting, gir, ud)
     // console.log(playContext.value.state.p1score)
     playContext.dispatch({
       type: 'set_p1_score',

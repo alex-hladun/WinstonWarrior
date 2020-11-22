@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadScramblePct, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
 
 
@@ -65,6 +65,7 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
 
       const totalRounds = await loadTotalRounds(1)
       const girPct = await loadGirPct(1)
+      const scramblePct = await loadScramblePct(1)
       const avgScore = await loadAvgScore(1)
       const bestScore = await loadBestScore(1)
       const avgPutts = await loadAvgPutts(1)
@@ -75,6 +76,7 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
           totalRounds,
           avgScore,
           avgPutts,
+          scramblePct,
           bestScore,
           totalBirds,
           fwyPct,
