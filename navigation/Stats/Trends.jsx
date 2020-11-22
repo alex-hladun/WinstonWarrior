@@ -14,6 +14,7 @@ import {
 } from 'react-native-chart-kit'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
 import { useHandicap } from '../../hooks/useHandicap';
+import { useRoundHistory } from '../../hooks/useRoundHistory';
 
 export function Trends({ navigation }) {
 
@@ -24,7 +25,9 @@ export function Trends({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   // console.log("Trends -> statState", statState)
-  const roundHistory = statState.roundHistory
+  const roundHistory = useRoundHistory(1)
+  
+  // const roundHistory =  statState.roundHistory
   // console.log("Trends -> roundHistory", roundHistory)
 
   
@@ -72,11 +75,9 @@ export function Trends({ navigation }) {
             
             <Text style={styles.header}>Scoring</Text>
             :
-            // <View style={styles.styledButton}>
             <Text>
               Start playing to see your stats!
             </Text>
-            // </View>
             }
           </View>
 
@@ -139,11 +140,11 @@ export function Trends({ navigation }) {
               <Text style={styles.boxContent}>{totalInfo.fwyPct && totalInfo.fwyPct.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>GIR%</Text>
+              <Text style={styles.boxHeader}>GIR %</Text>
               <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(1)}</Text>
             </View>
             <View style={styles.trendContainer}>
-              <Text style={styles.boxHeader}>SCR%</Text>
+              <Text style={styles.boxHeader}>SCR %</Text>
               <Text style={styles.boxContent}>{totalInfo.scramblePct && totalInfo.scramblePct.toFixed(1)}</Text>
             </View>
           </View>

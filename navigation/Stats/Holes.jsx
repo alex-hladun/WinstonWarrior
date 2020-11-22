@@ -15,7 +15,7 @@ export function Holes({ navigation }) {
   const statState = statContext.value.state
   const holeNum = appState.hole_num
   const totalInfo = useTotalInfo(1,1)
-  // console.log("🚀 ~ file: Holes.jsx ~ line 16 ~ Holes ~ statState", statState)
+  console.log("🚀 ~ file: Holes.jsx ~ line 16 ~ Holes ~ statState", statState)
 
   return (
     <>
@@ -84,7 +84,7 @@ export function Holes({ navigation }) {
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>SCR %</Text>
-            <Text style={styles.boxContent}>{statState.fwData[holeNum] && statState.fwData[holeNum].driverDirection.toFixed(1)}</Text>
+            <Text style={styles.boxContent}>{totalInfo.birdieObj && totalInfo.birdieObj[holeNum].scrambleSuccess ? (totalInfo.birdieObj[holeNum].scrambleSuccess * 100 / totalInfo.birdieObj[holeNum].scrambleChances).toFixed(0) : 0}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>

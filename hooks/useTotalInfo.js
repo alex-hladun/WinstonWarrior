@@ -9,7 +9,7 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
   const statContext = React.useContext(StatContext)
   const [totalInfo, setTotalInfo] = React.useState({
     totalInfo: {
-      totalBirds:{
+      totalBirds: {
         eagles: 0,
         birdies: 0,
         pars: 0
@@ -31,35 +31,43 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
           birdies: 0,
           eagles: 0,
           rounds: 0,
-          GIRs: 0
+          GIRs: 0,
+          scrambleChances: 0,
+          scrambleSuccess: 0
         }
       }
-  
+
       const totalBirds = {
         eagles: 0,
         birdies: 0,
         pars: 0
       }
-  
+
 
       // console.log("useTotalInfo -> birdieCount", birdieCount)
       birdieCount.forEach((hole) => {
         // console.log('scoreObj', hole)
         birdieObj[hole.hole_num].rounds++
-  
+
         if (hole.total_shots - hole.hole_par === -1) {
           birdieObj[hole.hole_num].birdies++
-          totalBirds.birdies ++
+          totalBirds.birdies++
         } else if (hole.total_shots - hole.hole_par === 0) {
           birdieObj[hole.hole_num].pars++
-          totalBirds.pars ++
+          totalBirds.pars++
         } else if (hole.total_shots - hole.hole_par === -2) {
           birdieObj[hole.hole_num].eagles++
-          totalBirds.eagles ++
+          totalBirds.eagles++
         }
-  
+
         if ((hole.total_shots - hole.total_putts + 2) <= hole.hole_par) {
           birdieObj[hole.hole_num].GIRs++
+        } else {
+          birdieObj[hole.hole_num].scrambleChances++
+
+          if (hole.total_shots <= hole.hole_par) {
+            birdieObj[hole.hole_num].scrambleSuccess++
+          }
         }
       })
 
@@ -73,15 +81,15 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
       // console.log(totalRounds, avgScore, bestScore)
 
       setTotalInfo({
-          totalRounds,
-          avgScore,
-          avgPutts,
-          scramblePct,
-          bestScore,
-          totalBirds,
-          fwyPct,
-          girPct,
-          birdieObj
+        totalRounds,
+        avgScore,
+        avgPutts,
+        scramblePct,
+        bestScore,
+        totalBirds,
+        fwyPct,
+        girPct,
+        birdieObj
       })
     }
 

@@ -8,13 +8,18 @@ export function useStats(user_id, course_id) {
 
   React.useEffect(() => {
     const retrieveStats = async () => {
+
+      ////////////// EXISTS IN USEROUNDHISTORY
       const statsArray = await loadStats(1)
       // console.log("TabOneScreen -> statsArray with roundHistory", statsArray)
       statContext.dispatch({
         type: 'set_round_history',
         data: statsArray
       })
+      ////////////// EXISTS IN USEROUNDHISTORY
+
   
+      // CUSTOM FUNCTION NOT USED
       const fwHistoryArray = await loadFwHistory(1)
   
       // Get individual TOTAL hole stats
