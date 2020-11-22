@@ -28,14 +28,14 @@ export function Trends({ navigation }) {
   const roundHistory = useRoundHistory(1)
   
   // const roundHistory =  statState.roundHistory
-  // console.log("Trends -> roundHistory", roundHistory)
+  console.log("Trends -> roundHistory", roundHistory)
 
   
   let roundData;
   let data;
   React.useEffect(() => {
     // console.log("Trends -> roundHistory", roundHistory)
-    if (statState && statState.roundHistory[0]) {
+    if (roundHistory[0]) {
       roundData = roundHistory.map((round) => {
         return (round.total_score)
       })
@@ -71,7 +71,7 @@ export function Trends({ navigation }) {
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
           <View style={styles.headerContainer}>
-          {loading && roundHistory[0] ?
+          {roundHistory[0] ?
             
             <Text style={styles.header}>Scoring</Text>
             :
@@ -81,7 +81,7 @@ export function Trends({ navigation }) {
             }
           </View>
 
-          {loading && roundHistory[0] &&
+          {roundHistory[0] &&
             <LineChart
               data={{
                 labels: roundHistory.map((round, index) => {
@@ -118,7 +118,7 @@ export function Trends({ navigation }) {
             />
             // </View>
           }
-          {loading && roundHistory[0] &&
+          {roundHistory[0] &&
           <>
           <View style={styles.holeRow}>
             <View style={styles.trendContainer}>

@@ -69,6 +69,12 @@ const reducer = (state, action) => {
         allDataUpdate: Math.random()
       }
     break;
+    case "trigger_hole_data_update":
+      return {
+        ...state,
+        holeDataUpdate: Math.random()
+      }
+    break;
 
   }
 }
@@ -83,7 +89,8 @@ const initialState = {
   fwData: {},
   clubDataUpdate: false,
   totalInfoUpdate: false,
-  allDataUpdate: false
+  allDataUpdate: false,
+  holeDataUpdate: false
 }
 const StatContext = React.createContext(initialState);
 

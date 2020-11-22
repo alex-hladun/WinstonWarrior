@@ -17,9 +17,9 @@ export function Login({ navigation }) {
       console.log('resetting DB SHOULD ONLY RUN ONCE')
       removeDB()
       setUpDB()
+      createClubs()
       createWinston()
       registerUser('Alex')
-      createClubs()
     }
     
     if(seed) {
@@ -58,9 +58,9 @@ export function Login({ navigation }) {
         <View style={styles.loginContainer}>
         <View style={styles.winstonLogoContainer}>
             <Image source={require('../assets/images/winstonLogo.png')} style={styles.winnyImage}/>
-            <Text style={[styles.buttonText, styles.winstonTxtLogin]}>
+            {/* <Text style={[styles.buttonText, styles.winstonTxtLogin]}>
               Winston Warrior
-              </Text>
+              </Text> */}
           </View>
           {/* <View style={styles.winstonText}>
             <Text style={styles.txt}>W/W</Text>

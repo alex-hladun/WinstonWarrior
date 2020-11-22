@@ -10,12 +10,12 @@ export function useStats(user_id, course_id) {
     const retrieveStats = async () => {
 
       ////////////// EXISTS IN USEROUNDHISTORY
-      const statsArray = await loadStats(1)
-      // console.log("TabOneScreen -> statsArray with roundHistory", statsArray)
-      statContext.dispatch({
-        type: 'set_round_history',
-        data: statsArray
-      })
+      // const statsArray = await loadStats(1)
+      // // console.log("TabOneScreen -> statsArray with roundHistory", statsArray)
+      // statContext.dispatch({
+      //   type: 'set_round_history',
+      //   data: statsArray
+      // })
       ////////////// EXISTS IN USEROUNDHISTORY
 
   

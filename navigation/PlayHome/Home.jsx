@@ -20,14 +20,13 @@ export function Home({ navigation }) {
   return (
     <>
       <View style={styles.background}>
-
         <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
           <View style={styles.winstonLogoContainer}>
             <Image source={require('../../assets/images/winstonLogo.png')} style={styles.winnyImage} />
-            <Text style={[styles.winstonTxtLogin, styles.buttonText]}>
+            {/* <Text style={[styles.winstonTxtLogin, styles.buttonText]}>
               Winston Warrior
-              </Text>
+              </Text> */}
           </View>
 
           <View style={styles.holeRow}>

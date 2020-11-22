@@ -9,6 +9,7 @@ import CheckSymbol from '../assets/svg/CheckSymbol'
 import db, { getScore, getUsers, postScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
+import { StatContext } from '../context/StatContext'
 import XSymbol from '../assets/svg/XSymbol';
 import { Theme } from '../assets/styles/Theme'
 
@@ -16,8 +17,10 @@ import { Theme } from '../assets/styles/Theme'
 export default function Score({ holeNum, setHole, handleScoreEnter }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
+  const statContext = React.useContext(StatContext)
   let playState = playContext.value.state
   let appState = appContext.value.state
+
 
   const [playerArray, setPlayerArray] = useState([])
   const [holeID, setHoleID] = useState(appState.hole_id)
@@ -122,6 +125,12 @@ export default function Score({ holeNum, setHole, handleScoreEnter }) {
     getScore(appState.round_id)
 
     setHole(holeNum + 1)
+
+    statContext.dispatch({
+      type: 'trigger_hole_data_update'
+    })
+
+
     console.log('entered scores')
   }
 

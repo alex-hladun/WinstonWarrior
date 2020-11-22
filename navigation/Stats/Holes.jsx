@@ -8,14 +8,17 @@ import { Theme } from '../../assets/styles/Theme'
 import { StatContext } from '../../context/StatContext'
 import { AppContext } from '../../context/AppContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
+import { useHoleData } from '../../hooks/useHoleData';
+import holeInfo from '../../assets/holeInfo';
+
 export function Holes({ navigation }) {
   const appContext = React.useContext(AppContext)
   const appState = appContext.value.state
   const statContext = React.useContext(StatContext)
-  const statState = statContext.value.state
+  const holeData = useHoleData(1, 1)
+  // console.log("🚀 ~ file: Holes.jsx ~ line 19 ~ Holes ~ holeData", holeData.hitFwObj)
   const holeNum = appState.hole_num
   const totalInfo = useTotalInfo(1,1)
-  console.log("🚀 ~ file: Holes.jsx ~ line 16 ~ Holes ~ statState", statState)
 
   return (
     <>
@@ -26,15 +29,23 @@ export function Holes({ navigation }) {
             <Text style={styles.header}>Hole {holeNum}</Text>
           </View>
 
-          {holeNum && statState && statState.holeHistory[holeNum] && statState.holeHistory[holeNum].score[0] ?
+          {(
+            holeNum
+            && holeData.holeHistoryObj 
+            && holeData.holeHistoryObj[holeNum] 
+            && holeData.holeHistoryObj[holeNum].score[0] 
+            && totalInfo.birdieObj
+            && totalInfo.birdieObj[holeNum]
+            ) 
+            ?
           <>
             <LineChart
               data={{
-                labels: statState.holeHistory[holeNum].date.map(holeDate => {
+                labels: holeData.holeHistoryObj[holeNum].date.map(holeDate => {
                  return (holeDate.slice(5,10))
                 }),
                 datasets: [{
-                  data: statState.holeHistory[holeNum].score
+                  data: holeData.holeHistoryObj[holeNum].score
                 }]
               }}
               width={Dimensions.get('window').width * 0.9} // from react-native
@@ -62,25 +73,25 @@ export function Holes({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>{statState.holes[holeNum].avgShots ? statState.holes[holeNum].avgShots.toFixed(1) : 'NA'}</Text>
+              <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgShots ? holeData.holeObj[holeNum].avgShots.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Putts</Text>
-              <Text style={styles.boxContent}>{statState.holes[holeNum].avgPutts ? statState.holes[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
+              <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgPutts ? holeData.holeObj[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Best Score</Text>
-              <Text style={styles.boxContent}>{statState.lowScores[holeNum]}</Text>
+              <Text style={styles.boxContent}>{holeData.lowHoleObj[holeNum]}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>FWY %</Text>
-              <Text style={styles.boxContent}>{statState.fwData[holeNum].fairwaysHit ? (100 * statState.fwData[holeNum].fairwaysHit / statState.fwData[holeNum].totalFairways).toFixed(0) : '0'}</Text>
+              <Text style={styles.boxContent}>{holeData.hitFwObj[holeNum].fairwaysHit ? (100 * holeData.hitFwObj[holeNum].fairwaysHit / holeData.hitFwObj[holeNum].totalFairways).toFixed(0) : '0'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>GIR %</Text>
-            <Text style={styles.boxContent}>{totalInfo.birdieObj ? (totalInfo.birdieObj[holeNum].GIRs * 100 / totalInfo.birdieObj[holeNum].rounds).toFixed(0) : 0}</Text>
+            <Text style={styles.boxContent}>{totalInfo.birdieObj[holeNum].GIRs ? (totalInfo.birdieObj[holeNum].GIRs * 100 / totalInfo.birdieObj[holeNum].rounds).toFixed(0) : 0}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>SCR %</Text>
