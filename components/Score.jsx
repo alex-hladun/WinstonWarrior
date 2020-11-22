@@ -74,11 +74,12 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
     }
   })
 
-  const resetSliders = () => {
-    setScore(holeInfo[holeNum].par)
-    setP2Score(holeInfo[holeNum].par)
-    setP3Score(holeInfo[holeNum].par)
-    setP4Score(holeInfo[holeNum].par)
+  const resetSliders = (holeDiff) => {
+    // holeDiff exists because it uses the current holeNum in state, not the 'new' value
+    setScore(holeInfo[holeNum + holeDiff].par)
+    setP2Score(holeInfo[holeNum + holeDiff].par)
+    setP3Score(holeInfo[holeNum + holeDiff].par)
+    setP4Score(holeInfo[holeNum + holeDiff].par)
     setPutts(2)
     setPenalty(0)
     setTeeShot(50)
@@ -137,14 +138,14 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
 
     getScore(appState.round_id)
 
-    if (delta === 0) {
+    if (delta === 0 || holeNum === 18) {
       setHole(holeNum + 1)
     } else if (delta === 1) {
       setHole(holeNum + 1, false)
-      resetSliders()
+      resetSliders(1)
     } else if (delta === -1) {
       setHole(holeNum - 1, false)
-      resetSliders()
+      resetSliders(-1)
     }
 
     statContext.dispatch({

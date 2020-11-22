@@ -135,15 +135,15 @@ export const postRound = async (score, round_id, diff) => {
     SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now')
     WHERE round_id = ?;
     `, [score, diff, round_id], (txObj, result) => {
-      console.log('Round successfully saved', result.rows._array[0])
+      console.log('Round successfully saved', `total score ${score}, round is ${round_id}`)
       resolve(result)
-    }, (err, mess) => console.log('err saving shot', reject(mess)))
+    }, (err, mess) => console.log('err saving round', reject(mess)))
 
   })
   )
 }
 export const postScore = async (hole_id, hole_num, round_id, total_shots, total_putts = null, penalty = null, driver_direction = null, approach_rtg = null, chip_rtg = null, putt_rtg = null, gir = null, ud = null) => {
-  console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}`)
+  console.log(`POSTING SCORE: HOLE_ID ${hole_id}, HOLE_NUM ${hole_num}, round_id ${round_id}, total shots ${total_shots}, total putts ${total_putts}, driver direction ${driver_direction}`)
 
   return new Promise((resolve, reject) => db.transaction(tx => {
 
@@ -311,7 +311,7 @@ export const loadStats = async (user_id) => {
     HAVING count(scores.hole_num) = 18 
     ORDER BY rounds.round_id DESC LIMIT 20;
     `, [user_id], (txObj, result) => {
-      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
@@ -322,13 +322,7 @@ export const loadFwHistory = async (user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     tx.executeSql(`
-    SELECT count(scores.hole_num)
-    FROM ROUNDS
-    JOIN scores ON rounds.round_id = scores.round_id
-    WHERE rounds.user_id = ? 
-    GROUP BY rounds.round_id 
-    HAVING scores.driver_direction = 50
-    ORDER BY rounds.round_id DESC LIMIT 20;
+    SELECT * FROM rounds;
     `, [user_id], (txObj, result) => {
       console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)

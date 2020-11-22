@@ -44,7 +44,7 @@ export function Home({ navigation }) {
               <Text style={styles.boxContent}>{totalInfo.avgScore ? totalInfo.avgScore.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Best Round</Text>
+              <Text style={styles.boxHeader}>Best</Text>
               <Text style={styles.boxContent}>{totalInfo.bestScore? totalInfo.bestScore : 'NA'}</Text>
             </View>
           </View>
