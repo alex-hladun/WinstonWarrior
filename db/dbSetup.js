@@ -347,6 +347,23 @@ export const loadShots = async (user_id) => {
   })
   )
 }
+export const loadShotHistoryData = async (user_id, club_id) => {
+  // Loads overall user round history
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    select *
+    FROM distances
+    JOIN clubs ON clubs.club_id = distances.club_id
+    WHERE user_id = ? AND distances.club_id = ?
+    ORDER BY distances.date_time ASC
+    LIMIT 10;
+    `, [user_id, club_id], (txObj, result) => {
+      console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array.reverse())
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+  })
+  )
+}
 export const loadTotalRounds = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {

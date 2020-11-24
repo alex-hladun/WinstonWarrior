@@ -2,10 +2,10 @@
   "expo": {
     "name": "Winston Warrior",
     "slug": "WinstonWarrior2",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "privacy": "public",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/ICON.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "primaryColor": "#99D969",
@@ -22,7 +22,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.0.2",
       "bundleIdentifier": "com.alexhladun.winstonwarrior",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app uses your location to measure distance to the pin."

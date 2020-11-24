@@ -9,6 +9,8 @@ import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
 import { useShotData } from '../../hooks/useShotData';
 import { BarChart } from 'react-native-chart-kit'
+import { useShotHistory } from '../../hooks/useShotHistory';
+import { ClubCard } from './ClubCard'
 
 const { width } = Dimensions.get('window');
 
@@ -50,45 +52,11 @@ export function Clubs({ navigation }) {
   }
 
 
-
-
-  const shotDataForChart = {
-    datasets: [{
-      data: [20, 30, 55]
-    }],
-    labels: ['1', '2', '3']
-  }
-
-  const barChartConfig = {
-    backgroundColor: Theme.chartBackgroundColor,
-    paddingTop: 0,
-    decimalPlaces: 0, // optional, defaults to 2dp
-    backgroundGradientFrom: "#1E2923",
-    backgroundGradientFromOpacity: 0.0,
-    backgroundGradientTo: "#08130D",
-    backgroundGradientToOpacity: 0.0,
-    color: (opacity = 1) => `rgba(35, 36, 36, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false // optional
-  }
-
   const _renderItem = ({ item, index }) => {
+    
+
     return (
-      <View style={[styles.clubCardContainer, { backgroundColor: Theme.palette[item.id]}]}>
-        <View style={styles.clubCardHeader}>
-          <Text style={styles.clubTypeText} onPress={() => handleClubView()}>{item.name}</Text>
-          <Text style={styles.clubAvgText} onPress={() => handleClubView()}>{item.avg.toFixed(0)} yds</Text>
-        </View>
-        {/* <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max.toFixed(0)}</Text> */}
-        <BarChart
-          style={styles.barChartStyle}
-          chartConfig={barChartConfig}
-          data={shotDataForChart}
-          width={Dimensions.get("window").width -125}
-          height={370}
-        />
-      </View>
+      <ClubCard handleClubView={handleClubView} item={item}/>
     );
   }
 

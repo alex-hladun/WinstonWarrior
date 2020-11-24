@@ -26,7 +26,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
 
 
   const [playerArray, setPlayerArray] = useState([])
-  const [holeID, setHoleID] = useState(appState.hole_id)
+  const holeID = appState.hole_id
 
   const p1ps = playState.p1score[holeNum]
   const p2ps = playState.p2score[holeNum]
@@ -150,6 +150,9 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
 
     statContext.dispatch({
       type: 'trigger_hole_data_update'
+    })
+    statContext.dispatch({
+      type: 'trigger_total_info_update'
     })
 
 
@@ -315,7 +318,8 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
             maximumTrackTintColor="#000000"
             value={teeShot}
             step={25}
-            onSlidingStart={(val) => setTeeShot(val)}
+            onSlidingComplete={(val) => setTeeShot(val)}
+            // onSlidingStart={(val) => setTeeShot(val)}
           />
         </View>
         <View style={[styles.pickerHeader]}>
