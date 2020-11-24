@@ -32,7 +32,7 @@ export function Home({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Rounds</Text>
-              <Text style={styles.boxContent}>{totalInfo.totalRounds}</Text>
+              <Text style={styles.boxContent}>{totalInfo.totalRounds ? totalInfo.totalRounds : 0}</Text>
 
             </View>
             <View style={styles.boxContainer}>

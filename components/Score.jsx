@@ -164,7 +164,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
   return (
     <>
       <View style={styles.backgroundContainer}>
-        <Image source={require('../assets/images/vectors/Asset37.png')} style={styles.bgImage} />
+        <Image source={require('../assets/images/vectors/balldrop.png')} style={styles.bgImage} />
         <TouchableOpacity onPress={() => handleScoreEnter()}>
           <View style={styles.exitHeader}>
             <Text style={{ alignSelf: 'center' }}>
@@ -174,7 +174,11 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
         </TouchableOpacity>
         <View style={[styles.holeHeader]}>
           <Text style={styles.holeNumber}>
-            Hole {holeNum}
+            {holeNum}
+          </Text>
+
+          <Text style={styles.parNumber}>
+            Par {holeInfo[holeNum].par}
           </Text>
         </View>
         <View style={[styles.scoreHeader]}>

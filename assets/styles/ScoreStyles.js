@@ -22,7 +22,6 @@ export const styles = StyleSheet.create({
     // marginTop: 5,
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-    height: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -67,19 +66,26 @@ export const styles = StyleSheet.create({
 
   },
   holeHeader: {
-    justifyContent: 'space-around',
-    flexDirection: 'row',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
     paddingHorizontal: 10,
-    marginBottom: 10,
-    paddingBottom: 10,
-    backgroundColor: 'transparent'
+    // marginBottom: 10,
+    // paddingBottom: 10,
+    backgroundColor: 'transparent',
+position: 'absolute',
+top: 45,
+right: 20
 
   },
   holeNumber: {
-    fontSize: 20,
-    textDecorationLine: 'underline',
+    fontSize: 70,
+    fontWeight: 'bold',
     textDecorationStyle: 'solid',
-// fontStyle: 'underline'
+  },
+  parNumber: {
+    fontSize: 25,
+    textDecorationStyle: 'solid',
   },
   pickerHeader: {
     justifyContent: 'space-around',
@@ -114,10 +120,10 @@ export const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    width: '120%',
-    // height: '50%',
-    left: '10%',
-    bottom: '-90%',
+    width: '130%',
+    // height: '100%',
+    left: '0%',
+    bottom: '-30%',
     position: 'absolute',
     // zIndex: 10,
     opacity: 0.04,

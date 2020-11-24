@@ -13,9 +13,6 @@ import { useShotHistory } from '../../hooks/useShotHistory';
 
 const { width } = Dimensions.get('window');
 
-
-
-
 const barChartConfig = {
   backgroundColor: Theme.chartBackgroundColor,
   paddingTop: 0,
@@ -29,7 +26,6 @@ const barChartConfig = {
   barPercentage: 0.5,
   useShadowColorFromDataset: false // optional
 }
-
 
 export function ClubCard({ handleClubView, item }) {
 

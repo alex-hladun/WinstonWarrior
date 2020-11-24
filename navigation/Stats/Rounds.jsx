@@ -25,6 +25,7 @@ const RoundItem = ({ round }) => {
 
 export function Rounds({ navigation }) {
   const roundHistory = useRoundHistory(1)
+  const reverseRoundHistory = roundHistory.reverse()
   const renderItem = (round) => {
     return (<RoundItem round={round} />)
   };
@@ -36,7 +37,7 @@ export function Rounds({ navigation }) {
         <View style={styles.homePageContainer}>
           <SafeAreaView>
             {roundHistory[0] ? 
-            <FlatList data={roundHistory} renderItem={renderItem} keyExtractor={item => `${item.round_id}`} />
+            <FlatList data={reverseRoundHistory} renderItem={renderItem} keyExtractor={item => `${item.round_id}`} />
             :
             <View style={styles.styledButton}>
             <Text>

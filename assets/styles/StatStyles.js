@@ -206,32 +206,73 @@ export const styles = StyleSheet.create({
     margin: 30
   },
   boxContainer: {
+
     flexDirection: 'column',
     backgroundColor: Theme.iconStroke,
-    padding: 7,
-    margin: 5,
-    width: 100,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderColor: Theme.spinGreen4,
-    borderBottomWidth: 4,
-    borderRadius: 20,
+    // padding: 7,
+    marginHorizontal: 10,
+    marginVertical: 4,
+    width: 90,
+    backgroundColor: Theme.babyBlue,
+    borderRadius: 15,
     alignSelf: 'center',
     justifyContent: 'space-between',
+
+
+    // flexDirection: 'column',
+    // backgroundColor: Theme.iconStroke,
+    // padding: 7,
+    // margin: 5,
+    // width: 100,
+    // borderWidth: 2,
+    // borderStyle: 'solid',
+    // borderColor: Theme.spinGreen4,
+    // borderBottomWidth: 4,
+    // borderRadius: 20,
+    // alignSelf: 'center',
+    // justifyContent: 'space-between',
   },
   trendContainer: {
     flexDirection: 'column',
     backgroundColor: Theme.iconStroke,
-    padding: 7,
-    margin: 5,
-    width: 100,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderColor: Theme.chartBGGradientFrom,
-    borderBottomWidth: 4,
-    borderRadius: 20,
+    // padding: 7,
+    marginHorizontal: 10,
+    marginVertical: 4,
+    width: 90,
+    backgroundColor: Theme.coolBlue,
+    borderRadius: 15,
     alignSelf: 'center',
     justifyContent: 'space-between',
+  },
+  boxHeader: {
+    textAlign: 'center',
+    width: 90,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    // alignItems: 'center',
+    opacity: 0.35,
+    // borderRadius: 100,
+    height: 30,
+    // borderRadius: 50,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
+  },
+  boxHeaderText: {
+    alignSelf: 'center',
+    // fontSize: 30,
+    color: '#FFF',
+    opacity: 1,
+    // marginHorizontal: 10,
+    padding: 2
+
+  },
+  boxContent: {
+    color: 'black',
+    textAlign: 'center',
+    alignSelf: 'center',
+    // marginTop: 10,
+    paddingVertical: 10,
+    fontSize: 30,
   },
   chartContainer: {
     flexDirection: 'column',
@@ -250,15 +291,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%'
   },
-  boxHeader: {
-    textAlign: 'center'
-  },
-  boxContent: {
-    textAlign: 'center',
-    alignSelf: 'center',
-    marginTop: 10,
-    fontSize: 30,
-  },
   video: {
     width: 400,
     height: 900,
@@ -267,10 +299,10 @@ export const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    width: '170%',
+    width: '150%',
     // height: '50%',
     left: '5%',
-    bottom: '-37%',
+    bottom: '-80%',
     position: 'absolute',
     // zIndex: 10,
     opacity: 0.2,
@@ -279,9 +311,7 @@ export const styles = StyleSheet.create({
   background: {
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-    // // width: '100%',
-    // // height: '100%',
-    // position: 'absolute'
+
   },
   winstonText: {
     justifyContent: 'center',

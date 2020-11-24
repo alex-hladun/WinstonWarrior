@@ -32,6 +32,14 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 30
   },
+  welcomeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    // width: '100%',
+    // height: '100%',
+    // padding: 10,
+    // marginBottom: 30
+  },
   loginContainer: {
     flex: 1,
     justifyContent: 'space-evenly',
@@ -212,6 +220,16 @@ export const styles = StyleSheet.create({
     borderRadius: 24,
     alignSelf: 'center'
   },
+  styledWelcomeButton: {
+    width: 250,
+    backgroundColor: Theme.ogButtonGreen,
+    padding: 15,
+    borderColor: "#f3f8ff",
+    justifyContent: 'center',
+    marginTop: 100,
+    borderRadius: 24,
+    alignSelf: 'center'
+  },
   playButton: {
     backgroundColor: Theme.spinGreen2,
   },
@@ -251,6 +269,24 @@ export const styles = StyleSheet.create({
   player: {
     padding: 20,
     marginRight:5
+  },
+  welcomeText: {
+    alignSelf: 'center',
+    fontSize: 30,
+    padding: 20
+  },
+  welcomeTextSmall: {
+    alignSelf: 'center',
+    fontSize: 20,
+    padding: 20
+  },
+  signUpText: {
+    padding: 20,
+    width: 200,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    borderRadius: 40
+    // marginRight:10
   },
   playerPosition: {
     borderRadius: 100,

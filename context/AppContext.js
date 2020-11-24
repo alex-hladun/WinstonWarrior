@@ -12,6 +12,8 @@ const reducer = (state, action) => {
       }
     break;
     case "authentication_done":
+      AsyncStorage.setItem('authName', action.data)
+
       return {
         ...state,
         auth_data: action.data,

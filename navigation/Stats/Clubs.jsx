@@ -53,8 +53,6 @@ export function Clubs({ navigation }) {
 
 
   const _renderItem = ({ item, index }) => {
-    
-
     return (
       <ClubCard handleClubView={handleClubView} item={item}/>
     );
@@ -86,7 +84,7 @@ export function Clubs({ navigation }) {
   return (
     <>
       <View style={styles.background}>
-        <Image source={require('../../assets/images/vectors/Asset52.png')} style={styles.bgImage} />
+        <Image source={require('../../assets/images/vectors/coollogo.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
 
           <Modal animationType="slide" transparent={true} visible={clubView}>

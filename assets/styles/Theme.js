@@ -8,6 +8,10 @@ export const Theme = {
   spinGreen2: '#46CB18',
   spinGreen3: '#06A10B',
   spinGreen4: '#1D800E',
+  darkCharcoal: '#2E4057',
+  charcoal: '#5F81AB',
+  coolBlue: '#A4CCE3',
+  babyBlue: '#B2D2B6',
   ogButtonGreen: "#f3f8ff",
   chartBackgroundColor: '#2D7DD2',
   chartBGGradientFrom: '#1F5A98',
@@ -38,7 +42,8 @@ export const Theme = {
     '#84A6D6',
     '#F7CE76',
     '#E8D6CF',
-    '#9C9359'
+    '#9C9359',
+    '#A4CCE3',
   ],
   
 }

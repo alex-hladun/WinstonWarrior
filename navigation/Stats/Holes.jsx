@@ -72,43 +72,61 @@ export function Holes({ navigation }) {
             
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Avg Score</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>Avg Score</Text>
+              </View>
               <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgShots ? holeData.holeObj[holeNum].avgShots.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Avg Putts</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>Avg Putts</Text>
+              </View>
               <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgPutts ? holeData.holeObj[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Best Score</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>Best Score</Text>
+              </View>
               <Text style={styles.boxContent}>{holeData.lowHoleObj[holeNum]}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>FWY %</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>FWY %</Text>
+              </View>
               <Text style={styles.boxContent}>{holeData.hitFwObj[holeNum].fairwaysHit ? (100 * holeData.hitFwObj[holeNum].fairwaysHit / holeData.hitFwObj[holeNum].totalFairways).toFixed(0) : '0'}</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>GIR %</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>GIR %</Text>
+              </View>
             <Text style={styles.boxContent}>{totalInfo.birdieObj[holeNum].GIRs ? (totalInfo.birdieObj[holeNum].GIRs * 100 / totalInfo.birdieObj[holeNum].rounds).toFixed(0) : 0}</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>SCR %</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>SCR %</Text>
+              </View>
             <Text style={styles.boxContent}>{totalInfo.birdieObj && totalInfo.birdieObj[holeNum].scrambleSuccess ? (totalInfo.birdieObj[holeNum].scrambleSuccess * 100 / totalInfo.birdieObj[holeNum].scrambleChances).toFixed(0) : 0}</Text>
             </View>
           </View>
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Eagles</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>Eagles</Text>
+              </View>
               <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].eagles : 0 }</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Birds</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>Birds</Text>
+              </View>
               <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].birdies : 0}</Text>
             </View>
             <View style={styles.boxContainer}>
-              <Text style={styles.boxHeader}>Pars</Text>
+            <View style={styles.boxHeader}>
+              <Text style={styles.boxHeaderText}>Pars</Text>
+              </View>
               <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].pars : 0}</Text>
           </View>
           </View>

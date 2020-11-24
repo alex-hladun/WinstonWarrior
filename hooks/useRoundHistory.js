@@ -10,10 +10,10 @@ export function useRoundHistory(user_id) {
   React.useEffect(() => {
     console.log('RETREVING RoundHistory')
     const getRoundHistory = async (user_id) => {
-      const roundHistory = await loadStats(user_id)
+      const newRoundHistory = await loadStats(user_id)
 
-      if(roundHistory) {
-        setRoundHistory(roundHistory)
+      if(newRoundHistory) {
+        setRoundHistory(newRoundHistory.reverse())
       }
     }
 
