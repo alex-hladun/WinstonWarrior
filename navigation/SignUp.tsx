@@ -1,21 +1,33 @@
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { AppContext } from '../context/AppContext'
 import styles from '../assets/styles/PlayStyles'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 
+export const resetDatabase = () => {
+    console.log('RESETTING DB FROM SIGNUP')
+    AsyncStorage.removeItem('authName')
+    removeDB()
+    setUpDB()
+    createClubs()
+    createWinston()
+}
 
 export function SignUp({ navigation }) {
   const appContext = React.useContext(AppContext)
   const [name, setName] = React.useState('')
 
+
   const handlePress = () => {
-    console.log('going to Login')
+    console.log('completing signnup')
+    resetDatabase()
     // navigation.push('Login')
     appContext.dispatch({
-      type: 'authentication_done',
+      type: 'signed_up',
       data: name
     })
+    appContext.value.doneRound()
   }
 
   return (

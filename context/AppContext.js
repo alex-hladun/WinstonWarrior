@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { registerUser } from '../db/dbSetup';
+// import {register}
 const reducer = (state, action) => {
   switch (action.type) {
     case "authentication_starting":
@@ -11,14 +12,32 @@ const reducer = (state, action) => {
         auth_message: ''
       }
     break;
-    case "authentication_done":
+    case "signed_up":
       AsyncStorage.setItem('authName', action.data)
+      registerUser(action.data)
 
       return {
         ...state,
         auth_data: action.data,
         user_name: action.data,
         logged_in: true,
+        auth_message: ''
+      }
+    case "authentication_done":
+      return {
+        ...state,
+        auth_data: action.data,
+        user_name: action.data,
+        logged_in: true,
+        auth_message: ''
+      }
+    break;
+    case "log_out":
+      return {
+        ...state,
+        auth_data: null,
+        user_name: null,
+        logged_in: false,
         auth_message: ''
       }
     break;
@@ -98,6 +117,7 @@ const reducer = (state, action) => {
     break;
   }
 }
+
 const initialState = {
   auth_data: {},
   viewMode: 'menu',

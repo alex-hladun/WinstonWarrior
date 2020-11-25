@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, AsyncStorage, Dimensions } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import GolfLogo from '../../assets/svg/GolfLogo'
@@ -15,9 +15,11 @@ import {
 import { useTotalInfo } from '../../hooks/useTotalInfo';
 import { useHandicap } from '../../hooks/useHandicap';
 import { useRoundHistory } from '../../hooks/useRoundHistory';
+import { resetDatabase } from '../../navigation/SignUp'
+import { AppContext } from '../../context/AppContext';
 
 export function Trends({ navigation }) {
-
+  const appContext = React.useContext(AppContext)
   const hcp = useHandicap(1)
   const [loading, setLoading] = React.useState(false)
   const [dataChart, setDataChart] = React.useState({})
@@ -64,6 +66,15 @@ export function Trends({ navigation }) {
     navigation.push('Hole')
   }
 
+  const logOut = () => {
+    // resetDatabase()
+    appContext.dispatch({
+      type: 'log_out'
+    })
+    AsyncStorage.removeItem('authName')
+
+  }
+
 
   return (
     <>
@@ -73,9 +84,9 @@ export function Trends({ navigation }) {
           <View style={styles.headerContainer}>
             {roundHistory[0] ?
 
-              <Text style={styles.header}>Scoring</Text>
+              <Text onLongPress={() => logOut()} style={styles.header}>Scoring</Text>
               :
-              <Text>
+              <Text onLongPress={() => logOut()}>
                 Start playing to see your stats!
             </Text>
             }

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Image, ImageBackground } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, TextInput, Image, ImageBackground } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { AppContext } from '../context/AppContext'
@@ -6,6 +6,7 @@ import { Video } from 'expo-av';
 import styles from '../assets/styles/PlayStyles'
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
+import * as Updates from 'expo-updates' // Updates*
 
 export function Login({ navigation }) {
   const appContext = React.useContext(AppContext)
@@ -16,18 +17,37 @@ export function Login({ navigation }) {
     let seed = false;
     if (reset) {
       console.log('resetting DB SHOULD ONLY RUN ONCE')
+      AsyncStorage.removeItem('authName')
       removeDB()
       setUpDB()
       createClubs()
       createWinston()
-      registerUser('Alex')
-      
+      // registerUser('Alex')      
+      appContext.value.doneRound()
+
     }
 
     if (seed) {
       seedData()
     }
 
+    const updateProcess = async () => {
+      // NOT CURRENTLY IN USE
+      try {
+        const update = await Updates.checkForUpdateAsync()
+        if (update.isAvailable) {
+          Alert.alert('Update Available. Downloading...')
+          await Updates.fetchUpdateAsync()
+          // NOTIFY USER HERE
+
+
+          Updates.reloadAsync()
+        }
+      } catch (e) {
+        console.log('error', e)
+          // HANDLE ERROR HERE
+      }
+    }
     const authProcess = async () => {
       const authName = await AsyncStorage.getItem('authName')
       if (authName) {
@@ -35,19 +55,11 @@ export function Login({ navigation }) {
           type: 'authentication_done',
           data: authName
         })
-      } else {
-        removeDB()
-        setUpDB()
-        createClubs()
-        createWinston()
-        registerUser('Alex')
-        appContext.value.doneRound()
       }
     }
 
+    // updateProcess()
     authProcess()
-
-
   }, [])
 
   const handlePress = () => {
@@ -57,10 +69,10 @@ export function Login({ navigation }) {
 
   const handleLogin = () => {
     navigation.push('SignUp')
-    appContext.dispatch({
-      type: 'authentication_done',
-      data: 'Alex'
-    })
+    // appContext.dispatch({
+    //   type: 'authentication_done',
+    //   data: 'Alex'
+    // })
   }
 
   return (
