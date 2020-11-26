@@ -365,7 +365,20 @@ export const loadStats = async (user_id) => {
 
 // ENSSURE RETURNED ARRAYS ARE SAME SIZE
 
+
+
+// Not sure think this is overall round putts
+// SELECT scores.total_putts, scores.hole_num, rounds.round_id
+// FROM scores
+// JOIN holes ON scores.hole_id = holes.hole_id
+// JOIN rounds ON scores.round_id = rounds.round_id
+// WHERE scores.hole_id = ? AND rounds.user_id = ?
+// GROUP BY scores.round_id
+// ORDER BY scores.round_id DESC
+// LIMIT 10;
+
 export const loadPuttsForHole = async (user_id, hole_id) => {
+  console.log('LOADING PUTTS', user_id, hole_id)
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
     SELECT scores.total_putts, scores.hole_num, rounds.round_id
@@ -378,7 +391,7 @@ export const loadPuttsForHole = async (user_id, hole_id) => {
     LIMIT 10;
     `, [hole_id, user_id], (txObj, result) => {
       console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
-      resolve(result.rows._array)
+      resolve(result.rows._array.reverse())
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
   )

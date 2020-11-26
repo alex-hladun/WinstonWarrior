@@ -1,22 +1,25 @@
 import * as React from 'react';
-import { loadPuttHistory, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
+import { loadPuttsForHole } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
+import { AppContext } from '../context/AppContext'
 
 export function usePuttHistory(user_id, hole_id) {
   const statContext = React.useContext(StatContext)
+  const appContext = React.useContext(AppContext)
   const [puttHistory, setPuttHistory] = React.useState([])
 
+
   const getPutHistory = async (user_id, hole_id) => {
-    const newPuttHisotry = await loadPuttHistory(user_id, hole_id)
-    if(newPuttHisotry) {
-      setPuttHistory(newPuttHisotry)
-    }
+    const hole_id_state = appContext.value.state.hole_num;
+    const newPuttHisotry = await loadPuttsForHole(user_id, hole_id_state)
+    setPuttHistory(newPuttHisotry.map(puttObj => {
+      return(puttObj.total_putts)
+    }))
   }
 
   React.useEffect(() => {
-    // console.log('RETREVING puttHistory')
-    getPutHistory(1)
-  }, [statContext.value.state.allDataUpdate])
+    getPutHistory(user_id, hole_id)
+  }, [appContext.value.state.hole_num])
 
   return puttHistory
 }

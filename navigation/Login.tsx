@@ -6,7 +6,7 @@ import { Video } from 'expo-av';
 import styles from '../assets/styles/PlayStyles'
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
-import * as Updates from 'expo-updates' // Updates*
+// import * as Updates from 'expo-updates' // Updates*
 const width =  Dimensions.get('window').width
 console.log(width)
 export function Login({ navigation }) {
@@ -32,23 +32,23 @@ export function Login({ navigation }) {
       seedData()
     }
 
-    const updateProcess = async () => {
-      // NOT CURRENTLY IN USE
-      try {
-        const update = await Updates.checkForUpdateAsync()
-        if (update.isAvailable) {
-          Alert.alert('Update Available. Downloading...')
-          await Updates.fetchUpdateAsync()
-          // NOTIFY USER HERE
+    // const updateProcess = async () => {
+    //   // NOT CURRENTLY IN USE
+    //   try {
+    //     const update = await Updates.checkForUpdateAsync()
+    //     if (update.isAvailable) {
+    //       Alert.alert('Update Available. Downloading...')
+    //       await Updates.fetchUpdateAsync()
+    //       // NOTIFY USER HERE
 
 
-          Updates.reloadAsync()
-        }
-      } catch (e) {
-        console.log('error', e)
-          // HANDLE ERROR HERE
-      }
-    }
+    //       Updates.reloadAsync()
+    //     }
+    //   } catch (e) {
+    //     console.log('error', e)
+    //       // HANDLE ERROR HERE
+    //   }
+    // }
     const authProcess = async () => {
       const authName = await AsyncStorage.getItem('authName')
       if (authName) {

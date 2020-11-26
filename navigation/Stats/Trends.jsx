@@ -30,7 +30,7 @@ export function Trends({ navigation }) {
   const roundHistory = useRoundHistory(1)
 
   // const roundHistory =  statState.roundHistory
-  console.log("Trends -> roundHistory", roundHistory)
+  // console.log("Trends -> roundHistory", roundHistory)
 
 
   let roundData;

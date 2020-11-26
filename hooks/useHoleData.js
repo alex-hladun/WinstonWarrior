@@ -65,7 +65,7 @@ export function useHoleData(user_id, course_id) {
           ...hitFwObj[hole.hole_num], fairwaysHit: hole.total_fairways_hit
         }
       })
-        console.log("🚀 ~ file: useHoleData.js ~ line 68 ~ useHoleData ~ hitFwObj", hitFwObj)
+        // console.log("🚀 ~ file: useHoleData.js ~ line 68 ~ useHoleData ~ hitFwObj", hitFwObj)
 
 
 
