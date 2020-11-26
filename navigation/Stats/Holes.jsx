@@ -33,6 +33,7 @@ export function Holes() {
 
 
   const setChart = (chartType) => {
+    console.log('SETTING CHART TYPE')
     switch (chartType) {
       case 'Putts':
         setChartType('Putts')
@@ -60,7 +61,7 @@ export function Holes() {
 
   React.useEffect(() => {
     setChart(chartType)
-  })
+  }, [puttHistory, holeData.holeHistoryObj, holeNum])
 
   return (
     <>
