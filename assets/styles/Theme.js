@@ -11,7 +11,8 @@ export const Theme = {
   darkCharcoal: '#2E4057',
   charcoal: '#5F81AB',
   coolBlue: '#A4CCE3',
-  babyBlue: '#B2D2B6',
+  babyBlue: '#D3F6DB',
+  // actually freen^^^^
   ogButtonGreen: "#f3f8ff",
   chartBackgroundColor: '#2D7DD2',
   chartBGGradientFrom: '#1F5A98',

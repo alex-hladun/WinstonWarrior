@@ -10,6 +10,7 @@ import { AppContext } from '../../context/AppContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
 import { useHoleData } from '../../hooks/useHoleData';
 import holeInfo from '../../assets/holeInfo';
+import { usePuttHistory } from '../../hooks/usePuttHistory'
 
 export function Holes({ navigation }) {
   const appContext = React.useContext(AppContext)
@@ -19,6 +20,15 @@ export function Holes({ navigation }) {
   // console.log("🚀 ~ file: Holes.jsx ~ line 19 ~ Holes ~ holeData", holeData.hitFwObj)
   const holeNum = appState.hole_num
   const totalInfo = useTotalInfo(1,1)
+  // TODO: Change to hole ID
+  const puttHistory = usePuttHistory(1, holeNum)
+  const [chartData, setChartData] = React.useState({
+    labels: ['Loading'],
+     datasets: [{
+       data: [0]
+     }]
+
+  })
 
   return (
     <>

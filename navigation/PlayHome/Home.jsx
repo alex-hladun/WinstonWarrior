@@ -51,7 +51,7 @@ export function Home({ navigation }) {
 
           <TouchableOpacity onPress={() => handlePress()}>
             <View style={[styles.styledButton, styles.playButton]}>
-              <Text style={styles.buttonText}>Play Golf!</Text>
+              <Text style={styles.buttonText}>Play Golf?</Text>
             </View>
           </TouchableOpacity>
         </View>

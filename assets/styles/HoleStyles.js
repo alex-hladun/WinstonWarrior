@@ -1,6 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Theme } from '../styles/Theme'
-
+const { width } = Dimensions.get('window');
+console.log("🚀 ~ file: HoleStyles.js ~ line 4 ~ width", width)
+export const ipad = (width > 1000)
+console.log('ipad?', ipad)
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -47,8 +50,9 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: Theme.spinGreen3,
     zIndex: 2,
-    right: '-41%',
-    top: '-15%',
+    // right: '-41%',
+    right: ipad ? -50 : -160,
+    top: ipad ? -20 : -120,
     // padding: 10,
     // marginTop: 45,
     borderStyle: 'solid',

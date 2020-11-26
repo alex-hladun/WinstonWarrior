@@ -311,19 +311,92 @@ export const loadStats = async (user_id) => {
     HAVING count(scores.hole_num) = 18 
     ORDER BY rounds.round_id DESC LIMIT 20;
     `, [user_id], (txObj, result) => {
-      console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
   )
 }
-export const loadFwHistory = async (user_id) => {
+
+// Putt history
+// SELECT sum(scores.total_putts) AS putts, count(scores.driver_direction) = 50 AS hits FROM scores
+// JOIN rounds on scores.round_id = rounds.round_id
+// WHERE rounds.user_id = ?
+// GROUP BY rounds.round_id
+// HAVING count(scores.hole_num) = 18
+// ORDER BY rounds.round_id DESC
+// LIMIT 10;
+
+
+// Getting the FW hit stat array
+// SELECT COUNT(*) AS fw_hit FROM scores 
+// JOIN rounds on rounds.round_id = scores.round_id
+// WHERE rounds.user_id = ?
+// GROUP BY scores.round_id, scores.driver_direction
+// HAVING scores.driver_direction == 50 AND count(scores.hole_num = 18)
+// ORDER BY rounds.round_id DESC
+// LIMIT 10;
+
+// GIR stat array 
+// SELECT COUNT(*) AS gir_hit FROM scores 
+// JOIN rounds on rounds.round_id = scores.round_id
+// WHERE rounds.user_id = ?
+// GROUP BY scores.round_id, scores.gir
+// HAVING scores.gir == 1 AND count(scores.hole_num = 18)
+// ORDER BY rounds.round_id DESC
+// LIMIT 10;
+
+
+// successful scramble count
+// SELECT COUNT(scores.ud = 1) AS scramble, rounds.round_id FROM scores
+//     JOIN rounds on rounds.round_id = scores.round_id
+//     WHERE rounds.user_id = ?
+//     GROUP BY scores.round_id
+//     ORDER BY rounds.round_id DESC
+//     LIMIT 10;
+
+// total holes holes_played per round
+// SELECT COUNT(*) AS fw_hit FROM scores 
+//     JOIN rounds on rounds.round_id = scores.round_id
+//     WHERE rounds.user_id = ?
+//     GROUP BY scores.round_id
+//     ORDER BY rounds.round_id DESC
+//     LIMIT 10;
+
+// ENSSURE RETURNED ARRAYS ARE SAME SIZE
+
+export const loadPuttsForHole = async (user_id, hole_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT scores.total_putts, scores.hole_num, rounds.round_id
+    FROM scores
+    JOIN holes ON scores.hole_id = holes.hole_id
+    JOIN rounds ON scores.round_id = rounds.round_id
+    WHERE scores.hole_id = ? AND rounds.user_id = ?
+    GROUP BY scores.round_id
+    ORDER BY scores.round_id DESC
+    LIMIT 10;
+    `, [hole_id, user_id], (txObj, result) => {
+      console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+  })
+  )
+}
+
+export const loadPuttHistory = async (user_id, hole_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
   return new Promise((resolve, reject) => db.transaction(tx => {
-
     tx.executeSql(`
-    SELECT * FROM rounds;
-    `, [user_id], (txObj, result) => {
+    SELECT scores.total_putts, scores.hole_num, rounds.round_id
+    FROM scores
+    JOIN holes ON scores.hole_id = holes.hole_id
+    JOIN rounds ON scores.round_id = rounds.round_id
+    WHERE scores.hole_id = ? AND rounds.user_id = ?
+    GROUP BY scores.round_id
+    ORDER BY scores.round_id DESC
+    LIMIT 10;
+    `, [hole_id, user_id], (txObj, result) => {
       console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting stats', reject(mess)))

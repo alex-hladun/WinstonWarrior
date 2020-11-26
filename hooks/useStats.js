@@ -9,7 +9,7 @@ export function useStats(user_id, course_id) {
   React.useEffect(() => {
     const retrieveStats = async () => {
       // CUSTOM FUNCTION NOT USED
-      const fwHistoryArray = await loadFwHistory(1)
+      // const fwHistoryArray = await loadFwHistory(1)
     }
 
     retrieveStats()

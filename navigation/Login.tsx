@@ -1,4 +1,4 @@
-import { View, Text, Alert, TouchableOpacity, TextInput, Image, ImageBackground } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, Dimensions ,TextInput, Image, ImageBackground } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { AppContext } from '../context/AppContext'
@@ -7,7 +7,8 @@ import styles from '../assets/styles/PlayStyles'
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Updates from 'expo-updates' // Updates*
-
+const width =  Dimensions.get('window').width
+console.log(width)
 export function Login({ navigation }) {
   const appContext = React.useContext(AppContext)
   // console.log('context in Login.tsx', appContext.dispatch)
@@ -79,7 +80,7 @@ export function Login({ navigation }) {
     <>
       <View>
         {/* <ImageBackground source={require('../assets/images/cross-stripes.png')} imageStyle={{ resizeMode: 'repeat' }} style={styles.bgImage}> */}
-        <Video
+        {width < 1284 && <Video
           source={require('../assets/golf.m4v')}
           rate={1.0}
           volume={0.0}
@@ -88,7 +89,7 @@ export function Login({ navigation }) {
           shouldPlay
           isLooping
           style={styles.video}
-        />
+        />}
         {/* </ImageBackground> */}
       </View>
       <View style={styles.loginContainer}>

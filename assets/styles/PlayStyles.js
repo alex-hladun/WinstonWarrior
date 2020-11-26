@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Theme } from '../styles/Theme'
+const width =  Dimensions.get('window').width
 
 export const styles = StyleSheet.create({
   container: {
@@ -46,6 +47,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 10,
+    backgroundColor: Theme.spinGreen1
   },
   scoreContainer: {
     flex: 1,
