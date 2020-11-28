@@ -176,8 +176,9 @@ export const styles = StyleSheet.create({
   holeContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    height: '100%',
-    width: '100%',
+    flex: 1
+    // height: '100%',
+    // width: '100%',
   },
   fadeContainer: {
     flexDirection: 'column',

@@ -89,7 +89,6 @@ export default function TabOneScreen() {
     })
   }
 
-  
 
   const checkAndRestoreScores = async () => {
     // console.log('playcontext', playContext)

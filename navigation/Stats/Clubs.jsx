@@ -84,7 +84,6 @@ export function Clubs({ navigation }) {
       <View style={styles.background}>
         <Image source={require('../../assets/images/vectors/coollogo.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
-
           <Modal animationType="slide" transparent={true} visible={clubView}>
             <View style={styles.xContainer}>
               <TouchableOpacity onPress={() => handleClubView()}>

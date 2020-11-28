@@ -61,6 +61,23 @@ export const styles = StyleSheet.create({
     // backgroundColor: '#EEBAB2',
     alignSelf: 'center',
   },
+  roundCardContainer: {
+    width: width - 50,
+    // margin: 25,
+    height: 500,
+    borderRadius: 50,
+    // alignItems: 'center',
+    // borderBottomRightRadius: 0,
+    // borderBottomLeftRadius: 0,
+    backgroundColor: Theme.coolBlue,
+    alignSelf: 'center',
+  },
+  roundCardInnerContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+
+  },
   clubCardHeader: {
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -242,7 +259,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Theme.coolBlue
   },
   selectBoxHole: {
-    backgroundColor: Theme.palette[4]
+    backgroundColor: Theme.babyBlue
   },
   trendContainer: {
     // flexDirection: 'column',

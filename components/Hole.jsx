@@ -24,8 +24,6 @@ import { PlayContext } from '../context/PlayContext'
 import AsyncStorage from '@react-native-community/async-storage';
 import { getScore } from '../db/dbSetup'
 
-const { width } = Dimensions.get('window');
-
 export default function Hole({ location, initialHole = 1 }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
@@ -54,6 +52,8 @@ export default function Hole({ location, initialHole = 1 }) {
 
   useEffect(() => {
     // retrieve and set all scores?
+    console.log(Dimensions.get('window').width)
+    console.log(Dimensions.get('window').height, 'height')
 
 
 
@@ -248,10 +248,10 @@ export default function Hole({ location, initialHole = 1 }) {
 
   return (
     <View style={styles.holeContainer}>
+      
       <Modal animationType="slide" transparent={true} visible={holeView}>
         <View style={holeListStyles.container}>
         <TouchableOpacity onPress={() => handleHoleChange()}>
-          
           <View style={holeListStyles.headerContainer}>
             <Text style={holeListStyles.header} onPress={() => handleHoleChange()}>
               <XSymbol />
@@ -362,7 +362,6 @@ export default function Hole({ location, initialHole = 1 }) {
         }
 
       </MapView>
-
       <View style={styles.floatingContainer}>
         <TouchableOpacity onPress={() => handleHoleDec()}>
           <View style={[styles.floatingHoleMarker, styles.move]}>
