@@ -15,8 +15,10 @@ const { width } = Dimensions.get('window');
 
 // Renders into list
 const RoundItem = ({ round, handleRoundSelect }) => {
+  // console.log("🚀 ~ file: Rounds.jsx ~ line 35 ~ RoundItem ~ round", round)
+
   return (
-    <TouchableOpacity onPress={() => handleRoundSelect(round)}>
+    <TouchableOpacity onPress={() => handleRoundSelect(round.index)}>
     <View style={styles.roundItem}>
       <View style={styles.roundLeft}>
         <Text style={styles.roundCourseName}>
@@ -35,14 +37,14 @@ const RoundItem = ({ round, handleRoundSelect }) => {
 
 export function Rounds() {
   const roundHistory = useRoundHistory(1)
-  const reverseRoundHistory = roundHistory.reverse()
+  const reverseRoundHistory = roundHistory
   const [roundView, setRoundView] = React.useState(false)
   const [round, setRound] = React.useState(null)
   const carRef = React.useRef(null)
 
   // Item rendered into flatlist
   const renderItem = (round) => {
-    return (<RoundItem handleRoundSelect={handleRoundSelect}  round={round} />)
+    return (<RoundItem handleRoundSelect={handleRoundSelect} round={round} />)
   };
 
 // The component rendered into the carosuel
@@ -53,6 +55,7 @@ const _renderItem = ({ item, index }) => {
 }
 
 const handleRoundSelect = (roundIndex) => {
+  console.log(roundIndex, 'roundIndex')
   setRound(roundIndex)
   setRoundView(!roundView)
 }
@@ -71,19 +74,19 @@ const _roundView = () => {
         <Carousel
           layout={"stack"}
           ref={carRef}
-          data={roundHistory}
+          data={reverseRoundHistory}
           sliderWidth={100}
           enableMomentum={true}
           enableSnap={true}
           itemWidth={width}
-          loop={true}
-          // firstItem={round}
+          loop={false}
+          firstItem={round}
           initialScrollIndex={7}
           renderItem={_renderItem}
           useScrollView={true}
         />
       </View>
-    </SafeAreaView>
+     </SafeAreaView>
   )
 }
 
@@ -106,7 +109,12 @@ const _roundView = () => {
 
           <SafeAreaView>
             {roundHistory[0] ? 
-            <FlatList data={reverseRoundHistory} renderItem={renderItem} keyExtractor={item => `${item.round_id}`} />
+            <FlatList 
+            data={reverseRoundHistory} 
+            renderItem={renderItem} 
+            inverted={true}
+            keyExtractor={item => `${item.round_id}`} 
+            />
             :
             <View style={styles.styledButton}>
             <Text>

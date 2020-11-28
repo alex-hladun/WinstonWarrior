@@ -63,19 +63,50 @@ export const styles = StyleSheet.create({
   },
   roundCardContainer: {
     width: width - 50,
+    marginTop: 50,
+    // justifyContent: 'space-evenly',
     // margin: 25,
-    height: 500,
+    height: 600,
     borderRadius: 50,
     // alignItems: 'center',
     // borderBottomRightRadius: 0,
     // borderBottomLeftRadius: 0,
     backgroundColor: Theme.coolBlue,
     alignSelf: 'center',
+
+    //     shadowColor: '#000',
+    // shadowOffset: { width: 3, height: 2 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
+
   },
   roundCardInnerContainer: {
     flexDirection: 'column',
+    // flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    // justifyContent: 'space-evenly'
+  },
+  roundCardRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    // paddingVertical: 10
+    // marginVertical: 10
+  },
+  roundCardInnerContainer: {
+flexDirection: 'column',
+textAlign: 'center'
+  },
+  roundCardHeader: {
+    opacity: 0.3,
+    textAlign: 'center',
+    fontSize: 25,
+    
+  },
+  roundCardScore: {
+    opacity: 0.5,
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold'
 
   },
   clubCardHeader: {
@@ -347,7 +378,7 @@ export const styles = StyleSheet.create({
     width: '150%',
     // height: '50%',
     left: '5%',
-    bottom: '-80%',
+    bottom: '-95%',
     position: 'absolute',
     // zIndex: 10,
     opacity: 0.2,
@@ -356,7 +387,6 @@ export const styles = StyleSheet.create({
   background: {
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-
   },
   winstonText: {
     justifyContent: 'center',

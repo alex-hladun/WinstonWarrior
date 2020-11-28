@@ -30,6 +30,9 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
           pars: 0,
           birdies: 0,
           eagles: 0,
+          bogies: 0,
+          doubles: 0,
+          triples: 0,
           rounds: 0,
           GIRs: 0,
           scrambleChances: 0,
@@ -58,6 +61,15 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
         } else if (hole.total_shots - hole.hole_par === -2) {
           birdieObj[hole.hole_num].eagles++
           totalBirds.eagles++
+        } else if (hole.total_shots - hole.hole_par === 1) {
+          birdieObj[hole.hole_num].bogies++
+          totalBirds.bogies++
+        } else if (hole.total_shots - hole.hole_par === 2) {
+          birdieObj[hole.hole_num].doubles++
+          totalBirds.doubles++
+        } else {
+          birdieObj[hole.hole_num].triples++
+          totalBirds.triples++
         }
 
         if ((hole.total_shots - hole.total_putts + 2) <= hole.hole_par) {

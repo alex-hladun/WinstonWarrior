@@ -34,11 +34,7 @@ const pieChartConfig = {
 }
 
 export function RoundCard({ handleRoundView, item }) {
-  console.log("🚀 ~ file: RoundCard.jsx ~ line 31 ~ RoundCard ~ item", item)
-
-
-  // const shotArray = useShotHistory(1, item.id)
-  // console.log("🚀 ~ file: Clubs.jsx ~ line 77 ~ Clubs ~ shotArray", shotArray)
+  // console.log("🚀 ~ file: RoundCard.jsx ~ line 31 ~ RoundCard ~ item", item)
 
   const pieChartData = [{
     name: "Eagles",
@@ -75,56 +71,54 @@ export function RoundCard({ handleRoundView, item }) {
     legendFontSize: 15
   },
   ]
-  // shotArray.forEach((shot, index) => {
-  //   clubShotArray.push(shot.distance)
-  //   clubLabelArray.push(index + 1)
-  // })
-
-  // const shotDataForChart = {
-  //   datasets: [{
-  //     data: clubShotArray
-  //   }],
-  //   labels: clubLabelArray
-  // }
 
   return (
     <View style={[styles.roundCardContainer]}>
       <View style={styles.clubCardHeader}>
-        <Text style={styles.clubTypeText} onPress={() => handleRoundView()}>{item.end_date.slice(5, 10)}</Text>
-        <Text style={styles.clubAvgText} onPress={() => handleRoundView()}>{item.total_score}</Text>
+        <Text style={styles.clubTypeText}>{item.end_date.slice(5, 10)}</Text>
+        <Text style={styles.clubAvgText}>{item.total_score}</Text>
       </View>
 
       <View style={styles.roundCardInnerContainer}>
         <Text style={styles.clubAvgText}>{item.course_name}</Text>
-        <PieChart
-          data={pieChartData}
-          chartConfig={pieChartConfig}
-          height={150}
-          
-          // style={{alignSelf: 'center', margin: 20, padding: 30}}
-          width={'90%'}
-          center={[75, 0]}
-          // center={1}
-          // padding='20'
-          // paddingLeft={35}
-          hasLegend={false}
-          accessor={"count"}
-          backgroundColor={"red"}
-          absolute='true'
-        />
-      </View>
+        <View style={styles.roundCardRow}>
+          <View style={styles.roundCardInnerContainer}>
+            <Text style={styles.roundCardHeader}>Front</Text>
+            <Text style={styles.roundCardScore}>36</Text>
+          </View>
+        <View style={styles.roundCardRow}>
+          <View style={styles.roundCardInnerContainer}>
+            <Text style={styles.roundCardHeader}>Back</Text>
+            <Text style={styles.roundCardScore}>29</Text>
+          </View>
+</View>
+        </View>
+      <PieChart
+        data={pieChartData}
+        chartConfig={pieChartConfig}
+        height={200}
+        width={'100%'}
+        center={[155, 0]}
+        hasLegend={false}
+        accessor={"count"}
+        backgroundColor={"transparent"}
+        absolute='true'
+      />
     </View>
-
-
-
-    // {/* <Text style={{ color: 'black' }} onPress={() => handleRoundView()}> Max -  {item.max.toFixed(0)}</Text> */}
-    //   {/* <BarChart
-    //     style={styles.barChartStyle}
-    //     chartConfig={barChartConfig}
-    //     data={shotDataForChart}
-    //     width={Dimensions.get("window").width - 125}
-    //     height={370}
-    //   />
-    // </View> */}
+    <View style={styles.roundCardRow}>
+          <View style={styles.roundCardInnerContainer}>
+            <Text style={styles.roundCardHeader}>FWY</Text>
+            <Text style={styles.roundCardScore}>8/18</Text>
+          </View>
+          <View style={styles.roundCardInnerContainer}>
+            <Text style={styles.roundCardHeader}>GIR</Text>
+            <Text style={styles.roundCardScore}>7/18</Text>
+          </View>
+          <View style={styles.roundCardInnerContainer}>
+            <Text style={styles.roundCardHeader}>SCR</Text>
+            <Text style={styles.roundCardScore}>2/7</Text>
+          </View>
+          </View>
+    </View >
   )
 }
