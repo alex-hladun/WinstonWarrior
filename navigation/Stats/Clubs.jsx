@@ -16,6 +16,7 @@ const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
   const shotData = useShotData(1)
+  console.log("🚀 ~ file: Clubs.jsx ~ line 19 ~ Clubs ~ shotData", shotData)
   const [club, setClub] = React.useState(null)
   const [clubView, setClubView] = React.useState(false)
   // Carousel ref
@@ -31,25 +32,22 @@ export function Clubs({ navigation }) {
   }
 
   const shotDataArray = shotData
-  let clubList;
-  if (shotDataArray[0]) {
-    clubList = shotDataArray.map((clb, i) => {
-      return (
-        <View key={`cl${i}`} style={[styles.club]} >
-          {/* <LinearGradient colors={[Theme.iconStroke, Theme.clubGradientTo]}> */}
-          <TouchableOpacity onPress={() => handleClubSelect(i)}>
-            <Text key={`club${i}`} style={styles.medTxt}>
-              {clb.name}
-            </Text>
-            <Text key={`clubss${i}`} style={styles.smallTxt}>
-              {clb.avg.toFixed(0)} yds
-          </Text>
-          </TouchableOpacity>
-          {/* </LinearGradient> */}
-        </View>
-      )
-    })
-  }
+
+  const clubMenuItem = (clb) => {
+    // console.log('render club item', clb)
+    return (
+      <View key={`cl${clb.index}`} style={[styles.club, {backgroundColor: Theme.palette[clb.item.id]}]} >
+      <TouchableOpacity onPress={() => handleClubSelect(clb.index)}>
+        <Text key={`club${clb.index}`} style={styles.medTxt}>
+          {clb.item.name}
+        </Text>
+        <Text key={`clubss${clb.index}`} style={styles.smallTxt}>
+          {clb.item.avg.toFixed(0)} yds
+      </Text>
+      </TouchableOpacity>
+    </View>
+    )
+  };
 
 
   const _renderItem = ({ item, index }) => {
@@ -97,8 +95,12 @@ export function Clubs({ navigation }) {
             </View>
             <_clubView />
           </Modal>
-          <View style={styles.clubContainer}>
-            {shotDataArray[0] ? clubList :
+            {shotDataArray[0] ? 
+            <FlatList 
+            numColumns={3}
+            key={'test'}
+            data={shotData} renderItem={clubMenuItem} keyExtractor={item => `${item.id}`} />
+            :
               <View style={styles.styledButton}>
                 <Text>
                   Save some shots to see your distances!
@@ -106,7 +108,6 @@ export function Clubs({ navigation }) {
               </View>}
           </View>
         </View>
-      </View>
     </>
   );
 }

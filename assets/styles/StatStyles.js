@@ -46,7 +46,8 @@ export const styles = StyleSheet.create({
     paddingTop: 0,
     width: '100%',
     height: '100%',
-    padding: 10,
+    paddingHorizontal: 10,
+    // marginVertical: 10,
     // backgroundColor: 'red',
     position: 'absolute',
   },
@@ -139,7 +140,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     borderStyle: 'solid',
-    borderColor: Theme.spinGreen4,
+    // borderColor: Theme.spinGreen4,
     borderBottomWidth: 4,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -355,13 +356,16 @@ export const styles = StyleSheet.create({
     // fontFamily: 'tacoma'
   },
   medTxt: {
-    color: Theme.spinGreen4,
+    color: '#000',
+    opacity: 0.7,
     fontSize: 30,
     textAlign: 'center'
     // fontFamily: 'tacoma'
   },
   smallTxt: {
-    color: Theme.spinGreen4,
+    // color: Theme.spinGreen4,
+    color: '#000',
+    opacity: 0.6,
     fontSize: 20,
     textAlign: 'center'
     // fontFamily: 'tacoma'
