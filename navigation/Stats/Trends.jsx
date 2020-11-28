@@ -160,7 +160,7 @@ export function Trends({ navigation }) {
             <>
               <View style={styles.holeRow}>
                 <TouchableOpacity onPress={() => setChart('Shots')}>
-                  <View style={styles.trendContainer}>
+                  <View style={[styles.trendContainer, chartType === 'Shots' && styles.selectBox]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Avg Score</Text>
                     </View>
@@ -168,7 +168,7 @@ export function Trends({ navigation }) {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setChart('Putts')}>
-                  <View style={styles.trendContainer}>
+                  <View style={[styles.trendContainer, chartType === 'Putts' && styles.selectBox]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Avg Putts</Text>
                     </View>
@@ -184,7 +184,7 @@ export function Trends({ navigation }) {
               </View>
               <View style={styles.holeRow}>
               <TouchableOpacity onPress={() => setChart('FWY %')}>
-                <View style={styles.trendContainer}>
+                <View style={[styles.trendContainer, chartType === 'FWY %' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>FWY %</Text>
                   </View>
@@ -192,15 +192,15 @@ export function Trends({ navigation }) {
                 </View>
                 </TouchableOpacity>
               <TouchableOpacity onPress={() => setChart('GIR %')}>
-                <View style={styles.trendContainer}>
+                <View style={[styles.trendContainer, chartType === 'GIR %' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>GIR %</Text>
                   </View>
                   <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(1)}</Text>
                 </View>
                 </TouchableOpacity>
-              <TouchableOpacity onPress={() => setChart('SCRAMBLE %')}>
-                <View style={styles.trendContainer}>
+              <TouchableOpacity onPress={() => setChart('Scramble %')}>
+                <View style={[styles.trendContainer, chartType === 'Scramble %' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>SCR %</Text>
                   </View>

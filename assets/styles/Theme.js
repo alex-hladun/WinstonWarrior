@@ -19,7 +19,7 @@ export const Theme = {
   chartBGGradientTo: '#2D7DD2',
   holeBGGFrom: '#06A10B',
   holeBGGTo: '#1D800E',
-  darkGrey: '33F3F37',
+  darkGrey: '#3F3F37',
   clubGradientFrom: '#1F5A98',
   clubGradientTo: '#2D7DD2',
   palette: [

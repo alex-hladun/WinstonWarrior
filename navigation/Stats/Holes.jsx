@@ -108,7 +108,7 @@ export function Holes() {
 
               <View style={styles.holeRow}>
                 <TouchableOpacity onPress={() => setChart('Shots')}>
-                  <View style={styles.boxContainer}>
+                  <View style={[styles.boxContainer, chartType === 'Shots' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Avg Score</Text>
                     </View>
@@ -116,7 +116,7 @@ export function Holes() {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setChart('Putts')}>
-                  <View style={styles.boxContainer}>
+                  <View style={[styles.boxContainer, chartType === 'Putts' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Avg Putts</Text>
                     </View>
