@@ -30,7 +30,7 @@ export function useHandicap(user_id) {
     }
 
     getHandicap(1)
-  }, [])
+  }, [statContext.value.state.handicapUpdate])
 
   return handicap
 }

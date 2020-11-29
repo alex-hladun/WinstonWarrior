@@ -23,11 +23,8 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
   const statContext = React.useContext(StatContext)
   let playState = playContext.value.state
   let appState = appContext.value.state
-
-
   const [playerArray, setPlayerArray] = useState([])
   const holeID = appState.hole_id
-
   const p1ps = playState.p1score[holeNum]
   const p2ps = playState.p2score[holeNum]
   const p3ps = playState.p3score[holeNum]

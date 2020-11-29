@@ -169,7 +169,7 @@ export default function RoundSummary({ handleRoundSummary }) {
     })
   }
   
-  console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ playState.p1score", playState.p1score)
+  // console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ playState.p1score", playState.p1score)
   return (
     <>
       <View style={styles.backgroundContainer}>

@@ -2,34 +2,35 @@ import * as React from 'react';
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory, loadHcpDiffStats } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
 
+
+const loadHandicapFromArray = (hcpArray) => {
+// Given a sliced array of objects, will tell you what the handicaps were at that particular time
+}
+
 export function useHandicapHistory(user_id) {
   const statContext = React.useContext(StatContext)
-  const [handicap, setHandicap] = React.useState(0)
+  const [handicapHistory, setHandicapHistory] = React.useState([])
 
   React.useEffect(() => {
     // console.log('RETREVING HCPP')
-    const getHandicap = async (user_id) => {
+    const getHandicapHistory = async (user_id) => {
+      // RETURNS ARRAY OF HANDICAPS 
       const roundHistory = await loadHcpDiffStats(user_id)
-      console.log("🚀 ~ file: useHandicapHistory.js ~ line 13 ~ getHandicap ~ roundHistory", roundHistory)
+      console.log("🚀 ~ file: useHandicapHistory.js ~ line 13 ~ getHandicapHistory ~ roundHistory", roundHistory)
+
+      const handicapHistoryArray = [];
+      console.log(roundHistory.length)
 
 
-      let count = 0;
-      let hcpIndex = 0;
-      roundHistory.forEach(score => {
-        if(count < 8) {
-          count += 1
-          hcpIndex += score.hcp_diff
-        }
-      })
+      // for (let i = 1; i <= 10; i++) {
+      //   handicapHistoryArray.push(loadHandicapFromArray(roundHistory.slice))
+      // }
 
-      if(count) {
-        setHandicap(hcpIndex / count)
-      }
 
     }
 
-    // getHandicap(1)
-  }, [statContext.value.state.allDataUpdate])
+    getHandicapHistory(1)
+  }, [statContext.value.state.handicapUpdate])
 
-  return handicap
+  return handicapHistory
 }

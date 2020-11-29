@@ -316,7 +316,7 @@ export const seedData = async () => {
 
 export const loadStats = async (user_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
-  console.log('USER ID IN STATS', user_id)
+  // console.log('USER ID IN STATS', user_id)
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     tx.executeSql(`
@@ -352,8 +352,6 @@ export const loadCourseInfo = async (course_id) => {
 export const loadHcpDiffStats = async (user_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
   return new Promise((resolve, reject) => db.transaction(tx => {
-
-
     tx.executeSql(`
     SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
@@ -971,7 +969,7 @@ export const getScore = async (round_id) => {
     tx.executeSql(`
     SELECT * FROM scores WHERE round_id = ?;
     `, [round_id], (txObj, result) => {
-      // console.log('result getting score', result.rows._array)
+      // console.log(`result getting score with round_id ${round_id}`, result.rows._array)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err creating round', reject(mess)))
   })

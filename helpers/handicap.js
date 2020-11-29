@@ -18,10 +18,8 @@ const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
 export const netHandicapDiffCalc = (scoreObj, userHandicap, rtg, slope, holeInfoObj) => {
 console.log("🚀 ~ file: handicap.js ~ line 20 ~ netHandicapDiffCalc ~ scoreObj", scoreObj)
-  console.log("🚀 ~ file: handicap.js ~ line 6 ~ netHandicapDiffCalc ~ holeInfoObj", holeInfoObj)
+  // console.log("🚀 ~ file: handicap.js ~ line 6 ~ netHandicapDiffCalc ~ holeInfoObj", holeInfoObj)
 
-
-  let courseHandicap = userHandicap * (slope / 113) + (rtg - 72)
   let completedHoles = 0;
   let continueCounting = true;
 
@@ -40,13 +38,13 @@ console.log("🚀 ~ file: handicap.js ~ line 20 ~ netHandicapDiffCalc ~ scoreObj
     // calc
   } else if (completedHoles >= 14) {
     // Scale up to 18
-    console.log('PARTIAL 18 HOLE SCORE CALC',((sumValues(scoreObj) - rtg) * 113 / slope))
-
+    
     for (let i = completedHoles + 1; i <= 18; i++) {
       if (!scoreObj[i]) {
         scoreObj[i] = holeInfoObj[i].par + holeInfoObj[i].netStrokes
       }
     }
+    console.log('PARTIAL 18 HOLE SCORE CALC',((sumValues(scoreObj) - rtg) * 113 / slope))
     return ((sumValues(scoreObj) - rtg) * 113 / slope)
 
   } else if (completedHoles >= 9) {
@@ -61,6 +59,7 @@ console.log("🚀 ~ file: handicap.js ~ line 20 ~ netHandicapDiffCalc ~ scoreObj
     console.log('PARTIAL 9 HOLE SCORE CALC', ((sumFront(scoreObj) - rtg / 2) * 113 / slope / 2))
     return ((sumFront(scoreObj) - rtg / 2) * 113 / slope / 2)
   } else {
+    console.log('not enough scores to post!!')
     return null
   }
 

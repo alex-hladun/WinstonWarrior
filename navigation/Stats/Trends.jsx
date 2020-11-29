@@ -42,7 +42,7 @@ export function Trends({ navigation }) {
   })
 
   React.useEffect(() => {
-    console.log('SETTING CHART VIA USEEFFECT IN TRENDS')
+    // console.log('SETTING CHART VIA USEEFFECT IN TRENDS')
     setChart(chartType)
   }, [roundHistory, totalPuttHistory])
 

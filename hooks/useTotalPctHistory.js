@@ -10,7 +10,7 @@ export function useTotalPctHistory(user_id) {
 
   const getPctHistory = async (user_id) => {
     const totalpctHistoy = await loadTotalPctHistory(user_id)
-    console.log("🚀 ~ file: useTotalPctHistory.js ~ line 13 ~ getPctHistory ~ totalpctHistoy", totalpctHistoy)
+    // console.log("🚀 ~ file: useTotalPctHistory.js ~ line 13 ~ getPctHistory ~ totalpctHistoy", totalpctHistoy)
 
     const pctArrayObj = {
       fwyPct: totalpctHistoy.totalHolesPlayed.map((hP, i) => {
@@ -31,7 +31,7 @@ export function useTotalPctHistory(user_id) {
         }
       }),
     }
-    console.log("🚀 ~ file: useTotalPctHistory.js ~ line 20 ~ getPctHistory ~ pctArrayObj", pctArrayObj)
+    // console.log("🚀 ~ file: useTotalPctHistory.js ~ line 20 ~ getPctHistory ~ pctArrayObj", pctArrayObj)
 
     setPctHistory(pctArrayObj)
   }
