@@ -5,12 +5,12 @@ import { AppContext } from '../context/AppContext'
 import styles from '../assets/styles/PlayStyles'
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 
-export const resetDatabase = () => {
+export const resetDatabase = async() => {
     console.log('RESETTING DB FROM SIGNUP')
     AsyncStorage.removeItem('authName')
     removeDB()
     setUpDB()
-    createClubs()
+    await createClubs()
     createWinston()
 }
 

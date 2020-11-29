@@ -6,8 +6,9 @@ import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 import { getPct, postRound } from '../db/dbSetup'
+import { useHandicap } from '../hooks/useHandicap'
 import { StatContext } from '../context/StatContext';
-import { handicapDiffCalc } from '../helpers/handicap';
+import { handicapDiffCalc, netHandicapDiffCalc } from '../helpers/handicap';
 
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
@@ -38,8 +39,10 @@ export default function RoundSummary({ handleRoundSummary }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   const statContext = React.useContext(StatContext)
+  const userHandicap = useHandicap(1)
 
   let playState = playContext.value.state
+
   let appState = appContext.value.state
   const [scoreArr, setScoreArr] = useState([])
   const [scoreObj, setScoreObj] = useState({})
@@ -47,7 +50,7 @@ export default function RoundSummary({ handleRoundSummary }) {
   useEffect(() => {
     console.log(playState.p1score)
     let newArr = [];
-    let newObj = {}
+    let newObj = {} 
 
     newArr.push({
       name: appState["user_name"],
@@ -155,7 +158,7 @@ export default function RoundSummary({ handleRoundSummary }) {
     // const pctObj = await getPct(appState.round_id)
 
 // FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
-    await postRound(sumValues(playState.p1score), appState.round_id, handicapDiffCalc(sumValues(playState.p1score), 71.8, 127))
+    await postRound(sumValues(playState.p1score), appState.round_id, netHandicapDiffCalc(playState.p1score, userHandicap, 71.8, 127, playState.holeInfo))
     appContext.value.doneRound()
     playContext.value.doneRound()
     statContext.dispatch({
@@ -165,7 +168,8 @@ export default function RoundSummary({ handleRoundSummary }) {
       type: 'trigger_all_data_update'
     })
   }
-
+  
+  console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ playState.p1score", playState.p1score)
   return (
     <>
       <View style={styles.backgroundContainer}>

@@ -14,7 +14,11 @@ export function useTotalPctHistory(user_id) {
 
     const pctArrayObj = {
       fwyPct: totalpctHistoy.totalHolesPlayed.map((hP, i) => {
-        return (totalpctHistoy.fwyHit[i] * 100 / hP).toFixed(0)
+        if(totalpctHistoy.fwyHit[i]) {
+          return (totalpctHistoy.fwyHit[i] * 100 / hP).toFixed(0)
+        } else {
+          return 0
+        }
       }),
       girPct: totalpctHistoy.totalHolesPlayed.map((hP, i) => {
         return (totalpctHistoy.girHit[i] * 100 / hP).toFixed(0)

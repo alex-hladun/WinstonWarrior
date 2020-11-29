@@ -5,6 +5,14 @@ const reducer = (state, action) => {
       return {
         ...state,
         course_id: action.data,
+        p1_rtg: action.rtg,
+        p1_slp: action.slp
+      }
+    break;
+    case "set_hole_info":
+      return {
+        ...state,
+        holeInfo: action.data
       }
     break;
     case "set_player_2":
@@ -133,6 +141,15 @@ const reducer = (state, action) => {
 }
 const initialState = {
   course_id: undefined,
+  holeInfo: undefined,
+  p1_rtg: undefined,
+  p1_slp: undefined,
+  p2_rtg: undefined,
+  p2_slp: undefined,
+  p3_rtg: undefined,
+  p3_slp: undefined,
+  p4_rtg: undefined,
+  p4_slp: undefined,
   player_2: undefined,
   player_3: undefined,
   player_4: undefined,

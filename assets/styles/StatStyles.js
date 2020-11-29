@@ -210,17 +210,14 @@ textAlign: 'center'
   headerContainer: {
     flexDirection: 'column',
     borderColor: 'black',
-    // borderWidth: 1,
     alignSelf: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     backgroundColor: Theme.iconStroke,
     borderRadius: 15,
-    // borderStyle: 'solid',
-    margin: 10,
-    padding: 10,
+    margin: 5,
+    padding: 5,
     width: '60%',
-    // height: 150
   },
   hole: {
     justifyContent: 'center',

@@ -19,6 +19,7 @@ import { useRoundHistory } from '../../hooks/useRoundHistory';
 import { resetDatabase } from '../../navigation/SignUp'
 import { AppContext } from '../../context/AppContext';
 import { useTotalPctHistory } from '../../hooks/useTotalPctHistory';
+import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 
 export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext)
@@ -27,9 +28,11 @@ export function Trends({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const pctHistory = useTotalPctHistory(1)
+  const handicapHistory = useHandicapHistory(1)
   // console.log("Trends -> statState", statState)
   const roundHistory = useRoundHistory(1)
   const totalPuttHistory = useTotalPuttHistory(1)
+  const [parentChartType, setParentChartType] = React.useState('LineChart')
   const [chartType, setChartType] = React.useState('Shots')
   const [chartData, setChartData] = React.useState({
     labels: ['Loading'],
@@ -47,6 +50,7 @@ export function Trends({ navigation }) {
   const setChart = (chartType) => {
     switch (chartType) {
       case 'Putts':
+        setParentChartType('LineChart')
         setChartType('Putts')
         setChartData({
           labels: totalPuttHistory.map((i, j) => j),
@@ -56,15 +60,22 @@ export function Trends({ navigation }) {
         })
         break;
       case 'FWY %':
+        setParentChartType('LineChart')
         setChartType('FWY %')
+
         setChartData({
-          labels: pctHistory.fwyPct.map((i, j) => j),
+          labels: pctHistory.fwyPct.map((i, j) => {
+            if(i !== "NaN") {
+              return (j)
+            }
+            }),
           datasets: [{
-            data: pctHistory.fwyPct
+            data: pctHistory.fwyPct.filter(i => i !== "NaN")
           }]
-        })
+      })
         break;
       case 'GIR %':
+        setParentChartType('LineChart')
         setChartType('GIR %')
         setChartData({
           labels: pctHistory.girPct.map((i, j) => j),
@@ -74,6 +85,7 @@ export function Trends({ navigation }) {
         })
         break;
       case 'Scramble %':
+        setParentChartType('LineChart')
         setChartType('Scramble %')
         setChartData({
           labels: pctHistory.scramblePct.map((i, j) => j),
@@ -84,7 +96,8 @@ export function Trends({ navigation }) {
         break;
       case 'Shots':
         if (roundHistory[0]) {
-        setChartType('Shots')
+          setChartType('Shots')
+          setParentChartType('LineChart')
           setChartData(
             {
               labels: roundHistory.map((round, index) => {
@@ -98,6 +111,50 @@ export function Trends({ navigation }) {
             }
           )
         }
+        break;
+        case 'Scoring':
+        setParentChartType('PieChart')
+        setChartType('Scoring')
+        setChartData([{
+          name: "Eagles",
+          count: totalInfo.totalBirds.eagles,
+          color: Theme.piePalette[0],
+          legendFontColor: "#000",
+          legendFontSize: 15
+        }, {
+          name: "Birdies",
+          count: totalInfo.totalBirds.birdies,
+          color: Theme.piePalette[1],
+          legendFontColor: "#000",
+          legendFontSize: 15
+        }, {
+          name: "Pars",
+          count: totalInfo.totalBirds.pars,
+          color: Theme.piePalette[2],
+          legendFontColor: "#000",
+          legendFontSize: 15
+        }, {
+          name: "Bogeys",
+          count: totalInfo.totalBirds.bogies,
+          color: Theme.piePalette[3],
+
+          legendFontColor: "#000",
+          legendFontSize: 15
+        }, {
+          name: "Doubles",
+          count: totalInfo.totalBirds.doubles,
+          color: Theme.piePalette[4],
+          legendFontColor: "#000",
+          legendFontSize: 15
+        }, {
+          name: "Triples +",
+          count: totalInfo.totalBirds.triples,
+          color: Theme.piePalette[5],
+          legendFontColor: "#000",
+          legendFontSize: 15
+        },
+        ])
+        break;
     }
   }
 
@@ -111,6 +168,19 @@ export function Trends({ navigation }) {
 
   }
 
+  const chartConfig = {
+    backgroundColor: Theme.chartBackgroundColor,
+    backgroundGradientFrom: Theme.chartBGGradientFrom,
+    backgroundGradientTo: Theme.chartBGGradientTo,
+    propsForVerticalLabels: {
+      rotation: -90
+    },
+    decimalPlaces: 0, // optional, defaults to 2dp
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    style: {
+      borderRadius: 16
+    }
+  }
 
   return (
     <>
@@ -128,24 +198,12 @@ export function Trends({ navigation }) {
             }
           </View>
 
-          {roundHistory[0] &&
+          {roundHistory[0] && (parentChartType === 'LineChart') &&
             <LineChart
               data={chartData}
               width={Dimensions.get('window').width * 0.9} // from react-native
               height={240}
-              chartConfig={{
-                backgroundColor: Theme.chartBackgroundColor,
-                backgroundGradientFrom: Theme.chartBGGradientFrom,
-                backgroundGradientTo: Theme.chartBGGradientTo,
-                propsForVerticalLabels: {
-                  rotation: -90
-                },
-                decimalPlaces: 0, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 16
-                }
-              }}
+              chartConfig={chartConfig}
               bezier
               style={{
                 // top: -100,
@@ -156,6 +214,26 @@ export function Trends({ navigation }) {
             />
             // </View>
           }
+          {roundHistory[0] && (parentChartType === 'PieChart') &&
+          <PieChart
+          data={chartData}
+          chartConfig={chartConfig}
+          height={240}
+          style={{
+            // alignSelf: 'flex-end',
+            left: 20,
+            marginVertical: 5,
+            borderRadius: 16,
+          }}
+          width={Dimensions.get('window').width}
+          center={[5, 0]}
+          hasLegend={true}
+          accessor={"count"}
+          backgroundColor={"transparent"}
+          absolute='true'
+          />
+        }
+
           {roundHistory[0] &&
             <>
               <View style={styles.holeRow}>
@@ -188,7 +266,7 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>FWY %</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.fwyPct && totalInfo.fwyPct.toFixed(1)}</Text>
+                  <Text style={styles.boxContent}>{totalInfo.fwyPct && totalInfo.fwyPct.toFixed(0)}</Text>
                 </View>
                 </TouchableOpacity>
               <TouchableOpacity onPress={() => setChart('GIR %')}>
@@ -196,7 +274,7 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>GIR %</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(1)}</Text>
+                  <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(0)}</Text>
                 </View>
                 </TouchableOpacity>
               <TouchableOpacity onPress={() => setChart('Scramble %')}>
@@ -204,24 +282,26 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>SCR %</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.scramblePct && totalInfo.scramblePct.toFixed(1)}</Text>
+                  <Text style={styles.boxContent}>{totalInfo.scramblePct && totalInfo.scramblePct.toFixed(0)}</Text>
                 </View>
                 </TouchableOpacity>
               </View>
               <View style={styles.holeRow}>
-                <View style={styles.trendContainer}>
+              <TouchableOpacity onPress={() => setChart('Scoring')}>
+                <View style={[styles.trendContainer, chartType === 'Scoring' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>Eagles</Text>
                   </View>
                   <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.eagles}</Text>
                 </View>
-                <View style={styles.trendContainer}>
+                </TouchableOpacity>
+                <View style={[styles.trendContainer, chartType === 'Scoring' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>Birdies</Text>
                   </View>
                   <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.birdies}</Text>
                 </View>
-                <View style={styles.trendContainer}>
+                <View style={[styles.trendContainer, chartType === 'Scoring' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>Pars</Text>
                   </View>

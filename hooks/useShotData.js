@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
+import { loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
 
 export function useShotData(user_id) {

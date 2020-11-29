@@ -1,19 +1,24 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import * as React from 'react';
 import * as Linking from 'expo-linking';
 import { PlayContext } from '../../context/PlayContext'
 import styles from '../../assets/styles/MenuStyles'
+import { loadCourseInfo } from '../../db/dbSetup';
+import { useHandicap } from '../../hooks/useHandicap';
 
 export function CourseSelect({ navigation }) {
+  const hcp = useHandicap(1)
   const playContext = React.useContext(PlayContext)
   // console.log('playContext in CourseSelect', playContext)
-  const handlePress = (courseID) => {
-
+  const handlePress = async (courseID) => {
     playContext.dispatch({
       type: 'set_course',
-      data: courseID
+      data: courseID,
+      rtg: 71.8,
+      slp: 127
     })
-    console.log('going to player list')
+
+    AsyncStorage.setItem('course_id', `${courseID}`)
     navigation.push('Add Players')
   }
 
@@ -49,10 +54,10 @@ export function CourseSelect({ navigation }) {
 
   return (
     <View style={styles.background}>
-    <Image source={require('../../assets/images/vectors/Asset54.png')} style={styles.bgImage}/>
-    <View style={styles.container}>
-      {courseItems}
-    </View>
+      <Image source={require('../../assets/images/vectors/Asset54.png')} style={styles.bgImage} />
+      <View style={styles.container}>
+        {courseItems}
+      </View>
     </View>
   );
 }

@@ -43,7 +43,10 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
       const totalBirds = {
         eagles: 0,
         birdies: 0,
-        pars: 0
+        pars: 0,
+        bogies: 0,
+        doubles: 0,
+        triples: 0,
       }
 
 

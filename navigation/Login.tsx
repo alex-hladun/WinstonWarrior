@@ -14,8 +14,9 @@ export function Login({ navigation }) {
   // console.log('context in Login.tsx', appContext.dispatch)
 
   React.useEffect(() => {
+    // should always be false, as you reset in signup
     let reset = false;
-    let seed = false;
+  let seed = false;
     if (reset) {
       console.log('resetting DB SHOULD ONLY RUN ONCE')
       AsyncStorage.removeItem('authName')
@@ -79,8 +80,7 @@ export function Login({ navigation }) {
   return (
     <>
       <View>
-        {/* <ImageBackground source={require('../assets/images/cross-stripes.png')} imageStyle={{ resizeMode: 'repeat' }} style={styles.bgImage}> */}
-        {width < 1284 && <Video
+        {width < 400 && <Video
           source={require('../assets/golf.m4v')}
           rate={1.0}
           volume={0.0}
@@ -90,7 +90,6 @@ export function Login({ navigation }) {
           isLooping
           style={styles.video}
         />}
-        {/* </ImageBackground> */}
       </View>
       <View style={styles.loginContainer}>
         <View style={styles.winstonLogoContainer}>

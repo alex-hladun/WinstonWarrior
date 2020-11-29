@@ -216,6 +216,8 @@ const doneRound = () => {
   AsyncStorage.removeItem('u3name')
   AsyncStorage.removeItem('u4roundid')
   AsyncStorage.removeItem('u4name')
+  AsyncStorage.removeItem('course_id')
+  
 
   console.log('all info cleared from AppContext')
 }

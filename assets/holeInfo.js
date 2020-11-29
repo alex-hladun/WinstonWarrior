@@ -2,12 +2,12 @@
 const holeInfo = {
   1: {
     par: 4,
+    hcpRtg: 1,
     distance: 420,
     pinCoords: {
       latitude: 51.078795,
       longitude: -114.046645
     },
-
     camera: {
       center: {
         latitude: 51.07657194531991,
@@ -21,6 +21,7 @@ const holeInfo = {
   },
   2: {
     par: 4,
+    hcpRtg: 11,
     distance: 420,
     pinCoords: {
       latitude: 51.081176,
@@ -39,6 +40,7 @@ const holeInfo = {
   },
   3: {
     par: 5,
+    hcpRtg: 13,
     distance: 520,
     pinCoords: {
       latitude: 51.077311,
@@ -57,6 +59,7 @@ const holeInfo = {
   },
   4: {
     par: 4,
+    hcpRtg: 3,
     distance: 520,
     pinCoords: {
       "latitude": 51.08088328148915,
@@ -76,6 +79,7 @@ const holeInfo = {
   5: {
     par: 4,
     distance: 520,
+    hcpRtg: 7,
     pinCoords: {
       "latitude": 51.0777319676409,
       "longitude": -114.0417367592454,
@@ -94,6 +98,7 @@ const holeInfo = {
   6: {
     par: 3,
     distance: 520,
+    hcpRtg: 17,
     pinCoords: {
       "latitude": 51.07641058890334,
       "longitude": -114.0418554469943,
@@ -112,6 +117,7 @@ const holeInfo = {
   7: {
     par: 5,
     distance: 520,
+    hcpRtg: 15,
     pinCoords: {
       "latitude": 51.07446078594926,
       "longitude": -114.03639815747738,
@@ -129,6 +135,7 @@ const holeInfo = {
   },
   8: {
     par: 4,
+    hcpRtg: 5,
     distance: 520,
     pinCoords: {
       "latitude": 51.07561496294042,
@@ -147,6 +154,7 @@ const holeInfo = {
   },
   9: {
     par: 3,
+    hcpRtg: 9,
     distance: 520,
     pinCoords: {
       "latitude": 51.074783301162434,
@@ -166,6 +174,7 @@ const holeInfo = {
   10: {
     par: 5,
     distance: 520,
+    hcpRtg: 2,
     pinCoords: {
       "latitude": 51.07308475196084,
       "longitude": -114.03745863586664,
@@ -184,6 +193,7 @@ const holeInfo = {
   11: {
     par: 3,
     distance: 520,
+    hcpRtg: 18,
     pinCoords: {
       "latitude": 51.073718212983856,
       "longitude": -114.03565015643835,
@@ -201,6 +211,7 @@ const holeInfo = {
   },
   12: {
     par: 4,
+    hcpRtg: 16,
     distance: 520,
     pinCoords: {
       "latitude": 51.071359595820674,
@@ -219,6 +230,7 @@ const holeInfo = {
   },
   13: {
     par: 4,
+    hcpRtg: 10,
     distance: 520,
     pinCoords: {
       "latitude": 51.069042784175686,
@@ -237,6 +249,7 @@ const holeInfo = {
   },
   14: {
     par: 5,
+    hcpRtg: 12,
     distance: 520,
     pinCoords: {
       "latitude": 51.07245697026039,
@@ -255,6 +268,7 @@ const holeInfo = {
   },
   15: {
     par: 4,
+    hcpRtg: 6,
     distance: 520,
     pinCoords: {
       "latitude": 51.0695998239547,
@@ -273,6 +287,7 @@ const holeInfo = {
   },
   16: {
     par: 4,
+    hcpRtg: 8,
     distance: 520,
     pinCoords: {
       "latitude": 51.07158733107027,
@@ -291,6 +306,7 @@ const holeInfo = {
   },
   17: {
     par: 3,
+    hcpRtg: 14,
     distance: 520,
     pinCoords: {
       "latitude": 51.07314879364216,
@@ -309,6 +325,7 @@ const holeInfo = {
   },
   18: {
     par: 4,
+    hcpRtg: 4,
     distance: 520,
     pinCoords: {
       "latitude": 51.074358617042556,

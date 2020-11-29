@@ -23,7 +23,7 @@ export function Holes() {
   const holeData = useHoleData(1, 1)
   const holeNum = appState.hole_num
   const totalInfo = useTotalInfo(1, 1)
-  console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
+  // console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
   // TODO: Change to hole ID
   const puttHistory = usePuttHistory(1, holeNum)
   const [parentChartType, setParentChartType] = React.useState('LineChart')
@@ -77,38 +77,38 @@ export function Holes() {
         setPieChartData([{
           name: "Eagles",
           count: totalInfo.birdieObj[holeNum].eagles,
-          color: Theme.palette[0],
+          color: Theme.piePalette[0],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Birdies",
           count: totalInfo.birdieObj[holeNum].birdies,
-          color: Theme.palette[2],
+          color: Theme.piePalette[1],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Pars",
           count: totalInfo.birdieObj[holeNum].pars,
-          color: Theme.palette[5],
+          color: Theme.piePalette[2],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Bogeys",
           count: totalInfo.birdieObj[holeNum].bogies,
-          color: Theme.palette[6],
+          color: Theme.piePalette[3],
 
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Doubles",
           count: totalInfo.birdieObj[holeNum].doubles,
-          color: "rgba(131, 167, 234, 1)",
+          color: Theme.piePalette[4],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Triples +",
           count: totalInfo.birdieObj[holeNum].triples,
-          color: "rgba(131, 167, 234, 1)",
+          color: Theme.piePalette[5],
           legendFontColor: "#000",
           legendFontSize: 15
         },
@@ -175,13 +175,13 @@ export function Holes() {
                         chartConfig={chartConfig}
                         height={240}
                         style={{
-                          alignSelf: 'center',
+                          // alignSelf: 'flex-end',
+                          left: 20,
                           marginVertical: 5,
                           borderRadius: 16,
-                          // paddingBottom: 10,
                         }}
-                        width={width}
-                        center={[20, 0]}
+                        width={Dimensions.get('window').width}
+                        center={[5, 0]}
                         hasLegend={true}
                         accessor={"count"}
                         backgroundColor={"transparent"}
@@ -211,12 +211,12 @@ export function Holes() {
                       <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgPutts ? holeData.holeObj[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
                     </View>
                   </TouchableOpacity>
-                  {/* <View style={styles.boxContainer}>
+                  <View style={styles.boxContainer}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Best Score</Text>
                     </View>
                     <Text style={styles.boxContent}>{holeData.lowHoleObj[holeNum]}</Text>
-                  </View> */}
+                  </View>
                 </View>
                 <View style={styles.holeRow}>
                   <View style={styles.boxContainer}>
@@ -242,23 +242,23 @@ export function Holes() {
                   <TouchableOpacity onPress={() => setChart('Scoring')}>
                     <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                       <View style={styles.boxHeader}>
-                        <Text style={styles.boxHeaderText}>Scoring</Text>
+                        <Text style={styles.boxHeaderText}>Eagles</Text>
                       </View>
-                      {/* <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].eagles : 0}</Text> */}
+                      <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].eagles : 0}</Text>
                     </View>
                   </TouchableOpacity>
-                  {/* <View style={styles.boxContainer}>
+                  <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Birds</Text>
                     </View>
                     <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].birdies : 0}</Text>
                   </View>
-                  <View style={styles.boxContainer}>
+                  <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Pars</Text>
                     </View>
                     <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].pars : 0}</Text>
-                  </View> */}
+                  </View>
                 </View>
               </>
             )

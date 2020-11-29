@@ -16,7 +16,7 @@ const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
   const shotData = useShotData(1)
-  console.log("🚀 ~ file: Clubs.jsx ~ line 19 ~ Clubs ~ shotData", shotData)
+  // console.log("🚀 ~ file: Clubs.jsx ~ line 19 ~ Clubs ~ shotData", shotData)
   const [club, setClub] = React.useState(null)
   const [clubView, setClubView] = React.useState(false)
   // Carousel ref

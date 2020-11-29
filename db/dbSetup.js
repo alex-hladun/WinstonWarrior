@@ -204,8 +204,24 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
 export const createWinston = () => {
   db.transaction(tx => {
     tx.executeSql(`
-    INSERT INTO courses (name) VALUES (?);
-    `, ['The Winston'], (txObj, result) => {
+    INSERT INTO courses (
+      name, 
+      blue_rtg, 
+      blue_slp, 
+      black_rtg, 
+      black_slp,
+      black_blue_rtg,
+      black_blue_slp,
+      white_rtg,
+      white_slp,
+      blue_white_rtg,
+      blue_white_slp,
+      red_rtg,
+      red_slp,
+      white_red_rtg,
+      white_red_slp
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `, ['The Winston', 71.8, 127, 74.4, 130, 73.2, 129, 69.5, 125, 70.1, 125, 65.6, 116, 88.2, 122], (txObj, result) => {
       console.log('result creating winston', result)
       // console.log('transObj', txObj)
       // setHole(holeNum + 1)
@@ -219,9 +235,9 @@ export const createWinston = () => {
       console.log(`creating hole ${val}`)
       tx.executeSql(
         `
-      INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [1, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
-        holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom], (txObj, result) => {
+      INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [1, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
+        holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom,  holeInfo[val].hcpRtg], (txObj, result) => {
           console.log('done creating hole')
         }, (err, mess) => console.log('err creating hole', err, mess))
 
@@ -288,7 +304,7 @@ export const seedData = async () => {
     db.transaction(tx => {
       // console.log('inside createRound')
       tx.executeSql(`
-      SELECT gir FROM scores;
+      SELECT * FROM scores;
     `, [], (txObj, result) => {
         console.log(`all scores: ${JSON.stringify(result.rows._array)}`)
       }, (err, mess) => console.log('err seeding stats', err, mess))
@@ -300,6 +316,7 @@ export const seedData = async () => {
 
 export const loadStats = async (user_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
+  console.log('USER ID IN STATS', user_id)
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     tx.executeSql(`
@@ -309,7 +326,41 @@ export const loadStats = async (user_id) => {
     WHERE rounds.user_id = ? 
     GROUP BY rounds.round_id
     HAVING count(scores.hole_num) = 18 
-    ORDER BY rounds.round_id DESC LIMIT 20;
+    ORDER BY rounds.round_id DESC LIMIT 30;
+    `, [user_id], (txObj, result) => {
+      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+  })
+  )
+}
+
+export const loadCourseInfo = async (course_id) => {
+  // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
+  return new Promise((resolve, reject) => db.transaction(tx => {
+
+    tx.executeSql(`
+    select * from holes
+    where course_id = ?
+    `, [course_id], (txObj, result) => {
+      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting stats', reject(mess)))
+  })
+  )
+}
+export const loadHcpDiffStats = async (user_id) => {
+  // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
+  return new Promise((resolve, reject) => db.transaction(tx => {
+
+
+    tx.executeSql(`
+    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff
+    FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
+    JOIN courses ON rounds.course_id = courses.course_id
+    WHERE rounds.user_id = ? AND rounds.hcp_DIFF IS NOT NULL
+    GROUP BY rounds.round_id
+    ORDER BY rounds.round_id DESC LIMIT 40;
     `, [user_id], (txObj, result) => {
       // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
@@ -797,8 +848,20 @@ export const setUpDB = () => {
         name text,
         lat varchar,
         lng varchar, 
-        blue_rtg varchar, 
-        blue_slp varchar
+        blue_rtg REAL, 
+        blue_slp REAL,
+        black_rtg REAL, 
+        black_slp REAL, 
+        black_blue_rtg REAL,
+        black_blue_slp REAL,
+        white_slp REAL,
+        white_rtg REAL,
+        blue_white_slp REAL,
+        blue_white_rtg REAL,
+        red_rtg REAL,
+        red_slp REAL,
+        white_red_slp REAL, 
+        white_red_rtg REAL
       );
       `, null, null, null)
 
@@ -808,6 +871,7 @@ export const setUpDB = () => {
       course_id integer,
       hole_num integer,
       hole_par integer,
+      hcp_rtg integer,
       hole_distance_blue varchar,
       pin_lat varchar,
       pin_lng varchar,

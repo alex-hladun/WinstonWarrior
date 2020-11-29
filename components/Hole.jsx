@@ -23,8 +23,10 @@ import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import AsyncStorage from '@react-native-community/async-storage';
 import { getScore } from '../db/dbSetup'
+import { useLoadCourseInfoIntoState } from '../hooks/useLoadCourseInfoIntoState.js';
 
 export default function Hole({ location, initialHole = 1 }) {
+  useLoadCourseInfoIntoState()
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   const [shotDiff, setShotDiff] = useState(3)
