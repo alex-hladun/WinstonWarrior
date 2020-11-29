@@ -23,12 +23,13 @@ import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 
 export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext)
-  const hcp = useHandicap(1)
+  // const hcp = useHandicap(1)
   const totalInfo = useTotalInfo(1, 1)
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const pctHistory = useTotalPctHistory(1)
   const handicapHistory = useHandicapHistory(1)
+  const hcp = handicapHistory[handicapHistory.length - 1]
   // console.log("Trends -> statState", statState)
   const roundHistory = useRoundHistory(1)
   const totalPuttHistory = useTotalPuttHistory(1)
@@ -91,6 +92,16 @@ export function Trends({ navigation }) {
           labels: pctHistory.scramblePct.map((i, j) => j),
           datasets: [{
             data: pctHistory.scramblePct
+          }]
+        })
+        break;
+      case 'Handicap':
+        setParentChartType('LineChart')
+        setChartType('HCP')
+        setChartData({
+          labels: handicapHistory.map((i, j) => j),
+          datasets: [{
+            data: handicapHistory
           }]
         })
         break;
@@ -253,12 +264,14 @@ export function Trends({ navigation }) {
                     <Text style={styles.boxContent}>{totalInfo.avgPutts && totalInfo.avgPutts.toFixed(1)}</Text>
                   </View>
                 </TouchableOpacity>
-                <View style={styles.trendContainer}>
+                <TouchableOpacity onPress={() => setChart('Handicap')}>
+                <View style={[styles.trendContainer, chartType === 'Handicap' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>HCP</Text>
                   </View>
                   <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
                 </View>
+                </TouchableOpacity>
               </View>
               <View style={styles.holeRow}>
               <TouchableOpacity onPress={() => setChart('FWY %')}>

@@ -6,12 +6,16 @@ import styles from '../../assets/styles/PlayStyles'
 import { StatContext } from '../../context/StatContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
 import { useHandicap } from '../../hooks/useHandicap';
+import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 
 export function Home({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const totalInfo = useTotalInfo(1, 1)
-  const hcp = useHandicap(1)
+  // const hcp = useHandicap(1)
+  const hcpHistory = useHandicapHistory(1)
+  const hcp = hcpHistory[hcpHistory.length - 1]
+
 
   const handlePress = () => {
     navigation.push('Course')
@@ -37,7 +41,7 @@ export function Home({ navigation }) {
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
-              <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
+              <Text style={styles.boxContent}>{hcp}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>

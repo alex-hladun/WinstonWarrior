@@ -448,7 +448,7 @@ export const loadTotalPuttHistory = async (user_id) => {
     ORDER BY rounds.round_id DESC
     LIMIT 10;
     `, [user_id], (txObj, result) => {
-      console.log(`overall putting stats: ${JSON.stringify(result.rows._array)}`)
+      // console.log(`overall putting stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array.reverse())
     }, (err, mess) => console.log('err getting stats', reject(mess)))
   })
