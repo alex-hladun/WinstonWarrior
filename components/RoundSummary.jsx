@@ -167,6 +167,10 @@ export default function RoundSummary({ handleRoundSummary }) {
     statContext.dispatch({
       type: 'trigger_all_data_update'
     })
+    statContext.dispatch({
+      type: 'trigger_handicap_update'
+    })
+    
   }
   
   // console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ playState.p1score", playState.p1score)

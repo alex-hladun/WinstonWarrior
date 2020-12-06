@@ -335,6 +335,20 @@ export const loadStats = async (user_id) => {
   )
 }
 
+
+export const loadCourseDetails = async (course_id) => {
+  // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    select * from courses
+    where course_id = ?
+    `, [course_id], (txObj, result) => {
+      console.log(`overall course stats: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting course', reject(mess)))
+  })
+  )
+}
 export const loadCourseInfo = async (course_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
   return new Promise((resolve, reject) => db.transaction(tx => {

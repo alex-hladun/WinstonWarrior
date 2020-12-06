@@ -13,7 +13,7 @@ import LeftSymbol from '../assets/svg/LeftSymbol'
 import RightSymbol from '../assets/svg/RightSymbol'
 import TargetSymbol from '../assets/svg/TargetSymbol'
 import LocationSymbol from '../assets/svg/LocationSymbol'
-import holeInfo from '../assets/holeInfo'
+// import holeInfo from '../assets/holeInfo'
 import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'
@@ -23,12 +23,16 @@ import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import AsyncStorage from '@react-native-community/async-storage';
 import { getScore } from '../db/dbSetup'
-import { useLoadCourseInfoIntoState } from '../hooks/useLoadCourseInfoIntoState.js';
+// import { useLoadCourseInfoIntoState } from '../hooks/useLoadCourseInfoIntoState.js';
 
 export default function Hole({ location, initialHole = 1 }) {
-  useLoadCourseInfoIntoState()
+  // Loads all courseInfo into playcontext
+  // useLoadCourseInfoIntoState()
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
+  console.log("🚀 ~ file: Hole.jsx ~ line 33 ~ Hole ~ playContext", playContext.value.state.courseInfo)
+  const holeInfo = playContext.value.state.holeInfo
+  // console.log("🚀 ~ file: Hole.jsx ~ line 34 ~ Hole ~ holeInfo2", playContext.value.state)
   const [shotDiff, setShotDiff] = useState(3)
   const holeNum = appContext.value.state.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
@@ -53,12 +57,9 @@ export default function Hole({ location, initialHole = 1 }) {
   const trackAnim = useRef(new Animated.Value(0.85)).current
 
   useEffect(() => {
-    // retrieve and set all scores?
-    console.log(Dimensions.get('window').width)
-    console.log(Dimensions.get('window').height, 'height')
-
-
-
+    // // retrieve and set all scores?
+    // console.log(Dimensions.get('window').width)
+    // console.log(Dimensions.get('window').height, 'height')
   }, [])
 
 

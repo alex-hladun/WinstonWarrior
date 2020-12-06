@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Text, View } from './Themed';
 import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/ScoreCardStyles'
-import holeInfo from '../assets/holeInfo'
+// import holeInfo from '../assets/holeInfo'
 import db, { getScore } from '../db/dbSetup'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
@@ -19,6 +19,8 @@ const sumValues = obj => {
 
 export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
   const playContext = React.useContext(PlayContext)
+  const holeInfo = playContext.value.state.holeInfo
+
   let playState = playContext.value.state
   const [scoreState, setScoreState] = useState(playState.p1score)
   const [p2scoreState, setP2ScoreState] = useState(playState.p2score)

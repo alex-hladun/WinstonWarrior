@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Text, View } from './Themed';
 import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/ScoreStyles'
-import holeInfo from '../assets/holeInfo'
+// import holeInfo from '../assets/holeInfo'
 import { Picker } from '@react-native-community/picker';
 import Slider from '@react-native-community/slider';
 import CheckSymbol from '../assets/svg/CheckSymbol'
@@ -20,6 +20,7 @@ import RightSymbol from '../assets/svg/RightSymbol';
 export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleInc, handleHoleDec }) {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
+  const holeInfo = playContext.value.state.holeInfo
   const statContext = React.useContext(StatContext)
   let playState = playContext.value.state
   let appState = appContext.value.state
@@ -334,60 +335,6 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
             Right
         </Text>
         </View>
-        {/* <View style={[styles.pickerHeader, { marginTop: 40 }]}>
-          <Text>
-            Approach
-        </Text>
-        </View>
-        <View style={[styles.pickerHeader]}>
-
-          <Slider
-            style={{ width: 250, height: 40 }}
-            minimumValue={0}
-            maximumValue={100}
-            thumbTintColor={Theme.spinGreen3}
-            minimumTrackTintColor="#4dc951"
-            maximumTrackTintColor="#000000"
-            value={approach}
-            // step={0.25}
-            onSlidingStart={(val) => setApproach(val)}
-          />
-        </View>
-        <View style={[styles.pickerHeader]}>
-          <Text>
-            Chipping
-        </Text>
-        </View>
-        <View style={[styles.pickerHeader]}>
-          <Slider
-            style={{ width: 250, height: 40 }}
-            minimumValue={0}
-            maximumValue={100}
-            minimumTrackTintColor="#4dc951"
-            maximumTrackTintColor="#000000"
-            value={chip}
-            thumbTintColor={Theme.spinGreen3}
-            onSlidingStart={(val) => setChip(val)}
-          />
-        </View>
-        <View style={[styles.pickerHeader]}>
-          <Text>
-            Putting
-        </Text>
-        </View>
-        <View style={[styles.pickerHeader]}>
-          <Slider
-            style={{ width: 250, height: 40 }}
-            minimumValue={0}
-            maximumValue={100}
-            minimumTrackTintColor="#4dc951"
-            maximumTrackTintColor="#000000"
-            value={putting}
-            thumbTintColor={Theme.spinGreen3}
-            // step={0.25}
-            onSlidingStart={(val) => setPutting(val)}
-          />
-        </View> */}
         <View style={styles.bottomScoreHeader}>
           <TouchableOpacity onPress={(event) => handleScoreSubmit(false, -1)}>
             <View style={[styles.checkSymbol, styles.moveSymbol]}>

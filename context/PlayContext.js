@@ -15,6 +15,12 @@ const reducer = (state, action) => {
         holeInfo: action.data
       }
     break;
+    case "set_course_info":
+      return {
+        ...state,
+        courseInfo: action.data
+      }
+    break;
     case "set_player_2":
       return {
         ...state,
@@ -141,6 +147,7 @@ const reducer = (state, action) => {
 }
 const initialState = {
   course_id: undefined,
+  courseInfo: {},
   holeInfo: undefined,
   p1_rtg: undefined,
   p1_slp: undefined,

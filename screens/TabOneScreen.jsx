@@ -12,6 +12,7 @@ import { PlayContext } from '../context/PlayContext'
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 import { useStats } from '../hooks/useStats'
+import { LoadingScreen } from '../components/LoadingScreen'
 
 export default function TabOneScreen() {
   const appContext = React.useContext(AppContext)
@@ -225,7 +226,12 @@ export default function TabOneScreen() {
 
   return (
     contextState.viewMode === 'play' ?
-      <Hole location={state.location} initialHole={initialHole} />
+      (
+        contextState.loading ?
+          <LoadingScreen />
+          :
+          <Hole location={state.location} initialHole={initialHole} />
+  )
       :
       <NavigationPlay />
   );

@@ -11,7 +11,7 @@ const reducer = (state, action) => {
         logged_in: false,
         auth_message: ''
       }
-    break;
+      break;
     case "signed_up":
       AsyncStorage.setItem('authName', action.data)
       registerUser(action.data)
@@ -31,7 +31,7 @@ const reducer = (state, action) => {
         logged_in: true,
         auth_message: ''
       }
-    break;
+      break;
     case "log_out":
       return {
         ...state,
@@ -40,73 +40,73 @@ const reducer = (state, action) => {
         logged_in: false,
         auth_message: ''
       }
-    break;
+      break;
     case "set_round_id":
       return {
         ...state,
-       round_id: action.data
+        round_id: action.data
       }
-    break;
+      break;
     case "set_user_2_round_id":
       return {
         ...state,
-       user_2_rd_id: action.data
+        user_2_rd_id: action.data
       }
-    break;
+      break;
     case "set_user_2_name":
       return {
         ...state,
-       user_2_name: action.data
+        user_2_name: action.data
       }
-    break;
+      break;
     case "set_user_3_round_id":
       return {
         ...state,
-       user_3_rd_id: action.data
+        user_3_rd_id: action.data
       }
-    break;
+      break;
     case "set_user_3_name":
       return {
         ...state,
-       user_3_name: action.data
+        user_3_name: action.data
       }
-    break;
+      break;
     case "set_user_4_round_id":
       return {
         ...state,
-       user_4_rd_id: action.data
+        user_4_rd_id: action.data
       }
-    break;
+      break;
     case "set_user_4_name":
       return {
         ...state,
-       user_4_name: action.data
+        user_4_name: action.data
       }
-    break;
+      break;
     case "set_hole_id":
       return {
         ...state,
-       hole_id: action.data
+        hole_id: action.data
       }
-    break;
+      break;
     case "set_hole_num":
       return {
         ...state,
-       hole_num: action.data
+        hole_num: action.data
       }
-    break;
+      break;
     case "set_club_list":
       return {
         ...state,
-       clubList: action.data
+        clubList: action.data
       }
-    break;
+      break;
     case "set_view_mode":
       return {
         ...state,
-       viewMode: action.data
+        viewMode: action.data
       }
-    break;
+      break;
     case "authentication_failed":
       return {
         ...state,
@@ -114,7 +114,13 @@ const reducer = (state, action) => {
         logged_in: false,
         auth_message: 'Something went wrong'
       }
-    break;
+      break;
+    case "done_loading":
+      return {
+        ...state,
+        loading: false,
+      }
+      break;
   }
 }
 
@@ -122,7 +128,8 @@ const initialState = {
   auth_data: {},
   viewMode: 'menu',
   logged_in: false,
-  auth_message : '',
+  loading: true,
+  auth_message: '',
   round_id: undefined,
   course_slp: undefined,
   coourse_rtg: undefined,
@@ -142,89 +149,89 @@ const AppContext = React.createContext(initialState);
 function AppProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-const login = ({username, password}) => {
-  dispatch({type: 'authentication_starting'})
+  const login = ({ username, password }) => {
+    dispatch({ type: 'authentication_starting' })
 
-  let login_data = {
-    user_name: username,
-    first_name: 'Testing',
-    last_name: 'Something',
-    email: 'some@thing.com'
+    let login_data = {
+      user_name: username,
+      first_name: 'Testing',
+      last_name: 'Something',
+      email: 'some@thing.com'
+    }
+
+    // THIS LOGS IN AND SETS HOME SCREEN MAIN SCREEN
+    dispatch({
+      type: 'authentication_done',
+      data: login_data
+    })
   }
 
-  // THIS LOGS IN AND SETS HOME SCREEN MAIN SCREEN
-  dispatch({
-    type: 'authentication_done',
-    data: login_data
-  })
-}
+  const setHole = (holeNum) => {
+    AsyncStorage.setItem('holeNum', JSON.stringify(holeNum))
+    // Need to retrieve & set hole_id here
+    console.log('setting HOLE in async to ', holeNum)
+    dispatch({
+      type: 'set_hole_num',
+      data: holeNum
+    })
+  }
 
-const setHole = (holeNum) => {
-  AsyncStorage.setItem('holeNum', JSON.stringify(holeNum))
-// Need to retrieve & set hole_id here
-  console.log('setting HOLE in async to ', holeNum)
-  dispatch({
-    type: 'set_hole_num',
-    data: holeNum
-  })
-}
+  const doneRound = () => {
+    dispatch({
+      type: 'set_round_id',
+      data: null
+    })
 
-const doneRound = () => {
-  dispatch({
-    type: 'set_round_id',
-    data: null
-  })
-  
-  dispatch({
-    type: 'set_user_2_name',
-    data: null
-  })
-  dispatch({
-    type: 'set_user_2_round_id',
-    data: null
-  })
-  dispatch({
-    type: 'set_user_3_name',
-    data: null
-  })
-  dispatch({
-    type: 'set_user_3_round_id',
-    data: null
-  })
-  dispatch({
-    type: 'set_user_4_name',
-    data: null
-  })
-  dispatch({
-    type: 'set_user_4_round_id',
-    data: null
-  })
-  dispatch({
-    type: 'set_view_mode',
-    data: 'menu'
-  })
-  dispatch({
-    type: 'set_hole_num',
-    data: undefined
-  })
+    dispatch({
+      type: 'set_user_2_name',
+      data: null
+    })
+    dispatch({
+      type: 'set_user_2_round_id',
+      data: null
+    })
+    dispatch({
+      type: 'set_user_3_name',
+      data: null
+    })
+    dispatch({
+      type: 'set_user_3_round_id',
+      data: null
+    })
+    dispatch({
+      type: 'set_user_4_name',
+      data: null
+    })
+    dispatch({
+      type: 'set_user_4_round_id',
+      data: null
+    })
+    dispatch({
+      type: 'set_view_mode',
+      data: 'menu'
+    })
+    dispatch({
+      type: 'set_hole_num',
+      data: undefined
+    })
 
-  AsyncStorage.removeItem('holeNum')
-  AsyncStorage.removeItem('roundID')
-  AsyncStorage.removeItem('u2roundid')
-  AsyncStorage.removeItem('u2name')
-  AsyncStorage.removeItem('u3roundid')
-  AsyncStorage.removeItem('u3name')
-  AsyncStorage.removeItem('u4roundid')
-  AsyncStorage.removeItem('u4name')
-  AsyncStorage.removeItem('course_id')
-  
+    AsyncStorage.removeItem('holeNum')
+    AsyncStorage.removeItem('roundID')
+    AsyncStorage.removeItem('u2roundid')
+    AsyncStorage.removeItem('u2name')
+    AsyncStorage.removeItem('u3roundid')
+    AsyncStorage.removeItem('u3name')
+    AsyncStorage.removeItem('u4roundid')
+    AsyncStorage.removeItem('u4name')
+    AsyncStorage.removeItem('course_id')
 
-  console.log('all info cleared from AppContext')
-}
+
+    console.log('all info cleared from AppContext')
+  }
 
 
   const value = useMemo(() => {
-   return { state, login, setHole, doneRound };
+    return { state, login, setHole, doneRound };
   }, [state]);
 
   return (

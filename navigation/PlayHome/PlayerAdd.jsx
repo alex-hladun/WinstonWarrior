@@ -6,8 +6,10 @@ import { AppContext } from '../../context/AppContext'
 import { PlayContext } from '../../context/PlayContext'
 import { registerUser, createRound } from '../../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
+import { useLoadCourseInfoIntoState } from '../../hooks/useLoadCourseInfoIntoState';
 
 export function PlayerAdd({ navigation }) {
+  const anything = useLoadCourseInfoIntoState()
   const playContext = React.useContext(PlayContext)
 
   // console.log('playcontext in playerAdd', playContext.value.state)

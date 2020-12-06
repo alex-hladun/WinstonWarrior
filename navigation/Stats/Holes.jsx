@@ -7,15 +7,18 @@ import { LineChart, PieChart } from 'react-native-chart-kit'
 import { Theme } from '../../assets/styles/Theme'
 import { StatContext } from '../../context/StatContext'
 import { AppContext } from '../../context/AppContext'
+import { PlayContext } from '../../context/PlayContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
 import { useHoleData } from '../../hooks/useHoleData';
-import holeInfo from '../../assets/holeInfo';
+// import holeInfo from '../../assets/holeInfo';
 import { usePuttHistory } from '../../hooks/usePuttHistory'
 
 export function Holes() {
   const width = Dimensions.get('window').width
   // console.log("🚀 ~ file: Holes.jsx ~ line 17 ~ Holes ~ width", width)
   const appContext = React.useContext(AppContext)
+  const playContext = React.useContext(PlayContext)
+  const holeInfo = playContext.value.state.holeInfo
   const appState = appContext.value.state
   const statContext = React.useContext(StatContext)
 

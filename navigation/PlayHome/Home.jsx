@@ -16,7 +16,6 @@ export function Home({ navigation }) {
   const hcpHistory = useHandicapHistory(1)
   const hcp = hcpHistory[hcpHistory.length - 1]
 
-
   const handlePress = () => {
     navigation.push('Course')
   }

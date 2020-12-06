@@ -11,6 +11,7 @@ export function CourseSelect({ navigation }) {
   const playContext = React.useContext(PlayContext)
   // console.log('playContext in CourseSelect', playContext)
   const handlePress = async (courseID) => {
+    AsyncStorage.setItem('course_id', `${courseID}`)
     playContext.dispatch({
       type: 'set_course',
       data: courseID,
@@ -18,7 +19,6 @@ export function CourseSelect({ navigation }) {
       slp: 127
     })
 
-    AsyncStorage.setItem('course_id', `${courseID}`)
     navigation.push('Add Players')
   }
 
