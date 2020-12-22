@@ -23,17 +23,13 @@ import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
 import AsyncStorage from '@react-native-community/async-storage';
 import { getScore } from '../db/dbSetup'
-// import { useLoadCourseInfoIntoState } from '../hooks/useLoadCourseInfoIntoState.js';
 
 export default function Hole({ location, initialHole = 1 }) {
   // Loads all courseInfo into playcontext
-  // useLoadCourseInfoIntoState()
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
-  console.log("🚀 ~ file: Hole.jsx ~ line 33 ~ Hole ~ playContext", playContext.value.state.courseInfo)
+  // console.log("🚀 ~ file: Hole.jsx ~ line 33 ~ Hole ~ playContext", playContext.value.state.courseInfo)
   const holeInfo = playContext.value.state.holeInfo
-  // console.log("🚀 ~ file: Hole.jsx ~ line 34 ~ Hole ~ holeInfo2", playContext.value.state)
-  const [shotDiff, setShotDiff] = useState(3)
   const holeNum = appContext.value.state.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
@@ -57,10 +53,13 @@ export default function Hole({ location, initialHole = 1 }) {
   const trackAnim = useRef(new Animated.Value(0.85)).current
 
   useEffect(() => {
+    // console.log("🚀 ~ file: Hole.jsx ~ line 65 ~ useEffect ~ camera", camera)
+  // console.log("🚀 ~ file: Hole.jsx ~ line 34 ~ Hole ~ holeInfo2", playContext.value.state)
+
     // // retrieve and set all scores?
     // console.log(Dimensions.get('window').width)
     // console.log(Dimensions.get('window').height, 'height')
-  }, [])
+  }, [playContext])
 
 
   const measure = (lat1, lon1, lat2, lon2) => {  // generally used geo measurement function
@@ -235,8 +234,9 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const handleRegionChange = async (reg) => {
-    // const coords = await mapRef.current.getCamera()
-    // console.log(coords)
+    let coords = await mapRef.current.getCamera()
+    coords = {...coords, altitude: 1400}
+    console.log(coords)
   }
 
   const handleMapLongPress = () => {
@@ -246,6 +246,8 @@ export default function Hole({ location, initialHole = 1 }) {
   const handleMapShortPress = async (event) => {
     console.log('map short press', event.nativeEvent.coordinate)
     const coords = event.nativeEvent.coordinate
+    console.log("🚀 ~ file: Hole.jsx ~ line 249 ~ handleMapShortPress ~ coords", coords)
+    
     await setDistanceMarker(coords)
   }
 
@@ -295,7 +297,7 @@ export default function Hole({ location, initialHole = 1 }) {
       </View>
 
 
-      <MapView
+      {camera.altitude && <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
         style={{
@@ -304,7 +306,7 @@ export default function Hole({ location, initialHole = 1 }) {
         }}
         mapType={'satellite'}
         initialCamera={
-          camera
+          camera ? camera : null
         }
         onRegionChangeComplete={(event) => handleRegionChange(event)}
         onLongPress={() => handleMapLongPress()}
@@ -364,7 +366,7 @@ export default function Hole({ location, initialHole = 1 }) {
           />
         }
 
-      </MapView>
+      </MapView>}
       <View style={styles.floatingContainer}>
         <TouchableOpacity onPress={() => handleHoleDec()}>
           <View style={[styles.floatingHoleMarker, styles.move]}>

@@ -40,7 +40,7 @@ export function Home({ navigation }) {
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
-              <Text style={styles.boxContent}>{hcp}</Text>
+              <Text style={styles.boxContent}>{hcp ? hcp : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>

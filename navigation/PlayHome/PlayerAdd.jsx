@@ -6,11 +6,12 @@ import { AppContext } from '../../context/AppContext'
 import { PlayContext } from '../../context/PlayContext'
 import { registerUser, createRound } from '../../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
-import { useLoadCourseInfoIntoState } from '../../hooks/useLoadCourseInfoIntoState';
+// import { useLoadCourseInfoIntoState } from '../../hooks/useLoadCourseInfoIntoState';
 
 export function PlayerAdd({ navigation }) {
-  const anything = useLoadCourseInfoIntoState()
+  // const anything = useLoadCourseInfoIntoState()
   const playContext = React.useContext(PlayContext)
+  const playState = playContext.value.state
 
   // console.log('playcontext in playerAdd', playContext.value.state)
   const appContext = React.useContext(AppContext)
@@ -48,13 +49,14 @@ export function PlayerAdd({ navigation }) {
   const handleStart = async () => {
     console.log('Starting Game!')
 
-    const userRoundID = await createRound(1, 1)
+
+    const userRoundID = await createRound(playState.course_id, 1)
 
     if (playContext.value.state.player_2) {
       console.log('registering user 2')
       const uid = await registerUser(playContext.value.state.player_2)
       // Course ID always 1
-      const u2roundid = await createRound(1, uid)
+      const u2roundid = await createRound(playState.course_id, uid)
 
       console.log('uid after register', uid)
       console.log('u2roundid after register', u2roundid)
@@ -76,7 +78,7 @@ export function PlayerAdd({ navigation }) {
     if (playContext.value.state.player_3) {
       console.log('registering user 3')
       const uid = await registerUser(playContext.value.state.player_3)
-      const u3roundid = await createRound(1, uid)
+      const u3roundid = await createRound(playState.course_id, uid)
 
       await appContext.dispatch({
         type: 'set_user_3_round_id',
@@ -94,7 +96,7 @@ export function PlayerAdd({ navigation }) {
     if (playContext.value.state.player_4) {
       console.log('registering user 4')
       const uid = await registerUser(playContext.value.state.player_4)
-      const u4roundid = await createRound(1, uid)
+      const u4roundid = await createRound(playState.course_id, uid)
 
       await AsyncStorage.setItem('u4roundid', `${u4roundid}`)
       await AsyncStorage.setItem('u4name', `${playContext.value.state.player_4}`)
@@ -122,16 +124,15 @@ export function PlayerAdd({ navigation }) {
       type: 'set_hole_num',
       data: 1
     })
-
+    
+    const saveItems = [['roundID', `${userRoundID}`], ['holeNum', '1']]
+    await AsyncStorage.multiSet(saveItems)
+    
     await appContext.dispatch({
       type: 'set_view_mode',
       data: 'play'
     })
-
-    const saveItems = [['roundID', `${userRoundID}`], ['holeNum', '1']]
-    await AsyncStorage.multiSet(saveItems)
-
-    console.log(`saving roundID to async (${userRoundID}) and holeNum 1`)
+    // console.log(`saving roundID to async (${userRoundID}) and holeNum 1`)
   }
 
 

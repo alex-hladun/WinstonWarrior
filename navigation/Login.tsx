@@ -91,7 +91,7 @@ export function Login({ navigation }) {
           style={styles.video}
         />}
       </View>
-      <View style={styles.loginContainer}>
+      <View style={[styles.loginContainer, width > 399 && styles.loginBackground]}>
         <View style={styles.winstonLogoContainer}>
           <Image source={require('../assets/images/winstonLogo.png')} style={styles.winnyImage} />
           {/* <Text style={[styles.buttonText, styles.winstonTxtLogin]}>

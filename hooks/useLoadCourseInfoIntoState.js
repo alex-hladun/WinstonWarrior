@@ -5,12 +5,12 @@ import { StatContext } from '../context/StatContext'
 import { PlayContext } from '../context/PlayContext'
 import { useHandicap } from './useHandicap'
 import { AppContext } from '../context/AppContext';
-export function useLoadCourseInfoIntoState() {
+export function useLoadCourseInfoIntoState(hcp) {
   const [holeInfo, setHoleInfo] = React.useState({})
   const statContext = React.useContext(StatContext)
   const playContext = React.useContext(PlayContext)
+  const playState = playContext.value.state
   const appContext = React.useContext(AppContext)
-  const hcp = useHandicap(1)
 
   React.useEffect(() => {
     console.log('LOADING COURSEINFO INTO PLAYSTATE')
@@ -20,31 +20,39 @@ export function useLoadCourseInfoIntoState() {
       // console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 17 ~ resetCourseInfo ~ courseID", courseID)
       const courseInfo = await loadCourseInfo(JSON.parse(courseID))
       const sortedCourseInfo = courseInfo.sort((a, b) => a.hcp_rtg - b.hcp_rtg)
-      // console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 19 ~ resetCourseInfo ~ sortedCourseInfo", sortedCourseInfo)
-      // TODO: Replace with acutal slope and rating
-      let courseHandicap = Math.round(hcp * (127 / 113) + (71.8 - 72))
+      console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 29 ~ resetCourseInfo ~ hcp", hcp)
+      let courseHandicap = Math.round(hcp * (playState.p1_slp / 113) + (playState.p1_rtg - 72))
+      console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 25 ~ resetCourseInfo ~ courseHandicap", courseHandicap)
 
       let courseData = {}
-
       for (const obj of sortedCourseInfo) {
+
+        let strokesToGive = 0;
+        if (courseHandicap > 0) {
+          strokesToGive = Math.ceil(courseHandicap / 18)
+          console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 32 ~ resetCourseInfo ~ strokesToGive", strokesToGive)
+        } 
+        courseHandicap -= strokesToGive;
+        console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 35 ~ resetCourseInfo ~ courseHandicap", courseHandicap)
+
         courseData[obj.hole_num] = {
           par: obj.hole_par,
           userCourseHandicap: courseHandicap,
-          netStrokes: 0,
+          netStrokes: strokesToGive,
           hcpRtg: obj.hcp_rtg,
           pinCoords: {
-            "latitude": obj.pin_lat,
-            "longitude": obj.pin_lng
+            "latitude": parseFloat(obj.pin_lat),
+            "longitude": parseFloat(obj.pin_lng)
           },
           camera: {
             center: {
-              "latitude": obj.camera_lat,
-              "longitude": obj.camera_lng,
+              "latitude": parseFloat(obj.camera_lat),
+              "longitude": parseFloat(obj.camera_lng),
             },
             pitch: 0,
-            "heading": obj.camera_hdg,
-            "altitude": obj.camera_alt,
-            "zoom": obj.camera_zm,
+            "heading": parseFloat(obj.camera_hdg),
+            "altitude": parseFloat(obj.camera_alt),
+            "zoom": parseFloat(obj.camera_zm),
           }
         }
       }
@@ -95,8 +103,10 @@ export function useLoadCourseInfoIntoState() {
       })
     }
 
-    resetCourseInfo()
-  }, [])
+    // if(hcp) {
+      resetCourseInfo()
+    // }
+  }, [hcp])
 
 return holeInfo
 }

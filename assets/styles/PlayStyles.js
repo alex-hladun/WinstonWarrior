@@ -47,6 +47,8 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 10,
+  },
+  loginBackground: {
     backgroundColor: Theme.spinGreen1
   },
   scoreContainer: {
@@ -235,11 +237,23 @@ export const styles = StyleSheet.create({
   playButton: {
     backgroundColor: Theme.spinGreen2,
   },
+  quitButton: {
+    backgroundColor: Theme.quitRed,
+    color: 'white',
+    marginVertical: 10
+  },
   buttonText: {
     textTransform: 'uppercase',
     textAlign: 'center',
     fontWeight: 'bold',
     letterSpacing: 3,
+  },
+  quitButtonText: {
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    letterSpacing: 3,
+    color: 'white'
   },
   scoreContent: {
     textAlign: 'center',

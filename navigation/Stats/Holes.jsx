@@ -250,18 +250,22 @@ export function Holes() {
                       <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].eagles : 0}</Text>
                     </View>
                   </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setChart('Scoring')}>
                   <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Birds</Text>
                     </View>
                     <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].birdies : 0}</Text>
                   </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setChart('Scoring')}>
                   <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Pars</Text>
                     </View>
                     <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].pars : 0}</Text>
                   </View>
+                  </TouchableOpacity>
                 </View>
               </>
             )

@@ -36,7 +36,6 @@ console.log("🚀 ~ file: handicap.js ~ line 20 ~ netHandicapDiffCalc ~ scoreObj
     // calc
   } else if (completedHoles >= 14) {
     // Scale up to 18
-    
     for (let i = completedHoles + 1; i <= 18; i++) {
       if (!scoreObj[i]) {
         scoreObj[i] = holeInfoObj[i].par + holeInfoObj[i].netStrokes

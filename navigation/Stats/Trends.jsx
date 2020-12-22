@@ -88,10 +88,11 @@ export function Trends({ navigation }) {
       case 'Scramble %':
         setParentChartType('LineChart')
         setChartType('Scramble %')
+        console.log("🚀 ~ file: Trends.jsx ~ line 95 ~ setChart ~ pctHistory?.scramblePct", pctHistory?.scramblePct)
         setChartData({
-          labels: pctHistory.scramblePct.map((i, j) => j),
+          labels: pctHistory?.scramblePct.map((i, j) => j),
           datasets: [{
-            data: pctHistory.scramblePct
+            data: pctHistory?.scramblePct
           }]
         })
         break;
@@ -253,7 +254,7 @@ export function Trends({ navigation }) {
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Avg Score</Text>
                     </View>
-                    <Text style={styles.boxContent}>{totalInfo.avgScore && totalInfo.avgScore.toFixed(1)}</Text>
+                    <Text style={styles.boxContent}>{totalInfo?.avgScore && totalInfo.avgScore.toFixed(1)}</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setChart('Putts')}>
@@ -261,15 +262,15 @@ export function Trends({ navigation }) {
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Avg Putts</Text>
                     </View>
-                    <Text style={styles.boxContent}>{totalInfo.avgPutts && totalInfo.avgPutts.toFixed(1)}</Text>
+                    <Text style={styles.boxContent}>{totalInfo?.avgPutts && totalInfo.avgPutts.toFixed(1)}</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setChart('Handicap')}>
-                <View style={[styles.trendContainer, chartType === 'Handicap' && styles.selectBox]}>
+                <View style={[styles.trendContainer, chartType === 'HCP' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>HCP</Text>
                   </View>
-                  <Text style={styles.boxContent}>{hcp.toFixed(1)}</Text>
+                  <Text style={styles.boxContent}>{hcp?.toFixed(1)}</Text>
                 </View>
                 </TouchableOpacity>
               </View>
@@ -279,7 +280,7 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>FWY %</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.fwyPct && totalInfo.fwyPct.toFixed(0)}</Text>
+                  <Text style={styles.boxContent}>{totalInfo?.fwyPct && totalInfo.fwyPct.toFixed(0)}</Text>
                 </View>
                 </TouchableOpacity>
               <TouchableOpacity onPress={() => setChart('GIR %')}>
@@ -287,7 +288,7 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>GIR %</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.girPct && totalInfo.girPct.toFixed(0)}</Text>
+                  <Text style={styles.boxContent}>{totalInfo?.girPct && totalInfo.girPct.toFixed(0)}</Text>
                 </View>
                 </TouchableOpacity>
               <TouchableOpacity onPress={() => setChart('Scramble %')}>
@@ -295,7 +296,7 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>SCR %</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.scramblePct && totalInfo.scramblePct.toFixed(0)}</Text>
+                  <Text style={styles.boxContent}>{totalInfo?.scramblePct && totalInfo.scramblePct.toFixed(0)}</Text>
                 </View>
                 </TouchableOpacity>
               </View>
@@ -305,21 +306,25 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>Eagles</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.eagles}</Text>
+                  <Text style={styles.boxContent}>{totalInfo?.totalBirds && totalInfo.totalBirds.eagles}</Text>
                 </View>
-                </TouchableOpacity>
+                </TouchableOpacity >
+              <TouchableOpacity onPress={() => setChart('Scoring')}>
                 <View style={[styles.trendContainer, chartType === 'Scoring' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>Birdies</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.birdies}</Text>
+                  <Text style={styles.boxContent}>{totalInfo?.totalBirds && totalInfo.totalBirds.birdies}</Text>
                 </View>
+                </TouchableOpacity >
+              <TouchableOpacity onPress={() => setChart('Scoring')}>
                 <View style={[styles.trendContainer, chartType === 'Scoring' && styles.selectBox]}>
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>Pars</Text>
                   </View>
-                  <Text style={styles.boxContent}>{totalInfo.totalBirds && totalInfo.totalBirds.pars}</Text>
+                  <Text style={styles.boxContent}>{totalInfo?.totalBirds && totalInfo.totalBirds.pars}</Text>
                 </View>
+                </TouchableOpacity >
               </View>
             </>}
         </View>

@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Alert, AsyncStorageStatic } from 'react-native'
+import glencoeInfo from '../assets/glencoeInfo';
 import holeInfo from '../assets/holeInfo'
 import { handicapDiffCalc } from '../helpers/handicap';
 
@@ -227,16 +228,53 @@ export const createWinston = () => {
       // setHole(holeNum + 1)
       // console.log('txObj', txObj)
     }, (err, mess) => console.log('err creating Winston course', mess))
+    tx.executeSql(`
+    INSERT INTO courses (
+      name, 
+      blue_rtg, 
+      blue_slp, 
+      black_rtg, 
+      black_slp,
+      black_blue_rtg,
+      black_blue_slp,
+      white_rtg,
+      white_slp,
+      blue_white_rtg,
+      blue_white_slp,
+      red_rtg,
+      red_slp,
+      white_red_rtg,
+      white_red_slp
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `, ['The Glencoe: Forest', 72.8, 138, 75, 140, 73.5, 139, 70.4, 133, 71, 135, 67.8, 127, 69, 129], (txObj, result) => {
+      console.log('result creating glencoe', result)
+      // console.log('transObj', txObj)
+      // setHole(holeNum + 1)
+      // console.log('txObj', txObj)
+    }, (err, mess) => console.log('err creating Winston course', mess))
 
 
     const holeArray = Object.keys(holeInfo);
-
     holeArray.forEach((val, index) => {
       console.log(`creating hole ${val}`)
       tx.executeSql(
         `
       INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [1, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
+        holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom,  holeInfo[val].hcpRtg], (txObj, result) => {
+          console.log('done creating hole')
+        }, (err, mess) => console.log('err creating hole', err, mess))
+
+    })
+
+    // Create Glencoe
+    const glencoeHoleArray = Object.keys(glencoeInfo);
+    glencoeHoleArray.forEach((val, index) => {
+      console.log(`creating hole ${val}`)
+      tx.executeSql(
+        `
+      INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [2, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
         holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom,  holeInfo[val].hcpRtg], (txObj, result) => {
           console.log('done creating hole')
         }, (err, mess) => console.log('err creating hole', err, mess))
@@ -433,15 +471,15 @@ export const loadTotalPctHistory = async (user_id) => {
     }, (err, mess) => console.log('err getting stats', reject(mess)))
     // successful scramble count
     tx.executeSql(`
-        SELECT COUNT(scores.ud = 1) AS scramble
+        SELECT COUNT(*) AS scramble
         FROM scores
         JOIN rounds on rounds.round_id = scores.round_id
-        WHERE rounds.user_id = ?
+        WHERE rounds.user_id = ? AND scores.ud = 1
         GROUP BY scores.round_id
         ORDER BY rounds.round_id DESC
         LIMIT 10;
     `, [user_id], (txObj, result) => {
-      // console.log(`overall scramble stats: ${JSON.stringify(result.rows._array)}`)
+      console.log(`overall scramble stats: ${JSON.stringify(result.rows._array)}`)
       pctObj = {...pctObj, scrambleSuccess: result.rows._array.map(i => i.scramble)}
 
       resolve(pctObj)
@@ -643,20 +681,34 @@ export const loadGirPct = async (user_id) => {
 }
 
 export const loadScramblePct = async (user_id) => {
-  let hitNum;
+  let scrNum;
+  let girNum;
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
       SELECT COUNT(scores.ud) AS scramble
       FROM scores
       JOIN rounds ON rounds.round_id = scores.round_id
-      WHERE scores.ud == 1
+      WHERE scores.ud = 1
       AND rounds.user_id = ?
     ;
     `, [user_id], (txObj, result) => {
-      // console.log(`Scramble pct obj: ${JSON.stringify(result.rows._array[0].scramble)}`)
-      hitNum = result.rows._array[0].scramble
+      console.log(`Scramble pct obj: ${JSON.stringify(result.rows._array[0])}`)
+      scrNum = result.rows._array[0].scramble
       // resolve(result.rows._array[0])
     }, (err, mess) => console.log('err getting GIR pct', reject(mess)))
+
+    tx.executeSql(`
+    SELECT COUNT(scores.gir) AS green_in_reg
+    FROM scores
+    JOIN rounds ON rounds.round_id = scores.round_id
+    WHERE scores.gir == 1
+    AND rounds.user_id = ?
+  ;
+  `, [user_id], (txObj, result) => {
+    // console.log(`GIR pct obj: ${JSON.stringify(result.rows._array[0].green_in_reg)}`)
+    girNum = result.rows._array[0].green_in_reg
+    // resolve(result.rows._array[0])
+  }, (err, mess) => console.log('err getting GIR pct', reject(mess)))
 
     tx.executeSql(`
       SELECT COUNT(scores.hole_num) AS total
@@ -667,8 +719,8 @@ export const loadScramblePct = async (user_id) => {
     `, [user_id], (txObj, result) => {
       // console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
       const total = result.rows._array[0].total
-      // console.log(`found ${hitNum} scrambles hit out of ${total} holes`)
-      resolve(hitNum * 100 / result.rows._array[0].total)
+      console.log(`found ${scrNum} scrambles hit out of ${total} holes`)
+      resolve(scrNum * 100 / (result.rows._array[0].total - girNum))
     }, (err, mess) => console.log('err getting acg pct', reject(mess)))
   })
   )

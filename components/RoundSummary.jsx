@@ -158,7 +158,7 @@ export default function RoundSummary({ handleRoundSummary }) {
     // const pctObj = await getPct(appState.round_id)
 
 // FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
-    await postRound(sumValues(playState.p1score), appState.round_id, netHandicapDiffCalc(playState.p1score, userHandicap, 71.8, 127, playState.holeInfo))
+    await postRound(sumValues(playState.p1score), appState.round_id, netHandicapDiffCalc(playState.p1score, userHandicap, playState.p1_rtg, playState.p1_slp, playState.holeInfo))
     appContext.value.doneRound()
     playContext.value.doneRound()
     statContext.dispatch({
@@ -171,6 +171,17 @@ export default function RoundSummary({ handleRoundSummary }) {
       type: 'trigger_handicap_update'
     })
     
+  }
+
+  const handleRoundQuit = async () => {
+    appContext.value.doneRound()
+    playContext.value.doneRound()
+    statContext.dispatch({
+      type: 'trigger_total_info_update'
+    })
+    statContext.dispatch({
+      type: 'trigger_all_data_update'
+    })
   }
   
   // console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ playState.p1score", playState.p1score)
@@ -195,6 +206,13 @@ export default function RoundSummary({ handleRoundSummary }) {
           <View style={[styles.styledButton, styles.playButton]}>
             <Text style={styles.buttonText}>
               Save Round
+</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleRoundQuit()}>
+          <View style={[styles.styledButton, styles.quitButton]}>
+            <Text style={styles.quitButtonText}>
+              Delete Round
 </Text>
           </View>
         </TouchableOpacity>

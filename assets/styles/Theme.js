@@ -2,6 +2,7 @@ export const Theme = {
   green: '#70AE98',
   yellow: '#ECBE7A',
   red: '#E58B88',
+  quitRed: '#c44f4b',
   blue: '#9DABDD',
   iconStroke: '#eff7fd',
   spinGreen1: '#99D969',
