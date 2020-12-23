@@ -11,7 +11,7 @@ export function useRoundHistory(user_id) {
     console.log('RETREVING RoundHistory')
     const getRoundHistory = async (user_id) => {
       const newRoundHistory = await loadStats(user_id)
-      // console.log("🚀 ~ file: useRoundHistory.js ~ line 14 ~ getRoundHistory ~ newRoundHistory", newRoundHistory)
+      console.log("🚀 ~ file: useRoundHistory.js ~ line 14 ~ getRoundHistory ~ newRoundHistory", newRoundHistory)
 
       if(newRoundHistory) {
         setRoundHistory(newRoundHistory.reverse())

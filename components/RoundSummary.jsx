@@ -42,6 +42,7 @@ export default function RoundSummary({ handleRoundSummary }) {
   const userHandicap = useHandicap(1)
 
   let playState = playContext.value.state
+  // console.log("🚀 ~ file: RoundSummary.jsx ~ line 45 ~ RoundSummary ~ playState", playState)
 
   let appState = appContext.value.state
   const [scoreArr, setScoreArr] = useState([])
@@ -154,11 +155,26 @@ export default function RoundSummary({ handleRoundSummary }) {
       })
   }
 
+  useEffect(() => {
+    console.log("🚀 ~ file: RoundSummary.jsx ~ line 166 ~ handleScoreSubmit ~ appState.round_id", appState.round_id)
+    console.log("🚀 ~ file: RoundSummary.jsx ~ line 167 ~ handleScoreSubmit ~ netHandicapDiffCalc()", netHandicapDiffCalc(playState.p1score, userHandicap, playState.p1_rtg, playState.p1_slp, playState.holeInfo))
+    // console.log("🚀 ~ file: RoundSummary.jsx ~ line 170 ~ handleScoreSubmit ~ playState", playState)
+  }, [playState])
+  
+
   const handleScoreSubmit = async () => {
     // const pctObj = await getPct(appState.round_id)
 
 // FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
-    await postRound(sumValues(playState.p1score), appState.round_id, netHandicapDiffCalc(playState.p1score, userHandicap, playState.p1_rtg, playState.p1_slp, playState.holeInfo))
+
+const hcpObj = netHandicapDiffCalc(playState.p1score, userHandicap, playState.p1_rtg, playState.p1_slp, playState.holeInfo)
+const holesPlayed = hcpObj.holesPlayed
+const calculatedHolesPlayed = hcpObj.calculatedHolesPlayed
+const calculatedScore = hcpObj.calculatedScore
+const netHcpDiff = hcpObj.netHcpDiff
+
+
+    await postRound(calculatedScore, appState.round_id, netHcpDiff, holesPlayed, calculatedHolesPlayed)
     appContext.value.doneRound()
     playContext.value.doneRound()
     statContext.dispatch({

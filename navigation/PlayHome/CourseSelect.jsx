@@ -28,7 +28,8 @@ export function CourseSelect({ navigation }) {
       name: 'The Winston Golf Club',
       id: 1,
       img: require('../../assets/images/winston.jpg'),
-      slp: 127
+      slp: 127,
+      rtg: 71.8
     },
     {
       name: 'The Glencoe: Forest',

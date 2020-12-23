@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext'
 import { StatContext } from '../context/StatContext'
 import NavigationPlay from '../navigation/PlayHome'
 import { PlayContext } from '../context/PlayContext'
-import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory, retrieveCourseInfo } from '../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
 import { useStats } from '../hooks/useStats'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -18,6 +18,7 @@ export default function TabOneScreen() {
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
   const statContext = React.useContext(StatContext)
+  const holeInfoLoaded = playContext.value?.state?.holeInfo?.['1'].par
   const contextState = appContext.value.state
   const [initialHole, setInitialHole] = React.useState(1)
   const stats = useStats(1, 1)
@@ -44,7 +45,6 @@ export default function TabOneScreen() {
               {
                 text: "Yes",
                 onPress: () => {
-
                   appContext.dispatch({
                     type: 'set_round_id',
                     data: JSON.parse(roundID)
@@ -80,7 +80,6 @@ export default function TabOneScreen() {
     // Also put scores into state
     const holeNum = await AsyncStorage.getItem('holeNum')
     const holeNumDig = JSON.parse(holeNum)
-    console.log('Setting SAVED hole to ', holeNumDig)
     setInitialHole(holeNumDig)
     appContext.value.setHole(holeNumDig)
 
@@ -98,6 +97,16 @@ export default function TabOneScreen() {
     const p3roundID = await AsyncStorage.getItem('u3roundid')
     const p4roundID = await AsyncStorage.getItem('u4roundid')
     const p1Score = await getScore(JSON.parse(p1roundID))
+
+    // Set course holeInfo
+
+    const courseInfo = await retrieveCourseInfo(p1roundID)
+    playContext.dispatch({
+      type: 'set_course',
+      data: courseInfo.course_id,
+      rtg: courseInfo.rtg,
+      slp: courseInfo.slp
+    })
 
     // console.log('p1 score returned should be array', p1Score)
 
@@ -227,7 +236,7 @@ export default function TabOneScreen() {
   return (
     contextState.viewMode === 'play' ?
       (
-        contextState.loading ?
+        (contextState.loading && !holeInfoLoaded) ?
           <LoadingScreen />
           :
           <Hole location={state.location} initialHole={initialHole} />

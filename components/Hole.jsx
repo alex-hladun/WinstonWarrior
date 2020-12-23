@@ -1,9 +1,7 @@
-import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { StyleSheet, Easing, TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
+import { TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
 import holeListStyles from '../assets/styles/HoleSummaryStyles'
-import Colors from '../constants/Colors';
 import { Text, View } from './Themed';
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import FlagSymbol from '../assets/svg/FlagSymbol'
@@ -13,7 +11,6 @@ import LeftSymbol from '../assets/svg/LeftSymbol'
 import RightSymbol from '../assets/svg/RightSymbol'
 import TargetSymbol from '../assets/svg/TargetSymbol'
 import LocationSymbol from '../assets/svg/LocationSymbol'
-// import holeInfo from '../assets/holeInfo'
 import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'

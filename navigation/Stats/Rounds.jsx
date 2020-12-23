@@ -118,7 +118,7 @@ const _roundView = () => {
             :
             <View style={styles.styledButton}>
             <Text>
-              Play a round to see your history. 
+              Play a full round to see your history. 
             </Text>
             </View>
           }

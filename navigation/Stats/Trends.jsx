@@ -24,7 +24,7 @@ import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext)
   // const hcp = useHandicap(1)
-  const totalInfo = useTotalInfo(1, 1)
+  const totalInfo = useTotalInfo(1, 'ALL')
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const pctHistory = useTotalPctHistory(1)
@@ -112,8 +112,8 @@ export function Trends({ navigation }) {
           setParentChartType('LineChart')
           setChartData(
             {
-              labels: roundHistory.map((round, index) => {
-                return (round.end_date.slice(5, 10))
+              labels: roundHistory?.map((round, index) => {
+                return (round.end_date?.slice(5, 10))
               }),
               datasets: [{
                 data: roundHistory.map((round) => {
@@ -199,16 +199,17 @@ export function Trends({ navigation }) {
       <View style={styles.background}>
         <Image source={require('../../assets/images/vectors/pgaguy.png')} style={styles.bgImage} />
         <View style={styles.homePageContainer}>
-          <View style={styles.headerContainer}>
             {roundHistory[0] ?
-
+          <View style={styles.headerContainer}>
               <Text onLongPress={() => logOut()} style={styles.header}>Total {chartType}</Text>
+              </View>
               :
+            <View style={styles.styledButton}>
               <Text onLongPress={() => logOut()}>
                 Start playing to see your stats!
             </Text>
-            }
           </View>
+            }
 
           {roundHistory[0] && (parentChartType === 'LineChart') &&
             <LineChart
@@ -270,7 +271,8 @@ export function Trends({ navigation }) {
                   <View style={styles.boxHeader}>
                     <Text style={styles.boxHeaderText}>HCP</Text>
                   </View>
-                  <Text style={styles.boxContent}>{hcp?.toFixed(1)}</Text>
+                  <Text style={styles.boxContent}>{hcp? hcp.toFixed(1) : 
+                  'NA'}</Text>
                 </View>
                 </TouchableOpacity>
               </View>

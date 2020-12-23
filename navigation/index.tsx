@@ -45,7 +45,7 @@ function RootNavigator() {
       let userToken;
 
       try {
-        console.log('running asyncstorage')
+        // console.log('running asyncstorage')
         userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
         // Restoring token failed

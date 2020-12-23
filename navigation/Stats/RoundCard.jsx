@@ -7,70 +7,88 @@ import Carousel from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo-linear-gradient';
 import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
-import { useShotData } from '../../hooks/useShotData';
 import {
-  BarChart,
-  LineChart,
   PieChart,
-  ProgressChart
 } from 'react-native-chart-kit'
 
 import { useShotHistory } from '../../hooks/useShotHistory';
+import { getRoundData } from '../../db/roundData';
 
 const { width } = Dimensions.get('window');
 
 const pieChartConfig = {
-  // backgroundColor: Theme.chartBackgroundColor,
-  // paddingTop: 0,
+  backgroundColor: Theme.chartBackgroundColor,
+  backgroundGradientFrom: Theme.chartBGGradientFrom,
+  backgroundGradientTo: Theme.chartBGGradientTo,
+  propsForVerticalLabels: {
+    rotation: -90
+  },
   decimalPlaces: 0, // optional, defaults to 2dp
-  backgroundGradientFrom: "#1E2923",
-  backgroundGradientFromOpacity: 0.0,
-  backgroundGradientTo: "#08130D",
-  backgroundGradientToOpacity: 1.0,
-  color: (opacity = 1) => `rgba(35, 36, 36, ${opacity})`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.5,
-  useShadowColorFromDataset: false // optional
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
 }
 
 export function RoundCard({ handleRoundView, item }) {
+
   // console.log("🚀 ~ file: RoundCard.jsx ~ line 31 ~ RoundCard ~ item", item)
 
-  const pieChartData = [{
-    name: "Eagles",
-    count: 2,
-    color: Theme.palette[0],
-    legendFontColor: "#7F7F7F",
-    legendFontSize: 15
-  }, {
-    name: "Birdies",
-    count: 6,
-    color: Theme.palette[2],
+  const [roundData, setRoundData] = React.useState({})
+  // console.log("🚀 ~ file: RoundCard.jsx ~ line 42 ~ RoundCard ~ roundData", roundData)
+  
+  const updateData = async() => {
+    const roundDataForState = await getRoundData(item.round_id)
+    setRoundData(roundDataForState)
+  }
 
-    legendFontColor: "#7F7F7F",
-    legendFontSize: 15
-  }, {
-    name: "Pars",
-    count: 6,
-    color: Theme.palette[5],
+  React.useEffect(() => {
+    updateData()
+    console.log("🚀 ~ file: RoundCard.jsx ~ line 50 ~ RoundCard ~ roundData", roundData)
+    
+  }, [])
+  
+  let pieChartData;
 
-    legendFontColor: "#7F7F7F",
+  if(roundData?.frontScore) {
+    pieChartData = [{
+     name: "Eagles",
+     count: roundData.birdieObj.eagles,
+     color: Theme.palette[0],
+     legendFontColor: "#666464",
+     legendFontSize: 15
+   }, {
+     name: "Birdies",
+     count: roundData.birdieObj.birdies,
+     color: Theme.palette[2],
+     legendFontColor: "#666464",
+     legendFontSize: 15
+   }, {
+     name: "Pars",
+     count: roundData.birdieObj.pars,
+     color: Theme.palette[5],
+     legendFontColor: "#666464",
+     legendFontSize: 15
+   }, {
+     name: "Bogeys",
+     count: roundData.birdieObj.bogeys,
+     color: Theme.palette[6],
+     legendFontColor: "#666464",
+     legendFontSize: 15
+   }, {
+     name: "Doubles",
+     count: roundData.birdieObj.doubles,
+     color: "rgba(131, 167, 234, 1)",
+     legendFontColor: "#666464",
+     legendFontSize: 15
+   },
+   {
+    name: "Triples +",
+    count: roundData.birdieObj.triples,
+    color: Theme.piePalette[5],
+    legendFontColor: "#666464",
     legendFontSize: 15
-  }, {
-    name: "Bogeys",
-    count: 2,
-    color: Theme.palette[6],
+  }
+   ]
 
-    legendFontColor: "#7F7F7F",
-    legendFontSize: 15
-  }, {
-    name: "Double+",
-    count: 2,
-    color: "rgba(131, 167, 234, 1)",
-    legendFontColor: "#7F7F7F",
-    legendFontSize: 15
-  },
-  ]
+  }
 
   return (
     <View style={[styles.roundCardContainer]}>
@@ -78,45 +96,45 @@ export function RoundCard({ handleRoundView, item }) {
         <Text style={styles.clubTypeText}>{item.end_date.slice(5, 10)}</Text>
         <Text style={styles.clubAvgText}>{item.total_score}</Text>
       </View>
-
       <View style={styles.roundCardInnerContainer}>
         <Text style={styles.clubAvgText}>{item.course_name}</Text>
         <View style={styles.roundCardRow}>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>Front</Text>
-            <Text style={styles.roundCardScore}>36</Text>
+            <Text style={styles.roundCardScore}>{roundData?.frontScore ? roundData.frontScore : ''}</Text>
           </View>
         <View style={styles.roundCardRow}>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>Back</Text>
-            <Text style={styles.roundCardScore}>29</Text>
+            <Text style={styles.roundCardScore}>{roundData?.backScore ? roundData.backScore : ''}</Text>
           </View>
 </View>
         </View>
-      <PieChart
+      {roundData.frontScore && <PieChart
         data={pieChartData}
         chartConfig={pieChartConfig}
         height={200}
-        width={'100%'}
-        center={[155, 0]}
-        hasLegend={false}
+        width={Dimensions.get('window').width}
+        style={styles.pieChartStyle}
+        center={[3, 0]}
+        hasLegend={true}
         accessor={"count"}
         backgroundColor={"transparent"}
-        absolute='true'
-      />
+        absolute='false'
+      />}
     </View>
     <View style={styles.roundCardRow}>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>FWY</Text>
-            <Text style={styles.roundCardScore}>8/18</Text>
+            <Text style={styles.roundCardSubText}>{roundData?.fwHit ? roundData.fwHit : ''} / {roundData?.totalHoles ? roundData.totalHoles : ''}</Text>
           </View>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>GIR</Text>
-            <Text style={styles.roundCardScore}>7/18</Text>
+            <Text style={styles.roundCardSubText}>{roundData?.girHit ? roundData.girHit : ''} / {roundData?.totalHoles ? roundData.totalHoles : ''}</Text>
           </View>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>SCR</Text>
-            <Text style={styles.roundCardScore}>2/7</Text>
+            <Text style={styles.roundCardSubText}>{roundData?.girHit ? roundData.scramble : ''} / {roundData?.totalHoles ? (roundData.totalHoles - roundData.girHit) : ''}</Text>
           </View>
           </View>
     </View >

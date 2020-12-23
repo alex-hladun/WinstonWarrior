@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadScramblePct, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory } from '../db/dbSetup'
+import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadScramblePct, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory, loadTotalBirds } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
 
 
@@ -21,7 +21,12 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
     const getTotalInfo = async (user_id, course_id) => {
       console.log('RETRIEVING ALL TOTALINFO STATS!')
       // Get counts of birdie, par, eagle for each hole
-      const birdieCount = await loadBirds(course_id, user_id)
+      let birdiecount;
+      if (course_id === 'ALL') {
+        birdieCount = await loadTotalBirds(user_id)
+      } else {
+        birdieCount = await loadBirds(course_id, user_id)
+      }
       // console.log('birdieCount', birdieCount)
       let birdieObj = {}
 

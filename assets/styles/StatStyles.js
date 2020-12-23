@@ -82,15 +82,19 @@ export const styles = StyleSheet.create({
   },
   roundCardInnerContainer: {
     flexDirection: 'column',
-    // flex: 1,
-    alignItems: 'center',
-    // justifyContent: 'space-evenly'
+  },
+  pieChartStyle: {
+    left: 0,
+    marginVertical: 5,
+    alignSelf: 'flex-start',
+    // marginHorizontal: 10,
   },
   roundCardRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-evenly',
-    // paddingVertical: 10
-    // marginVertical: 10
+    // paddingVertical: 10,
+    marginVertical: 5
   },
   roundCardInnerContainer: {
 flexDirection: 'column',
@@ -107,7 +111,12 @@ textAlign: 'center'
     textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold'
-
+  },
+  roundCardSubText: {
+    opacity: 0.5,
+    textAlign: 'center',
+    fontSize: 20,
+    // fontWeight: 'bold'
   },
   clubCardHeader: {
     justifyContent: 'space-between',

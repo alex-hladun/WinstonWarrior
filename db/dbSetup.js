@@ -128,14 +128,15 @@ export const postShot = async (user_id, club_id, effort, distance) => {
   })
   )
 }
-export const postRound = async (score, round_id, diff) => {
+export const postRound = async (score, round_id, diff, holesPlayed, calculatedHolesPlayed) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     // console.log('inside createRound')
+    console.log('posting round', score, round_id, diff, holesPlayed, calculatedHolesPlayed)
     tx.executeSql(`
-    UPDATE rounds 
-    SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now')
+    UPDATE rounds
+    SET total_score = ?, hcp_diff = ?, end_date = strftime('%Y-%m-%d %H:%M:%S','now'), holes_played = ?, calculated_holes_played = ?
     WHERE round_id = ?;
-    `, [score, diff, round_id], (txObj, result) => {
+    `, [score, diff, holesPlayed, calculatedHolesPlayed, round_id], (txObj, result) => {
       console.log('Round successfully saved', `total score ${score}, round is ${round_id}`)
       resolve(result)
     }, (err, mess) => console.log('err saving round', reject(mess)))
@@ -274,9 +275,9 @@ export const createWinston = () => {
       tx.executeSql(
         `
       INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [2, index + 1, holeInfo[val].par, holeInfo[val].pinCoords.latitude, holeInfo[val].pinCoords.longitude,
-        holeInfo[val].camera.center.latitude, holeInfo[val].camera.center.longitude, holeInfo[val].camera.heading, holeInfo[val].camera.altitude, holeInfo[val].camera.zoom,  holeInfo[val].hcpRtg], (txObj, result) => {
-          console.log('done creating hole')
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [2, index + 1, glencoeInfo[val].par, glencoeInfo[val].pinCoords.latitude, glencoeInfo[val].pinCoords.longitude,
+        glencoeInfo[val].camera.center.latitude, glencoeInfo[val].camera.center.longitude, glencoeInfo[val].camera.heading, glencoeInfo[val].camera.altitude, glencoeInfo[val].camera.zoom,  glencoeInfo[val].hcpRtg], (txObj, result) => {
+          console.log('done creating glencoe holes')
         }, (err, mess) => console.log('err creating hole', err, mess))
 
     })
@@ -358,17 +359,17 @@ export const loadStats = async (user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
 
     tx.executeSql(`
-    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff
+    SELECT rounds.round_id, rounds.total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff, rounds.holes_played, rounds.calculated_holes_played
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
     JOIN courses ON rounds.course_id = courses.course_id
     WHERE rounds.user_id = ? 
     GROUP BY rounds.round_id
-    HAVING count(scores.hole_num) = 18 
+    HAVING (rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9) AND rounds.end_date NOT NULL
     ORDER BY rounds.round_id DESC LIMIT 30;
     `, [user_id], (txObj, result) => {
-      // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+      console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
-    }, (err, mess) => console.log('err getting stats', reject(mess)))
+    }, (err, mess) => console.log('err getting stats', reject(err, mess)))
   })
   )
 }
@@ -602,11 +603,10 @@ export const loadAvgScore = async (user_id) => {
   // Loads overall user round history
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT AVG(total.sum) AS avg FROM (SELECT SUM(scores.total_shots) as sum, count(scores.hole_num) AS holes_played
-    FROM scores
-    JOIN rounds ON rounds.round_id = scores.round_id
+    SELECT AVG(total.sum) AS avg FROM (SELECT SUM(rounds.total_score) as sum
+    FROM rounds
     WHERE rounds.user_id = ?
-    GROUP BY scores.round_id HAVING holes_played = 18) AS total;
+    GROUP BY rounds.round_id HAVING rounds.calculated_holes_played = 18) AS total;
     `, [user_id], (txObj, result) => {
       // console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array[0].avg)
@@ -692,7 +692,7 @@ export const loadScramblePct = async (user_id) => {
       AND rounds.user_id = ?
     ;
     `, [user_id], (txObj, result) => {
-      console.log(`Scramble pct obj: ${JSON.stringify(result.rows._array[0])}`)
+      // console.log(`Scramble pct obj: ${JSON.stringify(result.rows._array[0])}`)
       scrNum = result.rows._array[0].scramble
       // resolve(result.rows._array[0])
     }, (err, mess) => console.log('err getting GIR pct', reject(mess)))
@@ -719,7 +719,7 @@ export const loadScramblePct = async (user_id) => {
     `, [user_id], (txObj, result) => {
       // console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
       const total = result.rows._array[0].total
-      console.log(`found ${scrNum} scrambles hit out of ${total} holes`)
+      // console.log(`found ${scrNum} scrambles hit out of ${total} holes`)
       resolve(scrNum * 100 / (result.rows._array[0].total - girNum))
     }, (err, mess) => console.log('err getting acg pct', reject(mess)))
   })
@@ -861,6 +861,22 @@ export const loadHoleHistory = async (course_id, user_id) => {
   })
   )
 }
+export const retrieveCourseInfo = async (round_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT courses.name, courses.blue_rtg AS rtg, courses.blue_slp AS slp, courses.course_id
+    FROM courses JOIN rounds ON
+    rounds.course_id = courses.course_id
+    WHERE rounds.round_id = ?
+    ;
+    `, [round_id], (txObj, result) => {
+console.log('result getting course INFO', result.rows._array[0])
+      resolve(result.rows._array[0])
+    }, (err, mess) => console.log('err getting course infoO', reject(err, mess)))
+
+  })
+  )
+}
 export const loadLow = async (course_id, user_id) => {
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
@@ -893,6 +909,24 @@ export const loadBirds = async (course_id, user_id) => {
     WHERE rounds.course_id = ? AND rounds.user_id = ?
     ORDER BY holes.hole_num ASC;
     `, [course_id, user_id], (txObj, result) => {
+      // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
+      resolve(result.rows._array)
+    }, (err, mess) => console.log('err getting birds', reject(mess)))
+  })
+  )
+}
+export const loadTotalBirds = async (user_id) => {
+  return new Promise((resolve, reject) => db.transaction(tx => {
+    tx.executeSql(`
+    SELECT
+    scores.hole_num, scores.total_shots, holes.hole_par, scores.total_putts
+    FROM ROUNDS JOIN scores 
+    ON rounds.round_id = scores.round_id 
+    JOIN holes 
+    ON holes.hole_id = scores.hole_id
+    WHERE rounds.user_id = ?
+    ORDER BY holes.hole_num ASC;
+    `, [user_id], (txObj, result) => {
       // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting birds', reject(mess)))
@@ -964,6 +998,8 @@ export const setUpDB = () => {
     round_id integer PRIMARY KEY AUTOINCREMENT,
     course_id integer,
     user_id integer,
+    holes_played integer,
+    calculated_holes_played integer,
     total_score integer,
     hcp_diff REAL,
     fwy_pct REAL,

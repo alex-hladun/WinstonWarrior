@@ -11,7 +11,7 @@ import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 export function Home({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
-  const totalInfo = useTotalInfo(1, 1)
+  const totalInfo = useTotalInfo(1, 'Any')
   // const hcp = useHandicap(1)
   const hcpHistory = useHandicapHistory(1)
   const hcp = hcpHistory[hcpHistory.length - 1]
