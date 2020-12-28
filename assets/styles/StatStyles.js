@@ -470,7 +470,7 @@ textAlign: 'center'
     borderStyle: 'solid',
     borderColor: Theme.spinGreen4,
     borderBottomWidth: 4,
-    backgroundColor: Theme.palette[4],
+    backgroundColor: Theme.nineHoleRound,
     borderRadius: 20,
     alignSelf: 'center',
     justifyContent: 'space-between',

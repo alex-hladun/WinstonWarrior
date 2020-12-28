@@ -22,10 +22,9 @@ export function Holes() {
   const appState = appContext.value.state
   const statContext = React.useContext(StatContext)
 
-  // TODO: putt in proper course ID
-  const holeData = useHoleData(1, 1)
+  const holeData = useHoleData(1, playContext.value.state.course_id)
   const holeNum = appState.hole_num
-  const totalInfo = useTotalInfo(1, 1)
+  const totalInfo = useTotalInfo(1, playContext.value.state.course_id)
   console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
   // TODO: Change to hole ID
   const puttHistory = usePuttHistory(1, holeNum)

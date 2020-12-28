@@ -21,7 +21,7 @@ export function LoadingScreen() {
     <View style={styles.welcomeContainer}>
   
       <Text style={styles.welcomeText}>
-Loading! 
+Loading...
       </Text>
     </View>
   </View>

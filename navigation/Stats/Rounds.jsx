@@ -25,7 +25,6 @@ console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRou
         <Text style={styles.roundCourseName}>
           {round.item.course_name}
           {includedInHandicap && <Text> ✅</Text>}
-          {!includedInHandicap && <Text> ❌</Text>}
         </Text>
         <Text style={styles.roundDate}>{round.item.end_date && round.item.end_date.slice(0, 10)}</Text>
       </View>

@@ -15,6 +15,7 @@ export const Theme = {
   babyBlue: '#D3F6DB',
   // actually freen^^^^
   ogButtonGreen: "#f3f8ff",
+  nineHoleRound: '#D9EED3',
   chartBackgroundColor: '#2D7DD2',
   chartBGGradientFrom: '#1F5A98',
   chartBGGradientTo: '#2D7DD2',

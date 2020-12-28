@@ -11,6 +11,7 @@ export function useHoleData(user_id, course_id) {
     const getHoleData = async (user_id, course_id) => {
 
       const holeStats = await loadHoleStats(course_id, user_id)
+      console.log("🚀 ~ file: useHoleData.js ~ line 14 ~ getHoleData ~ holeStats", holeStats)
       let holeObj = {}
       for (let i = 1; i <= 18; i++) {
         holeObj[i] = {}

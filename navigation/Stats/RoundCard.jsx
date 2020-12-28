@@ -103,12 +103,15 @@ export function RoundCard({ handleRoundView, item }) {
             <Text style={styles.roundCardHeader}>Front</Text>
             <Text style={styles.roundCardScore}>{roundData?.frontScore ? roundData.frontScore : ''}</Text>
           </View>
+          {roundData?.backScore &&
         <View style={styles.roundCardRow}>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>Back</Text>
             <Text style={styles.roundCardScore}>{roundData?.backScore ? roundData.backScore : ''}</Text>
           </View>
-</View>
+        </View> 
+
+          }
         </View>
       {roundData.frontScore && <PieChart
         data={pieChartData}

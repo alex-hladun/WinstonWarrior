@@ -12,6 +12,7 @@ export function usePuttHistory(user_id, hole_id) {
   const getPutHistory = async (user_id, hole_id) => {
     const hole_id_state = appContext.value.state.hole_num;
     const newPuttHisotry = await loadPuttsForHole(user_id, hole_id_state)
+    console.log("🚀 ~ file: usePuttHistory.js ~ line 15 ~ getPutHistory ~ newPuttHisotry", newPuttHisotry)
     setPuttHistory(newPuttHisotry.map(puttObj => {
       return(puttObj.total_putts)
     }))

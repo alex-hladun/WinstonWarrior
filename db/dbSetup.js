@@ -157,7 +157,11 @@ export const postScore = async (hole_id, hole_num, round_id, total_shots, total_
       if (result.rows._array[0]) {
         console.log('EXISTING SCORE for this hole!')
         tx.executeSql(`
-        UPDATE scores SET total_shots = ?, total_putts = ?, penalty = ?, driver_direction = ?,
+        UPDATE scores 
+        SET total_shots = ?, 
+        total_putts = ?, 
+        penalty = ?, 
+        driver_direction = ?,
         approach_rtg = ?,
         chip_rtg = ?,
         putt_rtg = ?,
@@ -510,7 +514,7 @@ export const loadPuttsForHole = async (user_id, hole_id) => {
   console.log('LOADING PUTTS', user_id, hole_id)
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT scores.total_putts, scores.hole_num, rounds.round_id
+    SELECT scores.total_putts, scores.penalty, scores.gir, scores.ud, scores.driver_direction, scores.hole_num, rounds.round_id
     FROM scores
     JOIN holes ON scores.hole_id = holes.hole_id
     JOIN rounds ON scores.round_id = rounds.round_id
@@ -530,7 +534,7 @@ export const loadPuttHistory = async (user_id, hole_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
   return new Promise((resolve, reject) => db.transaction(tx => {
     tx.executeSql(`
-    SELECT scores.total_putts, scores.hole_num, rounds.round_id
+    SELECT scores.total_putts, scores.penalty, scores.gir, scores.ud, scores.driver_direction, scores.hole_num, rounds.round_id
     FROM scores
     JOIN holes ON scores.hole_id = holes.hole_id
     JOIN rounds ON scores.round_id = rounds.round_id

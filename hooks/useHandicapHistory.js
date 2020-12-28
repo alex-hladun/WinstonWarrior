@@ -21,7 +21,7 @@ const loadHandicapFromArray = (hcpArray) => {
           round2ID: score.round_id
         })
         currentNineHoleRound = false;
-        currentNineHoleRoundID = undefined;
+        currentNineHoleRoundID = undefined;e
       } else if (score.holes_played < 14) {
         // no existing 9 hole round
         currentNineHoleRoundID = score.round_id
@@ -81,7 +81,7 @@ export function useHandicapHistory(user_id) {
       let maxHcpPoints = 10
       if (length < 10) {
         maxHcpPoints = length
-      }
+    }
 
       for (let i = 0; i < maxHcpPoints; i++) {
         handicapHistoryArray.push(loadHandicapFromArray(roundHistory.slice(i, i + 40)).handicap)
