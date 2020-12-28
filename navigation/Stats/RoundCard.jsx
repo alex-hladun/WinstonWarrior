@@ -51,31 +51,31 @@ export function RoundCard({ handleRoundView, item }) {
     pieChartData = [{
      name: "Eagles",
      count: roundData.birdieObj.eagles,
-     color: Theme.palette[0],
+     color: Theme.piePalette[0],
      legendFontColor: "#666464",
      legendFontSize: 15
    }, {
      name: "Birdies",
      count: roundData.birdieObj.birdies,
-     color: Theme.palette[2],
+     color: Theme.piePalette[1],
      legendFontColor: "#666464",
      legendFontSize: 15
    }, {
      name: "Pars",
      count: roundData.birdieObj.pars,
-     color: Theme.palette[5],
+     color: Theme.piePalette[2],
      legendFontColor: "#666464",
      legendFontSize: 15
    }, {
      name: "Bogeys",
      count: roundData.birdieObj.bogeys,
-     color: Theme.palette[6],
+     color: Theme.piePalette[3],
      legendFontColor: "#666464",
      legendFontSize: 15
    }, {
      name: "Doubles",
      count: roundData.birdieObj.doubles,
-     color: "rgba(131, 167, 234, 1)",
+     color: Theme.piePalette[4],
      legendFontColor: "#666464",
      legendFontSize: 15
    },

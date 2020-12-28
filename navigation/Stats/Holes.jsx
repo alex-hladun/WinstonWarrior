@@ -26,7 +26,7 @@ export function Holes() {
   const holeData = useHoleData(1, 1)
   const holeNum = appState.hole_num
   const totalInfo = useTotalInfo(1, 1)
-  // console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
+  console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
   // TODO: Change to hole ID
   const puttHistory = usePuttHistory(1, holeNum)
   const [parentChartType, setParentChartType] = React.useState('LineChart')
@@ -214,12 +214,14 @@ export function Holes() {
                       <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgPutts ? holeData.holeObj[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
                     </View>
                   </TouchableOpacity>
-                  <View style={styles.boxContainer}>
+                  <TouchableOpacity onPress={() => setChart('Scoring')}>
+                    <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Best Score</Text>
                     </View>
                     <Text style={styles.boxContent}>{holeData.lowHoleObj[holeNum]}</Text>
                   </View>
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.holeRow}>
                   <View style={styles.boxContainer}>
@@ -241,7 +243,7 @@ export function Holes() {
                     <Text style={styles.boxContent}>{totalInfo.birdieObj && totalInfo.birdieObj[holeNum].scrambleSuccess ? (totalInfo.birdieObj[holeNum].scrambleSuccess * 100 / totalInfo.birdieObj[holeNum].scrambleChances).toFixed(0) : 0}</Text>
                   </View>
                 </View>
-                <View style={styles.holeRow}>
+                {/* <View style={styles.holeRow}>
                   <TouchableOpacity onPress={() => setChart('Scoring')}>
                     <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
                       <View style={styles.boxHeader}>
@@ -266,7 +268,7 @@ export function Holes() {
                     <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].pars : 0}</Text>
                   </View>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </>
             )
             :

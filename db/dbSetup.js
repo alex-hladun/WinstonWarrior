@@ -357,9 +357,8 @@ export const loadStats = async (user_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now. 
   // console.log('USER ID IN STATS', user_id)
   return new Promise((resolve, reject) => db.transaction(tx => {
-
     tx.executeSql(`
-    SELECT rounds.round_id, rounds.total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff, rounds.holes_played, rounds.calculated_holes_played
+    SELECT rounds.round_id, rounds.total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, rounds.calculated_holes_played AS holes_played, courses.name AS course_name, rounds.hcp_diff, rounds.holes_played, rounds.calculated_holes_played
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
     JOIN courses ON rounds.course_id = courses.course_id
     WHERE rounds.user_id = ? 
@@ -474,7 +473,7 @@ export const loadTotalPctHistory = async (user_id) => {
     tx.executeSql(`
         SELECT COUNT(*) AS scramble
         FROM scores
-        JOIN rounds on rounds.round_id = scores.round_id
+        LEFT OUTER JOIN rounds on rounds.round_id = scores.round_id
         WHERE rounds.user_id = ? AND scores.ud = 1
         GROUP BY scores.round_id
         ORDER BY rounds.round_id DESC

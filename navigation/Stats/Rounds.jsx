@@ -9,20 +9,23 @@ import { RoundCard } from './RoundCard'
 import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
 import Carousel from 'react-native-snap-carousel';
+import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 
 const { width } = Dimensions.get('window');
 
 
 // Renders into list
-const RoundItem = ({ round, handleRoundSelect }) => {
-  // console.log("🚀 ~ file: Rounds.jsx ~ line 35 ~ RoundItem ~ round", round)
-
+const RoundItem = ({ round, handleRoundSelect, includedInHandicap, nineHoleRound }) => {
+// console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", round)
+console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRound)
   return (
     <TouchableOpacity onPress={() => handleRoundSelect(round.index)}>
-    <View style={styles.roundItem}>
+    <View style={nineHoleRound ? styles.nineHoleRoundItem : styles.roundItem}>
       <View style={styles.roundLeft}>
         <Text style={styles.roundCourseName}>
           {round.item.course_name}
+          {includedInHandicap && <Text> ✅</Text>}
+          {!includedInHandicap && <Text> ❌</Text>}
         </Text>
         <Text style={styles.roundDate}>{round.item.end_date && round.item.end_date.slice(0, 10)}</Text>
       </View>
@@ -41,10 +44,18 @@ export function Rounds() {
   const [roundView, setRoundView] = React.useState(false)
   const [round, setRound] = React.useState(null)
   const carRef = React.useRef(null)
-
+  const hcpInfo = useHandicapHistory(1)
+  const handicapRounds = hcpInfo?.handicapRounds;
+  console.log("🚀 ~ file: Trends.jsx ~ line 33 ~ Trends ~ handicapHistory", handicapRounds)
   // Item rendered into flatlist
   const renderItem = (round) => {
-    return (<RoundItem handleRoundSelect={handleRoundSelect} round={round} />)
+  // console.log("🚀 ~ file: Rounds.jsx ~ line 51 ~ renderItem ~ round", round)
+    return (<RoundItem 
+      handleRoundSelect={handleRoundSelect} 
+      round={round} 
+      includedInHandicap={handicapRounds.includes(round.item.round_id)}
+      nineHoleRound={round.item.holes_played === 9}
+      />)
   };
 
 // The component rendered into the carosuel
@@ -63,8 +74,6 @@ const handleRoundSelect = (roundIndex) => {
 const handleRoundView = () => {
   setRoundView(!roundView)
 }
-
-
 
 // The carosuel component rendered into the modal
 const _roundView = () => {
@@ -90,7 +99,6 @@ const _roundView = () => {
   )
 }
 
-
   return (
     <>
       <View style={styles.background}>
@@ -112,6 +120,9 @@ const _roundView = () => {
             <FlatList 
             data={reverseRoundHistory} 
             renderItem={renderItem} 
+            style={{
+              // top: 10
+            }}
             inverted={true}
             keyExtractor={item => `${item.round_id}`} 
             />

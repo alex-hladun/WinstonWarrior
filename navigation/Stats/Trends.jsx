@@ -28,7 +28,8 @@ export function Trends({ navigation }) {
   const statContext = React.useContext(StatContext)
   const statState = statContext.value.state
   const pctHistory = useTotalPctHistory(1)
-  const handicapHistory = useHandicapHistory(1)
+  const hcpInfo = useHandicapHistory(1)
+  const handicapHistory = hcpInfo?.handicapHistory;
   const hcp = handicapHistory[handicapHistory.length - 1]
   // console.log("Trends -> statState", statState)
   const roundHistory = useRoundHistory(1)
@@ -88,7 +89,7 @@ export function Trends({ navigation }) {
       case 'Scramble %':
         setParentChartType('LineChart')
         setChartType('Scramble %')
-        console.log("🚀 ~ file: Trends.jsx ~ line 95 ~ setChart ~ pctHistory?.scramblePct", pctHistory?.scramblePct)
+        // console.log("🚀 ~ file: Trends.jsx ~ line 95 ~ setChart ~ pctHistory?.scramblePct", pctHistory?.scramblePct)
         setChartData({
           labels: pctHistory?.scramblePct.map((i, j) => j),
           datasets: [{

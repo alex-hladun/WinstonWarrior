@@ -48,12 +48,12 @@ export const Theme = {
     '#A4CCE3',
   ],
   piePalette: [
-    '#F5EE9E',
-    '#2D728F',
-    '#3B8EA5',
-    '#F49E4C',
-    '#DB5ABA',
-    '#AB3428'
+    '#98D189',
+    '#70C05D',
+    '#51A23F',
+    '#C63B2F',
+    '#AB3428',
+    '#84271F'
   ]
   
 }

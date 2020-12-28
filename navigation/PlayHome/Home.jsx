@@ -13,7 +13,8 @@ export function Home({ navigation }) {
   const statState = statContext.value.state
   const totalInfo = useTotalInfo(1, 'Any')
   // const hcp = useHandicap(1)
-  const hcpHistory = useHandicapHistory(1)
+  const hcpInfo = useHandicapHistory(1)
+  const hcpHistory = hcpInfo.handicapHistory;
   const hcp = hcpHistory[hcpHistory.length - 1]
 
   const handlePress = () => {
