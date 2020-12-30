@@ -1,27 +1,24 @@
 import { View, Text, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import * as React from 'react';
-import * as Linking from 'expo-linking';
-import { PlayContext } from '../../context/PlayContext'
+import { AppContext } from '../../context/AppContext'
 import styles from '../../assets/styles/MenuStyles'
 import { loadCourseInfo } from '../../db/dbSetup';
-import { useHandicap } from '../../hooks/useHandicap';
 
 export function CourseSelect({ navigation }) {
-  const hcp = useHandicap(1)
-  const playContext = React.useContext(PlayContext)
-  // console.log('playContext in CourseSelect', playContext)
+  const appContext = React.useContext(AppContext)
+
   const handlePress = async (course) => {
     AsyncStorage.setItem('course_id', `${course.id}`)
-    playContext.dispatch({
+    appContext.dispatch({
       type: 'set_course',
       data: course.id,
       rtg: course.rtg,
       slp: course.slp
     })
 
+    appContext.value.loadInitialCourseData(course.id, 1)
     navigation.push('Add Players')
   }
-
 
   const courseList = [
     {

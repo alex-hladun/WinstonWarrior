@@ -1,7 +1,5 @@
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList, Image, Modal, ImageBackground, Dimensions } from 'react-native';
 import * as React from 'react';
-import * as Linking from 'expo-linking';
-import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/StatStyles'
 import Carousel from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,11 +9,16 @@ import { useShotData } from '../../hooks/useShotData';
 import { BarChart } from 'react-native-chart-kit'
 import { useShotHistory } from '../../hooks/useShotHistory';
 import { ClubCard } from './ClubCard'
+import { AppContext } from '../../context/AppContext';
+
 
 const { width } = Dimensions.get('window');
 
 export function Clubs({ navigation }) {
-  const shotData = useShotData(1)
+  // const shotData = useShotData(1)
+  const appContext = React.useContext(AppContext)
+  const statState = appContext.value.state.statState
+  const shotData = statState.shotData
   // console.log("🚀 ~ file: Clubs.jsx ~ line 19 ~ Clubs ~ shotData", shotData)
   const [club, setClub] = React.useState(null)
   const [clubView, setClubView] = React.useState(false)

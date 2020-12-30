@@ -930,7 +930,7 @@ export const loadTotalBirds = async (user_id) => {
     WHERE rounds.user_id = ?
     ORDER BY holes.hole_num ASC;
     `, [user_id], (txObj, result) => {
-      // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
+      console.log(`all birdie info for: ${JSON.stringify(result.rows._array)}`)
       resolve(result.rows._array)
     }, (err, mess) => console.log('err getting birds', reject(mess)))
   })

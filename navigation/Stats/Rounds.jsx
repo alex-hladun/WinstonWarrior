@@ -1,15 +1,11 @@
 import { View, Text, TouchableOpacity, Image, FlatList, SafeAreaView, Dimensions, ImageBackground, Modal } from 'react-native';
 import * as React from 'react';
-import * as Linking from 'expo-linking';
-import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/StatStyles'
-import { StatContext } from '../../context/StatContext'
-import { useRoundHistory } from '../../hooks/useRoundHistory';
 import { RoundCard } from './RoundCard'
 import XSymbol from '../../assets/svg/XSymbol';
+import { AppContext } from '../../context/AppContext';
 import { Theme } from '../../assets/styles/Theme'
 import Carousel from 'react-native-snap-carousel';
-import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 
 const { width } = Dimensions.get('window');
 
@@ -17,7 +13,7 @@ const { width } = Dimensions.get('window');
 // Renders into list
 const RoundItem = ({ round, handleRoundSelect, includedInHandicap, nineHoleRound }) => {
 // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", round)
-console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRound)
+// console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRound)
   return (
     <TouchableOpacity onPress={() => handleRoundSelect(round.index)}>
     <View style={nineHoleRound ? styles.nineHoleRoundItem : styles.roundItem}>
@@ -38,17 +34,15 @@ console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRou
 
 
 export function Rounds() {
-  const roundHistory = useRoundHistory(1)
-  const reverseRoundHistory = roundHistory
+  const appContext = React.useContext(AppContext)
+  const appState = appContext.value.state
+  const roundHistory = appState.statState.roundHistory
   const [roundView, setRoundView] = React.useState(false)
   const [round, setRound] = React.useState(null)
   const carRef = React.useRef(null)
-  const hcpInfo = useHandicapHistory(1)
-  const handicapRounds = hcpInfo?.handicapRounds;
-  console.log("🚀 ~ file: Trends.jsx ~ line 33 ~ Trends ~ handicapHistory", handicapRounds)
+  const handicapRounds = appState.statState.hcpRounds;
   // Item rendered into flatlist
   const renderItem = (round) => {
-  // console.log("🚀 ~ file: Rounds.jsx ~ line 51 ~ renderItem ~ round", round)
     return (<RoundItem 
       handleRoundSelect={handleRoundSelect} 
       round={round} 
@@ -82,7 +76,7 @@ const _roundView = () => {
         <Carousel
           layout={"stack"}
           ref={carRef}
-          data={reverseRoundHistory}
+          data={roundHistory}
           sliderWidth={100}
           enableMomentum={true}
           enableSnap={true}
@@ -117,7 +111,7 @@ const _roundView = () => {
           <SafeAreaView>
             {roundHistory[0] ? 
             <FlatList 
-            data={reverseRoundHistory} 
+            data={roundHistory} 
             renderItem={renderItem} 
             style={{
               // top: 10

@@ -16,11 +16,11 @@ const sumFront = obj => {
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
 
 export const netHandicapDiffCalc = (scoreObj, userHandicap, rtg, slope, holeInfoObj) => {
-// console.log("🚀 ~ file: handicap.js ~ line 19 ~ netHandicapDiffCalc ~ holeInfoObj", holeInfoObj)
+console.log("🚀 ~ file: handicap.js ~ line 19 ~ netHandicapDiffCalc ~ holeInfoObj", holeInfoObj)
 console.log("🚀 ~ file: handicap.js ~ line 19 ~ netHandicapDiffCalc ~ slope", slope)
 console.log("🚀 ~ file: handicap.js ~ line 19 ~ netHandicapDiffCalc ~ rtg", rtg)
-// console.log("🚀 ~ file: handicap.js ~ line 20 ~ netHandicapDiffCalc ~ scoreObj", scoreObj)
-  // console.log("🚀 ~ file: handicap.js ~ line 6 ~ netHandicapDiffCalc ~ holeInfoObj", holeInfoObj)
+console.log("🚀 ~ file: handicap.js ~ line 20 ~ netHandicapDiffCalc ~ scoreObj", scoreObj)
+  console.log("🚀 ~ file: handicap.js ~ line 6 ~ netHandicapDiffCalc ~ holeInfoObj", holeInfoObj)
 
   let completedHoles = 0;
   let continueCounting = true;

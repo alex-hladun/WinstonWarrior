@@ -5,6 +5,7 @@ import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/StatStyles'
 import Carousel from 'react-native-snap-carousel';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AppContext } from '../../context/AppContext';
 import XSymbol from '../../assets/svg/XSymbol';
 import { Theme } from '../../assets/styles/Theme'
 import {
@@ -28,11 +29,9 @@ const pieChartConfig = {
 }
 
 export function RoundCard({ handleRoundView, item }) {
-
-  // console.log("🚀 ~ file: RoundCard.jsx ~ line 31 ~ RoundCard ~ item", item)
-
+  const appContext = React.useContext(AppContext)
+  const appState = appContext.value.state
   const [roundData, setRoundData] = React.useState({})
-  // console.log("🚀 ~ file: RoundCard.jsx ~ line 42 ~ RoundCard ~ roundData", roundData)
   
   const updateData = async() => {
     const roundDataForState = await getRoundData(item.round_id)

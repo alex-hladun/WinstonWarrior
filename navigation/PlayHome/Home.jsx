@@ -4,13 +4,16 @@ import * as Linking from 'expo-linking';
 import GolfLogo from '../../assets/svg/GolfLogo'
 import styles from '../../assets/styles/PlayStyles'
 import { StatContext } from '../../context/StatContext'
+import { AppContext } from '../../context/AppContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
 import { useHandicap } from '../../hooks/useHandicap';
 import { useHandicapHistory } from '../../hooks/useHandicapHistory';
 
 export function Home({ navigation }) {
   const statContext = React.useContext(StatContext)
+  const appContext = React.useContext(AppContext)
   const statState = statContext.value.state
+  const appState = appContext.value.state
   const totalInfo = useTotalInfo(1, 'Any')
   // const hcp = useHandicap(1)
   const hcpInfo = useHandicapHistory(1)
@@ -36,20 +39,20 @@ export function Home({ navigation }) {
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Rounds</Text>
-              <Text style={styles.boxContent}>{totalInfo.totalRounds ? totalInfo.totalRounds : 0}</Text>
+              <Text style={styles.boxContent}>{appState.statState?.totalRounds ? appState.statState?.totalRounds : 0}</Text>
 
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>HCP</Text>
-              <Text style={styles.boxContent}>{hcp ? hcp : 'NA'}</Text>
+              <Text style={styles.boxContent}>{appState.statState?.hcp ? appState.statState.hcp.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Avg Score</Text>
-              <Text style={styles.boxContent}>{totalInfo.avgScore ? totalInfo.avgScore.toFixed(1) : 'NA'}</Text>
+              <Text style={styles.boxContent}>{appState.statState?.avgScore ? appState.statState?.avgScore.toFixed(1) : 'NA'}</Text>
             </View>
             <View style={styles.boxContainer}>
               <Text style={styles.boxHeader}>Best</Text>
-              <Text style={styles.boxContent}>{totalInfo.bestScore? totalInfo.bestScore : 'NA'}</Text>
+              <Text style={styles.boxContent}>{appState.statState?.bestScore? appState.statState?.bestScore : 'NA'}</Text>
             </View>
           </View>
 

@@ -1,21 +1,14 @@
 import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import * as React from 'react';
-import * as Linking from 'expo-linking';
 import styles from '../../assets/styles/MenuStyles'
 import { AppContext } from '../../context/AppContext'
-import { PlayContext } from '../../context/PlayContext'
 import { registerUser, createRound } from '../../db/dbSetup'
 import AsyncStorage from '@react-native-community/async-storage';
-// import { useLoadCourseInfoIntoState } from '../../hooks/useLoadCourseInfoIntoState';
 
 export function PlayerAdd({ navigation }) {
-  // const anything = useLoadCourseInfoIntoState()
-  const playContext = React.useContext(PlayContext)
-  const playState = playContext.value.state
-
-  // console.log('playcontext in playerAdd', playContext.value.state)
   const appContext = React.useContext(AppContext)
-  // console.log('appcontext in playerAdd', appContext.value.state)
+  const appState = appContext.value.state
+
   const [playerCount, setPlayerCount] = React.useState(1)
   const [nameCount, setNameCount] = React.useState(1)
 
@@ -47,16 +40,13 @@ export function PlayerAdd({ navigation }) {
     }
   })
   const handleStart = async () => {
-    console.log('Starting Game!')
+    const userRoundID = await createRound(appState.playState.courseId, 1)
 
-
-    const userRoundID = await createRound(playState.course_id, 1)
-
-    if (playContext.value.state.player_2) {
+    if (appState.playState.player_2) {
       console.log('registering user 2')
-      const uid = await registerUser(playContext.value.state.player_2)
+      const uid = await registerUser(appState.playState.player_2)
       // Course ID always 1
-      const u2roundid = await createRound(playState.course_id, uid)
+      const u2roundid = await createRound(appState.playState.courseId, uid)
 
       console.log('uid after register', uid)
       console.log('u2roundid after register', u2roundid)
@@ -67,48 +57,33 @@ export function PlayerAdd({ navigation }) {
       })
 
       await AsyncStorage.setItem('u2roundid', `${u2roundid}`)
-      await AsyncStorage.setItem('u2name', `${playContext.value.state.player_2}`)
-
-      await appContext.dispatch({
-        type: 'set_user_2_name',
-        data: playContext.value.state.player_2
-      })
+      await AsyncStorage.setItem('u2name', `${appState.playState.player_2}`)
     }
 
-    if (playContext.value.state.player_3) {
+    if (appState.playState.player_3) {
       console.log('registering user 3')
-      const uid = await registerUser(playContext.value.state.player_3)
-      const u3roundid = await createRound(playState.course_id, uid)
+      const uid = await registerUser(appState.playState.player_3)
+      const u3roundid = await createRound(appState.playState.courseId, uid)
 
       await appContext.dispatch({
         type: 'set_user_3_round_id',
         data: u3roundid
       })
       await AsyncStorage.setItem('u3roundid', `${u3roundid}`)
-      await AsyncStorage.setItem('u3name', `${playContext.value.state.player_3}`)
-
-      await appContext.dispatch({
-        type: 'set_user_3_name',
-        data: playContext.value.state.player_3
-      })
+      await AsyncStorage.setItem('u3name', `${appState.playState.player_3}`)
     }
 
-    if (playContext.value.state.player_4) {
+    if (appState.playState.player_4) {
       console.log('registering user 4')
-      const uid = await registerUser(playContext.value.state.player_4)
-      const u4roundid = await createRound(playState.course_id, uid)
+      const uid = await registerUser(appState.playState.player_4)
+      const u4roundid = await createRound(appState.playState.courseId, uid)
 
       await AsyncStorage.setItem('u4roundid', `${u4roundid}`)
-      await AsyncStorage.setItem('u4name', `${playContext.value.state.player_4}`)
+      await AsyncStorage.setItem('u4name', `${appState.playState.player_4}`)
 
       await appContext.dispatch({
         type: 'set_user_4_round_id',
         data: u4roundid
-      })
-
-      await appContext.dispatch({
-        type: 'set_user_4_name',
-        data: playContext.value.state.player_4
       })
     }
 
@@ -137,18 +112,18 @@ export function PlayerAdd({ navigation }) {
 
 
   const addPlayer = (num) => {
-    if (!playContext.value.state.player_2) {
-      playContext.dispatch({
+    if (!appState.playState.player_2) {
+      appContext.dispatch({
         type: `set_player_2`,
         data: `Player ${nameCount + 1}`
       })
-    } else if (!playContext.value.state.player_3) {
-      playContext.dispatch({
+    } else if (!appState.playState.player_3) {
+      appContext.dispatch({
         type: `set_player_3`,
         data: `Player ${nameCount + 1}`
       })
-    } else if (!playContext.value.state.player_4) {
-      playContext.dispatch({
+    } else if (!appState.playState.player_4) {
+      appContext.dispatch({
         type: `set_player_4`,
         data: `Player ${nameCount + 1}`
       })
@@ -162,7 +137,7 @@ export function PlayerAdd({ navigation }) {
     console.log('removing player', num)
     if (num !== 1) {
       console.log('removing player', num)
-      playContext.dispatch({
+      appContext.dispatch({
         type: `remove_player_${num}`
       })
 
@@ -171,7 +146,7 @@ export function PlayerAdd({ navigation }) {
   }
 
   const changePlayerName = (num, name) => {
-    playContext.dispatch({
+    appContext.dispatch({
       type: `set_player_${num}`,
       data: name
     })
@@ -183,9 +158,9 @@ export function PlayerAdd({ navigation }) {
     <Image source={require('../../assets/images/vectors/Asset34.png')} style={styles.bgImage}/>
       <View style={styles.container}>
         {player(appContext.value.state.auth_data, 1)}
-        {playContext.value.state.player_2 ? player(playContext.value.state.player_2, 2) : null}
-        {playContext.value.state.player_3 ? player(playContext.value.state.player_3, 3) : null}
-        {playContext.value.state.player_4 ? player(playContext.value.state.player_4, 4) : null}
+        {appState.playState.player_2 ? player(appState.playState.player_2, 2) : null}
+        {appState.playState.player_3 ? player(appState.playState.player_3, 3) : null}
+        {appState.playState.player_4 ? player(appState.playState.player_4, 4) : null}
 
         {playerCount < 4 &&
           <TouchableOpacity onPress={() => addPlayer(playerCount + 1)}>

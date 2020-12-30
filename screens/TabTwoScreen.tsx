@@ -15,7 +15,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function TabTwoScreen() {
   const appContext = React.useContext(AppContext)
   const appState = appContext.value.state
-  const holeNum = appState.hole_num
+  const holeNum = appState.playState.hole_num
 
   return (
     <Tab.Navigator tabBarOptions={{

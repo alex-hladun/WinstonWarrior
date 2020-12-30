@@ -19,17 +19,16 @@ import RightSymbol from '../assets/svg/RightSymbol';
 
 export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleInc, handleHoleDec }) {
   const appContext = React.useContext(AppContext)
-  const playContext = React.useContext(PlayContext)
-  const holeInfo = playContext.value.state.holeInfo
-  const statContext = React.useContext(StatContext)
-  let playState = playContext.value.state
+  // const playContext = React.useContext(PlayContext)
   let appState = appContext.value.state
+  const holeInfo = appState.playState.holeInfo
+  // console.log("🚀 ~ file: Score.jsx ~ line 25 ~ Score ~ holeInfo", holeInfo)
   const [playerArray, setPlayerArray] = useState([])
-  const holeID = appState.hole_id
-  const p1ps = playState.p1score[holeNum]
-  const p2ps = playState.p2score[holeNum]
-  const p3ps = playState.p3score[holeNum]
-  const p4ps = playState.p4score[holeNum]
+  const holeID = appState.playState.hole_id
+  const p1ps = appState.playState.p1score[holeNum]
+  const p2ps = appState.playState.p2score[holeNum]
+  const p3ps = appState.playState.p3score[holeNum]
+  const p4ps = appState.playState.p4score[holeNum]
   // console.log('prev score', p1ps)
   // console.log('playstate in score', playState)
   const [score, setScore] = useState(p1ps ? p1ps : holeInfo[holeNum].par)
@@ -49,14 +48,14 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
     // holeID = appState.hole_id
     console.log(`HOLE ID OF ${holeID}`)
     let newArr = [appState.user_name];
-    if (appState["user_2_name"]) {
-      newArr.push(appState["user_2_name"])
+    if (appState.playState.player_2) {
+      newArr.push(appState.playState.player_2)
     }
-    if (appState.user_3_name) {
-      newArr.push(appState.user_3_name)
+    if (appState.playState.player_3) {
+      newArr.push(appState.playState.player_3)
     }
-    if (appState.user_4_name) {
-      newArr.push(appState.user_4_name)
+    if (appState.playState.player_4) {
+      newArr.push(appState.playState.player_4)
     }
 
     setPlayerArray(newArr)
@@ -100,40 +99,39 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
 
 
     console.log(`posting score of ${score} with ${putts} putts and UD = ${ud} AND gir = ${gir}`)
-    await postScore(holeID, holeNum, appState.round_id, score, putts, penalty, teeShot, approach, chip, putting, gir, ud)
-    // console.log(playContext.value.state.p1score)
-    playContext.dispatch({
+    await postScore(holeID, holeNum, appState.playState.roundId, score, putts, penalty, teeShot, approach, chip, putting, gir, ud)
+    appContext.dispatch({
       type: 'set_p1_score',
       hole: holeNum,
       score: score
     })
 
-    if (appState["user_2_name"]) {
-      await postScore(holeID, holeNum, appState.user_2_rd_id, p2score)
-      playContext.dispatch({
+    if (appState.playState.player_2) {
+      await postScore(holeID, holeNum, appState.playState.player_2_rd_id, p2score)
+      appContext.dispatch({
         type: 'set_p2_score',
         hole: holeNum,
         score: p2score
       })
     }
-    if (appState.user_3_name) {
-      await postScore(holeID, holeNum, appState.user_3_rd_id, p3score)
-      playContext.dispatch({
+    if (appState.playState.player_3) {
+      await postScore(holeID, holeNum, appState.playState.player_3_rd_id, p3score)
+      appContext.dispatch({
         type: 'set_p3_score',
         hole: holeNum,
         score: p3score
       })
     }
-    if (appState.user_4_name) {
-      await postScore(holeID, holeNum, appState.user_4_rd_id, p4score)
-      playContext.dispatch({
+    if (appState.playState.player_4) {
+      await postScore(holeID, holeNum, appState.playState.player_4, p4score)
+      appContext.dispatch({
         type: 'set_p4_score',
         hole: holeNum,
         score: p4score
       })
     }
 
-    getScore(appState.round_id)
+    getScore(appState.playState.roundId)
 
     if (delta === 0 || holeNum === 18) {
       setHole(holeNum + 1)
@@ -145,12 +143,17 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
       resetSliders(-1)
     }
 
-    statContext.dispatch({
-      type: 'trigger_hole_data_update'
-    })
-    statContext.dispatch({
-      type: 'trigger_total_info_update'
-    })
+    // TODO: Remove later and fix reloadHoleStats
+    appContext.value.loadInitialCourseData(appState.playState.courseId, 1)
+    appContext.value.reloadHoleStats(appState.playState.hole_id)
+
+
+    // statContext.dispatch({
+    //   type: 'trigger_hole_data_update'
+    // })
+    // statContext.dispatch({
+    //   type: 'trigger_total_info_update'
+    // })
 
 
     console.log('entered scores')
@@ -242,7 +245,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
             <Picker.Item color={'red'} label="5+" value={5} />
           </Picker>
 
-          {appState.user_2_name &&
+          {appState.playState.player_2 &&
             <Picker
               style={styles.pickerMaster}
               onValueChange={(itemValue, itemIndex) => {
@@ -263,7 +266,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
             </Picker>
           }
 
-          {appState.user_3_name &&
+          {appState.playState.player_3 &&
             <Picker
               style={styles.pickerMaster}
               onValueChange={(itemValue, itemIndex) => {
@@ -283,7 +286,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
               <Picker.Item color={p3ps === 9 ? 'blue' : ''} label="9" value={9} />
             </Picker>
           }
-          {appState.user_4_name &&
+          {appState.playState.player_4 &&
             <Picker
               style={[{ height: 200, width: pickWidth }]}
               onValueChange={(itemValue, itemIndex) => {
