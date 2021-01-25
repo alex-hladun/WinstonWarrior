@@ -15,15 +15,10 @@ import { usePuttHistory } from '../../hooks/usePuttHistory'
 
 export function Holes() {
   const width = Dimensions.get('window').width
-  // console.log("🚀 ~ file: Holes.jsx ~ line 17 ~ Holes ~ width", width)
   const appContext = React.useContext(AppContext)
-  const playContext = React.useContext(PlayContext)
   const appState = appContext.value.state
-  const statContext = React.useContext(StatContext)
   const holeData = appState.statState.courseData.holeStats
   const holeNum = appState.playState.hole_num
-  // console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
-  // TODO: Change to hole ID
   const puttHistory = holeData[holeNum]?.puttHistory
   const [parentChartType, setParentChartType] = React.useState('LineChart')
   const [chartType, setChartType] = React.useState('Shots')

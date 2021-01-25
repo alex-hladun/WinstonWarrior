@@ -9,8 +9,8 @@ import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 
 const sumValues = obj => {
-  console.log("obj", obj)
-  if (Object.keys(obj).length) {
+  // console.log("obj", obj)
+  if (Object.keys(obj).length !== 0) {
     return Object.values(obj).reduce((a, b) => a + b)
   } else {
     return 0
@@ -18,7 +18,6 @@ const sumValues = obj => {
 };
 
 export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
-  const playContext = React.useContext(PlayContext)
   const appContext = React.useContext(AppContext)
   const holeInfo = appContext.value.state.playState.holeInfo
   let appState = appContext.value.state

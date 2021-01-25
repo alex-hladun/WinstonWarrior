@@ -68,7 +68,7 @@ export default function Hole({ location, initialHole = 1 }) {
     if (!tracking) {
       setStartTrack(location)
       setTracking(true)
-      console.log('Starting tracking')
+      // console.log('Starting tracking')
       Animated.loop(
         Animated.sequence([
           Animated.timing(trackAnim, {
@@ -226,7 +226,7 @@ export default function Hole({ location, initialHole = 1 }) {
   const handleRegionChange = async (reg) => {
     let coords = await mapRef.current.getCamera()
     coords = {...coords, altitude: 1400}
-    console.log(coords)
+    // console.log(coords)
   }
 
   const handleMapLongPress = () => {

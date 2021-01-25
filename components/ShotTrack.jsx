@@ -13,13 +13,14 @@ import { Theme } from '../assets/styles/Theme'
 export default function ShotTrack({ distance, handleTrackViewClose }) {
   const appContext = React.useContext(AppContext)
   const statContext = React.useContext(StatContext)
-  const appState = appContext
+  const appState = appContext.value.state
   const [club, setClub] = useState(null)
   const [effort, setEffort] = useState(100)
 
   let clubArray
   let clubList;
-  clubArray = appState.value.state.clubList
+  clubArray = appState.appState.clubList
+  console.log("🚀 ~ file: ShotTrack.jsx ~ line 23 ~ ShotTrack ~ clubArray", clubArray)
   if (clubArray) {
     clubList = clubArray.map((clb, i) => {
       return (
@@ -37,9 +38,10 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
   const handleSubmit = async () => {
     // console.log('handle distance submit')
     await postShot(1, club, effort, distance)
-    statContext.dispatch({
-      type: 'trigger_club_update'
-    })
+    appContext.value.refreshShotStats(1)
+    // statContext.dispatch({
+    //   type: 'trigger_club_update'
+    // })
     handleTrackViewClose()
   }
 

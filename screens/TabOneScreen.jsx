@@ -10,29 +10,7 @@ import { StatContext } from "../context/StatContext";
 import NavigationPlay from "../navigation/PlayHome";
 import { PlayContext } from "../context/PlayContext";
 import {
-  createWinston,
-  loadAvgPutts,
-  loadBestScore,
-  loadAvgScore,
-  loadGirPct,
-  loadTotalRounds,
-  seedData,
-  setUpDB,
-  loadStats,
-  removeDB,
-  loadFairwayData,
-  registerUser,
-  getClubs,
-  loadHoleStats,
-  loadLow,
-  createClubs,
   getScore,
-  loadBirds,
-  loadHoleHistory,
-  loadShots,
-  loadFairwayDataTotal,
-  getPct,
-  loadFwHistory,
   retrieveCourseInfo,
 } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -41,7 +19,7 @@ import { LoadingScreen } from "../components/LoadingScreen";
 
 export default function TabOneScreen() {
   const appContext = React.useContext(AppContext);
-  const holeInfoLoaded =( appContext.value?.state?.playState?.holeInfo?.['1'] ? true : false)
+  const holeInfoLoaded =( appContext.value?.state?.playState?.holeInfo?.['1'].camera ? true : false)
   const appState = appContext.value.state;
   const [initialHole, setInitialHole] = React.useState(1);
 
@@ -89,17 +67,17 @@ export default function TabOneScreen() {
       }
     };
 
-    const getAllClubs = async () => {
-      const clubs = await getClubs();
-      appContext.dispatch({
-        type: "set_club_list",
-        data: clubs,
-      });
-      // console.log('clubs set')
-    };
+    // const getAllClubs = async () => {
+    //   const clubs = await getClubs();
+    //   appContext.dispatch({
+    //     type: "set_club_list",
+    //     data: clubs,
+    //   });
+    //   // console.log('clubs set')
+    // };
 
     checkExisting();
-    getAllClubs();
+    // getAllClubs();
   }, []);
 
   const setHole = async () => {
@@ -271,7 +249,7 @@ export default function TabOneScreen() {
     getLocationAsync();
   }, [locationUpdate]);
 
-  return appState.appState?.loading ? (
+  return appState.appState?.initialLoading ? (
     <LoadingScreen />
   ) : appState.appState.viewMode === "play" ? (
     appState.appState.loading && !holeInfoLoaded ? (

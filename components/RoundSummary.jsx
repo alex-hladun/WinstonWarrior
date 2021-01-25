@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   Animated,
   Alert,
-  Modal,
+  Modal
 } from "react-native";
 import styles from "../assets/styles/PlayStyles";
 import { AppContext } from "../context/AppContext";
@@ -19,7 +19,13 @@ import { useHandicap } from "../hooks/useHandicap";
 import { StatContext } from "../context/StatContext";
 import { handicapDiffCalc, netHandicapDiffCalc } from "../helpers/handicap";
 
-const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+const sumValues = (obj) => {
+  if (Object.values(obj)[0]) {
+    console.log("OK");
+    return Object.values(obj).reduce((a, b) => a + b);
+  }
+  return 0;
+};
 
 const sumFront = (obj) => {
   let holeArray = Object.keys(obj).filter((a) => a < 10);
@@ -62,14 +68,14 @@ export default function RoundSummary({ handleRoundSummary }) {
       name: appState["user_name"],
       totalScore: sumValues(appState.playState.p1score),
       frontScore: sumFront(appState.playState.p1score),
-      backScore: sumBack(appState.playState.p1score),
+      backScore: sumBack(appState.playState.p1score)
     });
 
     newObj["p1"] = {
       name: appState["user_name"],
       totalScore: sumValues(appState.playState.p1score),
       frontScore: sumFront(appState.playState.p1score),
-      backScore: sumBack(appState.playState.p1score),
+      backScore: sumBack(appState.playState.p1score)
     };
 
     if (appState.playState.player_2) {
@@ -77,14 +83,14 @@ export default function RoundSummary({ handleRoundSummary }) {
         name: appState.playState.player_2,
         totalScore: sumValues(appState.playState.p2score),
         frontScore: sumFront(appState.playState.p2score),
-        backScore: sumBack(appState.playState.p2score),
+        backScore: sumBack(appState.playState.p2score)
       });
 
       newObj["p2"] = {
         name: appState.playState.player_2,
         totalScore: sumValues(appState.playState.p2score),
         frontScore: sumFront(appState.playState.p2score),
-        backScore: sumBack(appState.playState.p2score),
+        backScore: sumBack(appState.playState.p2score)
       };
     }
     if (appState.playState.player_3) {
@@ -92,14 +98,14 @@ export default function RoundSummary({ handleRoundSummary }) {
         name: appState.playState.player_3,
         totalScore: sumValues(appState.playState.p3score),
         frontScore: sumFront(appState.playState.p3score),
-        backScore: sumBack(appState.playState.p3score),
+        backScore: sumBack(appState.playState.p3score)
       });
 
       newObj["p3"] = {
         name: appState.playState.player_3,
         totalScore: sumValues(appState.playState.p3score),
         frontScore: sumFront(appState.playState.p3score),
-        backScore: sumBack(appState.playState.p3score),
+        backScore: sumBack(appState.playState.p3score)
       };
     }
     if (appState.playState.player_4) {
@@ -107,13 +113,13 @@ export default function RoundSummary({ handleRoundSummary }) {
         name: appState.playState.player_4,
         totalScore: sumValues(appState.playState.p3score),
         frontScore: sumFront(appState.playState.p4score),
-        backScore: sumBack(appState.playState.p4score),
+        backScore: sumBack(appState.playState.p4score)
       });
       newObj["p4"] = {
         name: appState.playState.player_4,
         totalScore: sumValues(appState.playState.p4score),
         frontScore: sumFront(appState.playState.p4score),
-        backScore: sumBack(appState.playState.p4score),
+        backScore: sumBack(appState.playState.p4score)
       };
     }
 
@@ -133,7 +139,7 @@ export default function RoundSummary({ handleRoundSummary }) {
         leadScore = sortedArray[i].totalScore;
         sortedArray[i]["position"] = position;
       }
-    console.log("sorted positions", sortedArray);
+    // console.log("sorted positions", sortedArray);
 
     setScoreArr(sortedArray);
     // setScoreObj(newObj)
@@ -158,7 +164,7 @@ export default function RoundSummary({ handleRoundSummary }) {
                   ? styles.second
                   : player.position === 3
                   ? styles.third
-                  : styles.fourth,
+                  : styles.fourth
               ]}
             >
               <Text>{player.position}</Text>
@@ -175,8 +181,8 @@ export default function RoundSummary({ handleRoundSummary }) {
   }
 
   useEffect(() => {
-    console.log("🚀 ~ file: RoundSummary.jsx ~ line 166 ~ handleScoreSubmit ~ appState.round_id", appState.playState.roundId)
-    console.log("🚀 ~ file: RoundSummary.jsx ~ line 167 ~ handleScoreSubmit ~ netHandicapDiffCalc()", netHandicapDiffCalc(appState.playState.p1score, userHandicap, appState.playState.p1_rtg, appState.playState.p1_slp, appState.playState.holeInfo))
+    // console.log("🚀 ~ file: RoundSummary.jsx ~ line 166 ~ handleScoreSubmit ~ appState.round_id", appState.playState.roundId)
+    // console.log("🚀 ~ file: RoundSummary.jsx ~ line 167 ~ handleScoreSubmit ~ netHandicapDiffCalc()", netHandicapDiffCalc(appState.playState.p1score, userHandicap, appState.playState.p1_rtg, appState.playState.p1_slp, appState.playState.holeInfo))
     // console.log("🚀 ~ file: RoundSummary.jsx ~ line 170 ~ handleScoreSubmit ~ appState.playState", appState.playState)
   }, [appState.playState]);
 
@@ -204,6 +210,7 @@ export default function RoundSummary({ handleRoundSummary }) {
       holesPlayed,
       calculatedHolesPlayed
     );
+
     appContext.value.doneRound();
     appContext.value.loadInitialStats(1);
     // playContext.value.doneRound()
