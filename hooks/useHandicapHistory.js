@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createWinston, loadAvgPutts, loadBestScore, loadAvgScore, loadGirPct, loadTotalRounds, seedData, setUpDB, loadStats, removeDB, loadFairwayData, registerUser, getClubs, loadHoleStats, loadLow, createClubs, getScore, loadBirds, loadHoleHistory, loadShots, loadFairwayDataTotal, getPct, loadFwHistory, loadHcpDiffStats } from '../db/dbSetup'
 import { StatContext } from '../context/StatContext'
 
-const loadHandicapFromArray = (hcpArray) => {
+export const loadHandicapFromArray = (hcpArray) => {
   // Given a sliced array of objects, will tell you what the handicaps were at that particular time
 
   const handicapArrayToSort = []

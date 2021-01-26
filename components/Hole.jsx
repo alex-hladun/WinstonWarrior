@@ -25,9 +25,8 @@ export default function Hole({ location, initialHole = 1 }) {
   // Loads all courseInfo into playcontext
   const appContext = React.useContext(AppContext)
   const playContext = React.useContext(PlayContext)
-  // console.log("🚀 ~ file: Hole.jsx ~ line 33 ~ Hole ~ playContext", playContext.value.state.courseInfo)
-  const holeInfo = playContext.value.state.holeInfo
-  const holeNum = appContext.value.state.hole_num
+  const holeInfo = appContext.value.state.playState.holeInfo
+  const holeNum = appContext.value.state.playState.hole_num
   const [camera, setCamera] = useState(holeInfo[holeNum].camera)
   const [distanceMarker, setDistanceMarker] = useState({
     latitude: undefined,
@@ -50,12 +49,6 @@ export default function Hole({ location, initialHole = 1 }) {
   const trackAnim = useRef(new Animated.Value(0.85)).current
 
   useEffect(() => {
-    // console.log("🚀 ~ file: Hole.jsx ~ line 65 ~ useEffect ~ camera", camera)
-  // console.log("🚀 ~ file: Hole.jsx ~ line 34 ~ Hole ~ holeInfo2", playContext.value.state)
-
-    // // retrieve and set all scores?
-    // console.log(Dimensions.get('window').width)
-    // console.log(Dimensions.get('window').height, 'height')
   }, [playContext])
 
 
@@ -75,7 +68,7 @@ export default function Hole({ location, initialHole = 1 }) {
     if (!tracking) {
       setStartTrack(location)
       setTracking(true)
-      console.log('Starting tracking')
+      // console.log('Starting tracking')
       Animated.loop(
         Animated.sequence([
           Animated.timing(trackAnim, {
@@ -233,7 +226,7 @@ export default function Hole({ location, initialHole = 1 }) {
   const handleRegionChange = async (reg) => {
     let coords = await mapRef.current.getCamera()
     coords = {...coords, altitude: 1400}
-    console.log(coords)
+    // console.log(coords)
   }
 
   const handleMapLongPress = () => {
@@ -248,6 +241,7 @@ export default function Hole({ location, initialHole = 1 }) {
     await setDistanceMarker(coords)
   }
 
+  const distanceToFlag = measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude)
   return (
     <View style={styles.holeContainer}>
       
@@ -286,7 +280,7 @@ export default function Hole({ location, initialHole = 1 }) {
           <TouchableOpacity onPress={() => handleHoleChange(1)}>
             <Text style={styles.holeTitle} >{holeNum}</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>{measure(holeInfo[holeNum].pinCoords.latitude, holeInfo[holeNum].pinCoords.longitude, location.latitude, location.longitude).toFixed(0)} yds</Text>
+          <Text style={styles.title}>{distanceToFlag > 999 ? '999' : distanceToFlag.toFixed(0)} yds</Text>
           <TouchableOpacity onPress={() => handleScoreCardEnter()}>
             <Text style={styles.parTitle} >Par {holeInfo[holeNum].par}</Text>
           </TouchableOpacity>

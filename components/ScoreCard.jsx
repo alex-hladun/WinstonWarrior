@@ -9,8 +9,8 @@ import { PlayContext } from '../context/PlayContext'
 import XSymbol from '../assets/svg/XSymbol';
 
 const sumValues = obj => {
-  console.log("obj", obj)
-  if (Object.keys(obj).length) {
+  // console.log("obj", obj)
+  if (Object.keys(obj).length !== 0) {
     return Object.values(obj).reduce((a, b) => a + b)
   } else {
     return 0
@@ -18,35 +18,33 @@ const sumValues = obj => {
 };
 
 export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
-  const playContext = React.useContext(PlayContext)
-  const holeInfo = playContext.value.state.holeInfo
+  const appContext = React.useContext(AppContext)
+  const holeInfo = appContext.value.state.playState.holeInfo
+  let appState = appContext.value.state
 
-  let playState = playContext.value.state
-  const [scoreState, setScoreState] = useState(playState.p1score)
-  const [p2scoreState, setP2ScoreState] = useState(playState.p2score)
-  const [p3scoreState, setP3ScoreState] = useState(playState.p3score)
-  const [p4scoreState, setP4ScoreState] = useState(playState.p4score)
+  const [scoreState, setScoreState] = useState(appState.playState.p1score)
+  const [p2scoreState, setP2ScoreState] = useState(appState.playState.p2score)
+  const [p3scoreState, setP3ScoreState] = useState(appState.playState.p3score)
+  const [p4scoreState, setP4ScoreState] = useState(appState.playState.p4score)
   const [playerArray, setPlayerArray] = useState([])
   const [p1totalScore, setP1TotalScore] = useState(0)
   const [p2totalScore, setP2TotalScore] = useState(0)
   const [p3totalScore, setP3TotalScore] = useState(0)
   const [p4totalScore, setP4TotalScore] = useState(0)
-  const appContext = React.useContext(AppContext)
-  let appState = appContext.value.state
 
 
   useEffect(() => {
     // console.log('playState', playState)
     // get array of user names
     let newArr = [appContext.value.state.user_name];
-    if (appContext.value.state["user_2_name"]) {
-      newArr.push(appContext.value.state["user_2_name"])
+    if (appState.playState["player_2"]) {
+      newArr.push(appState.playState["player_2"])
     }
-    if (appContext.value.state.user_3_name) {
-      newArr.push(appContext.value.state.user_3_name)
+    if (appState.playState.player_3) {
+      newArr.push(appState.playState.player_3)
     }
-    if (appContext.value.state.user_4_name) {
-      newArr.push(appContext.value.state.user_4_name)
+    if (appState.playState.player_4) {
+      newArr.push(appState.playState.player_4)
     }
     setPlayerArray(newArr)
 
@@ -63,16 +61,16 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
 
     }
 
-    if (appContext.value.state.user_2_name) {
+    if (appState.playState.player_2) {
       let ts2 = sumValues(p2scoreState)
       setP2TotalScore(ts2)
     }
-    if (appContext.value.state.user_3_name) {
+    if (appState.playState.player_3) {
       let ts3 = sumValues(p3scoreState)
       setP3TotalScore(ts3)
     }
 
-    if (appContext.value.state.user_4_name) {
+    if (appState.playState.player_4) {
       let ts4 = sumValues(p4scoreState)
       setP4TotalScore(ts4)
     }
@@ -185,10 +183,6 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
           )
         } else if (i === endIndex) {
           if (startIndex < 5) {
-            // if (name === appState.user_2_name) {
-            //   setP2FrontScore(frontScore)
-            // }
-
             newArr.push(
               <View key={`k54es${i}`} style={[styles.score, styles.headerCell]}>
                 <Text style={styles.score} key={i}>
@@ -209,7 +203,7 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
             newArr.push(
               <View key={`ke323s${i}`} style={styles.headerCell}>
                 <Text style={styles.score} key={i}>
-                  {name === appState.user_name ? p1totalScore : name === appState.user_2_name ? p2totalScore : name === appState.user_3_name ? p3totalScore : p4totalScore}
+                  {name === appState.user_name ? p1totalScore : name === appState.playState.player_2 ? p2totalScore : name === appState.playState.player_3 ? p3totalScore : p4totalScore}
                 </Text>
               </View>
             )
@@ -263,13 +257,13 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
             {tableBuilder(0, 10, 'Score', playerArray[0], scoreState, setScoreState)}
           </View>
           <View style={styles.tableRow}>
-            {appState.user_2_name && tableBuilder(0, 10, 'Score', appState.user_2_name, p2scoreState)}
+            {appState.playState.player_2 && tableBuilder(0, 10, 'Score', appState.playState.player_2, p2scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {appState.user_3_name && tableBuilder(0, 10, 'Score', appState.user_3_name, p3scoreState)}
+            {appState.playState.player_3 && tableBuilder(0, 10, 'Score', appState.playState.player_3, p3scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {appState.user_4_name && tableBuilder(0, 10, 'Score', appState.user_4_name, p4scoreState)}
+            {appState.playState.player_4 && tableBuilder(0, 10, 'Score', appState.playState.player_4, p4scoreState)}
           </View>
         </View>
         <View style={styles.tableChild}>
@@ -283,13 +277,13 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
             {tableBuilder(9, 19, 'Score', playerArray[0], scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {appState.user_2_name && tableBuilder(9, 19, 'Score', appState.user_2_name, p2scoreState)}
+            {appState.playState.player_2 && tableBuilder(9, 19, 'Score', appState.playState.player_2, p2scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {appState.user_3_name && tableBuilder(9, 19, 'Score', appState.user_3_name, p3scoreState)}
+            {appState.playState.player_3 && tableBuilder(9, 19, 'Score', appState.playState.player_3, p3scoreState)}
           </View>
           <View style={styles.tableRow}>
-            {appState.user_4_name && tableBuilder(9, 19, 'Score', appState.user_4_name, p4scoreState)}
+            {appState.playState.player_4 && tableBuilder(9, 19, 'Score', aappState.playState.player_4, p4scoreState)}
           </View>
         </View>
       </View>

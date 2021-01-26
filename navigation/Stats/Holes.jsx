@@ -9,25 +9,17 @@ import { StatContext } from '../../context/StatContext'
 import { AppContext } from '../../context/AppContext'
 import { PlayContext } from '../../context/PlayContext'
 import { useTotalInfo } from '../../hooks/useTotalInfo';
-import { useHoleData } from '../../hooks/useHoleData';
+// import { useHoleData } from '../../hooks/useHoleData';
 // import holeInfo from '../../assets/holeInfo';
 import { usePuttHistory } from '../../hooks/usePuttHistory'
 
 export function Holes() {
   const width = Dimensions.get('window').width
-  // console.log("🚀 ~ file: Holes.jsx ~ line 17 ~ Holes ~ width", width)
   const appContext = React.useContext(AppContext)
-  const playContext = React.useContext(PlayContext)
-  const holeInfo = playContext.value.state.holeInfo
   const appState = appContext.value.state
-  const statContext = React.useContext(StatContext)
-
-  const holeData = useHoleData(1, playContext.value.state.course_id)
-  const holeNum = appState.hole_num
-  const totalInfo = useTotalInfo(1, playContext.value.state.course_id)
-  console.log("🚀 ~ file: Holes.jsx ~ line 24 ~ Holes ~ totalInfo", totalInfo)
-  // TODO: Change to hole ID
-  const puttHistory = usePuttHistory(1, holeNum)
+  const holeData = appState.statState.courseData.holeStats
+  const holeNum = appState.playState.hole_num
+  const puttHistory = holeData[holeNum]?.puttHistory
   const [parentChartType, setParentChartType] = React.useState('LineChart')
   const [chartType, setChartType] = React.useState('Shots')
   const [chartData, setChartData] = React.useState({
@@ -62,13 +54,13 @@ export function Holes() {
       case 'Shots':
         setParentChartType('LineChart')
         setChartType('Shots')
-        if (holeData.holeHistoryObj && holeData.holeHistoryObj[holeNum]) {
+        if (holeData['1']) {
           setChartData({
-            labels: holeData.holeHistoryObj[holeNum].date.map(holeDate => {
+            labels: holeData[holeNum].dateHistory.map(holeDate => {
               return (holeDate.slice(5, 10))
             }),
             datasets: [{
-              data: holeData.holeHistoryObj[holeNum].score
+              data: holeData[holeNum].shotHistory
             }]
           })
         }
@@ -78,38 +70,38 @@ export function Holes() {
         setParentChartType('PieChart')
         setPieChartData([{
           name: "Eagles",
-          count: totalInfo.birdieObj[holeNum].eagles,
+          count: holeData[holeNum].eagles,
           color: Theme.piePalette[0],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Birdies",
-          count: totalInfo.birdieObj[holeNum].birdies,
+          count: holeData[holeNum].birdies,
           color: Theme.piePalette[1],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Pars",
-          count: totalInfo.birdieObj[holeNum].pars,
+          count: holeData[holeNum].pars,
           color: Theme.piePalette[2],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Bogeys",
-          count: totalInfo.birdieObj[holeNum].bogies,
+          count: holeData[holeNum].bogies,
           color: Theme.piePalette[3],
 
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Doubles",
-          count: totalInfo.birdieObj[holeNum].doubles,
+          count: holeData[holeNum].doubles,
           color: Theme.piePalette[4],
           legendFontColor: "#000",
           legendFontSize: 15
         }, {
           name: "Triples +",
-          count: totalInfo.birdieObj[holeNum].triples,
+          count: holeData[holeNum].triples,
           color: Theme.piePalette[5],
           legendFontColor: "#000",
           legendFontSize: 15
@@ -121,7 +113,7 @@ export function Holes() {
 
   React.useEffect(() => {
     setChart(chartType)
-  }, [puttHistory, holeData.holeHistoryObj, holeNum])
+  }, [puttHistory, holeNum])
 
 
   const chartConfig = {
@@ -147,11 +139,8 @@ export function Holes() {
 
           {(
             holeNum
-            && holeData.holeHistoryObj
-            && holeData.holeHistoryObj[holeNum]
-            && holeData.holeHistoryObj[holeNum].score[0]
-            && totalInfo.birdieObj
-            && totalInfo.birdieObj[holeNum]
+            && holeData[holeNum]
+            && holeData[holeNum].shotHistory[0]
           )
             ?
             (
@@ -202,7 +191,7 @@ export function Holes() {
                       <View style={styles.boxHeader}>
                         <Text style={styles.boxHeaderText}>Avg Score</Text>
                       </View>
-                      <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgShots ? holeData.holeObj[holeNum].avgShots.toFixed(1) : 'NA'}</Text>
+                      <Text style={styles.boxContent}>{holeData[holeNum].avgShots ? holeData[holeNum].avgShots.toFixed(1) : 'NA'}</Text>
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => setChart('Putts')}>
@@ -210,7 +199,7 @@ export function Holes() {
                       <View style={styles.boxHeader}>
                         <Text style={styles.boxHeaderText}>Avg Putts</Text>
                       </View>
-                      <Text style={styles.boxContent}>{holeData.holeObj[holeNum].avgPutts ? holeData.holeObj[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
+                      <Text style={styles.boxContent}>{holeData[holeNum].avgPutts ? holeData[holeNum].avgPutts.toFixed(1) : 'NA'}</Text>
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => setChart('Scoring')}>
@@ -218,7 +207,7 @@ export function Holes() {
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>Best Score</Text>
                     </View>
-                    <Text style={styles.boxContent}>{holeData.lowHoleObj[holeNum]}</Text>
+                    <Text style={styles.boxContent}>{holeData.[holeNum].lowScore}</Text>
                   </View>
                   </TouchableOpacity>
                 </View>
@@ -227,19 +216,19 @@ export function Holes() {
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>FWY %</Text>
                     </View>
-                    <Text style={styles.boxContent}>{holeData.hitFwObj[holeNum].fairwaysHit ? (100 * holeData.hitFwObj[holeNum].fairwaysHit / holeData.hitFwObj[holeNum].totalFairways).toFixed(0) : '0'}</Text>
+                    <Text style={styles.boxContent}>{holeData[holeNum].fairwaysHit ? (100 * holeData[holeNum].fairwaysHit / holeData[holeNum].totalFairways).toFixed(0) : '0'}</Text>
                   </View>
                   <View style={styles.boxContainer}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>GIR %</Text>
                     </View>
-                    <Text style={styles.boxContent}>{totalInfo.birdieObj[holeNum].GIRs ? (totalInfo.birdieObj[holeNum].GIRs * 100 / totalInfo.birdieObj[holeNum].rounds).toFixed(0) : 0}</Text>
+                    <Text style={styles.boxContent}>{holeData[holeNum].GIRs ? (holeData[holeNum].GIRs * 100 / holeData[holeNum].rounds).toFixed(0) : 0}</Text>
                   </View>
                   <View style={styles.boxContainer}>
                     <View style={styles.boxHeader}>
                       <Text style={styles.boxHeaderText}>SCR %</Text>
                     </View>
-                    <Text style={styles.boxContent}>{totalInfo.birdieObj && totalInfo.birdieObj[holeNum].scrambleSuccess ? (totalInfo.birdieObj[holeNum].scrambleSuccess * 100 / totalInfo.birdieObj[holeNum].scrambleChances).toFixed(0) : 0}</Text>
+                    <Text style={styles.boxContent}>{holeData[holeNum].scrambleSuccess ? (holeData[holeNum].scrambleSuccess * 100 / holeData[holeNum].scrambleChances).toFixed(0) : 0}</Text>
                   </View>
                 </View>
                 {/* <View style={styles.holeRow}>
