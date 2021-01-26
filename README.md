@@ -9,14 +9,12 @@ This policy applies to all information collected or submitted on our website and
 
 You may optionally add an email address and a password to your account, or remove the email address and password from your account. Email addresses are only used for logging in, password resets, responding to emails that you initiate, and sending notifications that you request. We don’t send promotional emails.
 
-We store information about your podcasts, episodes, and listening progress to sync this information between the website and your devices. We also collect anonymous statistics about which podcasts are most popular to help inform our recommendation engine.
+We store information about your gameplay to sync this information between the website and your devices. We also collect anonymous statistics about which courses are most popular to help inform our recommendation engine.
 
 Technical basics
 If you enable notifications, we must store a token to send them. We never use notifications for marketing.
 
 If you upload files to our Servers, we need to store them until you delete them.
-
-If you subscribe to a password-protected podcast, we need to store the credentials you provide in order to keep it updated.
 
 We use cookies on the site and similar tokens in the app to keep you logged in.
 
@@ -28,7 +26,7 @@ We store some of your data in Apple’s iCloud service, such as login tokens for
 Ads and analytics
 We app collects aggregate, anonymous statistics, such as the percentage of users who use particular features, to improve the app.
 
-No personal data is used to target user ads except the categories of podcasts that you’re subscribed to, such as “Technology” or “Business”. Each ad collects, and shares with its advertiser, only three numbers: total views, total taps, and total subscriptions from the ad.
+No personal data is used to target user ads.
 
 Information usage
 We use the information we collect to operate and improve our website, apps, and customer support.
@@ -48,9 +46,6 @@ You may access or change your information or delete your account from the our iO
 Deleted information may be kept in backups for up to 90 days. Backups are encrypted and are only accessed if needed for disaster recovery.
 
 We may delete your information at any time and for any reason, such as technical needs, legal concerns, abuse prevention, removal of idle accounts, data loss, or any other reason.
-
-Third-party links and content
-We displays links and content from third-party podcast feeds and sites, and downloads podcast files directly from each podcast’s third-party servers. These have their own independent privacy policies, and we have no responsibility or liability for their content or activities.
 
 California Online Privacy Protection Act Compliance
 We comply with the California Online Privacy Protection Act. We therefore will not distribute your personal information to outside parties without your consent.
