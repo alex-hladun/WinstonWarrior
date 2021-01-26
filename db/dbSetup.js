@@ -1004,8 +1004,8 @@ export const loadBestScore = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`best score: ${JSON.stringify(result.rows._array)}`)
-          resolve(result.rows._array[0].tot);
+          console.log(`best score: ${JSON.stringify(result.rows._array)}`)
+          resolve(result.rows._array[0]?.tot);
         },
         (err, mess) => console.log("err getting total stats", reject(mess))
       );

@@ -280,7 +280,7 @@ export default function Hole({ location, initialHole = 1 }) {
           <TouchableOpacity onPress={() => handleHoleChange(1)}>
             <Text style={styles.holeTitle} >{holeNum}</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>{distanceToFlag > 999 ? '999+' : distanceToFlag.toFixed(0)} yds</Text>
+          <Text style={styles.title}>{distanceToFlag > 999 ? '999' : distanceToFlag.toFixed(0)} yds</Text>
           <TouchableOpacity onPress={() => handleScoreCardEnter()}>
             <Text style={styles.parTitle} >Par {holeInfo[holeNum].par}</Text>
           </TouchableOpacity>

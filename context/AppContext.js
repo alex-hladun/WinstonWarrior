@@ -390,7 +390,7 @@ function AppProvider(props) {
   const setHole = (holeNum) => {
     AsyncStorage.setItem("holeNum", JSON.stringify(holeNum));
     // Need to retrieve & set hole_id here
-    console.log("setting HOLE in async to ", holeNum);
+    // console.log("setting HOLE in async to ", holeNum);
     dispatch({
       type: "set_hole_num",
       data: holeNum,
@@ -635,10 +635,6 @@ function AppProvider(props) {
         }
       }
     });
-    // console.log(
-    //   "🚀 ~ file: AppContext.js ~ line 612 ~ loadInitialCourseData ~ birdiecount",
-    //   birdiecount
-    // );
 
     const holeStats = await loadHoleStats(course_id, user_id);
 
