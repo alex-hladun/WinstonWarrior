@@ -154,7 +154,6 @@ export default function Hole({ location, initialHole = 1 }) {
     if (scoreView && hideModal) {
       setScoreView(false)
     }
-    console.log('set hole to', num)
     if (num !== 19) {
       mapRef.current.animateCamera(holeInfo[num].camera)
       console.log(`Setting hole to ${num}`)
@@ -164,12 +163,7 @@ export default function Hole({ location, initialHole = 1 }) {
         longitude: undefined
       })
 
-      appContext.value.setHole(num)
-
-      appContext.dispatch({
-        type: 'set_hole_id',
-        data: num
-      })
+      appContext.value.setHole(num, holeInfo[num].id)
     } else {
       handleRoundSummary()
     }
@@ -177,29 +171,19 @@ export default function Hole({ location, initialHole = 1 }) {
 
   const handleHoleInc = () => {
     if (holeNum !== 18) {
-      appContext.dispatch({
-        type: 'set_hole_id',
-        data: holeNum + 1
-      })
-      appContext.value.setHole(holeNum + 1)
-      // setHoleNum(holeNum + 1)
+      appContext.value.setHole(holeNum + 1, holeInfo[holeNum + 1].id)
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined
       })
       mapRef.current.animateCamera(holeInfo[holeNum + 1].camera)
     } else {
-      // setHoleNum(1)
       handleRoundSummary()
     }
   }
   const handleHoleDec = () => {
     if (holeNum !== 1) {
-      appContext.dispatch({
-        type: 'set_hole_id',
-        data: holeNum - 1
-      })
-      appContext.value.setHole(holeNum - 1)
+      appContext.value.setHole(holeNum - 1, holeInfo[holeNum - 1].id)
       // setHoleNum(holeNum - 1)
       setDistanceMarker({
         latitude: undefined,
@@ -207,9 +191,7 @@ export default function Hole({ location, initialHole = 1 }) {
       })
       mapRef.current.animateCamera(holeInfo[holeNum - 1].camera)
     } else {
-      // setHoleNum(6)
-      // END OF ROUND CONDITIONS
-      appContext.value.setHole(1)
+      appContext.value.setHole(1, holeInfo[1].id)
       mapRef.current.animateCamera(holeInfo[1].camera)
     }
   }

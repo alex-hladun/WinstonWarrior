@@ -23,10 +23,11 @@ import {
   loadTotalPctHistory,
   loadTotalPuttHistory,
   loadTotalRounds,
-  registerUser,
+  registerUser
 } from "../db/dbSetup";
 import produce from "immer";
 import { loadHandicapFromArray } from "../hooks/useHandicapHistory";
+import { loadHoleStatsForRefresh } from "../db/loadHoleStatsForRefresh";
 // import {register}
 const reducer = produce((state, action) => {
   switch (action.type) {
@@ -190,20 +191,20 @@ const reducer = produce((state, action) => {
     case "set_p4_score":
       state.playState.p4score[action.hole] = action.score;
       break;
-    case "clear_p1_score":
+    case "clear_all_scores":
       state.playState.p1score = initialState.playState.p1score;
-      break;
-    case "clear_p2_score":
-      p2score = initialState.playState.p2score;
+      state.playState.p2score = initialState.playState.p2score;
       state.playState.player_2 = undefined;
-      break;
-    case "clear_p3_score":
       state.playState.p3score = initialState.playState.p3score;
       state.playState.player_3 = undefined;
-      break;
-    case "clear_p4_score":
       state.playState.p4score = initialState.playState.p4score;
       state.playState.player_4 = undefined;
+      break;
+    case "clear_p2_score":
+      break;
+    case "clear_p3_score":
+      break;
+    case "clear_p4_score":
       break;
     case "restore_p1_score":
       state.playState.p1score = action.data;
@@ -220,6 +221,8 @@ const reducer = produce((state, action) => {
       state.playState.p4score = action.data;
       state.playState.player_4 = action.name;
       break;
+    case "refresh_hole_stats":
+      state.statState.courseData.holeStats[action.hole] = action.data;
   }
 });
 
@@ -233,7 +236,7 @@ const initialState = {
     auth_message: "",
     round_id: undefined,
     user_name: undefined,
-    clubList: [],
+    clubList: []
   },
   statState: {
     totalInfo: {},
@@ -256,8 +259,8 @@ const initialState = {
       courseId: "",
       course_slp: undefined,
       course_rtg: undefined,
-      holeStats: undefined,
-    },
+      holeStats: undefined
+    }
   },
   playState: {
     courseId: undefined,
@@ -301,7 +304,7 @@ const initialState = {
       15: null,
       16: null,
       17: null,
-      18: null,
+      18: null
     },
     p2score: {
       1: null,
@@ -321,7 +324,7 @@ const initialState = {
       15: null,
       16: null,
       17: null,
-      18: null,
+      18: null
     },
     p3score: {
       1: null,
@@ -341,7 +344,7 @@ const initialState = {
       15: null,
       16: null,
       17: null,
-      18: null,
+      18: null
     },
     p4score: {
       1: null,
@@ -361,9 +364,9 @@ const initialState = {
       15: null,
       16: null,
       17: null,
-      18: null,
-    },
-  },
+      18: null
+    }
+  }
 };
 const AppContext = React.createContext(initialState);
 
@@ -377,23 +380,26 @@ function AppProvider(props) {
       user_name: username,
       first_name: "Testing",
       last_name: "Something",
-      email: "some@thing.com",
+      email: "some@thing.com"
     };
 
     // THIS LOGS IN AND SETS HOME SCREEN MAIN SCREEN
     dispatch({
       type: "authentication_done",
-      data: login_data,
+      data: login_data
     });
   };
 
-  const setHole = (holeNum) => {
+  const setHole = (holeNum, holeID) => {
     AsyncStorage.setItem("holeNum", JSON.stringify(holeNum));
     // Need to retrieve & set hole_id here
-    // console.log("setting HOLE in async to ", holeNum);
     dispatch({
       type: "set_hole_num",
-      data: holeNum,
+      data: holeNum
+    });
+    dispatch({
+      type: "set_hole_id",
+      data: holeID
     });
   };
 
@@ -409,7 +415,7 @@ function AppProvider(props) {
       pars: 0,
       bogies: 0,
       doubles: 0,
-      triples: 0,
+      triples: 0
     };
 
     birdieCount.forEach((hole) => {
@@ -455,7 +461,7 @@ function AppProvider(props) {
 
     dispatch({
       type: "set_club_list",
-      data: clubs,
+      data: clubs
     });
 
     let roundHistory = await loadStats(user_id);
@@ -473,12 +479,10 @@ function AppProvider(props) {
         hcpIndex += score.hcp_diff;
       }
     });
-    // console.log("🚀 ~ file: AppContext.js ~ line 364 ~ loadInitialStats ~ sortedHistory", sortedHistory)
     const hcp = hcpIndex / count;
     dispatch({ type: "set_hcp", data: hcp });
 
     const totalpctHistoy = await loadTotalPctHistory(user_id);
-    console.log("🚀 ~ file: useTotalPctHistory.js ~ line 13 ~ getPctHistory ~ totalpctHistoy", totalpctHistoy)
 
     const fwyPctHistory = totalpctHistoy.totalHolesPlayed
       .map((hP, i) => {
@@ -491,34 +495,30 @@ function AppProvider(props) {
       .reverse();
     dispatch({ type: "set_fwy_history", data: fwyPctHistory });
 
-    console.log("🚀 ~ file: AppContext.js ~ line 505 ~ loadInitialStats ~ totalpctHistoy.totalHolesPlayed", totalpctHistoy.totalHolesPlayed.length)
     const girPctHistory = totalpctHistoy.totalHolesPlayed
       .map((hP, i) => {
         if (totalpctHistoy.girHit[i]) {
-          console.log("🚀 ~ file: AppContext.js ~ line 507 ~ .map ~ totalpctHistoy.girHit[i]", totalpctHistoy.girHit[i])
           return Math.round((totalpctHistoy.girHit[i] * 100) / hP, 0);
         } else {
-          return 0
+          return 0;
         }
       })
       .reverse();
-    console.log("🚀 ~ file: AppContext.js ~ line 503 ~ loadInitialStats ~ girPctHistory", girPctHistory)
+    console.log(
+      "🚀 ~ file: AppContext.js ~ line 503 ~ loadInitialStats ~ girPctHistory",
+      girPctHistory
+    );
     dispatch({ type: "set_gir_history", data: girPctHistory });
 
     const scramblePctHistory = totalpctHistoy.totalHolesPlayed
       .map((hP, i) => {
-        console.log('hp', hP)
-        // console.log("🚀 ~ file: useTotalPctHistory.js ~ line 27 ~ scramblePct:totalpctHistoy.totalHolesPlayed.map ~ hP", hP)
+        console.log("hp", hP);
         if (!totalpctHistoy.scrambleSuccess[i]) {
           // TODO: replae this by getting the scramble percents that are 0
           return 0;
         } else if (hP - totalpctHistoy.scrambleSuccess[i] <= 0) {
           return 0;
         } else {
-          // console.log("🚀 ~ file: useTotalPctHistory.js ~ line 33 ~ scramblePct:totalpctHistoy.totalHolesPlayed.map ~ totalpctHistoy.scrambleSuccess[i]", totalpctHistoy.scrambleSuccess[i])
-          // console.log("🚀 ~ file: useTotalPctHistory.js ~ line 34 ~ scramblePct:totalpctHistoy.totalHolesPlayed.map ~ hP", hP)
-          // console.log("🚀 ~ file: useTotalPctHistory.js ~ line 35 ~ scramblePct:totalpctHistoy.totalHolesPlayed.map ~ totalpctHistoy.girHit[i]", totalpctHistoy.girHit[i])
-          // console.log(Math.round((totalpctHistoy.scrambleSuccess[i] * 100) / (hP - totalpctHistoy.girHit[i]), 0))
           return Math.round(
             ((hP - totalpctHistoy.scrambleSuccess[i]) * 100) /
               (hP - totalpctHistoy.girHit[i]),
@@ -528,7 +528,6 @@ function AppProvider(props) {
       })
       .reverse();
 
-    // console.log("🚀 ~ file: AppContext.js ~ line 447 ~ loadInitialStats ~ scramblePctHistory", scramblePctHistory)
     dispatch({ type: "set_scr_history", data: scramblePctHistory });
 
     const newPuttHistory = await loadTotalPuttHistory(user_id);
@@ -558,7 +557,7 @@ function AppProvider(props) {
     dispatch({ type: "set_handicap_rounds", data: handicapRounds });
     dispatch({
       type: "set_handicap_history",
-      data: handicapHistoryArray.reverse(),
+      data: handicapHistoryArray.reverse()
     });
 
     const shotData = await loadShots(user_id);
@@ -566,18 +565,11 @@ function AppProvider(props) {
     dispatch({ type: "done_initial_loading" });
   };
 
-  
-
   const loadInitialCourseData = async (course_id, user_id) => {
     // Load all hole info (par, handicap rtg, slope, rtg, etc and assign)
     // ALSO load all initial hole stats.
     let birdiecount;
     birdieCount = await loadBirds(course_id, user_id);
-    // console.log(
-    //   "🚀 ~ file: AppContext.js ~ line 748 ~ loadInitialCourseData ~ birdiecount",
-    //   birdiecount
-    // );
-
     let birdieObj = {};
 
     for (let i = 1; i <= 18; i++) {
@@ -597,6 +589,10 @@ function AppProvider(props) {
         shotHistory: [],
         puttHistory: [],
         dateHistory: [],
+        scrambleHistory: [],
+        girHistory: [],
+        fwyHistory: [],
+        penaltyHistory: [],
         lowScore: "NA",
         totalFairways: undefined,
         driverDirection: undefined,
@@ -604,12 +600,14 @@ function AppProvider(props) {
         chipRtg: undefined,
         puttRtg: undefined,
         fairwaysHit: undefined,
+        holePar: undefined
       };
     }
 
     birdieCount.forEach((hole) => {
-      // console.log('scoreObj', hole)
+      console.log("scoreObj", hole);
       birdieObj[hole.hole_num].rounds++;
+      birdieObj[hole.hole_num].holePar = hole.hole_par;
 
       if (hole.total_shots - hole.hole_par === -1) {
         birdieObj[hole.hole_num].birdies++;
@@ -644,29 +642,23 @@ function AppProvider(props) {
     });
 
     const holeHistory = await loadHoleHistory(course_id, user_id);
-    // const holeHistoryObj = {}
-    // for (let i = 1; i <= 18; i++) {
-    //   holeHistoryObj[i] = { score: [], putts: [], date: []}
-    // }
 
     holeHistory.forEach((hole) => {
-      // console.log("TabOneScreen -> hole history", hole)
+      console.log("TabOneScreen -> hole history", hole);
       birdieObj[hole.hole_num].shotHistory.push(hole.total_shots);
       birdieObj[hole.hole_num].puttHistory.push(hole.total_putts);
       birdieObj[hole.hole_num].dateHistory.push(hole.date);
+      birdieObj[hole.hole_num].scrambleHistory.push(hole.ud);
+      birdieObj[hole.hole_num].girHistory.push(hole.gir);
+      birdieObj[hole.hole_num].fwyHistory.push(hole.driver_direction);
+      birdieObj[hole.hole_num].penaltyHistory.push(hole.penalty);
     });
 
     const lowHoleData = await loadLow(course_id, user_id);
-    // console.log(
-    //   "🚀 ~ file: AppContext.js ~ line 635 ~ loadInitialCourseData ~ birdiecount",
-    //   birdiecount
-    // );
-
     lowHoleData.forEach((hole) => {
       birdieObj[hole.hole_num].lowScore = hole.min_score;
     });
 
-    const hitFwData = await loadFairwayData(user_id, course_id);
     const allFwData = await loadFairwayDataTotal(user_id, course_id);
 
     allFwData.forEach((hole) => {
@@ -677,19 +669,13 @@ function AppProvider(props) {
       birdieObj[hole.hole_num].puttRtg = hole.putt_rtg;
     });
 
+    const hitFwData = await loadFairwayData(user_id, course_id);
     hitFwData.forEach((hole) => {
       birdieObj[hole.hole_num].fairwaysHit = hole.total_fairways_hit;
     });
 
-    // console.log(
-    //   // "🚀 ~ file: AppContext.js ~ line 667 ~ loadInitialCourseData ~ birdieObj",
-    //   birdieObj
-    // );
-
     dispatch({ type: "set_hole_stats", data: birdieObj });
 
-    //
-    // console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 17 ~ resetCourseInfo ~ courseID", courseID)
     const courseInfo = await loadCourseInfo(course_id);
     const sortedCourseInfo = courseInfo.sort((a, b) => a.hcp_rtg - b.hcp_rtg);
     let courseHandicap = Math.round(
@@ -697,9 +683,9 @@ function AppProvider(props) {
         (state.playState.p1_rtg - 72)
     );
 
-    // console.log('1adskjaslkjlLKSDAJLKASJDLK')
     let courseData = {};
     for (const obj of sortedCourseInfo) {
+      // console.log("🚀 ~ file: AppContext.js ~ line 679 ~ loadInitialCourseData ~ obj", obj)
       let strokesToGive = 0;
       if (courseHandicap > 0) {
         strokesToGive = Math.ceil(courseHandicap / 18);
@@ -708,23 +694,24 @@ function AppProvider(props) {
 
       courseData[obj.hole_num] = {
         par: obj.hole_par,
+        id: obj.hole_id,
         userCourseHandicap: courseHandicap,
         netStrokes: strokesToGive,
         hcpRtg: obj.hcp_rtg,
         pinCoords: {
           latitude: parseFloat(obj.pin_lat),
-          longitude: parseFloat(obj.pin_lng),
+          longitude: parseFloat(obj.pin_lng)
         },
         camera: {
           center: {
             latitude: parseFloat(obj.camera_lat),
-            longitude: parseFloat(obj.camera_lng),
+            longitude: parseFloat(obj.camera_lng)
           },
           pitch: 0,
           heading: parseFloat(obj.camera_hdg),
           altitude: parseFloat(obj.camera_alt),
-          zoom: parseFloat(obj.camera_zm),
-        },
+          zoom: parseFloat(obj.camera_zm)
+        }
       };
     }
 
@@ -737,52 +724,38 @@ function AppProvider(props) {
       }
     }
 
-    // console.log("🚀 ~ file: useLoadCourseInfoIntoState.js ~ line 60 ~ resetCourseInfo ~ courseData", courseData)
-    const courseDetails = await loadCourseDetails(course_id);
-
     dispatch({
       type: "set_hole_info",
-      data: courseData,
+      data: courseData
     });
-    // console.log(
-    //   "🚀 ~ file: AppContext.js ~ line 733 ~ loadInitialCourseData ~ courseData",
-    //   courseData
-    // );
 
     dispatch({
-      type: "done_loading",
+      type: "set_hole_num",
+      data: 1
+    });
+    dispatch({
+      type: "set_hole_id",
+      data: courseData[1].id
     });
 
-    //
+    dispatch({
+      type: "done_loading"
+    });
   };
 
-  const reloadHoleStats = async (holeNum) => {
-
+  const reloadHoleStats = async (courseID, holeNum) => {
     // Reload stats for a particular hole after score save.
-    const birdieObj = {
-      pars: 0,
-      birdies: 0,
-      eagles: 0,
-      bogies: 0,
-      doubles: 0,
-      triples: 0,
-      rounds: 0,
-      GIRs: 0,
-      avgPutts: 0,
-      avgShots: 0,
-      scrambleChances: 0,
-      scrambleSuccess: 0,
-      shotHistory: [],
-      puttHistory: [],
-      dateHistory: [],
-      lowScore: "NA",
-      totalFairways: undefined,
-      driverDirection: undefined,
-      approachRtg: undefined,
-      chipRtg: undefined,
-      puttRtg: undefined,
-      fairwaysHit: undefined,
-    };
+    console.log(`Reloading stats for hole ${holeNum} for courseID ${courseID}`);
+    birdieObj = await loadHoleStatsForRefresh(courseID, holeNum, 1);
+    console.log(
+      "🚀 ~ file: AppContext.js ~ line 728 ~ reloadHoleStats ~ birdieObj",
+      birdieObj
+    );
+    dispatch({
+      type: "refresh_hole_stats",
+      data: birdieObj,
+      hole: holeNum
+    });
   };
 
   const refreshShotStats = async (user_id) => {
@@ -793,40 +766,43 @@ function AppProvider(props) {
   const doneRound = () => {
     dispatch({
       type: "set_round_id",
-      data: null,
+      data: null
     });
 
     dispatch({
       type: "set_user_2_name",
-      data: null,
+      data: null
     });
     dispatch({
       type: "set_user_2_round_id",
-      data: null,
+      data: null
     });
     dispatch({
       type: "set_user_3_name",
-      data: null,
+      data: null
     });
     dispatch({
       type: "set_user_3_round_id",
-      data: null,
+      data: null
     });
     dispatch({
       type: "set_user_4_name",
-      data: null,
+      data: null
     });
     dispatch({
       type: "set_user_4_round_id",
-      data: null,
+      data: null
     });
     dispatch({
       type: "set_view_mode",
-      data: "menu",
+      data: "menu"
     });
     dispatch({
       type: "set_hole_num",
-      data: undefined,
+      data: undefined
+    });
+    dispatch({
+      type: "clear_all_scores"
     });
 
     AsyncStorage.removeItem("holeNum");
@@ -851,7 +827,7 @@ function AppProvider(props) {
       loadInitialStats,
       loadInitialCourseData,
       reloadHoleStats,
-      refreshShotStats,
+      refreshShotStats
     };
   }, [state]);
 

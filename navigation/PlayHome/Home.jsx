@@ -14,7 +14,7 @@ export function Home({ navigation }) {
   const appContext = React.useContext(AppContext)
   const statState = statContext.value.state
   const appState = appContext.value.state
-  const totalInfo = useTotalInfo(1, 'Any')
+  // const totalInfo = useTotalInfo(1, 'Any')
   // const hcp = useHandicap(1)
   const hcpInfo = useHandicapHistory(1)
   const hcpHistory = hcpInfo.handicapHistory;

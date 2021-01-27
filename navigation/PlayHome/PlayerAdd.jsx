@@ -91,10 +91,7 @@ export function PlayerAdd({ navigation }) {
       type: 'set_round_id',
       data: userRoundID
     })
-    await appContext.dispatch({
-      type: 'set_hole_id',
-      data: 1
-    })
+    
     await appContext.dispatch({
       type: 'set_hole_num',
       data: 1

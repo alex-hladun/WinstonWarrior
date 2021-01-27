@@ -11,12 +11,10 @@ import * as Linking from "expo-linking";
 import styles from "../../assets/styles/StatStyles";
 import { Theme } from "../../assets/styles/Theme";
 import { LineChart, PieChart } from "react-native-chart-kit";
-import { useTotalInfo } from "../../hooks/useTotalInfo";
 import { AppContext } from "../../context/AppContext";
 
 export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext);
-  // const totalInfo = useTotalInfo(1, 'ALL')
   const appState = appContext.value.state;
   const handicapHistory = appState.statState.hcpHistory;
   // console.log("🚀 ~ file: Trends.jsx ~ line 20 ~ Trends ~ handicapHistory", handicapHistory)
@@ -40,7 +38,7 @@ export function Trends({ navigation }) {
 
   React.useEffect(() => {
     // console.log("🚀 ~ file: Trends.jsx ~ line 44 ~ React.useEffect ~ appState.statState?.girData?.girHistory", appState.statState?.girData?.girHistory)
-  })
+  });
 
   const setChart = (chartType) => {
     switch (chartType) {
@@ -48,7 +46,9 @@ export function Trends({ navigation }) {
         setParentChartType("LineChart");
         setChartType("Putts");
         setChartData({
-          labels: totalPuttHistory.map((i, j) => j),
+          labels: roundHistory?.map((round, index) => {
+            return round.end_date?.slice(5, 10);
+          }),
           datasets: [
             {
               data: totalPuttHistory
@@ -61,10 +61,8 @@ export function Trends({ navigation }) {
         setChartType("FWY %");
 
         setChartData({
-          labels: appState.statState?.fwyData?.fwyHistory.map((i, j) => {
-            if (i !== "NaN") {
-              return j;
-            }
+          labels: roundHistory?.map((round, index) => {
+            return round.end_date?.slice(5, 10);
           }),
           datasets: [
             {
@@ -79,7 +77,9 @@ export function Trends({ navigation }) {
         setParentChartType("LineChart");
         setChartType("GIR %");
         setChartData({
-          labels: appState.statState?.girData?.girHistory.map((i, j) => j),
+          labels: roundHistory?.map((round, index) => {
+            return round.end_date?.slice(5, 10);
+          }),
           datasets: [
             {
               data: appState.statState?.girData?.girHistory
@@ -91,7 +91,9 @@ export function Trends({ navigation }) {
         setParentChartType("LineChart");
         setChartType("Scramble %");
         setChartData({
-          labels: appState.statState?.scrData?.scrHistory.map((i, j) => j),
+          labels: roundHistory?.map((round, index) => {
+            return round.end_date?.slice(5, 10);
+          }),
           datasets: [
             {
               data: appState.statState?.scrData?.scrHistory
@@ -103,7 +105,9 @@ export function Trends({ navigation }) {
         setParentChartType("LineChart");
         setChartType("HCP");
         setChartData({
-          labels: handicapHistory.map((i, j) => j),
+          labels: roundHistory?.map((round, index) => {
+            return round.end_date?.slice(5, 10);
+          }),
           datasets: [
             {
               data: handicapHistory

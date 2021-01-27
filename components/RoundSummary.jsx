@@ -213,27 +213,10 @@ export default function RoundSummary({ handleRoundSummary }) {
 
     appContext.value.doneRound();
     appContext.value.loadInitialStats(1);
-    // playContext.value.doneRound()
-    // statContext.dispatch({
-    //   type: 'trigger_total_info_update'
-    // })
-    // statContext.dispatch({
-    //   type: 'trigger_all_data_update'
-    // })
-    // statContext.dispatch({
-    //   type: 'trigger_handicap_update'
-    // })
   };
 
   const handleRoundQuit = async () => {
     appContext.value.doneRound();
-    // playContext.value.doneRound()
-    // statContext.dispatch({
-    //   type: 'trigger_total_info_update'
-    // })
-    // statContext.dispatch({
-    //   type: 'trigger_all_data_update'
-    // })
   };
 
   // console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ appState.playState.p1score", playState.p1score)

@@ -96,9 +96,6 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
     if (gir === 0 && score <= holeInfo[holeNum].par) {
       ud = 1;
     }
-
-
-    console.log(`posting score of ${score} with ${putts} putts and UD = ${ud} AND gir = ${gir}`)
     await postScore(holeID, holeNum, appState.playState.roundId, score, putts, penalty, teeShot, approach, chip, putting, gir, ud)
     appContext.dispatch({
       type: 'set_p1_score',
@@ -142,20 +139,7 @@ export default function Score({ holeNum, setHole, handleScoreEnter, handleHoleIn
       setHole(holeNum - 1, false)
       resetSliders(-1)
     }
-
-    // TODO: Remove later and fix reloadHoleStats
-    appContext.value.loadInitialCourseData(appState.playState.courseId, 1)
-    appContext.value.reloadHoleStats(appState.playState.hole_id)
-
-
-    // statContext.dispatch({
-    //   type: 'trigger_hole_data_update'
-    // })
-    // statContext.dispatch({
-    //   type: 'trigger_total_info_update'
-    // })
-
-
+    appContext.value.reloadHoleStats(appState.playState.courseId, holeNum)
     console.log('entered scores')
   }
 

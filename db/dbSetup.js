@@ -165,7 +165,13 @@ export const postShot = async (user_id, club_id, effort, distance) => {
     `,
         [user_id, club_id, effort, distance],
         (txObj, result) => {
-          console.log("shot successfully saved", user_id, club_id, effort, distance);
+          console.log(
+            "shot successfully saved",
+            user_id,
+            club_id,
+            effort,
+            distance
+          );
           resolve(result);
         },
         (err, mess) => console.log("err saving shot", reject(mess))
@@ -327,7 +333,7 @@ export const postScore = async (
                 ud
               ],
               (txObj, result) => {
-                console.log("result posting NEW score", result);
+                // console.log("result posting NEW score", result);
                 resolve(result);
               },
               (err, mess) => {
@@ -476,7 +482,7 @@ export const createWinston = () => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           2,
-          index + 1,
+          val,
           glencoeInfo[val].par,
           glencoeInfo[val].pinCoords.latitude,
           glencoeInfo[val].pinCoords.longitude,
@@ -1004,7 +1010,7 @@ export const loadBestScore = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(`best score: ${JSON.stringify(result.rows._array)}`)
+          console.log(`best score: ${JSON.stringify(result.rows._array)}`);
           resolve(result.rows._array[0]?.tot);
         },
         (err, mess) => console.log("err getting total stats", reject(mess))
@@ -1202,7 +1208,7 @@ export const loadFairwayData = async (user_id, course_id) => {
     GROUP BY scores.hole_num
     ORDER BY scores.hole_num ASC;
     `,
-        [user_id, course_id],
+        [course_id, user_id],
         (txObj, result) => {
           // console.log(`all Fairway stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
@@ -1229,7 +1235,7 @@ export const loadFairwayDataTotal = async (user_id, course_id) => {
     GROUP BY scores.hole_num
     ORDER BY scores.hole_num ASC;
     `,
-        [user_id, course_id],
+        [course_id, user_id],
         (txObj, result) => {
           // console.log(`TOTAL FW stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
@@ -1272,7 +1278,7 @@ export const loadHoleHistory = async (course_id, user_id) => {
       tx.executeSql(
         `
     SELECT
-    scores.hole_num, holes.hole_par, scores.total_shots AS total_shots, scores.total_putts AS total_putts, scores.date_time AS date
+    scores.hole_num, holes.hole_par, scores.total_shots AS total_shots, scores.total_putts AS total_putts, scores.date_time AS date, scores.driver_direction AS driver_direction, scores.ud AS ud, scores.gir AS gir, scores.penalty AS penalty
     FROM ROUNDS
     JOIN scores
     ON rounds.round_id = scores.round_id
