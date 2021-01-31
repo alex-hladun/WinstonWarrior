@@ -36,7 +36,7 @@ export function ClubCard({ handleClubView, item }) {
   const clubLabelArray = []
   shotArray.forEach((shot, index) => {
     clubShotArray.push(shot.distance)
-    clubLabelArray.push(index + 1)
+    clubLabelArray.push(shot.effort)
   })
 
   const shotDataForChart = {

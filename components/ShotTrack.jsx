@@ -36,12 +36,8 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
   }
 
   const handleSubmit = async () => {
-    // console.log('handle distance submit')
     await postShot(1, club, effort, distance)
     appContext.value.refreshShotStats(1)
-    // statContext.dispatch({
-    //   type: 'trigger_club_update'
-    // })
     handleTrackViewClose()
   }
 

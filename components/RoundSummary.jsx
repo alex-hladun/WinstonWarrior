@@ -20,8 +20,7 @@ import { StatContext } from "../context/StatContext";
 import { handicapDiffCalc, netHandicapDiffCalc } from "../helpers/handicap";
 
 const sumValues = (obj) => {
-  if (Object.values(obj)[0]) {
-    console.log("OK");
+  if (Object.values(obj).length > 0) {
     return Object.values(obj).reduce((a, b) => a + b);
   }
   return 0;

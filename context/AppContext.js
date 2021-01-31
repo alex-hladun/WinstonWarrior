@@ -244,6 +244,7 @@ const initialState = {
     bestScore: undefined,
     avgScore: undefined,
     shotData: [],
+    shotDataHistory: {},
     roundHistory: [],
     puttHistory: [],
     // holeHistory: {},
