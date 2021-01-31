@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "backend": "node ./backend/main.js"
   },
   "jest": {
     "preset": "jest-expo"
@@ -22,6 +23,7 @@
     "@react-navigation/material-top-tabs": "^5.3.0",
     "@react-navigation/native": "^5.8.0",
     "@react-navigation/stack": "^5.9.0",
+    "aws-sdk": "^2.834.0",
     "eslint-plugin-react": "^7.21.5",
     "expo": "~39.0.2",
     "expo-asset": "~8.2.0",
