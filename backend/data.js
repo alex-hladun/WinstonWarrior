@@ -12,14 +12,43 @@ const mockData = [
     SK: "#METADATA#cgathercole",
     email: "cgathercole@gmail.com",
     name: "Carter Gathercole",
-    username: "cartergathercole",
-    pinnedImage: "PHOTO#haroldwatkins#2018-06-09T15:00:24"
+    username: "cgathercole",
+    pinnedImage: "PHOTO#cgathercole#2018-06-09T15:00:24"
+  },
+  {
+    PK: "USER#JerryGolf",
+    SK: "#METADATA#JerryGolf",
+    email: "JerryGolf@gmail.com",
+    name: "Jerry Smith",
+    username: "JerryGolf",
+    pinnedImage: "PHOTO#jerrygolf#2018-06-09T15:00:24"
   },
   {
     PK: "USER#alexhladun",
     SK: "#FRIEND#cgathercole",
     followedUser: "cgathercole",
     followingUser: "alexhladun",
+    timestamp: "2020-12-05T20:09:02"
+  },
+  {
+    PK: "USER#cgathercole",
+    SK: "#FRIEND#alexhladun",
+    followedUser: "alexhladun",
+    followingUser: "cgathercole",
+    timestamp: "2020-12-05T20:09:02"
+  },
+  {
+    PK: "USER#JerryGolf",
+    SK: "#FRIEND#alexhladun",
+    followedUser: "alexhladun",
+    followingUser: "JerryGolf",
+    timestamp: "2020-12-05T20:09:02"
+  },
+  {
+    PK: "USER#JerryGolf",
+    SK: "#FRIEND#cgathercole",
+    followedUser: "cgathercole",
+    followingUser: "JerryGolf",
     timestamp: "2020-12-05T20:09:02"
   },
   {
@@ -43,12 +72,124 @@ const mockData = [
     }
   },
   {
+    PK: "USER#alexhladun",
+    SK: "ROUND#alexhladun#2020-12-12T02:21:02",
+    username: "alexhladun",
+    timestamp: "2020-12-12T02:21:02",
+    stats: {
+      course: "The Winston",
+      frontScore: "47",
+      backScore: "49",
+      eagles: "0",
+      birdies: "0",
+      pars: "3",
+      bogeys: "7",
+      doubles: "4",
+      triples: "4",
+      holesPlayed: "18",
+      gir: "13",
+      scr: "1"
+    }
+  },
+  {
+    PK: "USER#cgathercole",
+    SK: "ROUND#cgathercole#2020-12-12T02:21:02",
+    username: "cgathercole",
+    timestamp: "2020-12-12T02:21:02",
+    stats: {
+      course: "The Winston",
+      frontScore: "40",
+      backScore: "40",
+      eagles: "0",
+      birdies: "8",
+      pars: "5",
+      bogeys: "5",
+      doubles: "0",
+      triples: "0",
+      holesPlayed: "18",
+      gir: "13",
+      scr: "1"
+    }
+  },
+  {
+    PK: "USER#cgathercole",
+    SK: "ROUND#cgathercole#2020-12-15T02:21:02",
+    username: "cgathercole",
+    timestamp: "2020-12-15T02:21:02",
+    stats: {
+      course: "The Winston",
+      frontScore: "36",
+      backScore: "40",
+      eagles: "0",
+      birdies: "10",
+      pars: "8",
+      bogeys: "0",
+      doubles: "0",
+      triples: "0",
+      holesPlayed: "18",
+      gir: "13",
+      scr: "1"
+    }
+  },
+  {
+    PK: "USER#cgathercole",
+    SK: "ROUND#cgathercole#2020-12-19T02:21:02",
+    username: "cgathercole",
+    timestamp: "2020-12-19T02:21:02",
+    stats: {
+      course: "The Winston",
+      frontScore: "31",
+      backScore: "40",
+      eagles: "0",
+      birdies: "18",
+      pars: "0",
+      bogeys: "0",
+      doubles: "0",
+      triples: "0",
+      holesPlayed: "18",
+      gir: "13",
+      scr: "1"
+    }
+  },
+  {
     PK: "REACTION#cgathercole#like",
     SK: "ROUND#alexhladun#2020-12-11T02:21:02",
     reactingUser: "cgathercole",
     round: "ROUND#alexhladun#2020-12-11T02:21:02",
     reactionType: "like",
     timestamp: "2019-04-28T23:36:13"
+  },
+  {
+    PK: "REACTION#alexhladun#like",
+    SK: "ROUND#cgathercole#2020-12-19T02:21:02",
+    reactingUser: "alexhladun",
+    round: "ROUND#cgathercole#2020-12-19T02:21:02",
+    reactionType: "like",
+    timestamp: "2019-09-28T23:36:13"
+  },
+  {
+    PK: "REACTION#alexhladun#comment",
+    SK: "ROUND#cgathercole#2020-12-19T02:21:02",
+    reactingUser: "alexhladun",
+    round: "ROUND#cgathercole#2020-12-19T02:21:02",
+    reactionType: "you are cheating!",
+    timestamp: "2019-04-28T23:36:13"
+  },
+  {
+    PK: "REACTION#jerrygolf#like",
+    SK: "ROUND#cgathercole#2020-12-19T02:21:02",
+    reactingUser: "JerryGolf",
+    round: "ROUND#cgathercole#2020-12-19T02:21:02",
+    reactionType: "like",
+    timestamp: "2019-04-29T23:36:13"
+  },
+  {
+    PK: "REACTION#jerrygolf#like",
+    SK: "ROUND#alexhladun#2020-12-11T02:21:02",
+    reactingUser: "JerryGolf",
+    round: "ROUND#alexhladun#2020-12-11T02:21:02",
+    reactionType: "like",
+    timestamp: "2019-04-29T23:36:13"
   },
   {
     PK: "REACTION#cgathercole#comment",
