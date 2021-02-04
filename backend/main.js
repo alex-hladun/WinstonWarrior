@@ -299,33 +299,58 @@ switch (arg) {
         data.Items.forEach((i) => console.log("user", i));
         let keys = [];
         data.Items.forEach((item) => {
-          console.log("🚀 ~ file: main.js ~ line 247 ~ item", item["followedUser"].S);
-          keys.push({
-            PK: { S: `USER#${item["followedUser"]["S"]}` },
-            SK: { S: `#ROUND` }
-          });
-          const friends = dynamodb.batchGetItem(
+          console.log(
+            "🚀 ~ file: main.js ~ line 247 ~ item",
+            item["followedUser"].S
+          );
+          dynamodb.query(
             {
-              RequestItems: {
-                winston: {
-                  Keys: keys
-                }
-              }
+              TableName: "winston",
+              KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk)",
+              ExpressionAttributeValues: {
+                ":pk": { S: `USER#${item["followedUser"]["S"]}` },
+                ":sk": { S: "ROUND#" }
+              },
+              ScanIndexForward: true
             },
-            (err, res8) => {
-              if (err) console.log("err", err);
-              if (res8) {
-                console.log(
-                  "🚀 ~ file: main.js ~ line 264 ~ data.Items.forEach ~ res8",
-                  res8
-                );
-                res8.Responses.winston.forEach((i) => {
-                  console.log("ENRICHED ITEM", i);
-                });
+            (err, resr) => {
+              if (err) {
+                console.log("ERROR", err);
+              } else {
+                console.log("ONE USERS ROUNDS", resr);
+                resr.Items.forEach((x) => keys.push(x));
+        console.log('FINAL FOLLOWING LIST', keys)
+
               }
             }
           );
+          // keys.push({
+          //   PK: { S: `USER#${item["followedUser"]["S"]}` },
+          //   SK: { S: `#ROUND` }
+          // });
+          // const friends = dynamodb.batchGetItem(
+          //   {
+          //     RequestItems: {
+          //       winston: {
+          //         Keys: keys
+          //       }
+          //     }
+          //   },
+          //   (err, res8) => {
+          //     if (err) console.log("err", err);
+          //     if (res8) {
+          //       console.log(
+          //         "🚀 ~ file: main.js ~ line 264 ~ data.Items.forEach ~ res8",
+          //         res8
+          //       );
+          //       res8.Responses.winston.forEach((i) => {
+          //         console.log("ENRICHED ITEM", i);
+          //       });
+          //     }
+          //   }
+          // );
         });
+
       }
     });
   // console.log("🚀 ~ file: main.js ~ line 244 ~ res3", res3.Items);
