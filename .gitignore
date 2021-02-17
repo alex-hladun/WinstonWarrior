@@ -12,5 +12,9 @@ web-build/
 app.json
 node_modules
 pack-lock.json
+*.ENV
+.ENV
 # macOS
 .DS_Store
+./backend/winston-sam-function/get-rounds/node_modules
+./backend/winston-sam-function/hello-world/node_modules

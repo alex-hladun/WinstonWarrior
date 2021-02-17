@@ -1,7 +1,8 @@
 var AWS = require("aws-sdk");
 const { mockData } = require("./data");
+// const dotenv = require("dotenv").config({ path: "../.ENV" });
 const arg = process.argv[2];
-console.log("🚀 ~ file: main.js ~ line 4 ~ arg", arg);
+
 
 AWS.config.update({
   region: "us-west-2",
@@ -9,7 +10,9 @@ AWS.config.update({
 });
 
 var dynamodb = new AWS.DynamoDB();
-const user = "JerryGolf";
+var dynamo = new AWS.DynamoDB.DocumentClient();
+
+const user = "alexhladun";
 var params = {
   TableName: "winston",
   KeySchema: [
@@ -50,6 +53,55 @@ var updateParams = {
       }
     }
   ]
+};
+
+const getRoundsForUser = async (user) => {
+  let keys = [];
+  console.log("CREATING A LIST OF ALL FRIENDS POSTS IN CHRONOLOGICAL ORDEER");
+
+  const queryParams5 = {
+    TableName: "winston",
+    KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk) ",
+    ExpressionAttributeValues: {
+      ":pk": `USER#${user}`,
+      ":sk": "#FRIEND"
+    },
+    ScanIndexForward: true
+  };
+
+  try {
+    const followingUsers = await dynamo.query(queryParams5).promise();
+    console.log("🚀 ~ file: main.js ~ line 85 ~ getRoundsForUser ~ followingUsers", followingUsers)
+
+    // const res4 = await dynamodb.query(queryParams4).promise();
+    await new Promise((resolve, reject) => {
+      followingUsers.Items.forEach(async (item, index, array) => {
+        console.log("🚀 ~ file: main.js ~ line 90 ~ res9.Items.forEach ~ item", item)
+        const userItem = await dynamo
+          .query({
+            TableName: "winston",
+            KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk)",
+            ExpressionAttributeValues: {
+              ":pk": `USER#${item["followedUser"]}`,
+              ":sk": "ROUND#"
+            },
+            ScanIndexForward: true
+          })
+          .promise();
+
+        console.log(
+          "🚀 ~ file: main.js ~ line 97 ~ res4.Items.forEach ~ userItem.Items",
+          userItem.Items
+        );
+        userItem.Items.forEach((x) => keys.push(x));
+        if (index === array.length - 1) resolve();
+      });
+    }).then(() => {
+      console.log("FINAL FOLLOWING LIST", keys);
+    });
+  } catch (err) {
+    console.log("ERROR", err.message);
+  }
 };
 
 switch (arg) {
@@ -113,6 +165,10 @@ switch (arg) {
         winston: mockData.map((item) => {
           let obj = {};
           Object.keys(item).forEach((key) => {
+            console.log(
+              "🚀 ~ file: main.js ~ line 166 ~ res4.Items.forEach ~ userItem.Items",
+              userItem.Items
+            );
             if (key === "stats") {
               obj[key] = {
                 M: {
@@ -160,10 +216,6 @@ switch (arg) {
               };
             }
           });
-          console.log(
-            "🚀 ~ file: main.js ~ line 63 ~ builtObj ~ builtObj",
-            obj
-          );
 
           return {
             PutRequest: { Item: obj }
@@ -203,18 +255,19 @@ switch (arg) {
   case "READ2":
     // Data is round and all reactions
     let timestamp = "2020-12-11T02:21:02";
+    let userRead2 = "alexhladun";
     console.log(
-      "READING ALL REACTIONS AND THE DETAILS FOR A GIVEN PHOTO",
+      "READING ALL REACTIONS AND THE DETAILS FOR A GIVEN Round",
       timestamp
     );
     const queryParams2 = {
       TableName: "winston",
       IndexName: "InvertedIndex",
-      KeyConditionExpression: "SK = :sk AND PK BETWEEN :reactions AND :user",
+      KeyConditionExpression: "SK = :sk AND begins_with(PK, :reactions)",
       ExpressionAttributeValues: {
-        ":sk": { S: `ROUND#${user}#${timestamp}` },
-        ":user": { S: `${user}$` },
-        ":reactions": { S: "REACTION#" }
+        ":sk": { S: `ROUND#${userRead2}#${timestamp}` },
+        // ":user": { S: `${userRead2}$` },
+        ":reactions": { S: "REACTION" }
       },
       ScanIndexForward: true
     };
@@ -248,7 +301,6 @@ switch (arg) {
         console.log("data", data);
         let keys = [];
         data.Items.forEach((item) => {
-          console.log("🚀 ~ file: main.js ~ line 247 ~ item", item);
           keys.push({
             PK: { S: `USER#${item["followingUser"]["S"]}` },
             SK: { S: `#METADATA#${item["followingUser"]["S"]}` }
@@ -264,10 +316,6 @@ switch (arg) {
             (err, res8) => {
               if (err) console.log("err", err);
               if (res8) {
-                console.log(
-                  "🚀 ~ file: main.js ~ line 264 ~ data.Items.forEach ~ res8",
-                  res8
-                );
                 res8.Responses.winston.forEach((i) => {
                   console.log("ENRICHED ITEM", i);
                 });
@@ -277,81 +325,6 @@ switch (arg) {
         });
       }
     });
-    console.log("🚀 ~ file: main.js ~ line 244 ~ res3", res3.Items);
   case "READ4":
-    console.log("CREATING A LIST OF ALL FRIENDS POSTS IN CHRONOLOGICAL ORDEER");
-    // Data is round and all reactions
-    const queryParams4 = {
-      TableName: "winston",
-      KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk) ",
-      ExpressionAttributeValues: {
-        ":pk": { S: `USER#${user}` },
-        ":sk": { S: "#FRIEND" }
-      },
-      ScanIndexForward: true
-    };
-
-    const res4 = dynamodb.query(queryParams4, (err, data) => {
-      if (err) {
-        console.log("err", err);
-      } else {
-        console.log("LIST OF PEOPLE USER FOLLOWS", data);
-        data.Items.forEach((i) => console.log("user", i));
-        let keys = [];
-        data.Items.forEach((item) => {
-          console.log(
-            "🚀 ~ file: main.js ~ line 247 ~ item",
-            item["followedUser"].S
-          );
-          dynamodb.query(
-            {
-              TableName: "winston",
-              KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk)",
-              ExpressionAttributeValues: {
-                ":pk": { S: `USER#${item["followedUser"]["S"]}` },
-                ":sk": { S: "ROUND#" }
-              },
-              ScanIndexForward: true
-            },
-            (err, resr) => {
-              if (err) {
-                console.log("ERROR", err);
-              } else {
-                console.log("ONE USERS ROUNDS", resr);
-                resr.Items.forEach((x) => keys.push(x));
-        console.log('FINAL FOLLOWING LIST', keys)
-
-              }
-            }
-          );
-          // keys.push({
-          //   PK: { S: `USER#${item["followedUser"]["S"]}` },
-          //   SK: { S: `#ROUND` }
-          // });
-          // const friends = dynamodb.batchGetItem(
-          //   {
-          //     RequestItems: {
-          //       winston: {
-          //         Keys: keys
-          //       }
-          //     }
-          //   },
-          //   (err, res8) => {
-          //     if (err) console.log("err", err);
-          //     if (res8) {
-          //       console.log(
-          //         "🚀 ~ file: main.js ~ line 264 ~ data.Items.forEach ~ res8",
-          //         res8
-          //       );
-          //       res8.Responses.winston.forEach((i) => {
-          //         console.log("ENRICHED ITEM", i);
-          //       });
-          //     }
-          //   }
-          // );
-        });
-
-      }
-    });
-  // console.log("🚀 ~ file: main.js ~ line 244 ~ res3", res3.Items);
+    getRoundsForUser(user);
 }

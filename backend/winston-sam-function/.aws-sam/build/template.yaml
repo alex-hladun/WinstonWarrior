@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'winston-sam-function
+
+  Sample SAM Template for winston-sam-function
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+      ImageUri: helloworldfunction:nodejs12.x-v1
+    Policies: -AmazonDynamoDBFullAccess
+    Metadata:
+      DockerTag: nodejs12.x-v1
+      DockerContext: ./hello-world
+      Dockerfile: Dockerfile
+  GetRoundsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /rounds
+            Method: get
+      ImageUri: getroundsfunction:nodejs12.x-v1
+    Policies: -AmazonDynamoDBFullAccess
+    Metadata:
+      DockerTag: nodejs12.x-v1
+      DockerContext: ./get-rounds
+      Dockerfile: Dockerfile
+Outputs:
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction
+      - Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunctionRole
+      - Arn
+  GetRoundsApi:
+    Description: API Gateway endpoint URL for Prod stage for Get Rounds function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/rounds/
+  GetRoundsFunction:
+    Description: GetRoundsFunction Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetRoundsFunction
+      - Arn
+  GetRoundsFunctionIamRole:
+    Description: Implicit IAM Role created for GetRoundsFunction
+    Value:
+      Fn::GetAtt:
+      - GetRoundsFunctionRole
+      - Arn
