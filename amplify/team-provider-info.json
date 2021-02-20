@@ -1,0 +1,30 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-winstonwarrior2-dev-202755-authRole",
+      "UnauthRoleArn": "arn:aws:iam::253896803446:role/amplify-winstonwarrior2-dev-202755-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::253896803446:role/amplify-winstonwarrior2-dev-202755-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-winstonwarrior2-dev-202755-deployment",
+      "UnauthRoleName": "amplify-winstonwarrior2-dev-202755-unauthRole",
+      "StackName": "amplify-winstonwarrior2-dev-202755",
+      "StackId": "arn:aws:cloudformation:us-west-2:253896803446:stack/amplify-winstonwarrior2-dev-202755/76b02970-7262-11eb-b0f1-021763701fb3",
+      "AmplifyAppId": "dqh1vqwomgpt5"
+    },
+    "categories": {
+      "function": {
+        "winstonAuthPreSignup": {
+          "deploymentBucketName": "amplify-winstonwarrior2-dev-202755-deployment",
+          "s3Key": "amplify-builds/winstonAuthPreSignup-45687547786e34534835-build.zip"
+        },
+        "winnyAuthPreSignup": {
+          "deploymentBucketName": "amplify-winstonwarrior2-dev-202755-deployment",
+          "s3Key": "amplify-builds/winnyAuthPreSignup-746230474267426d6e46-build.zip"
+        }
+      },
+      "auth": {
+        "winnyAuth": {}
+      }
+    }
+  }
+}

@@ -1,8 +1,6 @@
 var AWS = require("aws-sdk");
 const { mockData } = require("./data");
-// const dotenv = require("dotenv").config({ path: "../.ENV" });
 const arg = process.argv[2];
-
 
 AWS.config.update({
   region: "us-west-2",
@@ -71,12 +69,18 @@ const getRoundsForUser = async (user) => {
 
   try {
     const followingUsers = await dynamo.query(queryParams5).promise();
-    console.log("🚀 ~ file: main.js ~ line 85 ~ getRoundsForUser ~ followingUsers", followingUsers)
+    console.log(
+      "🚀 ~ file: main.js ~ line 85 ~ getRoundsForUser ~ followingUsers",
+      followingUsers
+    );
 
     // const res4 = await dynamodb.query(queryParams4).promise();
     await new Promise((resolve, reject) => {
       followingUsers.Items.forEach(async (item, index, array) => {
-        console.log("🚀 ~ file: main.js ~ line 90 ~ res9.Items.forEach ~ item", item)
+        console.log(
+          "🚀 ~ file: main.js ~ line 90 ~ res9.Items.forEach ~ item",
+          item
+        );
         const userItem = await dynamo
           .query({
             TableName: "winston",

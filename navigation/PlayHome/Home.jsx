@@ -9,7 +9,7 @@ import {
 import * as React from "react";
 import * as Linking from "expo-linking";
 import GolfLogo from "../../assets/svg/GolfLogo";
-import styles from "../../assets/styles/PlayStyles";
+import styles from "../../assets/styles/Play/HomeStyles";
 import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
 import { useTotalInfo } from "../../hooks/useTotalInfo";
@@ -17,7 +17,6 @@ import { useHandicap } from "../../hooks/useHandicap";
 import { useHandicapHistory } from "../../hooks/useHandicapHistory";
 import { useEffect } from "react";
 import axios from "axios";
-import { SocialItem } from "./SocialItem";
 
 
 
@@ -29,32 +28,11 @@ export function Home({ navigation }) {
   const hcpInfo = useHandicapHistory(1);
   const hcpHistory = hcpInfo.handicapHistory;
   const hcp = hcpHistory[hcpHistory.length - 1];
-  const [socialFeed, setSocialFeed] = React.useState([]);
 
   const handlePress = () => {
     navigation.push("Course");
   };
 
-  const fetchRounds = async () => {
-    let user = "JerryGolf";
-
-    try {
-      const userRoundData = await axios.get(
-        `https://sqo0yd8vbe.execute-api.us-west-2.amazonaws.com/Prod/rounds?user=${user}`
-      );
-      console.log(
-        "🚀 ~ file: Home.jsx ~ line 42 ~ fetchRounds ~ userRoundData",
-        userRoundData.data[0]
-      );
-      setSocialFeed(userRoundData.data);
-    } catch {
-      setSocialFeedError("Error Loading Data");
-    }
-  };
-
-  useEffect(() => {
-    fetchRounds();
-  }, []);
 
   return (
     <>
@@ -73,11 +51,6 @@ export function Home({ navigation }) {
               Winston Warrior
               </Text> */}
           </View>
-          <FlatList
-            data={socialFeed}
-            renderItem={SocialItem}
-            keyExtractor={(item, index) => `itemsocial${index}`}
-          />
 
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>

@@ -43,6 +43,10 @@ Resources:
       DockerTag: nodejs12.x-v1
       DockerContext: ./get-rounds
       Dockerfile: Dockerfile
+  s3Bucket:
+  CloudFrontDist:
+
+
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

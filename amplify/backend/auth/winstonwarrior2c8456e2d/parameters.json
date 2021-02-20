@@ -1,0 +1,57 @@
+{
+    "resourceNameTruncated": "winstoc8456e2d",
+    "userPoolName": "winstonwarrior2c8456e2d_userpool_c8456e2d",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "emailVerificationSubject": "Winston Verification Code",
+    "emailVerificationMessage": "Your code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": "8",
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+        "email"
+    ],
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientRefreshTokenValidity": "30",
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "userpoolClientLambdaRole": "winstoc8456e2d_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "sharedId": "c8456e2d",
+    "resourceName": "winstonwarrior2c8456e2d",
+    "authSelections": "userPoolOnly",
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    },
+    "useDefault": "manual",
+    "userPoolGroupList": [
+        "winston22"
+    ],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
+    "dependsOn": [],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{}",
+    "hostedUI": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "authProviders": []
+}

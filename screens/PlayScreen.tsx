@@ -17,7 +17,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useStats } from "../hooks/useStats";
 import { LoadingScreen } from "../components/LoadingScreen";
 
-export default function TabOneScreen() {
+export default function PlayScreen() {
   const appContext = React.useContext(AppContext);
   const holeInfoLoaded =( appContext.value?.state?.playState?.holeInfo?.['1'].camera ? true : false)
   const appState = appContext.value.state;

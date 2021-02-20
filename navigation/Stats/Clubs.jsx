@@ -18,7 +18,7 @@ export function Clubs({ navigation }) {
   const appContext = React.useContext(AppContext)
   const statState = appContext.value.state.statState
   const shotData = statState.shotData
-  console.log("🚀 ~ file: Clubs.jsx ~ line 21 ~ Clubs ~ shotData", shotData)
+  // console.log("🚀 ~ file: Clubs.jsx ~ line 21 ~ Clubs ~ shotData", shotData)
   const [club, setClub] = React.useState(null)
   const [clubView, setClubView] = React.useState(false)
   // Carousel ref

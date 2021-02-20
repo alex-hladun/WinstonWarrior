@@ -7,9 +7,13 @@ import Navigation from './navigation';
 import { AppProvider } from './context/AppContext'
 import { PlayProvider } from './context/PlayContext'
 import { StatProvider } from './context/StatContext'
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './src/aws-exports';
+
 
 export default function App() {
-
+  
+  Amplify.configure(awsconfig);
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 

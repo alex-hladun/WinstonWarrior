@@ -6,9 +6,14 @@ export default {
     screens: {
       Root: {
         screens: {
-          WinstonWarrior: {
+          Play: {
             screens: {
-              TabOneScreen: 'one',
+              PlayScreen: 'one',
+            },
+          },
+          Social: {
+            screens: {
+              SocialScreen: 'one',
             },
           },
           Stats: {

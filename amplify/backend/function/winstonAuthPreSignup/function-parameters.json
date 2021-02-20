@@ -1,0 +1,17 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "winstonAuth",
+  "functionName": "winstonAuthPreSignup",
+  "resourceName": "winstonAuthPreSignup",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "/Users/rexx92/.nvm/versions/node/v10.16.1/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/PreSignup",
+  "triggerTemplate": "PreSignup.json.ejs",
+  "triggerEventPath": "PreSignup.event.json",
+  "roleName": "winstonAuthPreSignup",
+  "skipEdit": true,
+  "enableCors": false
+}

@@ -39,17 +39,20 @@ const reducer = produce((state, action) => {
       AsyncStorage.setItem("authName", action.data);
       registerUser(action.data);
 
-      state.auth_data = action.data;
-      state.user_name = action.data;
-      state.logged_in = true;
-      state.auth_message = "";
+      state.appState.auth_data = action.data;
+      state.appState.user_name = action.data;
+      state.appState.logged_in = true;
+      state.appState.auth_message = "";
 
       break;
     case "authentication_done":
-      state.auth_data = action.data;
-      state.user_name = action.data;
-      state.logged_in = true;
-      state.auth_message = "";
+      console.log('In Authentication', action.data)
+      console.log('In Authentication', action.token)
+      AsyncStorage.setItem("authName", action.data);
+      state.appState.auth_data = action.token;
+      state.appState.user_name = action.data;
+      state.appState.logged_in = true;
+      state.appState.auth_message = "";
       break;
 
     case "log_out":
@@ -375,6 +378,7 @@ function AppProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const login = ({ username, password }) => {
+    // If I want to hook into signup
     dispatch({ type: "authentication_starting" });
 
     let login_data = {

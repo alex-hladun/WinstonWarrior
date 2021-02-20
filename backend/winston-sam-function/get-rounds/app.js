@@ -1,27 +1,13 @@
 var AWS = require("aws-sdk");
-const dotenv = require("dotenv").config();
 
-let response;
-
-console.log(
-  "🚀 ~ file: app.js ~ line 9 ~  process.env.AWS_SECRET_ACCESS_KEY",
-  process.env.AWS_SECRET_ACCESS_KEY
-);
-console.log(
-  "🚀 ~ file: app.js ~ line 9 ~ process.env.AWS_ACCESS_KEY_ID",
-  process.env.AWS_ACCESS_KEY_ID
-);
-
-AWS.config.update({
-  region: "us-west-2",
+var dynamo = new AWS.DynamoDB.DocumentClient();
+dynamo.update({
   endpoint: "https://dynamodb.us-west-2.amazonaws.com"
 });
 
-var dynamo = new AWS.DynamoDB.DocumentClient();
-
 const getRoundsForUser = async (user) => {
   let keys = [];
-  console.log("CREATING A LIST OF ALL FRIENDS POSTS IN CHRONOLOGICAL ORDEER");
+  console.log("CREATING A LIST OF ALL FRIENDS POSTS IN CHRONOLOGICAL ORDErR");
 
   const queryParams5 = {
     TableName: "winston",
@@ -43,10 +29,7 @@ const getRoundsForUser = async (user) => {
     // const res4 = await dynamodb.query(queryParams4).promise();
     const followingUserRounds = await new Promise((resolve, reject) => {
       followingUsers.Items.forEach(async (item, index, array) => {
-        console.log(
-          "🚀 ~ file: main.js ~ line 90 ~ res9.Items.forEach ~ item",
-          item
-        );
+      
         const userItem = await dynamo
           .query({
             TableName: "winston",
