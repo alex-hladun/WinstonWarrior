@@ -13,29 +13,34 @@ import AsyncStorage from "@react-native-community/async-storage";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 import { Home } from "./Home";
-import SocialPost  from "../Social/SocialPost";
-import { CourseSelect } from "./CourseSelect";
-import { PlayerAdd } from "./PlayerAdd";
+import SocialPost from "./SocialPost";
+import SocialHome from "./SocialHome";
 
-export default function NavigationPlay({ colorScheme }) {
+export default function NavigationSocial({ colorScheme }) {
   return (
     <NavigationContainer independent={true}>
-      <PlayNavigator />
+      <SocialNavigator />
     </NavigationContainer>
   );
 }
 
-const PlayStack = createStackNavigator();
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
+// THIS IS NOT USED, ONLY IN BOTTOMTABNAVIGATOR
 
-function PlayNavigator() {
+const SocialStack = createStackNavigator();
+
+function SocialNavigator() {
   return (
-    <PlayStack.Navigator
+    <SocialStack.Navigator
       screenOptions={{ headerShown: true, headerTransparent: true }}
     >
-      <PlayStack.Screen name="Winston Warrior" component={Home} />
-      <PlayStack.Screen name="Course" component={CourseSelect} />
-      <PlayStack.Screen name="Add Players" component={PlayerAdd} />
-      <PlayStack.Screen name="Post" component={SocialPost} />
-    </PlayStack.Navigator>
+      <SocialStack.Screen name="Winstagram" component={SocialHome} />
+      <SocialStack.Screen name="Post" component={SocialPost} />
+    </SocialStack.Navigator>
   );
 }

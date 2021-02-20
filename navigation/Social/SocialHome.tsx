@@ -58,12 +58,12 @@ export default function SocialHome({ navigation }) {
         />
       </View>
 
-      {/* <View style={styles.background}>
+      <View style={styles.background}>
         <Image
           source={require("../../assets/images/vectors/Asset52.png")}
           style={styles.bgImage}
         />
-      </View> */}
+      </View>
     </>
   );
 }

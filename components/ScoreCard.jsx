@@ -36,7 +36,7 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
   useEffect(() => {
     // console.log('playState', playState)
     // get array of user names
-    let newArr = [appContext.value.state.user_name];
+    let newArr = [appContext.value.state.appState.user_name];
     if (appState.playState["player_2"]) {
       newArr.push(appState.playState["player_2"])
     }
@@ -203,7 +203,7 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
             newArr.push(
               <View key={`ke323s${i}`} style={styles.headerCell}>
                 <Text style={styles.score} key={i}>
-                  {name === appState.user_name ? p1totalScore : name === appState.playState.player_2 ? p2totalScore : name === appState.playState.player_3 ? p3totalScore : p4totalScore}
+                  {name === appState.appState.user_name ? p1totalScore : name === appState.playState.player_2 ? p2totalScore : name === appState.playState.player_3 ? p3totalScore : p4totalScore}
                 </Text>
               </View>
             )

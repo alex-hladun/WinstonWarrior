@@ -27,13 +27,7 @@ export const styles = StyleSheet.create({
   },
   homePageContainer: {
     flex: 1,
-    justifyContent: "flex-end",
-
-    backgroundColor: Theme.spinGreen1,
-
-    // width: "100%",
-    // height: "100%",
-    // padding: 10,
+    justifyContent: "space-evenly",
     marginBottom: 30
   },
   background: {
@@ -45,58 +39,9 @@ export const styles = StyleSheet.create({
     position: "absolute"
   },
   signupBackground: {
-    backgroundColor: Theme.spinGreen1,
+    // backgroundColor: Theme.spinGreen1,
     flex: 1,
-    alignItems: 'center',
-  },
-  welcomeContainer: {
-    flex: 1,
-    justifyContent: "center"
-    // width: '100%',
-    // height: '100%',
-    // padding: 10,
-    // marginBottom: 30
-  },
-  high: {
-    zIndex: 10
-  },
-  invisibleContainer: {
-    width: "100%",
-    height: "100%",
-    zIndex: 1,
-    position: "absolute",
-    justifyContent: "center"
-    // alignItems: "center",
-    // flexDirection: "column"
-    // padding: 10,
-    // marginBottom: 30
-  },
-  loginContainer: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    width: "100%",
-    height: "100%",
-    padding: 10
-  },
-  loginBackground: {
-    backgroundColor: Theme.spinGreen1
-  },
-  scoreContainer: {
-    flex: 1,
-    zIndex: 4,
-    backgroundColor: "#fff",
-    alignSelf: "center",
-    // top: 100,
-    width: "100%",
-    height: "100%",
-    paddingTop: 50,
-    opacity: 1,
-    borderColor: "black",
-    borderStyle: "solid",
-    borderWidth: 0.5,
-    // borderRadius: 15,
-    // backgroundColor: 'red',
-    position: "absolute"
+    alignItems: "center"
   },
   holeRow: {
     flexDirection: "row",
@@ -144,21 +89,6 @@ export const styles = StyleSheet.create({
     bottom: 0,
     right: 0
   },
-  modalContainer: {
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    zIndex: 1,
-    position: "absolute",
-    justifyContent: "center",
-    flexDirection: "column"
-  },
-  modal: {
-    justifyContent: "center",
-    backgroundColor: "white",
-    padding: 20,
-    margin: 30
-  },
   boxContainer: {
     flexDirection: "column",
     borderColor: "black",
@@ -188,8 +118,7 @@ export const styles = StyleSheet.create({
   video: {
     width: 400,
     height: 900,
-    position: "absolute",
-    zIndex: 5
+    position: "absolute"
   },
   bgImage: {
     flex: 1,
@@ -208,7 +137,6 @@ export const styles = StyleSheet.create({
     left: "5%",
     bottom: "-80%",
     position: "absolute",
-    // zIndex: 10,
     opacity: 0.2,
     resizeMode: "contain"
   },
@@ -247,8 +175,7 @@ export const styles = StyleSheet.create({
     margin: 20,
     // top: 250,
     borderRadius: 24,
-    alignSelf: "center",
-    zIndex: 10,
+    alignSelf: "center"
     // position: "absolute"
   },
   styledWelcomeButton: {
@@ -261,15 +188,8 @@ export const styles = StyleSheet.create({
     borderRadius: 24,
     alignSelf: "center"
   },
-  socialFeed: {
-    width: "100%",
-    height: height - 95 - 77,
-    zIndex: 2,
-    top: 95,
-    bottom: 77
-  },
   playButton: {
-    backgroundColor: Theme.spinGreen2,
+    backgroundColor: Theme.spinGreen2
     // zIndex: 10,
     // position: "absolute"
   },
@@ -302,9 +222,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15
   },
   playerText: {
-    textAlign: 'center'
-  }
-  ,
+    textAlign: "center"
+  },
   playerRow: {
     justifyContent: "space-between",
     flexDirection: "row",
@@ -376,14 +295,6 @@ export const styles = StyleSheet.create({
     paddingTop: 50,
     // height: 300,
     marginVertical: 20,
-    alignItems: "center"
-  },
-  rankingContainer: {
-    position: "absolute",
-    alignSelf: "center",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    paddingTop: 100,
     alignItems: "center"
   }
 });

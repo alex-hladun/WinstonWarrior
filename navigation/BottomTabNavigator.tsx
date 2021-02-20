@@ -11,6 +11,7 @@ import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 import { Theme } from "../assets/styles/Theme";
 import GolfFlag from "../assets/svg/GolfFlag";
 import ChartLogo from "../assets/svg/ChartLogo";
+import SocialPost from "./Social/SocialPost";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -23,7 +24,7 @@ export default function BottomTabNavigator() {
       tabBarOptions={{ activeTintColor: Theme.spinGreen4 }}
     >
       <BottomTab.Screen
-        name="Social"
+        name="Winsta"
         component={SocialNavigator}
         options={{
           tabBarIcon: ({ color }) => (
@@ -67,10 +68,14 @@ function SocialNavigator() {
   return (
     <SocialStack.Navigator>
       <SocialStack.Screen
-        name="SocialScreen"
+        name="Winstagram"
         component={SocialScreen}
-        options={{ headerTitle: "Winsta", headerShown: false }}
+        options={({ navigation, route }) => ({
+          headerTitle: "Winstagram"
+          // headerShown: false
+        })}
       />
+      <SocialStack.Screen name="Post" component={SocialPost} />
     </SocialStack.Navigator>
   );
 }
@@ -83,7 +88,9 @@ function StatNavigator() {
       <StatStack.Screen
         name="StatScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: "Stats" }}
+        options={({ navigation, route }) => ({
+          headerTitle: "Stats"
+        })}
       />
     </StatStack.Navigator>
   );

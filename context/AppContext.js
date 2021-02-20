@@ -56,10 +56,10 @@ const reducer = produce((state, action) => {
       break;
 
     case "log_out":
-      state.auth_data = null;
-      state.user_name = null;
-      state.logged_in = false;
-      state.auth_message = "";
+      state.appState.auth_data = null;
+      state.appState.user_name = null;
+      state.appState.logged_in = false;
+      state.appState.auth_message = "";
       break;
 
     case "set_round_id":

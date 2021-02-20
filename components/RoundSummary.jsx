@@ -64,14 +64,14 @@ export default function RoundSummary({ handleRoundSummary }) {
     let newObj = {};
 
     newArr.push({
-      name: appState["user_name"],
+      name: appState.appState.user_name,
       totalScore: sumValues(appState.playState.p1score),
       frontScore: sumFront(appState.playState.p1score),
       backScore: sumBack(appState.playState.p1score)
     });
 
     newObj["p1"] = {
-      name: appState["user_name"],
+      name: appState.appState.user_name,
       totalScore: sumValues(appState.playState.p1score),
       frontScore: sumFront(appState.playState.p1score),
       backScore: sumBack(appState.playState.p1score)

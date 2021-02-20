@@ -55,6 +55,10 @@ export const Theme = {
     '#C63B2F',
     '#AB3428',
     '#84271F'
-  ]
+  ],
+  spaceCadet: '#17183B',
+  grannySmith: '#BDE79D',
+  ygCrayola: '#A7DF7C',
+
   
 }

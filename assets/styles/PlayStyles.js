@@ -6,7 +6,7 @@ const height = Dimensions.get("window").height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.spinGreen1,
+    backgroundColor: 'white',
     alignSelf: "center",
     justifyContent: "space-between",
     // top: 100,
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
 
-    backgroundColor: Theme.spinGreen1,
+    backgroundColor: Theme.grannySmith,
 
     // width: "100%",
     // height: "100%",
@@ -263,10 +263,10 @@ export const styles = StyleSheet.create({
   },
   socialFeed: {
     width: "100%",
-    height: height - 95 - 77,
+    height: "100%",
     zIndex: 2,
-    top: 95,
-    bottom: 77
+    // top: 1,
+    // bottom: 77
   },
   playButton: {
     backgroundColor: Theme.spinGreen2,

@@ -8,7 +8,7 @@ export default {
         screens: {
           Play: {
             screens: {
-              PlayScreen: 'one',
+              PlayScreen: 'two',
             },
           },
           Social: {
@@ -18,7 +18,7 @@ export default {
           },
           Stats: {
             screens: {
-              TabTwoScreen: 'two',
+              TabTwoScreen: 'three',
             },
           },
         },

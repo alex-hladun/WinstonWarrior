@@ -1,4 +1,6 @@
 {
+    "identityPoolName": "winnyAuth_identitypool_32f168f3",
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "winstoff2d0cb5",
     "userPoolName": "winnyPool",
     "autoVerifiedAttributes": [
@@ -30,7 +32,7 @@
     "userpoolClientSetAttributes": false,
     "sharedId": "ff2d0cb5",
     "resourceName": "winnyAuth",
-    "authSelections": "userPoolOnly",
+    "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",

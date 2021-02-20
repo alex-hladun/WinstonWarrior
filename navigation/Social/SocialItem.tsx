@@ -16,15 +16,9 @@ import { AppContext } from "../../context/AppContext";
 import { Theme } from "../../assets/styles/Theme";
 // import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 export const SocialItem = (social) => {
-  // console.log(
-  //   "🚀 ~ file: SocialItem.tsx ~ line 20 ~ SocialItem ~ social",
-  //   social.item
-  // );
-
   // let [fontsLoaded] = useFonts({
   //   Inter_900Black
   // });
-  console.log(Dimensions.get("window").width);
   // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRound)
   return (
     <View style={styles.frame}>

@@ -154,7 +154,7 @@ export function PlayerAdd({ navigation }) {
      <View style={styles.background}>
     <Image source={require('../../assets/images/vectors/Asset34.png')} style={styles.bgImage}/>
       <View style={styles.container}>
-        {player(appContext.value.state.auth_data, 1)}
+        {player(appContext.value.state.appState.user_name, 1)}
         {appState.playState.player_2 ? player(appState.playState.player_2, 2) : null}
         {appState.playState.player_3 ? player(appState.playState.player_3, 3) : null}
         {appState.playState.player_4 ? player(appState.playState.player_4, 4) : null}

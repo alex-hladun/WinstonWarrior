@@ -19,7 +19,11 @@
         },
         "winnyAuthPreSignup": {
           "deploymentBucketName": "amplify-winstonwarrior2-dev-202755-deployment",
-          "s3Key": "amplify-builds/winnyAuthPreSignup-746230474267426d6e46-build.zip"
+          "s3Key": "amplify-builds/winnyAuthPreSignup-714e705666393572314f-build.zip"
+        },
+        "S3Triggerff1cac9d": {
+          "deploymentBucketName": "amplify-winstonwarrior2-dev-202755-deployment",
+          "s3Key": "amplify-builds/S3Triggerff1cac9d-6753506b324643677835-build.zip"
         }
       },
       "auth": {

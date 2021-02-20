@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   frame: {
     width: "100%",
     flexDirection: "column",
-    backgroundColor: Theme.spinGreen1,
+    backgroundColor: Theme.grannySmith,
     borderColor: "black",
     borderBottomWidth: 0.5
   },
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   nav: {
     height: 95,
-    alignSelf:'center',
+    alignSelf: "center",
     top: 0,
     backgroundColor: "red",
     position: "absolute",
@@ -50,6 +50,13 @@ export const styles = StyleSheet.create({
     margin: 15,
     marginTop: 5,
     backgroundColor: "black"
+  },
+  background: {
+    backgroundColor: Theme.ygCrayola,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 20,
   },
   comment: {
     fontWeight: "500",
