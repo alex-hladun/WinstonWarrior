@@ -33,7 +33,7 @@ export default function SocialPost({ navigation }) {
       allowsEditing: true,
       quality: 1,
       videoQuality: 1,
-      mediaTypes: ImagePicker.MediaTypeOptions.All
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       // base64: true
     });
     if (!result.cancelled) {
@@ -54,22 +54,11 @@ export default function SocialPost({ navigation }) {
       );
       console.log(
         "🚀 ~ file: SocialPost.tsx ~ line 34 ~ pickImage ~ testUpload",
-        testUpload
+        testUpload.key
       );
     }
   };
 
-  async function pathToImageFile() {
-    try {
-      // const response = await fetch(pathToImageFile);
-      const blob = await response.blob();
-      await Storage.put("yourKeyHere", blob, {
-        contentType: "image/jpeg" // contentType is optional
-      });
-    } catch (err) {
-      console.log("Error uploading file:", err);
-    }
-  }
 
   return (
     <>

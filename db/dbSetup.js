@@ -915,7 +915,7 @@ export const loadShotHistoryData = async (user_id, club_id) => {
     FROM distances
     JOIN clubs ON clubs.club_id = distances.club_id
     WHERE user_id = ? AND distances.club_id = ?
-    ORDER BY distances.date_time ASC
+    ORDER BY distances.date_time DESC
     LIMIT 10;
     `,
         [user_id, club_id],

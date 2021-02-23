@@ -17,6 +17,7 @@ import {
   loadHoleStats,
   loadLow,
   loadScramblePct,
+  loadShotHistoryData,
   loadShots,
   loadStats,
   loadTotalBirds,
@@ -46,8 +47,8 @@ const reducer = produce((state, action) => {
 
       break;
     case "authentication_done":
-      console.log('In Authentication', action.data)
-      console.log('In Authentication', action.token)
+      console.log("In Authentication", action.data);
+      console.log("In Authentication", action.token);
       AsyncStorage.setItem("authName", action.data);
       state.appState.auth_data = action.token;
       state.appState.user_name = action.data;
@@ -175,6 +176,9 @@ const reducer = produce((state, action) => {
       break;
     case "set_shot_data":
       state.statState.shotData = action.data;
+      break;
+    case "set_shot_history_data":
+      state.statState.shotDataHistory = action.data;
       break;
     case "set_hole_info":
       state.playState.holeInfo = action.data;
@@ -565,9 +569,39 @@ function AppProvider(props) {
       data: handicapHistoryArray.reverse()
     });
 
+    await loadShotHistory(user_id);
+
+    dispatch({ type: "done_initial_loading" });
+  };
+
+  const loadShotHistory = async (user_id) => {
     const shotData = await loadShots(user_id);
     dispatch({ type: "set_shot_data", data: shotData });
-    dispatch({ type: "done_initial_loading" });
+
+    const shotHistoryObj = {};
+    const shotHistoryPromise = new Promise((resolve, reject) => {
+      shotData.forEach(async (club, index) => {
+        let clubShotStats = await loadShotHistoryData(1, club.id);
+        shotHistoryObj[club.id] = {
+          distanceHistory: [],
+          effortHistory: [],
+          dateHistory: [],
+          name: club.name
+        };
+       
+        clubShotStats.forEach((shot) => {
+          shotHistoryObj[club.id].distanceHistory.push(shot.distance);
+          shotHistoryObj[club.id].effortHistory.push(shot.effort.toFixed(0));
+          shotHistoryObj[club.id].dateHistory.push(shot.date_time);
+        });
+
+        if (index === shotData.length - 1) {
+          resolve();
+        }
+      });
+    });
+    await shotHistoryPromise;
+    dispatch({ type: "set_shot_history_data", data: shotHistoryObj });
   };
 
   const loadInitialCourseData = async (course_id, user_id) => {
@@ -764,8 +798,7 @@ function AppProvider(props) {
   };
 
   const refreshShotStats = async (user_id) => {
-    const shotData = await loadShots(user_id);
-    dispatch({ type: "set_shot_data", data: shotData });
+    loadShotHistory(user_id);
   };
 
   const doneRound = () => {

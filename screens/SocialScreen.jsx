@@ -20,7 +20,7 @@ export default function SocialScreen({ navigation }) {
     navigation.setOptions({
       headerStyle: {
         height: 100,
-        backgroundColor: "#7BCF3A",
+        backgroundColor: "#white",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.4,
