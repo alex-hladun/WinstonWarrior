@@ -12,6 +12,7 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
     bogies: 0,
     doubles: 0,
     triples: 0,
+    albatrosses: 0,
     rounds: 0,
     GIRs: 0,
     avgPutts: 0,
@@ -67,6 +68,8 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
               birdieObj.pars++;
             } else if (hole.total_shots - hole.hole_par === -2) {
               birdieObj.eagles++;
+            } else if (hole.total_shots - hole.hole_par <= -3) {
+              birdieObj.albatrosses++;
             } else if (hole.total_shots - hole.hole_par === 1) {
               birdieObj.bogies++;
             } else if (hole.total_shots - hole.hole_par === 2) {

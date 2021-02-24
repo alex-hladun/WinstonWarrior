@@ -629,6 +629,34 @@ export const loadStats = async (user_id) => {
   );
 };
 
+export const load18HoleStats = async (user_id) => {
+  // Loads overall user round history. Only grabs rounds with 18 holes entered, for now.
+  // console.log('USER ID IN STATS', user_id)
+  return new Promise((resolve, reject) =>
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+    SELECT rounds.round_id, rounds.total_score, SUM(scores.total_putts) AS total_putts, COUNT(scores.total_putts > 3) AS 'three-putts', rounds.end_date, rounds.calculated_holes_played AS holes_played, courses.name AS course_name, rounds.hcp_diff, rounds.holes_played, rounds.calculated_holes_played
+    FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
+    JOIN courses ON rounds.course_id = courses.course_id
+    WHERE rounds.user_id = ? 
+    GROUP BY rounds.round_id
+    HAVING rounds.calculated_holes_played = 18 AND rounds.end_date NOT NULL
+    ORDER BY rounds.round_id DESC LIMIT 30;
+    `,
+        [user_id],
+        (txObj, result) => {
+          console.log(
+            `overall round stats: ${JSON.stringify(result.rows._array)}`
+          );
+          resolve(result.rows._array);
+        },
+        (err, mess) => console.log("err getting stats", reject(err, mess))
+      );
+    })
+  );
+};
+
 export const loadCourseDetails = async (course_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now.
   return new Promise((resolve, reject) =>
@@ -891,7 +919,7 @@ export const loadShots = async (user_id) => {
     SELECT clubs.name, clubs.club_id AS id, avg(distance) AS avg, max(distance) AS max, count(*) AS count
     FROM distances
     JOIN clubs ON clubs.club_id = distances.club_id
-    WHERE user_id = ?
+    WHERE user_id = ? AND effort = 100
     GROUP BY clubs.club_id
     ORDER BY clubs.club_id ASC;
     `,

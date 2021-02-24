@@ -100,6 +100,12 @@ export default function Score({
   const handleScoreSubmit = async (hideModal = true, delta = 0) => {
     console.log(`POSTING WITH HOLEID OF ${holeID}`);
 
+    if (putts > score - 1) {
+      console.log("INVALID PUTTS");
+      setPutts(score - 1);
+      return;
+    }
+
     let gir = 0;
     if (score - putts + 2 <= holeInfo[holeNum].par) {
       gir = 1;
@@ -176,7 +182,6 @@ export default function Score({
       resetSliders(-1);
     }
     appContext.value.reloadHoleStats(appState.playState.courseId, holeNum);
-    console.log("entered scores");
   };
 
   const pickWidth = 50;

@@ -74,6 +74,7 @@ export const getRoundData = async (roundID) => {
       // console.log("🚀 ~ file: roundData.js ~ line 73 ~ returnnewPromise ~ result.rows._array", result.rows._array)
       const birdieObj = {
         eagles: 0,
+        albatrosses: 0,
         birdies: 0,
         pars: 0,
         bogeys: 0,
@@ -86,6 +87,8 @@ export const getRoundData = async (roundID) => {
           birdieObj['eagles'] ++
         } else if (score.total_shots === score.hole_par - 1) {
           birdieObj['birdies'] ++
+        } else if (score.total_shots <= score.hole_par - 3) {
+          birdieObj['albatrosses'] ++
         } else if (score.total_shots === score.hole_par) {
           birdieObj['pars'] ++
         } else if (score.total_shots === score.hole_par + 1) {

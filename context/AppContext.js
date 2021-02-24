@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {
   getClubs,
   getPct,
+  load18HoleStats,
   loadAvgPutts,
   loadAvgScore,
   loadBestScore,
@@ -165,6 +166,9 @@ const reducer = produce((state, action) => {
     case "set_round_history":
       state.statState.roundHistory = action.data;
       break;
+    case "set_round_history_18_holes":
+      state.statState.roundHistory18Holes = action.data;
+      break;
     case "set_total_putt_history":
       state.statState.puttHistory = action.data;
       break;
@@ -253,6 +257,7 @@ const initialState = {
     shotData: [],
     shotDataHistory: {},
     roundHistory: [],
+    roundHistory18Holes: [],
     puttHistory: [],
     // holeHistory: {},
     birdieObj: undefined,
@@ -419,6 +424,7 @@ function AppProvider(props) {
     // Loads all holes, shots, pars, grouped by for user
     const birdieCount = await loadTotalBirds(user_id);
     const totalBirds = {
+      albatrosses: 0,
       eagles: 0,
       birdies: 0,
       pars: 0,
@@ -432,6 +438,8 @@ function AppProvider(props) {
         totalBirds.birdies++;
       } else if (hole.total_shots - hole.hole_par === 0) {
         totalBirds.pars++;
+      } else if (hole.total_shots - hole.hole_par <= -3) {
+        totalBirds.albatrosses++;
       } else if (hole.total_shots - hole.hole_par === -2) {
         totalBirds.eagles++;
       } else if (hole.total_shots - hole.hole_par === 1) {
@@ -474,7 +482,12 @@ function AppProvider(props) {
     });
 
     let roundHistory = await loadStats(user_id);
+    let roundHistory18Holes = await load18HoleStats(user_id);
     dispatch({ type: "set_round_history", data: roundHistory.reverse() });
+    dispatch({
+      type: "set_round_history_18_holes",
+      data: roundHistory18Holes.reverse()
+    });
 
     const sortedHistory = roundHistory
       .slice()
@@ -588,7 +601,7 @@ function AppProvider(props) {
           dateHistory: [],
           name: club.name
         };
-       
+
         clubShotStats.forEach((shot) => {
           shotHistoryObj[club.id].distanceHistory.push(shot.distance);
           shotHistoryObj[club.id].effortHistory.push(shot.effort.toFixed(0));
@@ -616,6 +629,7 @@ function AppProvider(props) {
         pars: 0,
         birdies: 0,
         eagles: 0,
+        albatrosses: 0,
         bogies: 0,
         doubles: 0,
         triples: 0,
@@ -654,6 +668,8 @@ function AppProvider(props) {
         birdieObj[hole.hole_num].pars++;
       } else if (hole.total_shots - hole.hole_par === -2) {
         birdieObj[hole.hole_num].eagles++;
+      } else if (hole.total_shots - hole.hole_par <= -3) {
+        birdieObj[hole.hole_num].albatrosses++;
       } else if (hole.total_shots - hole.hole_par === 1) {
         birdieObj[hole.hole_num].bogies++;
       } else if (hole.total_shots - hole.hole_par === 2) {
@@ -786,10 +802,6 @@ function AppProvider(props) {
     // Reload stats for a particular hole after score save.
     console.log(`Reloading stats for hole ${holeNum} for courseID ${courseID}`);
     birdieObj = await loadHoleStatsForRefresh(courseID, holeNum, 1);
-    console.log(
-      "🚀 ~ file: AppContext.js ~ line 728 ~ reloadHoleStats ~ birdieObj",
-      birdieObj
-    );
     dispatch({
       type: "refresh_hole_stats",
       data: birdieObj,

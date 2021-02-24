@@ -17,10 +17,9 @@ export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
   const handicapHistory = appState.statState.hcpHistory;
-  // console.log("🚀 ~ file: Trends.jsx ~ line 20 ~ Trends ~ handicapHistory", handicapHistory)
   const roundHistory = appState.statState.roundHistory;
+  const roundHistory18Holes = appState.statState.roundHistory18Holes;
   const totalPuttHistory = appState.statState.puttHistory;
-  // console.log("🚀 ~ file: Trends.jsx ~ line 21 ~ Trends ~ totalPuttHistory", totalPuttHistory)
   const [parentChartType, setParentChartType] = React.useState("LineChart");
   const [chartType, setChartType] = React.useState("Shots");
   const [chartData, setChartData] = React.useState({
@@ -46,7 +45,7 @@ export function Trends({ navigation }) {
         setParentChartType("LineChart");
         setChartType("Putts");
         setChartData({
-          labels: roundHistory?.map((round, index) => {
+          labels: roundHistory18Holes?.map((round, index) => {
             return round.end_date?.slice(5, 10);
           }),
           datasets: [
@@ -120,12 +119,12 @@ export function Trends({ navigation }) {
           setChartType("Shots");
           setParentChartType("LineChart");
           setChartData({
-            labels: roundHistory?.map((round, index) => {
+            labels: roundHistory18Holes?.map((round, index) => {
               return round.end_date?.slice(5, 10);
             }),
             datasets: [
               {
-                data: roundHistory.map((round) => {
+                data: roundHistory18Holes.map((round) => {
                   return round.total_score;
                 })
               }
