@@ -539,7 +539,7 @@ function AppProvider(props) {
           // TODO: replae this by getting the scramble percents that are 0
           return 0;
         } else if (hP - totalpctHistoy.scrambleSuccess[i] <= 0) {
-          return 0;
+          return 100;
         } else {
           return Math.round(
             ((hP - totalpctHistoy.scrambleSuccess[i]) * 100) /

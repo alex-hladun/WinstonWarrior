@@ -132,11 +132,11 @@ export function RoundCard({ handleRoundView, item }) {
           </View>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>GIR</Text>
-            <Text style={styles.roundCardSubText}>{roundData?.girHit ? roundData.girHit : ''} / {roundData?.totalHoles ? roundData.totalHoles : ''}</Text>
+            <Text style={styles.roundCardSubText}>{roundData?.girHit ? roundData.girHit : 0} / {roundData?.totalHoles ? roundData.totalHoles : ''}</Text>
           </View>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.roundCardHeader}>SCR</Text>
-            <Text style={styles.roundCardSubText}>{roundData?.girHit ? roundData.scramble : ''} / {roundData?.totalHoles ? (roundData.totalHoles - roundData.girHit) : ''}</Text>
+            <Text style={styles.roundCardSubText}>{roundData?.girHit ? roundData.scramble : 18} / {roundData?.totalHoles ? (roundData.totalHoles - roundData.girHit) : ''}</Text>
           </View>
           </View>
     </View >
