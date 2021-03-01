@@ -9,10 +9,11 @@ import {
   ImageBackground
 } from "react-native";
 import * as React from "react";
-import * as Linking from "expo-linking";
 import { AppContext } from "../context/AppContext";
 import { Video } from "expo-av";
 import styles from "../assets/styles/PlayStyles";
+import { LinearGradient } from "expo-linear-gradient";
+
 import {
   createWinston,
   seedData,
@@ -30,18 +31,19 @@ export function Login({ navigation }) {
   const appState = appContext.value.state.appState;
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  
+
   const checkLogin = async () => {
     // if (!appState.app)
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
-      console.log(authedUser.username); // this means that you've logged in before with valid user/pass.
+      console.log(authedUser.signInUserSession); // this means that you've logged in before with valid user/pass.
       console.log("AUTHENTICATED WITH COGNITO");
       appContext.dispatch({
         type: "authentication_done",
         data: authedUser.username,
-        token: authedUser.signInUserSession.accessToken.jwtToken
+        token: authedUser.signInUserSession.idToken.jwtToken
       });
+      // token: authedUser.signInUserSession.accessToken.jwtToken
       // console.log("🚀 ~ file: Login.tsx ~ line 31 ~ Login ~ appState", appState)
     } catch (err) {
       console.log("err signing in");
@@ -88,11 +90,21 @@ export function Login({ navigation }) {
 
   return (
     <>
+      <LinearGradient
+        colors={["rgba(0,0,0,.3)", "transparent"]}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          height: "70%"
+        }}
+      />
       <View>
         {width < 400 && (
           <Video
             source={require("../assets/golf.m4v")}
-            rate={1.0}
+            rate={1}
             volume={0.0}
             isMuted={true}
             resizeMode="cover"

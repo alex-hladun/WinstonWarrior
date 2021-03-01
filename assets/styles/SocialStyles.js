@@ -53,10 +53,10 @@ export const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: Theme.ygCrayola,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    zIndex: 20,
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: 20
   },
   comment: {
     fontWeight: "500",
@@ -90,6 +90,23 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: 375 * 0.8,
     backgroundColor: Theme.spinGreen3
+  },
+  mediaPicture: {
+    width: width,
+    height: width
+  },
+  mediaPreview: {
+    width: width * 0.8,
+    height: width * 0.9,
+    alignSelf: 'center'
+  },
+  textBox: {
+    width: "90%",
+    height: "auto",
+    backgroundColor: "white",
+    margin: 20,
+    color: "black",
+    borderRadius: 20
   }
 });
 

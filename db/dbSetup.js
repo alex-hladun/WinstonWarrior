@@ -810,7 +810,7 @@ export const loadTotalPctHistory = async (user_id) => {
         SELECT count(*) AS scramble
         FROM scores
         JOIN rounds on rounds.round_id = scores.round_id
-        WHERE rounds.user_id = ? AND scores.ud != 1 AND (rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9) AND rounds.end_date NOT NULL
+        WHERE rounds.user_id = ? AND scores.ud = 1 AND (rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9) AND rounds.end_date NOT NULL
         GROUP BY scores.round_id
         ORDER BY rounds.round_id DESC
         LIMIT 10;

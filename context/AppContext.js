@@ -526,10 +526,10 @@ function AppProvider(props) {
         }
       })
       .reverse();
-    console.log(
-      "🚀 ~ file: AppContext.js ~ line 503 ~ loadInitialStats ~ girPctHistory",
-      girPctHistory
-    );
+    // console.log(
+    //   "🚀 ~ file: AppContext.js ~ line 503 ~ loadInitialStats ~ girPctHistory",
+    //   girPctHistory
+    // );
     dispatch({ type: "set_gir_history", data: girPctHistory });
 
     const scramblePctHistory = totalpctHistoy.totalHolesPlayed
@@ -537,6 +537,7 @@ function AppProvider(props) {
         console.log("hp", hP);
         if (!totalpctHistoy.scrambleSuccess[i]) {
           // TODO: replae this by getting the scramble percents that are 0
+          // Might need to compare lengths and see what the dealio is
           return 0;
         } else if (hP - totalpctHistoy.scrambleSuccess[i] <= 0) {
           return 100;

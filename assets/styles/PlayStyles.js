@@ -1,12 +1,14 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { Theme } from "../styles/Theme";
+import { LinearGradient } from "expo-linear-gradient";
+
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     alignSelf: "center",
     justifyContent: "space-between",
     // top: 100,
@@ -24,6 +26,12 @@ export const styles = StyleSheet.create({
   winnyImage: {
     height: 150,
     width: 175
+  },
+  gradientBackground: {
+    // zIndex: 2,
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
   },
   homePageContainer: {
     flex: 1,
@@ -47,7 +55,7 @@ export const styles = StyleSheet.create({
   signupBackground: {
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center"
   },
   welcomeContainer: {
     flex: 1,
@@ -142,7 +150,7 @@ export const styles = StyleSheet.create({
     left: 0,
     alignItems: "stretch",
     bottom: 0,
-    right: 0
+    right: 0,
   },
   modalContainer: {
     alignItems: "center",
@@ -248,7 +256,7 @@ export const styles = StyleSheet.create({
     // top: 250,
     borderRadius: 24,
     alignSelf: "center",
-    zIndex: 10,
+    zIndex: 10
     // position: "absolute"
   },
   styledWelcomeButton: {
@@ -264,12 +272,12 @@ export const styles = StyleSheet.create({
   socialFeed: {
     width: "100%",
     height: "100%",
-    zIndex: 2,
+    zIndex: 2
     // top: 1,
     // bottom: 77
   },
   playButton: {
-    backgroundColor: Theme.spinGreen2,
+    backgroundColor: Theme.spinGreen2
     // zIndex: 10,
     // position: "absolute"
   },
@@ -302,9 +310,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15
   },
   playerText: {
-    textAlign: 'center'
-  }
-  ,
+    textAlign: "center"
+  },
   playerRow: {
     justifyContent: "space-between",
     flexDirection: "row",

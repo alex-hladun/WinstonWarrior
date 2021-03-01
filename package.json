@@ -12,7 +12,7 @@
   "jest": {
     "preset": "jest-expo",
     "modulePathIgnorePatterns": [
-      "<rootDir>/build"
+      "<rootDir>/build", "<rootDir>/backend", "/backend"
     ]
   },
   "dependencies": {

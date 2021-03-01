@@ -16,18 +16,11 @@ import { useTotalInfo } from "../../hooks/useTotalInfo";
 import { useHandicap } from "../../hooks/useHandicap";
 import { useHandicapHistory } from "../../hooks/useHandicapHistory";
 import { useEffect } from "react";
-import axios from "axios";
-
-
 
 export function Home({ navigation }) {
   const statContext = React.useContext(StatContext);
   const appContext = React.useContext(AppContext);
-  const statState = statContext.value.state;
   const appState = appContext.value.state;
-  const hcpInfo = useHandicapHistory(1);
-  const hcpHistory = hcpInfo.handicapHistory;
-  const hcp = hcpHistory[hcpHistory.length - 1];
 
   const handlePress = () => {
     navigation.push("Course");
