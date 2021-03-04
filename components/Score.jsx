@@ -1,30 +1,20 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View } from "./Themed";
-import {
-  StyleSheet,
-  Easing,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  TouchableHighlight,
-  Animated,
-  Alert,
-  Modal
-} from "react-native";
+import { TouchableOpacity, Image } from "react-native";
 import styles from "../assets/styles/ScoreStyles";
-// import holeInfo from '../assets/holeInfo'
 import { Picker } from "@react-native-community/picker";
 import Slider from "@react-native-community/slider";
 import CheckSymbol from "../assets/svg/CheckSymbol";
-
-import db, { getScore, getUsers, postScore } from "../db/dbSetup";
+import db, { getScore, postScore } from "../db/dbSetup";
 import { AppContext } from "../context/AppContext";
-import { PlayContext } from "../context/PlayContext";
-import { StatContext } from "../context/StatContext";
 import XSymbol from "../assets/svg/XSymbol";
 import { Theme } from "../assets/styles/Theme";
 import LeftSymbol from "../assets/svg/LeftSymbol";
 import RightSymbol from "../assets/svg/RightSymbol";
+import axios from "axios";
+import config from "../settings.json";
+import { calculatedHolesPlayed } from "../helpers/handicap";
+import { liveRoundCalc } from "../helpers/liveRoundCalc";
 
 export default function Score({
   holeNum,
@@ -34,18 +24,14 @@ export default function Score({
   handleHoleDec
 }) {
   const appContext = React.useContext(AppContext);
-  // const playContext = React.useContext(PlayContext)
   let appState = appContext.value.state;
   const holeInfo = appState.playState.holeInfo;
-  // console.log("🚀 ~ file: Score.jsx ~ line 25 ~ Score ~ holeInfo", holeInfo)
   const [playerArray, setPlayerArray] = useState([]);
   const holeID = appState.playState.hole_id;
   const p1ps = appState.playState.p1score[holeNum];
   const p2ps = appState.playState.p2score[holeNum];
   const p3ps = appState.playState.p3score[holeNum];
   const p4ps = appState.playState.p4score[holeNum];
-  // console.log('prev score', p1ps)
-  // console.log('playstate in score', playState)
   const [score, setScore] = useState(p1ps ? p1ps : holeInfo[holeNum].par);
   const [p2score, setP2Score] = useState(p2ps ? p2ps : holeInfo[holeNum].par);
   const [p3score, setP3Score] = useState(p3ps ? p3ps : holeInfo[holeNum].par);
@@ -57,10 +43,15 @@ export default function Score({
   const [chip, setChip] = useState(50);
   const [putting, setPutting] = useState(50);
 
-  // let holeID = null
+  useEffect(() => {
+    console.log(
+      "LIVEROUND",
+      liveRoundCalc(appState.playState, appState.appState.user_name)
+    );
+    console.log(JSON.stringify(appState.playState.roundId));
+  }, []);
 
   useEffect(() => {
-    // holeID = appState.hole_id
     console.log(`HOLE ID OF ${holeID}`);
     let newArr = [appState.appState.user_name];
     if (appState.playState.player_2) {
@@ -182,6 +173,27 @@ export default function Score({
       resetSliders(-1);
     }
     appContext.value.reloadHoleStats(appState.playState.courseId, holeNum);
+
+    if (appState.playState.liveRound) {
+      const toalInfo = appState.playState.holeInfo;
+      console.log(
+        "🚀 ~ file: Score.jsx ~ line 178 ~ handleScoreSubmit ~ toalInfo",
+        toalInfo
+      );
+      // Some sort of identifier that lets us save the round.
+
+      try {
+        const putObj = liveRoundCalc(
+          appState.playState,
+          appState.appState.user_name
+        );
+        axios.put(`${config.api2}rounds`, putObj, {
+          headers: {
+            Authorization: appState.appState.auth_data
+          }
+        });
+      } catch (err) {}
+    }
   };
 
   const pickWidth = 50;

@@ -1591,7 +1591,10 @@ export const getScore = async (round_id) => {
     db.transaction((tx) => {
       tx.executeSql(
         `
-    SELECT * FROM scores WHERE round_id = ?;
+    SELECT scores.*, holes.* 
+    FROM scores
+    JOIN holes ON scores.round_id = holes.hole_id
+    WHERE scores.round_id = ?;
     `,
         [round_id],
         (txObj, result) => {

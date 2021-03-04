@@ -1,10 +1,6 @@
 import db from "./dbSetup";
 
 export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
-  console.log(
-    "🚀 ~ file: loadHoleStatsForRefresh.js ~ line 4 ~ loadHoleStatsForRefresh ~ courseID",
-    courseID
-  );
   const birdieObj = {
     pars: 0,
     birdies: 0,
@@ -51,13 +47,7 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
     `,
         [courseID, userID, holeNum],
         (txObj, result) => {
-          // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
-
           const scoresForHole = result.rows._array;
-          console.log(
-            "🚀 ~ file: loadHoleStats.js ~ line 23 ~ db.transaction ~ scoresForHole",
-            scoresForHole
-          );
 
           scoresForHole.forEach((hole) => {
             birdieObj.rounds++;
@@ -116,10 +106,6 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
         [courseID, userID, holeNum],
         (txObj, result) => {
           const avgVals = result.rows._array[0];
-          console.log(
-            "🚀 ~ file: loadHoleStats.js ~ line 100 ~ db.transaction ~ Avgs for hole",
-            avgVals
-          );
           birdieObj["avgShots"] = avgVals?.avg_shots;
           birdieObj["avgPutts"] = avgVals?.avg_putts;
 
@@ -161,10 +147,6 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
             [courseID, userID, holeNum],
             (txObj, result) => {
               const fwyStats = result.rows._array[0];
-              console.log(
-                "🚀 ~ file: loadHoleStats.js ~ line 157 ~ db.transaction ~ fwyStats",
-                fwyStats
-              );
 
               birdieObj.totalFairways = fwyStats?.total_fairways;
               birdieObj.driverDirection = fwyStats?.driver_direction;
@@ -192,17 +174,7 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
             [courseID, userID, holeNum],
             (txObj, result) => {
               const hitFwyStats = result.rows._array[0];
-              console.log(
-                "🚀 ~ file: loadHoleStats.js ~ line 187 ~ db.transaction ~ hitFwyStats",
-                hitFwyStats
-              );
               birdieObj.fairwaysHit = hitFwyStats?.total_fairways_hit;
-
-              console.log(
-                "🚀 ~ file: loadHoleStats.js ~ line 194 ~ db.transaction ~ birdieObj",
-                birdieObj
-              );
-
               resolve(birdieObj);
             },
             (err, mess) => console.log("err getting stats", reject(mess))

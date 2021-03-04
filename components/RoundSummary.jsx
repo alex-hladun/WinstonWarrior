@@ -1,15 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Text, View } from "./Themed";
-import {
-  StyleSheet,
-  Easing,
-  TouchableOpacity,
-  Image,
-  TouchableHighlight,
-  Animated,
-  Alert,
-  Modal
-} from "react-native";
+import { TouchableOpacity, Image, Switch } from "react-native";
 import styles from "../assets/styles/PlayStyles";
 import { AppContext } from "../context/AppContext";
 import { PlayContext } from "../context/PlayContext";
@@ -18,6 +9,9 @@ import { getPct, postRound } from "../db/dbSetup";
 import { useHandicap } from "../hooks/useHandicap";
 import { StatContext } from "../context/StatContext";
 import { handicapDiffCalc, netHandicapDiffCalc } from "../helpers/handicap";
+import axios from "axios";
+import config from "../settings.json";
+import { finalRoundPost } from "../helpers/finalRoundPost";
 
 const sumValues = (obj) => {
   if (Object.values(obj).length > 0) {
@@ -51,11 +45,17 @@ const sumBack = (obj) => {
 export default function RoundSummary({ handleRoundSummary }) {
   const appContext = React.useContext(AppContext);
   const statContext = React.useContext(StatContext);
+  let appState = appContext.value.state;
+  const [postSocialRound, setPostScoialRound] = useState(false);
   const userHandicap = useHandicap(1);
 
-  // console.log("🚀 ~ file: RoundSummary.jsx ~ line 45 ~ RoundSummary ~ playState", playState)
+  useEffect(() => {
+    console.log(
+      "final ROUND in SUMMARY",
+      finalRoundPost(appState.playState, appState.appState.user_name)
+    );
+  }, []);
 
-  let appState = appContext.value.state;
   const [scoreArr, setScoreArr] = useState([]);
   const [scoreObj, setScoreObj] = useState({});
 
@@ -146,6 +146,10 @@ export default function RoundSummary({ handleRoundSummary }) {
 
   let players;
 
+  const toggleRound = () => {
+    setPostScoialRound((prev) => !prev);
+  };
+
   if (scoreObj) {
     players = scoreArr
       .sort((a, b) =>
@@ -179,15 +183,7 @@ export default function RoundSummary({ handleRoundSummary }) {
       });
   }
 
-  useEffect(() => {
-    // console.log("🚀 ~ file: RoundSummary.jsx ~ line 166 ~ handleScoreSubmit ~ appState.round_id", appState.playState.roundId)
-    // console.log("🚀 ~ file: RoundSummary.jsx ~ line 167 ~ handleScoreSubmit ~ netHandicapDiffCalc()", netHandicapDiffCalc(appState.playState.p1score, userHandicap, appState.playState.p1_rtg, appState.playState.p1_slp, appState.playState.holeInfo))
-    // console.log("🚀 ~ file: RoundSummary.jsx ~ line 170 ~ handleScoreSubmit ~ appState.playState", appState.playState)
-  }, [appState.playState]);
-
   const handleScoreSubmit = async () => {
-    // const pctObj = await getPct(appState.round_id)
-
     // FWY % AND TOTAL PUTTS AND GIR % BLANK VALUES
 
     const hcpObj = netHandicapDiffCalc(
@@ -209,6 +205,37 @@ export default function RoundSummary({ handleRoundSummary }) {
       holesPlayed,
       calculatedHolesPlayed
     );
+
+    if (appState.playState.liveRound) {
+      // UDONE ROUND
+      axios.post(
+        `${config.api2}rounds`,
+        {
+          contentType: "round"
+        },
+        {
+          headers: {
+            Authorization: appState.appState.auth_data
+          }
+        }
+      );
+    } else if (postSocialRound) {
+      axios.post(
+        `${config.api2}rounds`,
+        {
+          contentType: "round",
+          calculatedHolesPlayed: hcpObj.calculatedHolesPlayed,
+          calculatedScore: hcpObj.calculatedScore,
+          frontScore: sumFront(appState.playState.p1score),
+          backScore: sumBack(appState.playState.p1score)
+        },
+        {
+          headers: {
+            Authorization: appState.appState.auth_data
+          }
+        }
+      );
+    }
 
     appContext.value.doneRound();
     appContext.value.loadInitialStats(1);
@@ -235,6 +262,8 @@ export default function RoundSummary({ handleRoundSummary }) {
         </TouchableOpacity>
         <Text style={styles.header}>Final Scores</Text>
         {players}
+        <Text>Post to Winsta</Text>
+        <Switch onValueChange={toggleRound} value={postSocialRound} />
         <TouchableOpacity onPress={() => handleScoreSubmit()}>
           <View style={[styles.styledButton, styles.playButton]}>
             <Text style={styles.buttonText}>Save Round</Text>

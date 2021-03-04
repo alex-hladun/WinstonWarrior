@@ -9,17 +9,17 @@ import { AppContext } from "../context/AppContext";
 import { StatContext } from "../context/StatContext";
 import NavigationPlay from "../navigation/PlayHome";
 import { PlayContext } from "../context/PlayContext";
-import {
-  getScore,
-  retrieveCourseInfo,
-} from "../db/dbSetup";
+import { getScore, retrieveCourseInfo } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useStats } from "../hooks/useStats";
 import { LoadingScreen } from "../components/LoadingScreen";
 
 export default function PlayScreen() {
   const appContext = React.useContext(AppContext);
-  const holeInfoLoaded =( appContext.value?.state?.playState?.holeInfo?.['1'].camera ? true : false)
+  const holeInfoLoaded = appContext.value?.state?.playState?.holeInfo?.["1"]
+    .camera
+    ? true
+    : false;
   const appState = appContext.value.state;
   const [initialHole, setInitialHole] = React.useState(1);
 
@@ -44,20 +44,20 @@ export default function PlayScreen() {
               {
                 text: "No",
                 onPress: () => console.log("NOT loading existing round"),
-                style: "cancel",
+                style: "cancel"
               },
               {
                 text: "Yes",
                 onPress: () => {
                   appContext.dispatch({
                     type: "set_round_id",
-                    data: JSON.parse(roundID),
+                    data: JSON.parse(roundID)
                   });
 
                   setHole();
                   checkAndRestoreScores();
-                },
-              },
+                }
+              }
             ],
             { cancelable: false }
           );
@@ -66,18 +66,7 @@ export default function PlayScreen() {
         // No previus round
       }
     };
-
-    // const getAllClubs = async () => {
-    //   const clubs = await getClubs();
-    //   appContext.dispatch({
-    //     type: "set_club_list",
-    //     data: clubs,
-    //   });
-    //   // console.log('clubs set')
-    // };
-
     checkExisting();
-    // getAllClubs();
   }, []);
 
   const setHole = async () => {
@@ -85,11 +74,11 @@ export default function PlayScreen() {
     const holeNum = await AsyncStorage.getItem("holeNum");
     const holeNumDig = JSON.parse(holeNum);
     setInitialHole(holeNumDig);
-    appContext.value.setHole(holeNumDig);
+    await appContext.value.setHole(holeNumDig);
 
     appContext.dispatch({
       type: "set_view_mode",
-      data: "play",
+      data: "play"
     });
   };
 
@@ -99,21 +88,28 @@ export default function PlayScreen() {
     const p2roundID = await AsyncStorage.getItem("u2roundid");
     const p3roundID = await AsyncStorage.getItem("u3roundid");
     const p4roundID = await AsyncStorage.getItem("u4roundid");
+    const liveRoundId = await AsyncStorage.getItem("liveRoundId");
     const p1Score = await getScore(JSON.parse(p1roundID));
 
     // Set course holeInfo
 
     const courseInfo = await retrieveCourseInfo(p1roundID);
-    appContext.value.loadInitialCourseData(courseInfo.course_id, 1)
+    appContext.value.loadInitialCourseData(courseInfo.course_id, 1);
 
     appContext.dispatch({
       type: "set_course",
+      name: courseInfo.name,
       data: courseInfo.course_id,
       rtg: courseInfo.rtg,
-      slp: courseInfo.slp,
+      slp: courseInfo.slp
     });
 
-    // console.log('p1 score returned should be array', p1Score)
+    if (liveRoundId) {
+      appContext.dispatch({
+        type: "set_live_round",
+        value: JSON.parse(liveRoundId)
+      });
+    }
 
     let scoreObj = {};
     for (const score of p1Score) {
@@ -122,7 +118,7 @@ export default function PlayScreen() {
     }
     appContext.dispatch({
       type: "restore_p1_score",
-      data: scoreObj,
+      data: scoreObj
     });
 
     // TODO: this can be refactored in a loop
@@ -138,41 +134,41 @@ export default function PlayScreen() {
       appContext.dispatch({
         type: "restore_p2_score",
         data: scoreObj2,
-        name: p2name,
+        name: p2name
       });
 
       appContext.dispatch({
         type: "set_player_2",
-        data: p2name,
+        data: p2name
       });
       appContext.dispatch({
         type: "set_user_2_round_id",
-        data: p2roundID,
+        data: p2roundID
       });
     }
     if (p3roundID) {
       const p3name = await AsyncStorage.getItem("u3name");
       let scoreObj3 = {};
-      console.log("RESTORING P3 SCORE");
+      // console.log("RESTORING P3 SCORE");
       const p3Score = await getScore(JSON.parse(p3roundID));
       for (const score of p3Score) {
-        console.log("p3 SCORE OBJ", score);
+        // console.log("p3 SCORE OBJ", score);
         scoreObj3[score.hole_num] = score.total_shots;
       }
       appContext.dispatch({
         type: "restore_p3_score",
         data: scoreObj3,
-        name: p3name,
+        name: p3name
       });
 
       appContext.dispatch({
         type: "set_player_3",
-        data: p3name,
+        data: p3name
       });
 
       appContext.dispatch({
         type: "set_user_3_round_id",
-        data: p3roundID,
+        data: p3roundID
       });
     }
     if (p4roundID) {
@@ -186,17 +182,17 @@ export default function PlayScreen() {
       appContext.dispatch({
         type: "restore_p4_score",
         data: scoreObj4,
-        name: p4name,
+        name: p4name
       });
 
       appContext.dispatch({
         type: "set_player_4",
-        data: p4name,
+        data: p4name
       });
 
       appContext.dispatch({
         type: "set_user_4_round_id",
-        data: p4roundID,
+        data: p4roundID
       });
     }
   };
@@ -206,11 +202,11 @@ export default function PlayScreen() {
       latitude: 0,
       longitude: 0,
       latitudeDelta: 0.05,
-      longitudeDelta: 0.05,
+      longitudeDelta: 0.05
     },
     geocode: null,
     errorMessage: "",
-    hole: 1,
+    hole: 1
   });
 
   let locationUpdate;
@@ -221,7 +217,7 @@ export default function PlayScreen() {
     if (status !== "granted") {
       setState({
         ...state,
-        errorMessage: "Permission to access location was denied",
+        errorMessage: "Permission to access location was denied"
       });
     }
 
@@ -229,7 +225,7 @@ export default function PlayScreen() {
       {
         accuracy: Location.Accuracy.Highest,
         distanceInterval: 1.0,
-        timeInterval: 1000,
+        timeInterval: 1000
       },
       (loc) => {
         setState({
@@ -238,8 +234,8 @@ export default function PlayScreen() {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
             latitude: loc.coords.latitude,
-            longitude: loc.coords.longitude,
-          },
+            longitude: loc.coords.longitude
+          }
         });
       }
     );

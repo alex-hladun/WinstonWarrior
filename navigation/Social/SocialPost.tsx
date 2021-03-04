@@ -22,6 +22,7 @@ export default function SocialPost({ navigation }) {
   const [postState, setPostState] = useState("WAIT");
   const [content, setContent] = useState(null);
   const [text, setText] = useState("");
+  const [uploadingProgress, setUploadingProgress] = useState(0);
   const [error, setError] = useState("");
   const [uri, setUri] = useState(null);
 
@@ -62,7 +63,10 @@ export default function SocialPost({ navigation }) {
 
     const imageData = new File([blob], `photo.${imageExt}`);
     const testUpload = await Storage.put(`/${random}.${imageExt}`, imageData, {
-      contentType: "imageMime"
+      contentType: "imageMime",
+      progressCallback(progress) {
+        setUploadingProgress(progress.loaded / progress.total);
+      }
     });
     console.log(
       "🚀 ~ file: SocialPost.tsx ~ line 34 ~ pickImage ~ testUpload",
@@ -96,7 +100,32 @@ export default function SocialPost({ navigation }) {
   };
 
   const handleTextPost = () => {
-    setPostState("PREVIEW");
+    setPostState("PREVIEWTEXT");
+  };
+
+  const postText = async () => {
+    try {
+      await axios.post(
+        `${config.api2}rounds`,
+        {
+          contentType: "text",
+          text: text
+        },
+        {
+          headers: {
+            Authorization: appState.appState.auth_data
+          }
+        }
+      );
+      setPostState("WAIT");
+
+    } catch (err) {
+      setError("Error posting to database");
+
+      console.log("error posting text", err);
+      setPostState("WAIT");
+
+    }
   };
 
   return (
@@ -133,7 +162,7 @@ export default function SocialPost({ navigation }) {
         )}
         {postState === "UPLOADING" && (
           <View>
-            <Text>UPLOADING!</Text>
+            <Text>UPLOADING {(100 * uploadingProgress).toFixed(1)}%</Text>
           </View>
         )}
         {postState === "PREVIEW" && (
@@ -148,6 +177,24 @@ export default function SocialPost({ navigation }) {
               </TextInput>
             </View>
             <TouchableOpacity onPress={postImage}>
+              <View style={[styles.styledButton, styles.playButon]}>
+                <Text style={styles.buttonText}>Post</Text>
+              </View>
+            </TouchableOpacity>
+          </>
+        )}
+        {postState === "PREVIEWTEXT" && (
+          <>
+            <View style={socStyles.textBox}>
+              <TextInput
+                style={socStyles.textBox}
+                multiline={false}
+                onChangeText={(text) => setText(text)}
+              >
+                {text}
+              </TextInput>
+            </View>
+            <TouchableOpacity onPress={postText}>
               <View style={[styles.styledButton, styles.playButon]}>
                 <Text style={styles.buttonText}>Post</Text>
               </View>

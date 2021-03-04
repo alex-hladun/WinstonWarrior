@@ -63,7 +63,9 @@ const reducer = produce((state, action) => {
       state.appState.logged_in = false;
       state.appState.auth_message = "";
       break;
-
+    case "set_live_round":
+      state.playState.liveRound = action.value;
+      break;
     case "set_round_id":
       state.playState.roundId = action.data;
       break;
@@ -111,6 +113,7 @@ const reducer = produce((state, action) => {
       state.playState.courseId = action.data;
       state.playState.p1_rtg = action.rtg;
       state.playState.p1_slp = action.slp;
+      state.playState.courseName = action.name;
       break;
 
     case "set_view_mode":
@@ -259,7 +262,6 @@ const initialState = {
     roundHistory: [],
     roundHistory18Holes: [],
     puttHistory: [],
-    // holeHistory: {},
     birdieObj: undefined,
     fwyData: { fwyPct: undefined, fwyHistory: [] },
     girData: { girPct: undefined, girHistory: [] },
@@ -277,7 +279,9 @@ const initialState = {
   },
   playState: {
     courseId: undefined,
+    courseName: null,
     holes: {},
+    liveRound: false,
     hole_num: undefined,
     holeInfo: undefined,
     roundId: undefined,
@@ -526,10 +530,7 @@ function AppProvider(props) {
         }
       })
       .reverse();
-    // console.log(
-    //   "🚀 ~ file: AppContext.js ~ line 503 ~ loadInitialStats ~ girPctHistory",
-    //   girPctHistory
-    // );
+
     dispatch({ type: "set_gir_history", data: girPctHistory });
 
     const scramblePctHistory = totalpctHistoy.totalHolesPlayed
@@ -621,8 +622,7 @@ function AppProvider(props) {
   const loadInitialCourseData = async (course_id, user_id) => {
     // Load all hole info (par, handicap rtg, slope, rtg, etc and assign)
     // ALSO load all initial hole stats.
-    let birdiecount;
-    birdieCount = await loadBirds(course_id, user_id);
+    const birdieCount = await loadBirds(course_id, user_id);
     let birdieObj = {};
 
     for (let i = 1; i <= 18; i++) {
@@ -659,7 +659,7 @@ function AppProvider(props) {
     }
 
     birdieCount.forEach((hole) => {
-      console.log("scoreObj", hole);
+      // console.log("scoreObj", hole);
       birdieObj[hole.hole_num].rounds++;
       birdieObj[hole.hole_num].holePar = hole.hole_par;
 
@@ -700,7 +700,6 @@ function AppProvider(props) {
     const holeHistory = await loadHoleHistory(course_id, user_id);
 
     holeHistory.forEach((hole) => {
-      console.log("TabOneScreen -> hole history", hole);
       birdieObj[hole.hole_num].shotHistory.push(hole.total_shots);
       birdieObj[hole.hole_num].puttHistory.push(hole.total_putts);
       birdieObj[hole.hole_num].dateHistory.push(hole.date);
@@ -741,7 +740,6 @@ function AppProvider(props) {
 
     let courseData = {};
     for (const obj of sortedCourseInfo) {
-      // console.log("🚀 ~ file: AppContext.js ~ line 679 ~ loadInitialCourseData ~ obj", obj)
       let strokesToGive = 0;
       if (courseHandicap > 0) {
         strokesToGive = Math.ceil(courseHandicap / 18);
@@ -801,8 +799,10 @@ function AppProvider(props) {
 
   const reloadHoleStats = async (courseID, holeNum) => {
     // Reload stats for a particular hole after score save.
-    console.log(`Reloading stats for hole ${holeNum} for courseID ${courseID}`);
-    birdieObj = await loadHoleStatsForRefresh(courseID, holeNum, 1);
+    console.log(
+      `Reloading stats sfor hole ${holeNum} for courseID ${courseID}`
+    );
+    const birdieObj = await loadHoleStatsForRefresh(courseID, holeNum, 1);
     dispatch({
       type: "refresh_hole_stats",
       data: birdieObj,
