@@ -13,7 +13,9 @@ import { useFonts } from "expo-font";
 // Social Header
 export default function SocialScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
-    instaFont: require("../assets/fonts/instaFont.ttf")
+    instaFont: require("../assets/fonts/instaFont.ttf"),
+    nimbus: require("../assets/fonts/nimbus.ttf")
+
   });
 
   React.useLayoutEffect(() => {

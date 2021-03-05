@@ -106,7 +106,7 @@ export default function Score({
     if (gir === 0 && score <= holeInfo[holeNum].par) {
       ud = 1;
     }
-    await postScore(
+    postScore(
       holeID,
       holeNum,
       appState.playState.roundId,
@@ -127,7 +127,7 @@ export default function Score({
     });
 
     if (appState.playState.player_2) {
-      await postScore(
+      postScore(
         holeID,
         holeNum,
         appState.playState.player_2_rd_id,
@@ -140,7 +140,7 @@ export default function Score({
       });
     }
     if (appState.playState.player_3) {
-      await postScore(
+      postScore(
         holeID,
         holeNum,
         appState.playState.player_3_rd_id,
@@ -153,15 +153,13 @@ export default function Score({
       });
     }
     if (appState.playState.player_4) {
-      await postScore(holeID, holeNum, appState.playState.player_4, p4score);
+      postScore(holeID, holeNum, appState.playState.player_4, p4score);
       appContext.dispatch({
         type: "set_p4_score",
         hole: holeNum,
         score: p4score
       });
     }
-
-    getScore(appState.playState.roundId);
 
     if (delta === 0 || holeNum === 18) {
       setHole(holeNum + 1);
@@ -175,13 +173,6 @@ export default function Score({
     appContext.value.reloadHoleStats(appState.playState.courseId, holeNum);
 
     if (appState.playState.liveRound) {
-      const toalInfo = appState.playState.holeInfo;
-      console.log(
-        "🚀 ~ file: Score.jsx ~ line 178 ~ handleScoreSubmit ~ toalInfo",
-        toalInfo
-      );
-      // Some sort of identifier that lets us save the round.
-
       try {
         const putObj = liveRoundCalc(
           appState.playState,
@@ -192,7 +183,9 @@ export default function Score({
             Authorization: appState.appState.auth_data
           }
         });
-      } catch (err) {}
+      } catch (err) {
+        console.log("error with liveround post to backend", err);
+      }
     }
   };
 

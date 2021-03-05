@@ -44,7 +44,7 @@ export function PlayerAdd({ navigation }) {
                 style={styles.playerText}
                 autoFocus={index > 1 && true}
                 selectTextOnFocus={true}
-                multiline={true}
+                multiline={false}
                 onChangeText={(text) => changePlayerName(index, text)}
               >
                 {player}

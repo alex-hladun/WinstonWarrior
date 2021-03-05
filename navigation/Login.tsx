@@ -52,7 +52,6 @@ export function Login({ navigation }) {
   };
 
   React.useEffect(() => {
-    // should always be false, as you reset in signup
     checkLogin();
 
     let reset = false;
@@ -71,9 +70,6 @@ export function Login({ navigation }) {
     if (seed) {
       seedData();
     }
-
-    // updateProcess()
-    // authProcess();
   }, []);
 
   const handleLogin = async () => {
@@ -90,16 +86,17 @@ export function Login({ navigation }) {
 
   return (
     <>
-      <LinearGradient
+      {/* <LinearGradient
         colors={["rgba(0,0,0,.3)", "transparent"]}
         style={{
           position: "absolute",
+          zIndex: 1,
           left: 0,
           right: 0,
           top: 0,
           height: "70%"
         }}
-      />
+      /> */}
       <View>
         {width < 400 && (
           <Video
@@ -135,7 +132,7 @@ export function Login({ navigation }) {
             {username}
           </TextInput>
         </View>
-        <View style={styles.signUpText}>
+        <View style={[styles.signUpText, {zIndex: 20}]}>
           <TextInput
             style={styles.playerText}
             secureTextEntry
@@ -148,8 +145,8 @@ export function Login({ navigation }) {
             {password}
           </TextInput>
         </View>
-        <View style={styles.styledButton}>
-          <Text onPress={() => handleLogin()} style={styles.buttonText}>
+        <View style={[styles.styledButton, {zIndex: 20}]}>
+          <Text onPress={() => handleLogin()} style={[styles.buttonText, {zIndex: 30}]}>
             Login
           </Text>
         </View>

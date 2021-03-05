@@ -97,10 +97,6 @@ export function useLoadCourseInfoIntoState(hcp) {
       })
 
       setHoleInfo(courseData)
-
-      // appContext.dispatch({
-      //   type: 'done_loading'
-      // })
     }
 
     // if(hcp) {

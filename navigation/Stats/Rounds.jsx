@@ -26,8 +26,6 @@ export const RoundItem = ({
   includedInHandicap,
   nineHoleRound
 }) => {
-  // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", round)
-  // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ~ RoundItem ~ round", nineHoleRound)
   return (
     <TouchableOpacity onPress={() => handleRoundSelect(round.index)}>
       <View style={nineHoleRound ? styles.nineHoleRoundItem : styles.roundItem}>

@@ -1,24 +1,14 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  SafeAreaView,
-  Dimensions,
-  ImageBackground,
-  Modal
-} from "react-native";
+import { View, Text, Image } from "react-native";
 import config from "../../settings.json";
 import * as React from "react";
 import styles from "../../assets/styles/SocialStyles";
 import XSymbol from "../../assets/svg/XSymbol";
 import { AppContext } from "../../context/AppContext";
-import { Theme } from "../../assets/styles/Theme";
 import { Audio, Video } from "expo-av";
 
 export const SocialItem = (social) => {
-  console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", JSON.stringify(social));
+  const textFont = { fontFamily: "nimbus", fontSize: 20 };
+  // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", JSON.stringify(social));
   return (
     <View style={styles.frame}>
       <View style={styles.upperFContainer}>
@@ -26,15 +16,18 @@ export const SocialItem = (social) => {
           <Text></Text>
         </View>
         <View style={styles.upperFTextContainer}>
-          <Text style={styles.upperText}>{social.item.username}</Text>
-          <Text style={styles.upperText}>
-            2/14 - {social?.item?.stats?.course}
+          <Text style={[styles.upperText, textFont]}>
+            {social.item.username}
+          </Text>
+          <Text style={[styles.upperText, textFont]}>
+            2/14
+            {social?.item?.stats?.course && "- " + social?.item?.stats?.course}
           </Text>
         </View>
       </View>
-      {social.item.text && (
+      {social.item.text && social.item.ContentType !== "liveround" && (
         <View style={styles.commentContainer}>
-          <Text style={[styles.comment]}>{social.item.text}</Text>
+          <Text style={[styles.comment, textFont]}>{social.item.text}</Text>
         </View>
       )}
       {social.item.ImageURI && social.item.ContentType === "image" && (
@@ -57,6 +50,13 @@ export const SocialItem = (social) => {
         <View style={styles.mediaContainer}>
           <Text style={styles.score}>
             {social.item.stats?.frontScore + social.item.stats?.backScore}
+          </Text>
+        </View>
+      )}
+      {social.item.ImageURI && social.item.ContentType === "liveround" && (
+        <View style={styles.mediaContainer}>
+          <Text style={styles.score}>
+            LIVEROUND!
           </Text>
         </View>
       )}

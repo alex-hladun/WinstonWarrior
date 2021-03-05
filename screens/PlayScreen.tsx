@@ -1,17 +1,12 @@
 import * as React from "react";
-import { StyleSheet, Dimensions, Alert } from "react-native";
+import { Alert } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
-import EditScreenInfo from "../components/EditScreenInfo";
 import Hole from "../components/Hole";
-import { Text, View } from "../components/Themed";
 import { AppContext } from "../context/AppContext";
-import { StatContext } from "../context/StatContext";
 import NavigationPlay from "../navigation/PlayHome";
-import { PlayContext } from "../context/PlayContext";
 import { getScore, retrieveCourseInfo } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
-import { useStats } from "../hooks/useStats";
 import { LoadingScreen } from "../components/LoadingScreen";
 
 export default function PlayScreen() {
@@ -24,7 +19,6 @@ export default function PlayScreen() {
   const [initialHole, setInitialHole] = React.useState(1);
 
   React.useEffect(() => {
-    console.log("Loading inital Stats");
     appContext.value.loadInitialStats(1);
   }, []);
 

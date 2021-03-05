@@ -13,8 +13,6 @@ import * as ImagePicker from "expo-image-picker";
 import config from "../../settings.json";
 import { Audio, Video } from "expo-av";
 
-// const s3 = new aws.S3();
-
 export default function SocialPost({ navigation }) {
   const statContext = React.useContext(StatContext);
   const appContext = React.useContext(AppContext);
@@ -118,13 +116,11 @@ export default function SocialPost({ navigation }) {
         }
       );
       setPostState("WAIT");
-
     } catch (err) {
       setError("Error posting to database");
 
       console.log("error posting text", err);
       setPostState("WAIT");
-
     }
   };
 

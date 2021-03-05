@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     height: 35,
     width: 35,
     margin: 15,
-    marginTop: 5,
+    marginTop: 10,
     backgroundColor: "black"
   },
   background: {

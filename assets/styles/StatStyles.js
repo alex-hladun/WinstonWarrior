@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   customCont1: {
     flexDirection: "column",
-    width: "30%",
+    width: "20%",
     backgroundColor: Theme.spinGreen2,
     justifyContent: "space-evenly",
     alignItems: "center"
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    width: "70%",
+    width: "80%",
   },
   xContainer: {
     backgroundColor: Theme.red,

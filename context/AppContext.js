@@ -784,15 +784,6 @@ function AppProvider(props) {
     });
 
     dispatch({
-      type: "set_hole_num",
-      data: 1
-    });
-    dispatch({
-      type: "set_hole_id",
-      data: courseData[1].id
-    });
-
-    dispatch({
       type: "done_loading"
     });
   };
@@ -865,6 +856,7 @@ function AppProvider(props) {
     AsyncStorage.removeItem("u4roundid");
     AsyncStorage.removeItem("u4name");
     AsyncStorage.removeItem("course_id");
+    AsyncStorage.removeItem("liveRoundId");
 
     console.log("all info cleared from AppContext");
   };

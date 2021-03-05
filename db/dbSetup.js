@@ -237,21 +237,6 @@ export const postScore = async (
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
       let scoreID;
-      console.log(
-        "db posting score with following vars: ",
-        hole_id,
-        hole_num,
-        round_id,
-        total_shots,
-        total_putts,
-        penalty,
-        driver_direction,
-        approach_rtg,
-        chip_rtg,
-        putt_rtg,
-        gir,
-        ud
-      );
 
       tx.executeSql(
         `
@@ -1591,14 +1576,14 @@ export const getScore = async (round_id) => {
     db.transaction((tx) => {
       tx.executeSql(
         `
-    SELECT scores.*, holes.* 
+    SELECT scores.*, scores.hole_num, holes.* 
     FROM scores
-    JOIN holes ON scores.round_id = holes.hole_id
+    JOIN holes ON scores.hole_id = holes.hole_id
     WHERE scores.round_id = ?;
     `,
         [round_id],
         (txObj, result) => {
-          // console.log(`result getting score with round_id ${round_id}`, result.rows._array)
+          console.log(`result getting score with round_id ${round_id}`, result.rows._array)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err creating round", reject(mess))

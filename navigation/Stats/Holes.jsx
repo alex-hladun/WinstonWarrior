@@ -156,20 +156,24 @@ export function Holes() {
       <>
         <View style={styles.customCont1}>
           {holeData[holeNum].fwyHistory.map((i, j) => {
-            return (
-              <Text key={`fwyx${j}`} style={styles.customText}>
-                {holeData[holeNum].dateHistory[j].slice(5, 10)}
-              </Text>
-            );
+            if (j > holeData[holeNum].fwyHistory.length - 6) {
+              return (
+                <Text key={`fwyx${j}`} style={styles.customText}>
+                  {holeData[holeNum].dateHistory[j].slice(5, 10)}
+                </Text>
+              );
+            }
           })}
         </View>
         <View style={styles.customCont2}>
           {holeData[holeNum].fwyHistory.map((i, j) => {
-            return (
-              <Text key={`fwyx${j}`} style={styles.customText}>
-                {i}
-              </Text>
-            );
+            if (j > holeData[holeNum].fwyHistory.length - 6) {
+              return (
+                <Text key={`fwyx${j}`} style={styles.customText}>
+                  {i}
+                </Text>
+              );
+            }
           })}
         </View>
       </>
@@ -181,25 +185,27 @@ export function Holes() {
       <>
         <View style={styles.customCont1}>
           {holeData[holeNum].girHistory.map((i, j) => {
-            return (
-              <Text key={`fwyx${j}`} style={styles.customText}>
-                {holeData[holeNum].dateHistory[j].slice(5, 10)}
-              </Text>
-            );
+            if (j > holeData[holeNum].girHistory.length - 6) {
+              return (
+                <Text key={`fwyx${j}`} style={styles.customText}>
+                  {holeData[holeNum].dateHistory[j].slice(5, 10)}
+                </Text>
+              );
+            }
           })}
         </View>
         <View style={styles.customCont2}>
           {holeData[holeNum].girHistory.map((i, j) => {
             const scramble =
-              holeData[holeNum].scrambleHistory[j] === 1
-                ? "Scramble"
-                : "Not Scramble";
-            return (
-              <Text key={`fwyx${j}`} style={styles.customText}>
-                GIR {i} +
-                {scramble} + penalty {holeData[holeNum].penaltyHistory[j]}
-              </Text>
-            );
+              holeData[holeNum].scrambleHistory[j] === 1 ? " Yes" : " No";
+            if (j > holeData[holeNum].girHistory.length - 6) {
+              return (
+                <Text key={`fwyx${j}`} style={styles.customText}>
+                  GIR: {i > 0 ? "YES" : "NO"}. Scramble: {scramble}. Penalty:{" "}
+                  {holeData[holeNum].penaltyHistory[j] === 0 ? "No" : "Yes"}
+                </Text>
+              );
+            }
           })}
         </View>
       </>

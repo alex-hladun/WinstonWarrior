@@ -48,7 +48,6 @@ export default function ScoreCard({ holeNum, handleScoreCardEnter }) {
   useEffect(() => {
     // Calculate total scores
     if (scoreState) {
-      console.log("ScoreCard -> scoreState", scoreState);
       let totalScore = sumValues(scoreState);
       setP1TotalScore(totalScore);
     }

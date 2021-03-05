@@ -3,12 +3,10 @@ import { Text, View } from "./Themed";
 import { TouchableOpacity, Image, Switch } from "react-native";
 import styles from "../assets/styles/PlayStyles";
 import { AppContext } from "../context/AppContext";
-import { PlayContext } from "../context/PlayContext";
 import XSymbol from "../assets/svg/XSymbol";
-import { getPct, postRound } from "../db/dbSetup";
+import {  postRound } from "../db/dbSetup";
 import { useHandicap } from "../hooks/useHandicap";
-import { StatContext } from "../context/StatContext";
-import { handicapDiffCalc, netHandicapDiffCalc } from "../helpers/handicap";
+import {  netHandicapDiffCalc } from "../helpers/handicap";
 import axios from "axios";
 import config from "../settings.json";
 import { finalRoundPost } from "../helpers/finalRoundPost";
@@ -44,7 +42,6 @@ const sumBack = (obj) => {
 
 export default function RoundSummary({ handleRoundSummary }) {
   const appContext = React.useContext(AppContext);
-  const statContext = React.useContext(StatContext);
   let appState = appContext.value.state;
   const [postSocialRound, setPostScoialRound] = useState(false);
   const userHandicap = useHandicap(1);
@@ -245,7 +242,6 @@ export default function RoundSummary({ handleRoundSummary }) {
     appContext.value.doneRound();
   };
 
-  // console.log("🚀 ~ file: RoundSummary.jsx ~ line 162 ~ handleScoreSubmit ~ appState.playState.p1score", playState.p1score)
   return (
     <>
       <View style={styles.backgroundContainer}>
