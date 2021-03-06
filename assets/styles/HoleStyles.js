@@ -1,9 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { Theme } from '../styles/Theme'
 const { width } = Dimensions.get('window');
-// console.log("🚀 ~ file: HoleStyles.js ~ line 4 ~ width", width)
 export const ipad = (width > 1000)
-// console.log('ipad?', ipad)
 export const styles = StyleSheet.create({
   container: {
     flex: 1,

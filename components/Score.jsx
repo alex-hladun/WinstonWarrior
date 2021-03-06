@@ -44,15 +44,14 @@ export default function Score({
   const [putting, setPutting] = useState(50);
 
   useEffect(() => {
-    console.log(
-      "LIVEROUND",
-      liveRoundCalc(appState.playState, appState.appState.user_name)
-    );
-    console.log(JSON.stringify(appState.playState.roundId));
+    // console.log(
+    //   "LIVEROUND",
+    //   liveRoundCalc(appState.playState, appState.appState.user_name)
+    // );
+    // console.log(JSON.stringify(appState.playState.roundId));
   }, []);
 
   useEffect(() => {
-    console.log(`HOLE ID OF ${holeID}`);
     let newArr = [appState.appState.user_name];
     if (appState.playState.player_2) {
       newArr.push(appState.playState.player_2);
@@ -89,8 +88,6 @@ export default function Score({
   };
 
   const handleScoreSubmit = async (hideModal = true, delta = 0) => {
-    console.log(`POSTING WITH HOLEID OF ${holeID}`);
-
     if (putts > score - 1) {
       console.log("INVALID PUTTS");
       setPutts(score - 1);

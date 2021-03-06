@@ -1,16 +1,15 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { TouchableOpacity, Dimensions, Image, TouchableHighlight, Animated, Alert, Modal } from 'react-native';
+import { TouchableOpacity, Dimensions, Image, Animated, Modal } from 'react-native';
 import styles from '../assets/styles/HoleStyles.js'
 import holeListStyles from '../assets/styles/HoleSummaryStyles'
 import { Text, View } from './Themed';
-import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import FlagSymbol from '../assets/svg/FlagSymbol'
 import CheckSymbol from '../assets/svg/CheckSymbol'
 import XSymbol from '../assets/svg/XSymbol'
 import LeftSymbol from '../assets/svg/LeftSymbol'
 import RightSymbol from '../assets/svg/RightSymbol'
 import TargetSymbol from '../assets/svg/TargetSymbol'
-import LocationSymbol from '../assets/svg/LocationSymbol'
 import HoleList from './HoleList'
 import Score from './Score.jsx';
 import ScoreCard from './ScoreCard'
@@ -18,8 +17,6 @@ import RoundSummary from './RoundSummary'
 import ShotTrack from './ShotTrack'
 import { AppContext } from '../context/AppContext'
 import { PlayContext } from '../context/PlayContext'
-import AsyncStorage from '@react-native-community/async-storage';
-import { getScore } from '../db/dbSetup'
 
 export default function Hole({ location, initialHole = 1 }) {
   // Loads all courseInfo into playcontext
@@ -68,7 +65,6 @@ export default function Hole({ location, initialHole = 1 }) {
     if (!tracking) {
       setStartTrack(location)
       setTracking(true)
-      // console.log('Starting tracking')
       Animated.loop(
         Animated.sequence([
           Animated.timing(trackAnim, {
@@ -84,7 +80,6 @@ export default function Hole({ location, initialHole = 1 }) {
         ])).start()
     } else {
       const distance = measure(startTrack.latitude, startTrack.longitude, location.latitude, location.longitude).toFixed(1);
-      console.log('Measured a distance of ', distance, 'yds')
       setTrackDistance(distance)
       setShotTrackView(true)
       trackAnim.stopAnimation()
@@ -133,12 +128,10 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const handleScoreCardEnter = () => {
-    console.log('handle score enter')
     setScoreCardView(!scoreCardView)
   }
 
   const handleRoundSummary = () => {
-    console.log('Round Summary Toggle')
     if (holeView) {
       setHoleView(false)
     }
@@ -156,8 +149,6 @@ export default function Hole({ location, initialHole = 1 }) {
     }
     if (num !== 19) {
       mapRef.current.animateCamera(holeInfo[num].camera)
-      console.log(`Setting hole to ${num}`)
-      // await setHoleNum(num)
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined
@@ -197,7 +188,6 @@ export default function Hole({ location, initialHole = 1 }) {
   }
 
   const handleHoleReset = () => {
-    console.log('handle hole reset')
     mapRef.current.animateCamera(holeInfo[holeNum].camera)
     setDistanceMarker({
       latitude: undefined,
@@ -208,17 +198,12 @@ export default function Hole({ location, initialHole = 1 }) {
   const handleRegionChange = async (reg) => {
     let coords = await mapRef.current.getCamera()
     coords = {...coords, altitude: 1400}
-    // console.log(coords)
-  }
-
-  const handleMapLongPress = () => {
-    console.log('map long press')
   }
 
   const handleMapShortPress = async (event) => {
-    console.log('map short press', event.nativeEvent.coordinate)
+    // console.log('map short press', event.nativeEvent.coordinate)
     const coords = event.nativeEvent.coordinate
-    console.log("🚀 ~ file: Hole.jsx ~ line 249 ~ handleMapShortPress ~ coords", coords)
+    // console.log("🚀 ~ file: Hole.jsx ~ line 249 ~ handleMapShortPress ~ coords", coords)
     
     await setDistanceMarker(coords)
   }
@@ -282,7 +267,6 @@ export default function Hole({ location, initialHole = 1 }) {
           camera ? camera : null
         }
         onRegionChangeComplete={(event) => handleRegionChange(event)}
-        onLongPress={() => handleMapLongPress()}
         onPress={(event) => handleMapShortPress(event)}
         onMarkerDrag={(event) => handleMapShortPress(event)}
 

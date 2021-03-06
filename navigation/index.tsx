@@ -45,16 +45,16 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false, headerTransparent: true }}
+      screenOptions={{ headerShown: true, headerTransparent: true }}
     >
       {!context.value.state.appState.logged_in ? (
         <>
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login" component={Login}  options={{headerTitle: ""}}/>
           <Stack.Screen name="SignUp" component={SignUp} />
         </>
       ) : (
         <>
-          <Stack.Screen name="Root" component={BottomTabNavigator} />
+          <Stack.Screen name="Root" component={BottomTabNavigator} options={{headerTitle: ""}}/>
           <Stack.Screen
             name="NotFound"
             component={NotFoundScreen}

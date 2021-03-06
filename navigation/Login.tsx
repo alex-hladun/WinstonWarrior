@@ -23,6 +23,8 @@ import {
 } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Auth } from "aws-amplify";
+import { checkExistingDb } from "../db/checkExistingDb";
+import { resetDatabase } from "./SignUp";
 
 const width = Dimensions.get("window").width;
 
@@ -38,13 +40,15 @@ export function Login({ navigation }) {
       const authedUser = await Auth.currentAuthenticatedUser();
       console.log(authedUser.signInUserSession); // this means that you've logged in before with valid user/pass.
       console.log("AUTHENTICATED WITH COGNITO");
+      const existingDb = await checkExistingDb();
+      if (!existingDb) {
+        resetDatabase();
+      }
       appContext.dispatch({
         type: "authentication_done",
         data: authedUser.username,
         token: authedUser.signInUserSession.idToken.jwtToken
       });
-      // token: authedUser.signInUserSession.accessToken.jwtToken
-      // console.log("🚀 ~ file: Login.tsx ~ line 31 ~ Login ~ appState", appState)
     } catch (err) {
       console.log("err signing in");
       console.log(err); // this means there is no currently authenticated user
@@ -74,7 +78,8 @@ export function Login({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const user = await Auth.signIn(username, password);
+      await Auth.signIn(username, password);
+      checkLogin();
     } catch (error) {
       console.log("error signing in", error);
     }
@@ -124,7 +129,7 @@ export function Login({ navigation }) {
           <TextInput
             style={styles.playerText}
             multiline={false}
-            placeholder={"Email"}
+            placeholder={"Username"}
             autoCapitalize={"none"}
             placeholderTextColor={"black"}
             onChangeText={(t) => setUsername(t)}
@@ -132,7 +137,7 @@ export function Login({ navigation }) {
             {username}
           </TextInput>
         </View>
-        <View style={[styles.signUpText, {zIndex: 20}]}>
+        <View style={[styles.signUpText, { zIndex: 20 }]}>
           <TextInput
             style={styles.playerText}
             secureTextEntry
@@ -145,8 +150,11 @@ export function Login({ navigation }) {
             {password}
           </TextInput>
         </View>
-        <View style={[styles.styledButton, {zIndex: 20}]}>
-          <Text onPress={() => handleLogin()} style={[styles.buttonText, {zIndex: 30}]}>
+        <View style={[styles.styledButton, { zIndex: 20 }]}>
+          <Text
+            onPress={() => handleLogin()}
+            style={[styles.buttonText, { zIndex: 30 }]}
+          >
             Login
           </Text>
         </View>

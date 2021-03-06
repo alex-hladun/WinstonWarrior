@@ -87,9 +87,7 @@ export const createClubs = async (user) => {
       INSERT INTO clubs (name) VALUES (?);
     `,
           [club],
-          (txObj, result) => {
-            // console.log('registered', club)
-          },
+          (txObj, result) => {},
           (err, mess) => console.log("err creating club", reject(mess))
         );
       }
@@ -715,7 +713,8 @@ export const loadTotalPctHistory = async (user_id) => {
       // Total holes played
       tx.executeSql(
         `
-    SELECT COUNT(*) AS total_holes FROM scores 
+    SELECT COUNT(*) AS total_holes, rounds.end_date as date
+    FROM scores 
     JOIN rounds on rounds.round_id = scores.round_id
     WHERE rounds.user_id = ?
     GROUP BY scores.round_id
@@ -730,7 +729,8 @@ export const loadTotalPctHistory = async (user_id) => {
           );
           pctObj = {
             ...pctObj,
-            totalHolesPlayed: result.rows._array.map((i) => i.total_holes)
+            totalHolesPlayed: result.rows._array.map((i) => i.total_holes),
+            roundDates: result.rows._array.map((i) => i.date)
           };
           // resolve(result.rows._array.reverse())
         },
@@ -767,7 +767,7 @@ export const loadTotalPctHistory = async (user_id) => {
       // GIR Stats
       tx.executeSql(
         `
-    SELECT COUNT(*) AS gir_hit 
+    SELECT COUNT(*) AS gir_hit, rounds.end_date AS date
     FROM scores 
     JOIN rounds on rounds.round_id = scores.round_id
     WHERE rounds.user_id = ? AND scores.gir = 1 AND (rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9) AND rounds.end_date NOT NULL
@@ -782,7 +782,8 @@ export const loadTotalPctHistory = async (user_id) => {
           );
           pctObj = {
             ...pctObj,
-            girHit: result.rows._array.map((i) => i.gir_hit)
+            girHit: result.rows._array.map((i) => i.gir_hit),
+            girDates: result.rows._array.map((i) => i.date)
           };
 
           // resolve(result.rows._array.reverse())
@@ -792,7 +793,7 @@ export const loadTotalPctHistory = async (user_id) => {
       // successful scramble count
       tx.executeSql(
         `
-        SELECT count(*) AS scramble
+        SELECT count(*) AS scramble, rounds.end_date AS date
         FROM scores
         JOIN rounds on rounds.round_id = scores.round_id
         WHERE rounds.user_id = ? AND scores.ud = 1 AND (rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9) AND rounds.end_date NOT NULL
@@ -803,11 +804,14 @@ export const loadTotalPctHistory = async (user_id) => {
         [user_id],
         (txObj, result) => {
           console.log(
-            `overall scramble stats: ${JSON.stringify(result.rows._array)}`
+            `overall  successful scramble stats: ${JSON.stringify(
+              result.rows._array
+            )}`
           );
           pctObj = {
             ...pctObj,
-            scrambleSuccess: result.rows._array.map((i) => i.scramble)
+            scrambleSuccess: result.rows._array.map((i) => i.scramble),
+            scrambleDates: result.rows._array.map((i) => i.date)
           };
           console.log("PCT OBJ", pctObj);
           resolve(pctObj);
@@ -1583,7 +1587,10 @@ export const getScore = async (round_id) => {
     `,
         [round_id],
         (txObj, result) => {
-          console.log(`result getting score with round_id ${round_id}`, result.rows._array)
+          console.log(
+            `result getting score with round_id ${round_id}`,
+            result.rows._array
+          );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err creating round", reject(mess))

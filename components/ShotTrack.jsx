@@ -20,7 +20,6 @@ export default function ShotTrack({ distance, handleTrackViewClose }) {
   let clubArray
   let clubList;
   clubArray = appState.appState.clubList
-  console.log("🚀 ~ file: ShotTrack.jsx ~ line 23 ~ ShotTrack ~ clubArray", clubArray)
   if (clubArray) {
     clubList = clubArray.map((clb, i) => {
       return (

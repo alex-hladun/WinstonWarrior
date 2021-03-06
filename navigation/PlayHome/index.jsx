@@ -13,9 +13,11 @@ import AsyncStorage from "@react-native-community/async-storage";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 import { Home } from "./Home";
-import SocialPost  from "../Social/SocialPost";
+import SocialPost from "../Social/SocialPost";
 import { CourseSelect } from "./CourseSelect";
 import { PlayerAdd } from "./PlayerAdd";
+import { SignUp } from "../SignUp";
+import { Login } from "../Login";
 
 export default function NavigationPlay({ colorScheme }) {
   return (
@@ -35,6 +37,8 @@ function PlayNavigator() {
       <PlayStack.Screen name="Winston Warrior" component={Home} />
       <PlayStack.Screen name="Course" component={CourseSelect} />
       <PlayStack.Screen name="Add Players" component={PlayerAdd} />
+      <PlayStack.Screen name="Login" component={Login} />
+      <PlayStack.Screen name="SignUp" component={SignUp} />
       <PlayStack.Screen name="Post" component={SocialPost} />
     </PlayStack.Navigator>
   );

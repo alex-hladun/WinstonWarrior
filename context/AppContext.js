@@ -48,8 +48,8 @@ const reducer = produce((state, action) => {
 
       break;
     case "authentication_done":
-      console.log("In Authentication", action.data);
-      console.log("In Authentication", action.token);
+      // console.log("In Authentication", action.data);
+      // console.log("In Authentication", action.token);
       AsyncStorage.setItem("authName", action.data);
       state.appState.auth_data = action.token;
       state.appState.user_name = action.data;
@@ -478,7 +478,6 @@ function AppProvider(props) {
     dispatch({ type: "set_fwy_pct", data: fwyPct });
 
     const clubs = await getClubs();
-    // console.log("🚀 ~ file: AppContext.js ~ line 453 ~ loadInitialStats ~ clubs", clubs)
 
     dispatch({
       type: "set_club_list",
@@ -523,31 +522,39 @@ function AppProvider(props) {
 
     const girPctHistory = totalpctHistoy.totalHolesPlayed
       .map((hP, i) => {
-        if (totalpctHistoy.girHit[i]) {
-          return Math.round((totalpctHistoy.girHit[i] * 100) / hP, 0);
-        } else {
+        const indexOf = totalpctHistoy.girDates.indexOf(
+          totalpctHistoy.roundDates[i]
+        );
+        if (indexOf < 0) {
           return 0;
+        } else {
+          return Math.round((totalpctHistoy.girHit[indexOf] * 100) / hP, 0);
         }
       })
       .reverse();
 
     dispatch({ type: "set_gir_history", data: girPctHistory });
 
+    console.log("TOTAL", totalpctHistoy);
     const scramblePctHistory = totalpctHistoy.totalHolesPlayed
       .map((hP, i) => {
-        console.log("hp", hP);
-        if (!totalpctHistoy.scrambleSuccess[i]) {
-          // TODO: replae this by getting the scramble percents that are 0
-          // Might need to compare lengths and see what the dealio is
+        const indexOf = totalpctHistoy.scrambleDates.indexOf(
+          totalpctHistoy.roundDates[i]
+        );
+        const girIndexOf = totalpctHistoy.girDates.indexOf(
+          totalpctHistoy.roundDates[i]
+        );
+
+        if (indexOf < 0) {
           return 0;
-        } else if (hP - totalpctHistoy.scrambleSuccess[i] <= 0) {
-          return 100;
-        } else {
+        } else if (girIndexOf >= 0) {
           return Math.round(
-            ((hP - totalpctHistoy.scrambleSuccess[i]) * 100) /
-              (hP - totalpctHistoy.girHit[i]),
+            (totalpctHistoy.scrambleSuccess[indexOf] * 100) /
+              (hP - totalpctHistoy.girHit[girIndexOf]),
             0
           );
+        } else {
+          return 100;
         }
       })
       .reverse();

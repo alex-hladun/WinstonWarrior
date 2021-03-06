@@ -128,7 +128,8 @@ export function PlayerAdd({ navigation }) {
             p2: { name: appState.playState.player_2 },
             p3: { name: appState.playState.player_3 },
             p4: { name: appState.playState.player_4 },
-            course: appState.playState.courseName
+            course: appState.playState.courseName,
+            roundId: roundId
           },
           {
             headers: {

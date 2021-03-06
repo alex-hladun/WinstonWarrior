@@ -72,7 +72,6 @@ function SocialNavigator() {
         component={SocialScreen}
         options={({ navigation, route }) => ({
           headerTitle: "Winstagram"
-          // headerShown: false
         })}
       />
       <SocialStack.Screen name="Post" component={SocialPost} />
@@ -89,7 +88,7 @@ function StatNavigator() {
         name="StatScreen"
         component={TabTwoScreen}
         options={({ navigation, route }) => ({
-          headerTitle: "Stats"
+          headerTitle: "Stats",
         })}
       />
     </StatStack.Navigator>
