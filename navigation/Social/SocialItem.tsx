@@ -7,6 +7,11 @@ import { AppContext } from "../../context/AppContext";
 import { Audio, Video } from "expo-av";
 
 export const SocialItem = (social) => {
+  var date = new Date().setHours(-1);
+  var itemDate = social.datetime
+  console.log("🚀 ~ file: SocialItem.tsx ~ line 12 ~ SocialItem ~ itemDate", itemDate)
+
+
   const textFont = { fontFamily: "nimbus", fontSize: 20 };
   // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", JSON.stringify(social));
   return (
@@ -53,10 +58,23 @@ export const SocialItem = (social) => {
           </Text>
         </View>
       )}
-      {social.item.ImageURI && social.item.ContentType === "liveround" && (
-        <View style={styles.mediaContainer}>
-          <Text style={styles.score}>
-            LIVEROUND!
+      {social.item.ContentType === "liveround" && (
+        <View style={styles.commentContainer}>
+          <Text style={[styles.comment, textFont]}>
+            {social.item.stats?.player1?.name}
+            {social.item.stats?.player1?.score}{" "}
+          </Text>
+          <Text style={[styles.comment, textFont]}>
+            {social.item.stats?.player2?.name} 
+            {social.item.stats?.player2?.score}{" "}
+          </Text>
+          <Text style={[styles.comment, textFont]}>
+            {social.item.stats?.player3?.name} 
+            {social.item.stats?.player3?.score}{" "}
+          </Text>
+          <Text style={[styles.comment, textFont]}>
+            {social.item.stats?.player4?.name} 
+            {social.item.stats?.player4?.score}{" "}
           </Text>
         </View>
       )}

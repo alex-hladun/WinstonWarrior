@@ -13,7 +13,13 @@ import * as React from "react";
 import * as Linking from "expo-linking";
 import { AppContext } from "../context/AppContext";
 import styles from "../assets/styles/PlayStyles";
-import { createWinston, setUpDB, removeDB, createClubs } from "../db/dbSetup";
+import {
+  createWinston,
+  setUpDB,
+  removeDB,
+  createClubs,
+  registerUser
+} from "../db/dbSetup";
 import { Auth } from "aws-amplify";
 import { checkExistingDb } from "../db/checkExistingDb";
 const width = Dimensions.get("window").width;
@@ -47,6 +53,7 @@ export function SignUp({ navigation }) {
       const existingDb = checkExistingDb();
       if (!existingDb) {
         await resetDatabase();
+        registerUser(username);
       }
       appContext.dispatch({
         type: "signed_up",

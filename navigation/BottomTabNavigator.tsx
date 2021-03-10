@@ -71,7 +71,8 @@ function SocialNavigator() {
         name="Winstagram"
         component={SocialScreen}
         options={({ navigation, route }) => ({
-          headerTitle: "Winstagram"
+          headerTitle: "Winstagram",
+          headerShown: true
         })}
       />
       <SocialStack.Screen name="Post" component={SocialPost} />
@@ -103,7 +104,7 @@ function PlayNavigator() {
       <PlayStack.Screen
         name="TabThreeScreen"
         component={PlayScreen}
-        options={{ headerTitle: "Play", headerShown: false }}
+        options={{ headerTitle: "Play", headerShown: true }}
       />
     </PlayStack.Navigator>
   );

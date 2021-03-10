@@ -45,7 +45,7 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: true, headerTransparent: true }}
+      screenOptions={{ headerShown: false, headerTransparent: true }}
     >
       {!context.value.state.appState.logged_in ? (
         <>

@@ -18,6 +18,7 @@ import {
   createWinston,
   seedData,
   setUpDB,
+  registerUser,
   removeDB,
   createClubs
 } from "../db/dbSetup";
@@ -42,7 +43,8 @@ export function Login({ navigation }) {
       console.log("AUTHENTICATED WITH COGNITO");
       const existingDb = await checkExistingDb();
       if (!existingDb) {
-        resetDatabase();
+        await resetDatabase();
+        registerUser(authedUser.username);
       }
       appContext.dispatch({
         type: "authentication_done",

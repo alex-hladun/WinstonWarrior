@@ -4,9 +4,9 @@ import { TouchableOpacity, Image, Switch } from "react-native";
 import styles from "../assets/styles/PlayStyles";
 import { AppContext } from "../context/AppContext";
 import XSymbol from "../assets/svg/XSymbol";
-import {  postRound } from "../db/dbSetup";
+import { postRound } from "../db/dbSetup";
 import { useHandicap } from "../hooks/useHandicap";
-import {  netHandicapDiffCalc } from "../helpers/handicap";
+import { netHandicapDiffCalc } from "../helpers/handicap";
 import axios from "axios";
 import config from "../settings.json";
 import { finalRoundPost } from "../helpers/finalRoundPost";
@@ -30,7 +30,6 @@ const sumFront = (obj) => {
 };
 const sumBack = (obj) => {
   let holeArray = Object.keys(obj).filter((a) => a > 9);
-  console.log(holeArray);
   let sum = 0;
   for (const hole of holeArray) {
     if (obj[hole]) {
@@ -202,13 +201,17 @@ export default function RoundSummary({ handleRoundSummary }) {
       holesPlayed,
       calculatedHolesPlayed
     );
-
+    const finalRoundObj = finalRoundPost(
+      appState.playState,
+      appState.appState.user_name
+    );
     if (appState.playState.liveRound) {
       // UDONE ROUND
-      axios.post(
+      axios.put(
         `${config.api2}rounds`,
         {
-          contentType: "round"
+          contentType: "doneliveround",
+          roundId: appState.playState.liveRound
         },
         {
           headers: {
@@ -216,15 +219,13 @@ export default function RoundSummary({ handleRoundSummary }) {
           }
         }
       );
-    } else if (postSocialRound) {
+    }
+    if (postSocialRound) {
       axios.post(
         `${config.api2}rounds`,
         {
           contentType: "round",
-          calculatedHolesPlayed: hcpObj.calculatedHolesPlayed,
-          calculatedScore: hcpObj.calculatedScore,
-          frontScore: sumFront(appState.playState.p1score),
-          backScore: sumBack(appState.playState.p1score)
+          stats: finalRoundObj
         },
         {
           headers: {

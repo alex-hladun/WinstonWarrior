@@ -32,7 +32,7 @@ const PlayStack = createStackNavigator();
 function PlayNavigator() {
   return (
     <PlayStack.Navigator
-      screenOptions={{ headerShown: true, headerTransparent: true }}
+      screenOptions={{ headerShown: false, headerTransparent: true }}
     >
       <PlayStack.Screen name="Winston Warrior" component={Home} />
       <PlayStack.Screen name="Course" component={CourseSelect} />
