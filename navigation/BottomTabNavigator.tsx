@@ -104,7 +104,7 @@ function PlayNavigator() {
       <PlayStack.Screen
         name="TabThreeScreen"
         component={PlayScreen}
-        options={{ headerTitle: "Play", headerShown: true }}
+        options={{ headerTitle: "Play", headerShown: false, headerTransparent: true }}
       />
     </PlayStack.Navigator>
   );
