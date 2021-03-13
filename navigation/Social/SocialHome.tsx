@@ -9,7 +9,32 @@ import { useEffect } from "react";
 import axios from "axios";
 import { SocialItem } from "./SocialItem";
 import config from "../../settings.json";
-
+const mockRound = [
+  {
+    stats: {
+      albatrosses: 0,
+      holesPlayed: 18,
+      triples: 3,
+      pars: 14,
+      scrambles: 0,
+      totalPutts: 37,
+      totalScore: 80,
+      eagles: 0,
+      backScore: 48,
+      gir: 14,
+      doubles: 0,
+      fairways: 17,
+      frontScore: 32,
+      bogies: 0,
+      birdies: 0
+    },
+    SK: "ROUND#ahladun#1615510110703",
+    username: "ahladun",
+    ContentType: "round",
+    PK: "USER#ahladun",
+    timestamp: 1615510110703
+  }
+];
 const mockData = [
   {
     ContentType: "liveround",
@@ -225,11 +250,12 @@ export default function SocialHome({ navigation }) {
   //   "🚀 ~ file: SocialHome.tsx ~ line 17 ~ SocialHome ~ appState",
   //   appState.appState.auth_data
   // );
-  const [socialFeed, setSocialFeed] = React.useState(mockData);
+  const [socialFeed, setSocialFeed] = React.useState(mockRound);
   const [socialFeedError, setSocialFeedError] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const fetchRounds = async () => {
+    return;
     setRefreshing(true);
     let user = appState.appState["user_name"];
 

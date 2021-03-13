@@ -7,10 +7,10 @@ export const finalRoundPost = async (playState, p1name) => {
   // AND PUTT TOTAL
 
   const liveRoundObj = liveRoundCalc(playState, p1name);
-  console.log(
-    "🚀 ~ file: finalRoundPost.js ~ line 8 ~ finalRoundPost ~ liveRoundObj",
-    liveRoundObj
-  );
+  // console.log(
+  //   "🚀 ~ file: finalRoundPost.js ~ line 8 ~ finalRoundPost ~ liveRoundObj",
+  //   liveRoundObj
+  // );
   const totalBirds = {
     albatrosses: 0,
     eagles: 0,
@@ -26,14 +26,11 @@ export const finalRoundPost = async (playState, p1name) => {
     totalPutts: 0,
     totalScore: 0,
     frontScore: 0,
-    backScore: 0
+    backScore: 0,
+    course: playState.courseName
   };
   const p1Info = await getScore(playState.roundId);
   p1Info.forEach((hole) => {
-    console.log(
-      "🚀 ~ file: finalRoundPost.js ~ line 33 ~ p1Info.forEach ~ hole",
-      hole
-    );
     if (hole.total_shots - hole.hole_par === -1) {
       totalBirds.birdies++;
     } else if (hole.total_shots - hole.hole_par === 0) {
@@ -66,6 +63,6 @@ export const finalRoundPost = async (playState, p1name) => {
     totalBirds.totalPutts += hole.total_putts;
     totalBirds.totalScore += hole.total_shots;
   });
-  console.log("🚀 ~ file: finalRoundPost.js ~ line 14 ~ ", totalBirds);
-  return liveRoundObj;
+  // console.log("🚀 ~ file: finalRoundPost.js ~ line 14 ~ ", totalBirds);
+  return totalBirds;
 };

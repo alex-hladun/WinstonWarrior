@@ -1,20 +1,80 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 import config from "../../settings.json";
 import * as React from "react";
 import styles from "../../assets/styles/SocialStyles";
+import styles2 from "../../assets/styles/StatStyles";
 import XSymbol from "../../assets/svg/XSymbol";
+import { Theme } from "../../assets/styles/Theme";
+
 import { AppContext } from "../../context/AppContext";
 import { Audio, Video } from "expo-av";
 var dayjs = require("dayjs");
-// var relativeTime = require("dayjs/plugin/relativeTime");
+import { PieChart } from "react-native-chart-kit";
 
 export const SocialItem = (social) => {
   const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
 
   const textFont = { fontFamily: "nimbus", fontSize: 20 };
-  console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", JSON.stringify(social));
-  console.log("🚀🚀🚀🚀 ~ file: Rounds.jsx ~ line 19 ", withinMinutes);
+  const stats = social.item.stats;
+  console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", social);
 
+  const pieChartConfig = {
+    backgroundColor: Theme.chartBackgroundColor,
+    backgroundGradientFrom: Theme.chartBGGradientFrom,
+    backgroundGradientTo: Theme.chartBGGradientTo,
+    propsForVerticalLabels: {
+      rotation: -90
+    },
+    decimalPlaces: 0, // optional, defaults to 2dp
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
+  };
+  const pieChartData = [
+    {
+      name: "Eagles",
+      count: stats.eagles,
+      color: Theme.piePalette[0],
+      legendFontColor: "#666464",
+      legendFontSize: 15
+    },
+    {
+      name: "Birdies",
+      count: stats.birdies,
+      color: Theme.piePalette[1],
+      legendFontColor: "#666464",
+      legendFontSize: 15
+    },
+    {
+      name: "Pars",
+      count: stats.pars,
+      color: Theme.piePalette[2],
+      legendFontColor: "#666464",
+      legendFontSize: 15
+    },
+    {
+      name: "Bogeys",
+      count: stats.bogies,
+      color: Theme.piePalette[3],
+      legendFontColor: "#666464",
+      legendFontSize: 15
+    },
+    {
+      name: "Doubles",
+      count: stats.doubles,
+      color: Theme.piePalette[4],
+      legendFontColor: "#666464",
+      legendFontSize: 15
+    },
+    {
+      name: "Triples +",
+      count: stats.triples,
+      color: Theme.piePalette[5],
+      legendFontColor: "#666464",
+      legendFontSize: 15
+    }
+  ];
+  if (social.item.ContentType === "round") {
+  }
+  // console.log("🚀🚀🚀🚀 ~ file: Rounds.jsx ~ line 19 ", withinMinutes);
   if (social.item.ContentType === "liveround" && withinMinutes > 30) {
     return;
   }
@@ -45,7 +105,6 @@ export const SocialItem = (social) => {
           style={styles.mediaPicture}
         />
       )}
-      <Text>{social.item.ContentType}</Text>
       {social.item.ImageURI && social.item.ContentType === "video" && (
         <Video
           source={{ uri: `${config.cloudfrontDist}${social.item.ImageURI}` }}
@@ -56,11 +115,73 @@ export const SocialItem = (social) => {
           isLooping
         />
       )}
-      {social.item.ImageURI && social.item.ContentType === "round" && (
-        <View style={styles.mediaContainer}>
-          <Text style={styles.score}>
-            {social.item.stats?.frontScore + social.item.stats?.backScore}
-          </Text>
+      {social.item.ContentType === "round" && (
+        <View style={[styles.roundCardContainer]}>
+          <View style={styles.clubCardHeader}>
+            <Text style={styles.clubAvgText}>
+              {stats.frontScore + stats.backScore}
+            </Text>
+          </View>
+          <View style={styles.roundCardInnerContainer}>
+            <Text style={styles.courseText}>
+              {stats.course ? stats.course : "Sample Course"}
+            </Text>
+            <View style={styles.roundCardRow}>
+              <View style={styles.roundCardInnerContainer}>
+                <Text style={styles.roundCardHeader}>Front</Text>
+                <Text style={styles.roundCardScore}>
+                  {stats?.frontScore ? stats.frontScore : ""}
+                </Text>
+              </View>
+              {stats?.backScore && (
+                <View style={styles.roundCardRow}>
+                  <View style={styles.roundCardInnerContainer}>
+                    <Text style={styles.roundCardHeader}>Back</Text>
+                    <Text style={styles.roundCardScore}>
+                      {stats?.backScore ? stats.backScore : ""}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </View>
+            {stats?.frontScore && (
+              <PieChart
+                data={pieChartData}
+                chartConfig={pieChartConfig}
+                height={200}
+                width={Dimensions.get("window").width}
+                style={styles.pieChartStyle}
+                center={[3, 0]}
+                hasLegend={true}
+                accessor={"count"}
+                backgroundColor={"transparent"}
+                absolute="false"
+              />
+            )}
+          </View>
+          <View style={styles.roundCardRow}>
+            <View style={styles.roundCardInnerContainer}>
+              <Text style={styles.roundCardHeader}>FWY</Text>
+              <Text style={styles.roundCardSubText}>
+                {stats?.fairways ? stats.fairways : ""} /{" "}
+                {stats?.holesPlayed ? stats.holesPlayed : ""}
+              </Text>
+            </View>
+            <View style={styles.roundCardInnerContainer}>
+              <Text style={styles.roundCardHeader}>GIR</Text>
+              <Text style={styles.roundCardSubText}>
+                {stats?.gir ? stats.gir : 0} /{" "}
+                {stats?.holesPlayed ? stats?.holesPlayed : ""}
+              </Text>
+            </View>
+            <View style={styles.roundCardInnerContainer}>
+              <Text style={styles.roundCardHeader}>SCR</Text>
+              <Text style={styles.roundCardSubText}>
+                {stats?.gir ? stats?.scrambles : 18} /{" "}
+                {stats?.holesPlayed ? stats?.holesPlayed - stats?.gir : ""}
+              </Text>
+            </View>
+          </View>
         </View>
       )}
       {social.item.ContentType === "liveround" && (

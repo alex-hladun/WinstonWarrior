@@ -145,7 +145,7 @@ export function PlayerAdd({ navigation }) {
     const saveItems = [
       ["roundID", `${userRoundID}`],
       ["holeNum", "1"],
-      ["liveRoundId", JSON.stringify(roundId)]
+      ["liveRoundId", roundId ? JSON.stringify(roundId) : ""]
     ];
     await AsyncStorage.multiSet(saveItems);
 

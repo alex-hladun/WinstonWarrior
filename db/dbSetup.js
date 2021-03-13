@@ -937,7 +937,7 @@ export const loadShotHistoryData = async (user_id, club_id) => {
     `,
         [user_id, club_id],
         (txObj, result) => {
-          console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`);
+          // console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`);
           resolve(result.rows._array.reverse());
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1327,7 +1327,7 @@ export const retrieveCourseInfo = async (round_id) => {
     `,
         [round_id],
         (txObj, result) => {
-          console.log("result getting course INFO", result.rows._array[0]);
+          // console.log("result getting course INFO", result.rows._array[0]);
           resolve(result.rows._array[0]);
         },
         (err, mess) =>
@@ -1587,10 +1587,10 @@ export const getScore = async (round_id) => {
     `,
         [round_id],
         (txObj, result) => {
-          console.log(
-            `result getting score with round_id ${round_id}`,
-            result.rows._array
-          );
+          // console.log(
+          //   `result getting score with round_id ${round_id}`,
+          //   result.rows._array
+          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err creating round", reject(mess))

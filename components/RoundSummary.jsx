@@ -46,11 +46,19 @@ export default function RoundSummary({ handleRoundSummary }) {
   const userHandicap = useHandicap(1);
 
   useEffect(() => {
-    console.log(
-      "final ROUND in SUMMARY",
-      finalRoundPost(appState.playState, appState.appState.user_name)
-    );
+    getSamplepost();
   }, []);
+
+  const getSamplepost = async () => {
+    const finalRoundObj1 = await finalRoundPost(
+      appState.playState,
+      appState.appState.user_name
+    );
+    console.log(
+      "🚀 ~ file: RoundSummary.jsx ~ line 57 ~ getSamplepost ~ finalRoundObj1",
+      finalRoundObj1
+    );
+  };
 
   const [scoreArr, setScoreArr] = useState([]);
   const [scoreObj, setScoreObj] = useState({});
@@ -201,10 +209,15 @@ export default function RoundSummary({ handleRoundSummary }) {
       holesPlayed,
       calculatedHolesPlayed
     );
-    const finalRoundObj = finalRoundPost(
+    const finalRoundObj = await finalRoundPost(
       appState.playState,
       appState.appState.user_name
     );
+    console.log(
+      "🚀 ~ file: RoundSummary.jsx ~ line 216 ~ handleScoreSubmit ~ finalRoundObj",
+      finalRoundObj
+    );
+
     if (appState.playState.liveRound) {
       // UDONE ROUND
       axios.put(
@@ -225,7 +238,10 @@ export default function RoundSummary({ handleRoundSummary }) {
         `${config.api2}rounds`,
         {
           contentType: "round",
-          stats: finalRoundObj
+          stats: finalRoundObj,
+          course: appState.playState.courseName,
+          username: appState.appState.user_name,
+          timestamp: Date.now()
         },
         {
           headers: {
