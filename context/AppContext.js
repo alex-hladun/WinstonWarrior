@@ -237,6 +237,28 @@ const reducer = produce((state, action) => {
       break;
     case "refresh_hole_stats":
       state.statState.courseData.holeStats[action.hole] = action.data;
+      break;
+    case "set_social_posts":
+      state.socialState.posts = action.data;
+      break;
+    case "set_social_users":
+      state.socialState.users = action.data;
+      break;
+    case "set_social_following":
+      state.socialState.followingUsers = action.data;
+      break;
+    case "follow_user":
+      state.socialState.followingUsers.push(action.data);
+      console.log(state.socialState.followingUsers);
+      break;
+    case "unfollow_user":
+      const newArray = state.socialState.followingUsers.filter(
+        (user) => user !== action.data
+      );
+      state.socialState.followingUsers = newArray;
+      console.log(state.socialState.followingUsers);
+
+      break;
   }
 });
 
@@ -383,6 +405,11 @@ const initialState = {
       17: null,
       18: null
     }
+  },
+  socialState: {
+    posts: [],
+    users: [],
+    followingUsers: []
   }
 };
 const AppContext = React.createContext(initialState);

@@ -8,6 +8,7 @@ import NavigationPlay from "../navigation/PlayHome";
 import { getScore, retrieveCourseInfo } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LoadingScreen } from "../components/LoadingScreen";
+import { useFonts } from "expo-font";
 
 export default function PlayScreen() {
   const appContext = React.useContext(AppContext);
@@ -17,7 +18,10 @@ export default function PlayScreen() {
     : false;
   const appState = appContext.value.state;
   const [initialHole, setInitialHole] = React.useState(1);
-
+  let [fontsLoaded] = useFonts({
+    instaFont: require("../assets/fonts/instaFont.ttf"),
+    nimbus: require("../assets/fonts/nimbus.ttf")
+  });
   React.useEffect(() => {
     appContext.value.loadInitialStats(1);
   }, []);
@@ -239,7 +243,7 @@ export default function PlayScreen() {
     getLocationAsync();
   }, [locationUpdate]);
 
-  return appState.appState?.initialLoading ? (
+  return appState.appState?.initialLoading && !fontsLoaded ? (
     <LoadingScreen />
   ) : appState.appState.viewMode === "play" ? (
     appState.appState.loading && !holeInfoLoaded ? (

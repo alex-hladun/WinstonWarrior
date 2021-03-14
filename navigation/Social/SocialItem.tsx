@@ -5,18 +5,20 @@ import styles from "../../assets/styles/SocialStyles";
 import styles2 from "../../assets/styles/StatStyles";
 import XSymbol from "../../assets/svg/XSymbol";
 import { Theme } from "../../assets/styles/Theme";
-
+import HeartSymbol from "../../assets/svg/HeartSymbol";
+import MessageSymbol from "../../assets/svg/MessageSymbol";
 import { AppContext } from "../../context/AppContext";
 import { Audio, Video } from "expo-av";
 var dayjs = require("dayjs");
 import { PieChart } from "react-native-chart-kit";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const SocialItem = (social) => {
   const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
 
   const textFont = { fontFamily: "nimbus", fontSize: 20 };
   const stats = social.item.stats;
-  console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", social);
+  // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", social);
 
   const pieChartConfig = {
     backgroundColor: Theme.chartBackgroundColor,
@@ -31,42 +33,42 @@ export const SocialItem = (social) => {
   const pieChartData = [
     {
       name: "Eagles",
-      count: stats.eagles,
+      count: stats?.eagles,
       color: Theme.piePalette[0],
       legendFontColor: "#666464",
       legendFontSize: 15
     },
     {
       name: "Birdies",
-      count: stats.birdies,
+      count: stats?.birdies,
       color: Theme.piePalette[1],
       legendFontColor: "#666464",
       legendFontSize: 15
     },
     {
       name: "Pars",
-      count: stats.pars,
+      count: stats?.pars,
       color: Theme.piePalette[2],
       legendFontColor: "#666464",
       legendFontSize: 15
     },
     {
       name: "Bogeys",
-      count: stats.bogies,
+      count: stats?.bogies,
       color: Theme.piePalette[3],
       legendFontColor: "#666464",
       legendFontSize: 15
     },
     {
       name: "Doubles",
-      count: stats.doubles,
+      count: stats?.doubles,
       color: Theme.piePalette[4],
       legendFontColor: "#666464",
       legendFontSize: 15
     },
     {
       name: "Triples +",
-      count: stats.triples,
+      count: stats?.triples,
       color: Theme.piePalette[5],
       legendFontColor: "#666464",
       legendFontSize: 15
@@ -119,18 +121,18 @@ export const SocialItem = (social) => {
         <View style={[styles.roundCardContainer]}>
           <View style={styles.clubCardHeader}>
             <Text style={styles.clubAvgText}>
-              {stats.frontScore + stats.backScore}
+              {stats?.frontScore + stats?.backScore}
             </Text>
           </View>
           <View style={styles.roundCardInnerContainer}>
             <Text style={styles.courseText}>
-              {stats.course ? stats.course : "Sample Course"}
+              {stats?.course ? stats?.course : "Sample Course"}
             </Text>
             <View style={styles.roundCardRow}>
               <View style={styles.roundCardInnerContainer}>
                 <Text style={styles.roundCardHeader}>Front</Text>
                 <Text style={styles.roundCardScore}>
-                  {stats?.frontScore ? stats.frontScore : ""}
+                  {stats?.frontScore ? stats?.frontScore : ""}
                 </Text>
               </View>
               {stats?.backScore && (
@@ -218,8 +220,14 @@ export const SocialItem = (social) => {
         </View>
       )}
       <View style={styles.commentBar}>
-        <Text style={styles.buttonText}>Like</Text>
-        <Text style={styles.buttonText}>Comment</Text>
+        <TouchableOpacity style={styles.commentLogo}>
+          <HeartSymbol fill={true} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.commentLogo} onPress={() => {
+          navigator.push
+        }}>
+          <MessageSymbol />
+        </TouchableOpacity>
       </View>
     </View>
   );

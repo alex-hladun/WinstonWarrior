@@ -32,11 +32,14 @@ export const styles = StyleSheet.create({
   upperText: {
     paddingHorizontal: 2
   },
+  commentLogo: { margin: 10, height: 30, width: 30 },
   commentBar: {
-    height: 50,
+    // height: 50,
     alignItems: "center",
-    justifyContent: "space-evenly",
-    flexDirection: "row"
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    marginLeft: 15,
+    marginVertical: 7
   },
   buttonText: {
     fontSize: 15
@@ -190,7 +193,7 @@ export const styles = StyleSheet.create({
     width: width - 50,
     marginTop: 25,
     paddingBottom: 40,
-    height: 'auto',
+    height: "auto",
     borderRadius: 50,
     backgroundColor: Theme.coolBlue,
     alignSelf: "center"
@@ -217,7 +220,7 @@ export const styles = StyleSheet.create({
   },
   roundCardHeader: {
     opacity: 0.3,
-    justifyContent: 'center',
+    justifyContent: "center",
     textAlign: "center",
     fontSize: 25
   },
@@ -239,7 +242,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "black",
     alignItems: "center",
     opacity: 0.35,
-    height: 'auto',
+    height: "auto",
     // borderRadius: 50,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50
@@ -257,8 +260,8 @@ export const styles = StyleSheet.create({
     fontSize: 40,
     color: "#FFF",
     opacity: 1,
-    textAlign: 'center',
-    alignSelf: 'center',
+    textAlign: "center",
+    alignSelf: "center",
     // marginHorizontal: 10,
     padding: 20
     // fontStyle: 'italic'
@@ -267,8 +270,8 @@ export const styles = StyleSheet.create({
     fontSize: 30,
     color: "#FFF",
     opacity: 1,
-    textAlign: 'center',
-    alignSelf: 'center',
+    textAlign: "center",
+    alignSelf: "center",
     // marginHorizontal: 10,
     padding: 20
     // fontStyle: 'italic'
@@ -572,11 +575,15 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 25,
     margin: 4,
     width: "97%",
-    borderStyle: "solid",
-    borderColor: Theme.spinGreen4,
-    borderBottomWidth: 4,
-    backgroundColor: "white",
+    // borderStyle: "solid",
+    // borderColor: Theme.spinGreen4,
+    // borderBottomWidth: 4,
     borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    backgroundColor: "white",
     alignSelf: "center",
     justifyContent: "space-between",
     flexDirection: "row"
@@ -609,7 +616,8 @@ export const styles = StyleSheet.create({
     fontSize: 50
   },
   roundCourseName: {
-    fontSize: 18
+    fontSize: 18,
+    alignItems: "center"
   },
   roundDate: {
     fontSize: 12

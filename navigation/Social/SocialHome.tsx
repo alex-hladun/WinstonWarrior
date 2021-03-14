@@ -1,13 +1,27 @@
-import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Dimensions
+} from "react-native";
 import * as React from "react";
 import * as Linking from "expo-linking";
 import GolfLogo from "../../assets/svg/GolfLogo";
 import styles from "../../assets/styles/PlayStyles";
+import socStyles from "../../assets/styles/SocialStyles";
+
 import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
 import { useEffect } from "react";
 import axios from "axios";
-import { SocialItem } from "./SocialItem";
+import { Theme } from "../../assets/styles/Theme";
+import { PieChart } from "react-native-chart-kit";
+import HeartSymbol from "../../assets/svg/HeartSymbol";
+import MessageSymbol from "../../assets/svg/MessageSymbol";
+import { Audio, Video } from "expo-av";
+var dayjs = require("dayjs");
 import config from "../../settings.json";
 const mockRound = [
   {
@@ -242,21 +256,273 @@ const mockData = [
   }
 ];
 export default function SocialHome({ navigation }) {
-  const statContext = React.useContext(StatContext);
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
-
-  // console.log(
-  //   "🚀 ~ file: SocialHome.tsx ~ line 17 ~ SocialHome ~ appState",
-  //   appState.appState.auth_data
-  // );
   const [socialFeed, setSocialFeed] = React.useState(mockRound);
   const [socialFeedError, setSocialFeedError] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const postLike = async (roundId) => {
+    try {
+      const res = await axios.put(
+        `${config.api2}put-reaction`,
+        {
+          roundId,
+          reactionType: "like"
+        },
+        {
+          headers: {
+            Authorization: appState.appState.auth_data
+          }
+        }
+      );
+      console.log("🚀 ~ file: SocialHome.tsx ~ line 279 ~ postLike ~ res", res);
+    } catch (err) {
+      console.log("error liking", err);
+    }
+  };
+
+  const SocialItem = (social) => {
+    const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
+
+    const textFont = { fontFamily: "nimbus", fontSize: 20 };
+    const stats = social.item.stats;
+    // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", social.item["SK"]);
+
+    const pieChartConfig = {
+      backgroundColor: Theme.chartBackgroundColor,
+      backgroundGradientFrom: Theme.chartBGGradientFrom,
+      backgroundGradientTo: Theme.chartBGGradientTo,
+      propsForVerticalLabels: {
+        rotation: -90
+      },
+      decimalPlaces: 0, // optional, defaults to 2dp
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
+    };
+    const pieChartData = [
+      {
+        name: "Eagles",
+        count: stats?.eagles,
+        color: Theme.piePalette[0],
+        legendFontColor: "#666464",
+        legendFontSize: 15
+      },
+      {
+        name: "Birdies",
+        count: stats?.birdies,
+        color: Theme.piePalette[1],
+        legendFontColor: "#666464",
+        legendFontSize: 15
+      },
+      {
+        name: "Pars",
+        count: stats?.pars,
+        color: Theme.piePalette[2],
+        legendFontColor: "#666464",
+        legendFontSize: 15
+      },
+      {
+        name: "Bogeys",
+        count: stats?.bogies,
+        color: Theme.piePalette[3],
+        legendFontColor: "#666464",
+        legendFontSize: 15
+      },
+      {
+        name: "Doubles",
+        count: stats?.doubles,
+        color: Theme.piePalette[4],
+        legendFontColor: "#666464",
+        legendFontSize: 15
+      },
+      {
+        name: "Triples +",
+        count: stats?.triples,
+        color: Theme.piePalette[5],
+        legendFontColor: "#666464",
+        legendFontSize: 15
+      }
+    ];
+    if (social.item.ContentType === "round") {
+    }
+    if (social.item.ContentType === "liveround" && withinMinutes > 30) {
+      return;
+    }
+    return (
+      <View style={socStyles.frame}>
+        <View style={socStyles.upperFContainer}>
+          <View style={socStyles.upperFImage}>
+            <Text></Text>
+          </View>
+          <View style={socStyles.upperFTextContainer}>
+            <Text style={[socStyles.upperText, textFont]}>
+              {social.item.username}
+            </Text>
+            <Text style={[socStyles.upperText, textFont]}>
+              {dayjs(social.item.timestamp).format("M/D")}
+              {social?.item?.stats?.course &&
+                "- " + social?.item?.stats?.course}
+            </Text>
+          </View>
+        </View>
+        {social.item.text && social.item.ContentType !== "liveround" && (
+          <View style={socStyles.commentContainer}>
+            <Text style={[socStyles.comment, textFont]}>
+              {social.item.text}
+            </Text>
+          </View>
+        )}
+        {social.item.ImageURI && social.item.ContentType === "image" && (
+          <Image
+            source={{ uri: `${config.cloudfrontDist}${social.item.ImageURI}` }}
+            style={socStyles.mediaPicture}
+          />
+        )}
+        {social.item.ImageURI && social.item.ContentType === "video" && (
+          <Video
+            source={{ uri: `${config.cloudfrontDist}${social.item.ImageURI}` }}
+            style={socStyles.mediaPicture}
+            isMuted={false}
+            resizeMode="cover"
+            shouldPlay={true}
+            isLooping
+          />
+        )}
+        {social.item.ContentType === "round" && (
+          <View style={[socStyles.roundCardContainer]}>
+            <View style={socStyles.clubCardHeader}>
+              <Text style={socStyles.clubAvgText}>
+                {stats?.frontScore + stats?.backScore}
+              </Text>
+            </View>
+            <View style={socStyles.roundCardInnerContainer}>
+              <Text style={socStyles.courseText}>
+                {stats?.course ? stats?.course : "Sample Course"}
+              </Text>
+              <View style={socStyles.roundCardRow}>
+                <View style={socStyles.roundCardInnerContainer}>
+                  <Text style={socStyles.roundCardHeader}>Front</Text>
+                  <Text style={socStyles.roundCardScore}>
+                    {stats?.frontScore ? stats?.frontScore : ""}
+                  </Text>
+                </View>
+                {stats?.backScore && (
+                  <View style={socStyles.roundCardRow}>
+                    <View style={socStyles.roundCardInnerContainer}>
+                      <Text style={socStyles.roundCardHeader}>Back</Text>
+                      <Text style={socStyles.roundCardScore}>
+                        {stats?.backScore ? stats.backScore : ""}
+                      </Text>
+                    </View>
+                  </View>
+                )}
+              </View>
+              {stats?.frontScore && (
+                <PieChart
+                  data={pieChartData}
+                  chartConfig={pieChartConfig}
+                  height={200}
+                  width={Dimensions.get("window").width}
+                  style={socStyles.pieChartStyle}
+                  center={[3, 0]}
+                  hasLegend={true}
+                  accessor={"count"}
+                  backgroundColor={"transparent"}
+                  absolute="false"
+                />
+              )}
+            </View>
+            <View style={socStyles.roundCardRow}>
+              <View style={socStyles.roundCardInnerContainer}>
+                <Text style={socStyles.roundCardHeader}>FWY</Text>
+                <Text style={socStyles.roundCardSubText}>
+                  {stats?.fairways ? stats.fairways : ""} /{" "}
+                  {stats?.holesPlayed ? stats.holesPlayed : ""}
+                </Text>
+              </View>
+              <View style={socStyles.roundCardInnerContainer}>
+                <Text style={socStyles.roundCardHeader}>GIR</Text>
+                <Text style={socStyles.roundCardSubText}>
+                  {stats?.gir ? stats.gir : 0} /{" "}
+                  {stats?.holesPlayed ? stats?.holesPlayed : ""}
+                </Text>
+              </View>
+              <View style={socStyles.roundCardInnerContainer}>
+                <Text style={socStyles.roundCardHeader}>SCR</Text>
+                <Text style={socStyles.roundCardSubText}>
+                  {stats?.gir ? stats?.scrambles : 18} /{" "}
+                  {stats?.holesPlayed ? stats?.holesPlayed - stats?.gir : ""}
+                </Text>
+              </View>
+            </View>
+          </View>
+        )}
+        {social.item.ContentType === "liveround" && (
+          <View style={socStyles.commentContainer}>
+            <Text style={[socStyles.comment, textFont]}>
+              Thru {social.item.stats?.thruHoles}
+            </Text>
+            <Text style={[socStyles.comment, textFont]}>
+              {social.item.stats?.player1?.name}
+              {" - "}
+              {social.item.stats?.player1?.score}{" "}
+            </Text>
+            {social.item.stats?.player2?.name && (
+              <Text style={[socStyles.comment, textFont]}>
+                {social.item.stats?.player2?.name}
+                {" - "}
+                {social.item.stats?.player2?.score}{" "}
+              </Text>
+            )}
+            {social.item.stats?.player3?.name && (
+              <Text style={[socStyles.comment, textFont]}>
+                {social.item.stats?.player3?.name}
+                {" - "}
+                {social.item.stats?.player3?.score}{" "}
+              </Text>
+            )}
+            {social.item.stats?.player4?.name && (
+              <Text style={[socStyles.comment, textFont]}>
+                {social.item.stats?.player4?.name}
+                {" - "}
+                {social.item.stats?.player4?.score}{" "}
+              </Text>
+            )}
+          </View>
+        )}
+        <View style={socStyles.commentBar}>
+          <TouchableOpacity
+            style={socStyles.commentLogo}
+            onPress={() => {
+              postLike(social.item["SK"]);
+            }}
+          >
+            <HeartSymbol fill={true} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={socStyles.commentLogo}
+            onPress={() => {
+              navigation.navigate("Comment", {
+                reactions: social.item?.reactions,
+                roundId: social.item["SK"]
+              });
+            }}
+          >
+            <MessageSymbol />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   const fetchRounds = async () => {
-    return;
+    // return;
     setRefreshing(true);
+    console.log(
+      "🚀 ~ file: SocialHome.tsx ~ line 282 ~ fetchRounds ~ appState.appState.auth_data",
+      appState.appState.auth_data
+    );
+
     let user = appState.appState["user_name"];
 
     try {
@@ -268,9 +534,13 @@ export default function SocialHome({ navigation }) {
           }
         }
       );
-      console.log("🚀 ", userRoundData.data);
+      console.log("🚀 ", userRoundData);
       setSocialFeedError(false);
 
+      appContext.dispatch({
+        type: "set_social_posts",
+        data: userRoundData.data
+      });
       setSocialFeed(userRoundData.data);
     } catch (err) {
       console.log("error loading", err);
@@ -288,7 +558,7 @@ export default function SocialHome({ navigation }) {
       <View style={styles.socialFeed}>
         {socialFeedError && <Text>Error loading data</Text>}
         <FlatList
-          data={socialFeed}
+          data={appState.socialState.posts}
           renderItem={SocialItem}
           keyExtractor={(item, index) => `itemsocial${index}`}
           refreshing={refreshing}

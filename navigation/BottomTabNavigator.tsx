@@ -12,6 +12,8 @@ import { Theme } from "../assets/styles/Theme";
 import GolfFlag from "../assets/svg/GolfFlag";
 import ChartLogo from "../assets/svg/ChartLogo";
 import SocialPost from "./Social/SocialPost";
+import SocialComment from "./Social/SocialComment";
+import SocialFollow from "./Social/SocialFollow";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -76,6 +78,8 @@ function SocialNavigator() {
         })}
       />
       <SocialStack.Screen name="Post" component={SocialPost} />
+      <SocialStack.Screen name="Follow" component={SocialFollow} />
+      <SocialStack.Screen name="Comment" component={SocialComment} />
     </SocialStack.Navigator>
   );
 }
@@ -89,7 +93,7 @@ function StatNavigator() {
         name="StatScreen"
         component={TabTwoScreen}
         options={({ navigation, route }) => ({
-          headerTitle: "Stats",
+          headerTitle: "Stats"
         })}
       />
     </StatStack.Navigator>
@@ -104,7 +108,11 @@ function PlayNavigator() {
       <PlayStack.Screen
         name="TabThreeScreen"
         component={PlayScreen}
-        options={{ headerTitle: "Play", headerShown: false, headerTransparent: true }}
+        options={{
+          headerTitle: "Play",
+          headerShown: false,
+          headerTransparent: true
+        }}
       />
     </PlayStack.Navigator>
   );
