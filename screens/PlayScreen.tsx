@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Alert } from "react-native";
+import { Alert, Text } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import Hole from "../components/Hole";
@@ -9,8 +9,23 @@ import { getScore, retrieveCourseInfo } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { useFonts } from "expo-font";
+export default function PlayScreen({ navigation }) {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: {
+        height: 100,
+        backgroundColor: "#white",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 3
+      },
+      headerTitle: () => {
+        return <Text>Winstagram</Text>;
+      }
+    });
+  }, [navigation]);
 
-export default function PlayScreen() {
   const appContext = React.useContext(AppContext);
   const holeInfoLoaded = appContext.value?.state?.playState?.holeInfo?.["1"]
     .camera

@@ -106,7 +106,7 @@ function PlayNavigator() {
   return (
     <PlayStack.Navigator>
       <PlayStack.Screen
-        name="TabThreeScreen"
+        name="PlayScreen"
         component={PlayScreen}
         options={{
           headerTitle: "Play",

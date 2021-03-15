@@ -218,21 +218,21 @@ export default function RoundSummary({ handleRoundSummary }) {
       finalRoundObj
     );
 
-    if (appState.playState.liveRound) {
-      // UDONE ROUND
-      axios.put(
-        `${config.api2}rounds`,
-        {
-          contentType: "doneliveround",
-          roundId: appState.playState.liveRound
-        },
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
-      );
-    }
+    // if (appState.playState.liveRound) {
+    //   // UDONE ROUND
+    //   axios.put(
+    //     `${config.api2}rounds`,
+    //     {
+    //       contentType: "doneliveround",
+    //       roundId: appState.playState.liveRound
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: appState.appState.auth_data
+    //       }
+    //     }
+    //   );
+    // }
     if (postSocialRound) {
       axios.post(
         `${config.api2}rounds`,

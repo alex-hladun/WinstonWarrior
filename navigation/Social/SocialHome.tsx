@@ -4,7 +4,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import * as React from "react";
 import * as Linking from "expo-linking";
@@ -20,6 +21,7 @@ import { Theme } from "../../assets/styles/Theme";
 import { PieChart } from "react-native-chart-kit";
 import HeartSymbol from "../../assets/svg/HeartSymbol";
 import MessageSymbol from "../../assets/svg/MessageSymbol";
+import DeleteIcon from "../../assets/svg/DeleteIcon";
 import { Audio, Video } from "expo-av";
 var dayjs = require("dayjs");
 import config from "../../settings.json";
@@ -258,7 +260,6 @@ const mockData = [
 export default function SocialHome({ navigation }) {
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
-  const [socialFeed, setSocialFeed] = React.useState(mockRound);
   const [socialFeedError, setSocialFeedError] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -276,7 +277,10 @@ export default function SocialHome({ navigation }) {
           }
         }
       );
-      console.log("🚀 ~ file: SocialHome.tsx ~ line 279 ~ postLike ~ res", res);
+      console.log(
+        "🚀 ~ file: SocialHome.tsx ~ line 279 ~ postLike ~ res",
+        res.status
+      );
     } catch (err) {
       console.log("error liking", err);
     }
@@ -510,6 +514,31 @@ export default function SocialHome({ navigation }) {
           >
             <MessageSymbol />
           </TouchableOpacity>
+          {social.item.username === appState.appState["user_name"] && (
+            <TouchableOpacity
+              style={socStyles.commentLogo}
+              onPress={() => {
+                Alert.alert(
+                  "Delete",
+                  "Are you sure you want to delete?",
+                  [
+                    {
+                      text: "No",
+                      onPress: () => console.log("NOT loading existing round"),
+                      style: "cancel"
+                    },
+                    {
+                      text: "Yes",
+                      onPress: () => console.log("Delete text goes here")
+                    }
+                  ],
+                  { cancelable: false }
+                );
+              }}
+            >
+              <DeleteIcon />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );
@@ -518,10 +547,6 @@ export default function SocialHome({ navigation }) {
   const fetchRounds = async () => {
     // return;
     setRefreshing(true);
-    console.log(
-      "🚀 ~ file: SocialHome.tsx ~ line 282 ~ fetchRounds ~ appState.appState.auth_data",
-      appState.appState.auth_data
-    );
 
     let user = appState.appState["user_name"];
 
@@ -541,7 +566,6 @@ export default function SocialHome({ navigation }) {
         type: "set_social_posts",
         data: userRoundData.data
       });
-      setSocialFeed(userRoundData.data);
     } catch (err) {
       console.log("error loading", err);
       setSocialFeedError("Error Loading Data");

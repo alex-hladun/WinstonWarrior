@@ -29,6 +29,8 @@ import {
 } from "../db/dbSetup";
 import produce from "immer";
 import { loadHandicapFromArray } from "../hooks/useHandicapHistory";
+import { Auth } from "aws-amplify";
+
 import { loadHoleStatsForRefresh } from "../db/loadHoleStatsForRefresh";
 // import {register}
 const reducer = produce((state, action) => {
@@ -58,10 +60,13 @@ const reducer = produce((state, action) => {
       break;
 
     case "log_out":
+      Auth.signOut();
       state.appState.auth_data = null;
       state.appState.user_name = null;
       state.appState.logged_in = false;
       state.appState.auth_message = "";
+      AsyncStorage.setItem("authName", "");
+
       break;
     case "set_live_round":
       state.playState.liveRound = action.value;
