@@ -55,8 +55,6 @@ function PlayNavigator() {
                         [
                           {
                             text: "No",
-                            onPress: () =>
-                              console.log("NOT loading existing round"),
                             style: "cancel"
                           },
                           {

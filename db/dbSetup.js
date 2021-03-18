@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { Alert, AsyncStorageStatic } from "react-native";
-import glencoeInfo from "../assets/glencoeInfo";
-import holeInfo from "../assets/holeInfo";
+import glencoe from "../assets/courses/glencoe";
+import winston from "../assets/courses/winston";
 import { handicapDiffCalc } from "../helpers/handicap";
 
 const db = SQLite.openDatabase("winstonGolfer.db");
@@ -26,14 +26,17 @@ export const existingGameAlert = () => {
 };
 
 export const removeDB = () => {
-  db.transaction((tx) => {
-    tx.executeSql(`DROP TABLE if exists scores`, null, null, null);
-    tx.executeSql(`DROP TABLE if exists courses`, null, null, null);
-    tx.executeSql(`DROP TABLE if exists rounds`, null, null, null);
-    tx.executeSql(`DROP TABLE if exists users`, null, null, null);
-    tx.executeSql(`DROP TABLE if exists holes`, null, null, null);
-    tx.executeSql(`DROP TABLE if exists distances`, null, null, null);
-    tx.executeSql(`DROP TABLE if exists clubs`, null, null, null);
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(`DROP TABLE if exists scores`, null, null, null);
+      tx.executeSql(`DROP TABLE if exists courses`, null, null, null);
+      tx.executeSql(`DROP TABLE if exists rounds`, null, null, null);
+      tx.executeSql(`DROP TABLE if exists users`, null, null, null);
+      tx.executeSql(`DROP TABLE if exists holes`, null, null, null);
+      tx.executeSql(`DROP TABLE if exists distances`, null, null, null);
+      tx.executeSql(`DROP TABLE if exists clubs`, null, null, null);
+      resolve();
+    });
   });
 };
 
@@ -46,7 +49,6 @@ export const getUsers = async () => {
     `,
         [],
         (txObj, result) => {
-          // console.log('result creating user', result.rows._array)
           resolve(result.rows);
         },
         (err, mess) => reject
@@ -335,167 +337,154 @@ export const postScore = async (
   );
 };
 
-export const createWinston = () => {
+export const selectHoles = () => {
   db.transaction((tx) => {
     tx.executeSql(
       `
-    INSERT INTO courses (
-      name, 
-      blue_rtg, 
-      blue_slp, 
-      black_rtg, 
-      black_slp,
-      black_blue_rtg,
-      black_blue_slp,
-      white_rtg,
-      white_slp,
-      blue_white_rtg,
-      blue_white_slp,
-      red_rtg,
-      red_slp,
-      white_red_rtg,
-      white_red_slp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    select * from courses;
     `,
-      [
-        "The Winston",
-        71.8,
-        127,
-        74.4,
-        130,
-        73.2,
-        129,
-        69.5,
-        125,
-        70.1,
-        125,
-        65.6,
-        116,
-        88.2,
-        122
-      ],
       (txObj, result) => {
-        console.log("result creating winston", result);
-        // console.log('transObj', txObj)
-        // setHole(holeNum + 1)
-        // console.log('txObj', txObj)
+        console.log(`result`, result);
       },
-      (err, mess) => console.log("err creating Winston course", mess)
-    );
-    tx.executeSql(
-      `
-    INSERT INTO courses (
-      name, 
-      blue_rtg, 
-      blue_slp, 
-      black_rtg, 
-      black_slp,
-      black_blue_rtg,
-      black_blue_slp,
-      white_rtg,
-      white_slp,
-      blue_white_rtg,
-      blue_white_slp,
-      red_rtg,
-      red_slp,
-      white_red_rtg,
-      white_red_slp
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-    `,
-      [
-        "The Glencoe: Forest",
-        72.8,
-        138,
-        75,
-        140,
-        73.5,
-        139,
-        70.4,
-        133,
-        71,
-        135,
-        67.8,
-        127,
-        69,
-        129
-      ],
-      (txObj, result) => {
-        console.log("result creating glencoe", result);
-        // console.log('transObj', txObj)
-        // setHole(holeNum + 1)
-        // console.log('txObj', txObj)
-      },
-      (err, mess) => console.log("err creating Winston course", mess)
-    );
-
-    const holeArray = Object.keys(holeInfo);
-    holeArray.forEach((val, index) => {
-      console.log(`creating hole ${val}`);
-      tx.executeSql(
-        `
-      INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          1,
-          index + 1,
-          holeInfo[val].par,
-          holeInfo[val].pinCoords.latitude,
-          holeInfo[val].pinCoords.longitude,
-          holeInfo[val].camera.center.latitude,
-          holeInfo[val].camera.center.longitude,
-          holeInfo[val].camera.heading,
-          holeInfo[val].camera.altitude,
-          holeInfo[val].camera.zoom,
-          holeInfo[val].hcpRtg
-        ],
-        (txObj, result) => {
-          console.log("done creating hole");
-        },
-        (err, mess) => console.log("err creating hole", err, mess)
-      );
-    });
-
-    // Create Glencoe
-    const glencoeHoleArray = Object.keys(glencoeInfo);
-    glencoeHoleArray.forEach((val, index) => {
-      console.log(`creating hole ${val}`);
-      tx.executeSql(
-        `
-      INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          2,
-          val,
-          glencoeInfo[val].par,
-          glencoeInfo[val].pinCoords.latitude,
-          glencoeInfo[val].pinCoords.longitude,
-          glencoeInfo[val].camera.center.latitude,
-          glencoeInfo[val].camera.center.longitude,
-          glencoeInfo[val].camera.heading,
-          glencoeInfo[val].camera.altitude,
-          glencoeInfo[val].camera.zoom,
-          glencoeInfo[val].hcpRtg
-        ],
-        (txObj, result) => {
-          console.log("done creating glencoe holes");
-        },
-        (err, mess) => console.log("err creating hole", err, mess)
-      );
-    });
-
-    tx.executeSql(
-      `
-    SELECT * FROM holes;`,
-      [],
-      (txObj, result) => {
-        console.log(
-          `final holes result, ${JSON.stringify(result.rows._array)}`
-        );
-      },
-      (err, mess) => console.log("err creating hole", err, mess)
+      (err, mess) => console.log("errror reading ", mess)
     );
   });
 };
+
+export const createSingleCourse = async (course, courseIndex) => {
+  return new Promise(async (resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+      INSERT INTO courses (
+        course_id,
+        name, 
+        blue_rtg, 
+        blue_slp, 
+        black_rtg, 
+        black_slp,
+        black_blue_rtg,
+        black_blue_slp,
+        white_rtg,
+        white_slp,
+        blue_white_rtg,
+        blue_white_slp,
+        red_rtg,
+        red_slp,
+        white_red_rtg,
+        white_red_slp
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+      `,
+        [
+          courseIndex,
+          course.name,
+          course.blue_rtg,
+          course.blue_slp,
+          course.black_rtg,
+          course.black_slp,
+          course.black_blue_rtg,
+          course.black_blue_slp,
+          course.white_rtg,
+          course.white_slp,
+          course.blue_white_rtg,
+          course.blue_white_slp,
+          course.red_rtg,
+          course.red_slp,
+          course.white_red_rtg,
+          course.white_red_slp
+        ],
+        (txObj, result) => {
+          console.log(`result creating ${course.name}`, result);
+          resolve();
+        },
+        (err, mess) => console.log("err creating course", mess)
+      );
+    });
+  });
+};
+
+export const addHolesToCourse = async (course, courseIndex) => {
+  return new Promise(async (resolve, reject) => {
+    let holeIndex = 1;
+    db.transaction((tx) => {
+      for (const hole of Object.keys(course.holes)) {
+        console.log(`
+        INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
+        VALUES (${courseIndex},${holeIndex}, ${course.holes[hole].par},
+          ${course.holes[hole].pinCoords.latitude},
+          ${course.holes[hole].pinCoords.longitude},
+          ${course.holes[hole].camera.center.latitude},
+          ${course.holes[hole].camera.center.longitude},
+          ${course.holes[hole].camera.heading},
+          ${course.holes[hole].camera.altitude},
+          ${course.holes[hole].camera.zoom},
+          ${course.holes[hole].hcpRtg}`);
+
+        tx.executeSql(
+          `
+          INSERT INTO holes (course_id, hole_num, hole_par, pin_lat, pin_lng, camera_lat, camera_lng, camera_hdg, camera_alt, camera_zm, hcp_rtg)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            courseIndex,
+            holeIndex,
+            course.holes[hole].par,
+            course.holes[hole].pinCoords.latitude,
+            course.holes[hole].pinCoords.longitude,
+            course.holes[hole].camera.center.latitude,
+            course.holes[hole].camera.center.longitude,
+            course.holes[hole].camera.heading,
+            course.holes[hole].camera.altitude,
+            course.holes[hole].camera.zoom,
+            course.holes[hole].hcpRtg
+          ],
+          (txObj, result) => {
+            console.log("done creating hole", result);
+          },
+          (err, mess) =>
+            console.log(
+              "err creating hole",
+              JSON.stringify(err),
+              JSON.stringify(mess)
+            )
+        );
+        holeIndex++;
+        if (holeIndex === 19) {
+          resolve();
+        }
+      }
+    });
+  });
+};
+
+export const createCourses = async (courseObj) => {
+  // const courseArray = [winston];
+  const courseArray = [winston, glencoe];
+
+  return new Promise(async (resolve, reject) => {
+    let courseIndex = 1;
+    let courseLength = courseArray.length;
+    for (const course of courseArray) {
+      console.log(
+        "🚀 ~ file: dbSetup.js ~ line 342 ~ returnnewPromise ~ courseIndex",
+        courseIndex,
+        course.name
+      );
+      await createSingleCourse(course, courseIndex);
+      await addHolesToCourse(course, courseIndex);
+
+      courseIndex++;
+      console.log(
+        "🚀 ~ file: dbSetup.js ~ line 476 ~ //db.transaction ~ courseIndex",
+        courseIndex
+      );
+      if (courseIndex === courseLength + 1) {
+        console.log("DONE CREATING COURSES AND HOLES");
+        resolve("Done");
+      }
+    }
+  });
+};
+
 
 export const seedData = async () => {
   return new Promise((resolve, reject) => {
@@ -601,9 +590,9 @@ export const loadStats = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `overall round stats: ${JSON.stringify(result.rows._array)}`
-          );
+          // console.log(
+          //   `overall round stats: ${JSON.stringify(result.rows._array)}`
+          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(err, mess))
@@ -629,9 +618,9 @@ export const load18HoleStats = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `overall round stats: ${JSON.stringify(result.rows._array)}`
-          );
+          // console.log(
+          //   `overall round stats: ${JSON.stringify(result.rows._array)}`
+          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(err, mess))
@@ -724,9 +713,10 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `overall hole played stats: ${JSON.stringify(result.rows._array)}`
-          );
+          console
+            .log
+            // `overall hole played stats: ${JSON.stringify(result.rows._array)}`
+            ();
           pctObj = {
             ...pctObj,
             totalHolesPlayed: result.rows._array.map((i) => i.total_holes),
@@ -749,11 +739,11 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `overall fairway hit pct stats: ${JSON.stringify(
-              result.rows._array
-            )}`
-          );
+          // console.log(
+          //   `overall fairway hit pct stats: ${JSON.stringify(
+          //     result.rows._array
+          //   )}`
+          // );
           pctObj = {
             ...pctObj,
             fwyHit: result.rows._array.map((i) => i.fw_hit)
@@ -777,9 +767,9 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `overall GIR stats: ${JSON.stringify(result.rows._array)}`
-          );
+          // console.log(
+          //   `overall GIR stats: ${JSON.stringify(result.rows._array)}`
+          // );
           pctObj = {
             ...pctObj,
             girHit: result.rows._array.map((i) => i.gir_hit),
@@ -803,17 +793,17 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `overall  successful scramble stats: ${JSON.stringify(
-              result.rows._array
-            )}`
-          );
+          // console.log(
+          //   `overall  successful scramble stats: ${JSON.stringify(
+          //     result.rows._array
+          //   )}`
+          // );
           pctObj = {
             ...pctObj,
             scrambleSuccess: result.rows._array.map((i) => i.scramble),
             scrambleDates: result.rows._array.map((i) => i.date)
           };
-          console.log("PCT OBJ", pctObj);
+          // console.log("PCT OBJ", pctObj);
           resolve(pctObj);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -889,9 +879,6 @@ export const loadPuttHistory = async (user_id, hole_id) => {
     `,
         [hole_id, user_id],
         (txObj, result) => {
-          console.log(
-            `overall fw History stats: ${JSON.stringify(result.rows._array)}`
-          );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1027,7 +1014,7 @@ export const loadBestScore = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(`best score: ${JSON.stringify(result.rows._array)}`);
+          // console.log(`best score: ${JSON.stringify(result.rows._array)}`);
           resolve(result.rows._array[0]?.tot);
         },
         (err, mess) => console.log("err getting total stats", reject(mess))
@@ -1401,9 +1388,9 @@ export const loadTotalBirds = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console.log(
-            `all birdie info for: ${JSON.stringify(result.rows._array)}`
-          );
+          // console.log(
+          //   `all birdie info for: ${JSON.stringify(result.rows._array)}`
+          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting birds", reject(mess))
@@ -1413,165 +1400,169 @@ export const loadTotalBirds = async (user_id) => {
 };
 
 export const setUpDB = () => {
-  db.transaction((tx) => {
-    db.exec([{ sql: "PRAGMA foreign_keys = ON;", args: [] }], false, () =>
-      console.log("Foreign keys turned on")
-    );
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      db.exec([{ sql: "PRAGMA foreign_keys = ON;", args: [] }], false, () =>
+        console.log("Foreign keys turned on")
+      );
 
-    tx.executeSql(
-      `
-      CREATE TABLE IF NOT EXISTS courses (
-        course_id integer PRIMARY KEY AUTOINCREMENT,
-        name text,
-        lat varchar,
-        lng varchar, 
-        blue_rtg REAL, 
-        blue_slp REAL,
-        black_rtg REAL, 
-        black_slp REAL, 
-        black_blue_rtg REAL,
-        black_blue_slp REAL,
-        white_slp REAL,
-        white_rtg REAL,
-        blue_white_slp REAL,
-        blue_white_rtg REAL,
-        red_rtg REAL,
-        red_slp REAL,
-        white_red_slp REAL, 
-        white_red_rtg REAL
+      tx.executeSql(
+        `
+        CREATE TABLE IF NOT EXISTS courses (
+          course_id integer PRIMARY KEY AUTOINCREMENT,
+          name text,
+          lat varchar,
+          lng varchar, 
+          blue_rtg REAL, 
+          blue_slp REAL,
+          black_rtg REAL, 
+          black_slp REAL, 
+          black_blue_rtg REAL,
+          black_blue_slp REAL,
+          white_slp REAL,
+          white_rtg REAL,
+          blue_white_slp REAL,
+          blue_white_rtg REAL,
+          red_rtg REAL,
+          red_slp REAL,
+          white_red_slp REAL, 
+          white_red_rtg REAL
+        );
+        `,
+        null,
+        null,
+        null
+      );
+
+      tx.executeSql(
+        `
+      CREATE TABLE IF NOT EXISTS holes (
+        hole_id integer PRIMARY KEY AUTOINCREMENT,
+        course_id integer,
+        hole_num integer,
+        hole_par integer,
+        hcp_rtg integer,
+        hole_distance_blue varchar,
+        pin_lat varchar,
+        pin_lng varchar,
+        camera_lat varchar,
+        camera_lng varchar,
+        camera_hdg varchar,
+        camera_alt varchar,
+        camera_zm varchar,
+        CONSTRAINT fk_courses
+        FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+      );`,
+        null,
+        null,
+        null
+      );
+
+      tx.executeSql(
+        `
+      CREATE TABLE IF NOT EXISTS users (
+        user_id integer PRIMARY KEY AUTOINCREMENT,
+        user_name text
       );
       `,
-      null,
-      null,
-      null
-    );
+        null,
+        null,
+        null
+      );
 
-    tx.executeSql(
-      `
-    CREATE TABLE IF NOT EXISTS holes (
-      hole_id integer PRIMARY KEY AUTOINCREMENT,
+      tx.executeSql(
+        `
+      CREATE TABLE IF NOT EXISTS rounds (
+      round_id integer PRIMARY KEY AUTOINCREMENT,
       course_id integer,
-      hole_num integer,
-      hole_par integer,
-      hcp_rtg integer,
-      hole_distance_blue varchar,
-      pin_lat varchar,
-      pin_lng varchar,
-      camera_lat varchar,
-      camera_lng varchar,
-      camera_hdg varchar,
-      camera_alt varchar,
-      camera_zm varchar,
-      CONSTRAINT fk_courses
-      FOREIGN KEY (course_id)
-      REFERENCES courses(course_id)
-    );`,
-      null,
-      null,
-      null
-    );
-
-    tx.executeSql(
-      `
-    CREATE TABLE IF NOT EXISTS users (
-      user_id integer PRIMARY KEY AUTOINCREMENT,
-      user_name text
-    );
-    `,
-      null,
-      null,
-      null
-    );
-
-    tx.executeSql(
-      `
-    CREATE TABLE IF NOT EXISTS rounds (
-    round_id integer PRIMARY KEY AUTOINCREMENT,
-    course_id integer,
-    user_id integer,
-    holes_played integer,
-    calculated_holes_played integer,
-    total_score integer,
-    hcp_diff REAL,
-    fwy_pct REAL,
-    gir_pct REAL,
-    total_putts REAL,
-    end_date datetime,
-    CONSTRAINT fk_courses
-    FOREIGN KEY(course_id)
-    REFERENCES courses(course_id),
-    CONSTRAINT fk_users
-    FOREIGN KEY(user_id)
-    REFERENCES users(user_id)
-  );
-    `,
-      null,
-      null,
-      null
-    );
-
-    tx.executeSql(
-      `
-    CREATE TABLE IF NOT EXISTS scores (
-      score_id integer PRIMARY KEY AUTOINCREMENT,
-      hole_id integer,
-      hole_num intefer,
-      round_id integer,
-      date_time datetime,
-      total_shots integer,
-      total_putts integer,
-      penalty integer,
-      driver_direction integer,
-      approach_rtg integer,
-      chip_rtg integer,
-      putt_rtg integer,
-      gir boolean,
-      ud boolean,
-      CONSTRAINT fk_rounds
-      FOREIGN KEY(round_id)
-      REFERENCES rounds(round_id)
-      CONSTRAINT fk_holes
-      FOREIGN KEY(hole_id)
-      REFERENCES holes(hole_id)
-    );`,
-      null,
-      null,
-      null
-    );
-
-    tx.executeSql(
-      `
-    CREATE TABLE clubs (
-    club_id integer PRIMARY KEY AUTOINCREMENT,
-    name text
-  );
-    `,
-      null,
-      null,
-      null
-    );
-
-    tx.executeSql(
-      `
-    CREATE TABLE IF NOT EXISTS distances (
-      distance_id integer PRIMARY KEY AUTOINCREMENT,
       user_id integer,
-      club_id integer,
-      distance real,
-      effort real,
-      date_time datetime,
+      holes_played integer,
+      calculated_holes_played integer,
+      total_score integer,
+      hcp_diff REAL,
+      fwy_pct REAL,
+      gir_pct REAL,
+      total_putts REAL,
+      end_date datetime,
+      CONSTRAINT fk_courses
+      FOREIGN KEY(course_id)
+      REFERENCES courses(course_id),
       CONSTRAINT fk_users
       FOREIGN KEY(user_id)
-      REFERENCES users(user_id),
-      CONSTRAINT fk_clubs
-      FOREIGN KEY(club_id)
-      REFERENCES clubs(club_id)
+      REFERENCES users(user_id)
     );
-    `,
-      null,
-      null,
-      null
+      `,
+        null,
+        null,
+        null
+      );
+
+      tx.executeSql(
+        `
+      CREATE TABLE IF NOT EXISTS scores (
+        score_id integer PRIMARY KEY AUTOINCREMENT,
+        hole_id integer,
+        hole_num intefer,
+        round_id integer,
+        date_time datetime,
+        total_shots integer,
+        total_putts integer,
+        penalty integer,
+        driver_direction integer,
+        approach_rtg integer,
+        chip_rtg integer,
+        putt_rtg integer,
+        gir boolean,
+        ud boolean,
+        CONSTRAINT fk_rounds
+        FOREIGN KEY(round_id)
+        REFERENCES rounds(round_id)
+        CONSTRAINT fk_holes
+        FOREIGN KEY(hole_id)
+        REFERENCES holes(hole_id)
+      );`,
+        null,
+        null,
+        null
+      );
+
+      tx.executeSql(
+        `
+      CREATE TABLE clubs (
+      club_id integer PRIMARY KEY AUTOINCREMENT,
+      name text
     );
+      `,
+        null,
+        null,
+        null
+      );
+
+      tx.executeSql(
+        `
+      CREATE TABLE IF NOT EXISTS distances (
+        distance_id integer PRIMARY KEY AUTOINCREMENT,
+        user_id integer,
+        club_id integer,
+        distance real,
+        effort real,
+        date_time datetime,
+        CONSTRAINT fk_users
+        FOREIGN KEY(user_id)
+        REFERENCES users(user_id),
+        CONSTRAINT fk_clubs
+        FOREIGN KEY(club_id)
+        REFERENCES clubs(club_id)
+      );
+      `,
+        null,
+        null,
+        null
+      );
+
+      resolve();
+    });
   });
 };
 

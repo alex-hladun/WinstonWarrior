@@ -1,17 +1,10 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  AsyncStorage,
-  Dimensions
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import * as React from "react";
-import * as Linking from "expo-linking";
 import styles from "../../assets/styles/StatStyles";
 import { Theme } from "../../assets/styles/Theme";
 import { LineChart, PieChart } from "react-native-chart-kit";
 import { AppContext } from "../../context/AppContext";
+import { resetDatabase } from "../../navigation/SignUp";
 
 export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext);
@@ -34,10 +27,6 @@ export function Trends({ navigation }) {
   React.useEffect(() => {
     setChart(chartType);
   }, [roundHistory, totalPuttHistory]);
-
-  React.useEffect(() => {
-    // console.log("🚀 ~ file: Trends.jsx ~ line 44 ~ React.useEffect ~ appState.statState?.girData?.girHistory", appState.statState?.girData?.girHistory)
-  });
 
   const setChart = (chartType) => {
     switch (chartType) {
@@ -184,13 +173,6 @@ export function Trends({ navigation }) {
     }
   };
 
-  const logOut = () => {
-    appContext.dispatch({
-      type: "log_out"
-    });
-    AsyncStorage.removeItem("authName");
-  };
-
   const chartConfig = {
     backgroundColor: Theme.chartBackgroundColor,
     backgroundGradientFrom: Theme.chartBGGradientFrom,
@@ -215,13 +197,13 @@ export function Trends({ navigation }) {
         <View style={styles.homePageContainer}>
           {roundHistory[0] ? (
             <View style={styles.headerContainer}>
-              <Text onLongPress={() => logOut()} style={styles.header}>
+              <Text onLongPress={() => resetDatabase(true)} style={styles.header}>
                 Total {chartType}
               </Text>
             </View>
           ) : (
             <View style={styles.styledButton}>
-              <Text onLongPress={() => logOut()}>
+              <Text onLongPress={() => resetDatabase(true)}>
                 Start playing to see your stats!
               </Text>
             </View>
@@ -235,7 +217,6 @@ export function Trends({ navigation }) {
               chartConfig={chartConfig}
               bezier
               style={{
-                // top: -100,
                 alignSelf: "center",
                 marginVertical: 5,
                 borderRadius: 16

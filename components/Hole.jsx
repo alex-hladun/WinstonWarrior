@@ -197,13 +197,14 @@ export default function Hole({ location, initialHole = 1 }) {
 
   const handleRegionChange = async (reg) => {
     let coords = await mapRef.current.getCamera()
+    console.log("🚀 ~ file: Hole.jsx ~ line 200 ~ handleRegionChange ~ coords", coords)
     coords = {...coords, altitude: 1400}
   }
 
   const handleMapShortPress = async (event) => {
-    // console.log('map short press', event.nativeEvent.coordinate)
+    console.log('map short press', event.nativeEvent.coordinate)
     const coords = event.nativeEvent.coordinate
-    // console.log("🚀 ~ file: Hole.jsx ~ line 249 ~ handleMapShortPress ~ coords", coords)
+    console.log("🚀🚀🚀🚀🚀🚀🚀 ~ file: Hole.jsx ~ line 249 ~ handleMapShortPress ~ coords", coords)
     
     await setDistanceMarker(coords)
   }

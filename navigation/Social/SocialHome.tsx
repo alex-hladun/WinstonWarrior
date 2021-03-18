@@ -260,7 +260,9 @@ const mockData = [
 export default function SocialHome({ navigation }) {
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
-  const [socialFeedError, setSocialFeedError] = React.useState<boolean>(false);
+  const [socialFeedError, setSocialFeedError] = React.useState<
+    boolean | string
+  >(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const postLike = async (roundId) => {
@@ -524,7 +526,6 @@ export default function SocialHome({ navigation }) {
                   [
                     {
                       text: "No",
-                      onPress: () => console.log("NOT loading existing round"),
                       style: "cancel"
                     },
                     {
@@ -549,7 +550,7 @@ export default function SocialHome({ navigation }) {
     setRefreshing(true);
 
     let user = appState.appState["user_name"];
-
+    console.log("FETCHING WITH TOKEN ", appState.appState.auth_data);
     try {
       const userRoundData = await axios.get(
         `${config.api2}rounds?user=${user}`,
@@ -568,7 +569,7 @@ export default function SocialHome({ navigation }) {
       });
     } catch (err) {
       console.log("error loading", err);
-      setSocialFeedError("Error Loading Data");
+      setSocialFeedError(`Error Loading Data ${err}`);
     }
     setRefreshing(false);
   };
@@ -580,7 +581,7 @@ export default function SocialHome({ navigation }) {
   return (
     <>
       <View style={styles.socialFeed}>
-        {socialFeedError && <Text>Error loading data</Text>}
+        {socialFeedError && <Text>{socialFeedError}</Text>}
         <FlatList
           data={appState.socialState.posts}
           renderItem={SocialItem}

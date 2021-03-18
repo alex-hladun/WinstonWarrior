@@ -1,24 +1,15 @@
-import {
-  View,
-  Text,
-  Alert,
-  TouchableOpacity,
-  Dimensions,
-  TextInput,
-  Image,
-  ImageBackground
-} from "react-native";
+import { View, Text, Dimensions, TextInput, Image } from "react-native";
 import * as React from "react";
 import { AppContext } from "../context/AppContext";
 import { Video } from "expo-av";
 import styles from "../assets/styles/PlayStyles";
 import { LinearGradient } from "expo-linear-gradient";
-
 import {
-  createWinston,
+  // createWinston,
   seedData,
   setUpDB,
   registerUser,
+  createCourses,
   removeDB,
   createClubs
 } from "../db/dbSetup";
@@ -39,7 +30,7 @@ export function Login({ navigation }) {
     // if (!appState.app)
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
-      console.log(authedUser.signInUserSession); // this means that you've logged in before with valid user/pass.
+      console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
       console.log("AUTHENTICATED WITH COGNITO");
       const existingDb = await checkExistingDb();
       if (!existingDb) {
@@ -68,7 +59,7 @@ export function Login({ navigation }) {
       removeDB();
       setUpDB();
       createClubs();
-      createWinston();
+      createCourses();
       // registerUser('Alex')
       appContext.value.doneRound();
     }

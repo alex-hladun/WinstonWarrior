@@ -91,7 +91,7 @@ export default function SocialPost({ navigation }) {
       console.log("DONE POSTING");
     } catch (err) {
       console.log("error posting to dynamo", err);
-      setError("Error posting to database");
+      setError(`Error posting to database ${err}`);
       setContent(null);
       setPostState("WAIT");
     }
@@ -117,7 +117,7 @@ export default function SocialPost({ navigation }) {
       );
       setPostState("WAIT");
     } catch (err) {
-      setError("Error posting to database");
+      setError(`Error posting to database ${err}`);
 
       console.log("error posting text", err);
       setPostState("WAIT");

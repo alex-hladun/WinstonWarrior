@@ -49,7 +49,7 @@ export const liveRoundCalc = (playState, p1Name) => {
     }
   });
   round.thruHoles = thru;
-  console.log("🚀 ~ file: score.js ~ line 9 ~ liveRoundCalc ~ thru", thru);
+  // console.log("🚀 ~ file: score.js ~ line 9 ~ liveRoundCalc ~ thru", thru);
 
   return round;
 };

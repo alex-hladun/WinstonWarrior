@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo } from "react";
+import React, { useReducer, useMemo } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   getClubs,
@@ -8,7 +8,6 @@ import {
   loadAvgScore,
   loadBestScore,
   loadBirds,
-  loadCourseDetails,
   loadCourseInfo,
   loadFairwayData,
   loadFairwayDataTotal,
@@ -30,9 +29,8 @@ import {
 import produce from "immer";
 import { loadHandicapFromArray } from "../hooks/useHandicapHistory";
 import { Auth } from "aws-amplify";
-
 import { loadHoleStatsForRefresh } from "../db/loadHoleStatsForRefresh";
-// import {register}
+
 const reducer = produce((state, action) => {
   switch (action.type) {
     case "authentication_starting":
@@ -50,8 +48,6 @@ const reducer = produce((state, action) => {
 
       break;
     case "authentication_done":
-      // console.log("In Authentication", action.data);
-      // console.log("In Authentication", action.token);
       AsyncStorage.setItem("authName", action.data);
       state.appState.auth_data = action.token;
       state.appState.user_name = action.data;
@@ -567,7 +563,7 @@ function AppProvider(props) {
 
     dispatch({ type: "set_gir_history", data: girPctHistory });
 
-    console.log("TOTAL", totalpctHistoy);
+    // console.log("TOTAL", totalpctHistoy);
     const scramblePctHistory = totalpctHistoy.totalHolesPlayed
       .map((hP, i) => {
         const indexOf = totalpctHistoy.scrambleDates.indexOf(

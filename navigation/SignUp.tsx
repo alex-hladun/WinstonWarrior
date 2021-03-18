@@ -15,6 +15,7 @@ import { AppContext } from "../context/AppContext";
 import styles from "../assets/styles/PlayStyles";
 import {
   createWinston,
+  createCourses,
   setUpDB,
   removeDB,
   createClubs,
@@ -24,13 +25,16 @@ import { Auth } from "aws-amplify";
 import { checkExistingDb } from "../db/checkExistingDb";
 const width = Dimensions.get("window").width;
 
-export const resetDatabase = async () => {
+export const resetDatabase = async (registerBool: boolean = false) => {
   console.log("RESETTING DB FROM SIGNUP");
   AsyncStorage.removeItem("authName");
-  removeDB();
-  setUpDB();
+  await removeDB();
+  await setUpDB();
   await createClubs();
-  createWinston();
+  await createCourses();
+  if (registerBool) {
+    registerUser("Sample");
+  }
 };
 
 export function SignUp({ navigation }) {

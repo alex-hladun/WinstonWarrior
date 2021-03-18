@@ -17,7 +17,9 @@ export default function SocialFollow({ navigation }) {
   const appState = appContext.value.state;
 
   const [followFeed, setFollowFeed] = React.useState([]);
-  const [followFeedError, setFollowFeedError] = React.useState<boolean>(false);
+  const [followFeedError, setFollowFeedError] = React.useState<
+    boolean | string
+  >(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const followUser = (followedUser) => {
@@ -126,7 +128,7 @@ export default function SocialFollow({ navigation }) {
       setFollowFeed(userFollowData.data);
     } catch (err) {
       console.log("error loading", err);
-      setFollowFeedError("Error Loading Data");
+      setFollowFeedError(`Error Loading Data ${err}`);
     }
     setRefreshing(false);
   };
@@ -138,7 +140,7 @@ export default function SocialFollow({ navigation }) {
   return (
     <>
       <View style={styles.socialFeed}>
-        {followFeedError && <Text>Error loading data</Text>}
+        {followFeedError && <Text>Error loading data {followFeedError}</Text>}
         <FlatList
           data={followFeed}
           renderItem={FollowItem}

@@ -16,7 +16,7 @@ export default function SocialComment({ navigation, route }) {
   const reactions = route.params.reactions.Items.map((item, index) => {
     if (item.reactionType !== "like") {
       return (
-        <Text>
+        <Text key={item.PK}>
           {item.reactingUser} - {item.reactionType}
         </Text>
       );

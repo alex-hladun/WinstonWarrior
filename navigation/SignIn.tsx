@@ -1,19 +1,9 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  AsyncStorage
-} from "react-native";
+import { View } from "react-native";
 import * as React from "react";
 import * as Linking from "expo-linking";
 import { AppContext } from "../context/AppContext";
 import styles from "../assets/styles/PlayStyles";
-import { createWinston, setUpDB, removeDB, createClubs } from "../db/dbSetup";
 import { Auth } from "aws-amplify";
-
-
 
 export function SignUp({ navigation }) {
   const appContext = React.useContext(AppContext);
@@ -36,11 +26,8 @@ export function SignUp({ navigation }) {
     }
   };
 
-
-
   return (
-    <View style={styles.background}>
-    </View>
+    <View style={styles.background}></View>
     // </View>
   );
 }
