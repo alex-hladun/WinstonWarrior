@@ -3,7 +3,7 @@ import { Theme } from "../styles/Theme";
 import { Dimensions } from "react-native";
 import { color } from "react-native-reanimated";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   frame: {
@@ -190,10 +190,14 @@ export const styles = StyleSheet.create({
     alignSelf: "center"
   },
   roundCardContainer: {
-    width: width - 50,
-    marginTop: 25,
-    paddingBottom: 40,
-    height: "auto",
+    width: width - 30,
+    marginTop: 15,
+    marginBottom: 15,
+    paddingBottom: 10,
+    // height: 0.6 * height,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
     borderRadius: 50,
     backgroundColor: Theme.coolBlue,
     alignSelf: "center"
@@ -212,7 +216,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     // paddingVertical: 10,
-    marginVertical: 5
+    marginVertical: 1
   },
   roundCardInnerContainer: {
     flexDirection: "column",
@@ -242,6 +246,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "black",
     alignItems: "center",
     opacity: 0.35,
+    paddingVertical: 10,
     height: "auto",
     // borderRadius: 50,
     borderTopLeftRadius: 50,
@@ -263,7 +268,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     // marginHorizontal: 10,
-    padding: 20
+    padding: 10
     // fontStyle: 'italic'
   },
   courseText: {

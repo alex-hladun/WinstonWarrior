@@ -29,7 +29,9 @@ export const resetDatabase = async (registerBool: boolean = false) => {
   console.log("RESETTING DB FROM SIGNUP");
   AsyncStorage.removeItem("authName");
   await removeDB();
+  console.log("dropped all tables");
   await setUpDB();
+  console.log("setup db");
   await createClubs();
   await createCourses();
   if (registerBool) {

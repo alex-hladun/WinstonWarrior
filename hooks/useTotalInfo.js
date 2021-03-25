@@ -36,7 +36,6 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
       } else {
         birdieCount = await loadBirds(course_id, user_id);
       }
-      // console.log('birdieCount', birdieCount)
       let birdieObj = {};
 
       for (let i = 1; i <= 18; i++) {
@@ -63,9 +62,7 @@ export function useTotalInfo(user_id = 1, course_id = 1) {
         triples: 0
       };
 
-      // console.log("useTotalInfo -> birdieCount", birdieCount)
       birdieCount.forEach((hole) => {
-        // console.log('scoreObj', hole)
         birdieObj[hole.hole_num].rounds++;
 
         if (hole.total_shots - hole.hole_par === -1) {

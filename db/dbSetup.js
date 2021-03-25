@@ -1,6 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { Alert, AsyncStorageStatic } from "react-native";
 import glencoe from "../assets/courses/glencoe";
+import paradise from "../assets/courses/paradisecanyon";
 import winston from "../assets/courses/winston";
 import { handicapDiffCalc } from "../helpers/handicap";
 
@@ -341,7 +342,7 @@ export const selectHoles = () => {
   db.transaction((tx) => {
     tx.executeSql(
       `
-    select * from courses;
+    select * from users;
     `,
       (txObj, result) => {
         console.log(`result`, result);
@@ -458,7 +459,7 @@ export const addHolesToCourse = async (course, courseIndex) => {
 
 export const createCourses = async (courseObj) => {
   // const courseArray = [winston];
-  const courseArray = [winston, glencoe];
+  const courseArray = [winston, glencoe, paradise];
 
   return new Promise(async (resolve, reject) => {
     let courseIndex = 1;
@@ -484,7 +485,6 @@ export const createCourses = async (courseObj) => {
     }
   });
 };
-
 
 export const seedData = async () => {
   return new Promise((resolve, reject) => {
@@ -545,7 +545,6 @@ export const seedData = async () => {
               Math.random() > 0.5
             ],
             (txObj, result) => {
-              // console.log(`all rounds: ${JSON.stringify(result.rows._array)}`)
               console.log("Created score");
               // resolve(result)
             },
@@ -713,10 +712,6 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          console
-            .log
-            // `overall hole played stats: ${JSON.stringify(result.rows._array)}`
-            ();
           pctObj = {
             ...pctObj,
             totalHolesPlayed: result.rows._array.map((i) => i.total_holes),
@@ -748,8 +743,6 @@ export const loadTotalPctHistory = async (user_id) => {
             ...pctObj,
             fwyHit: result.rows._array.map((i) => i.fw_hit)
           };
-
-          // resolve(result.rows._array.reverse())
         },
         (err, mess) => console.log("err getting stats", reject(mess))
       );

@@ -11,6 +11,7 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import config from "../../settings.json";
 import { Audio, Video } from "expo-av";
+import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
 export default function SocialComment({ navigation, route }) {
   const reactions = route.params.reactions.Items.map((item, index) => {
@@ -29,19 +30,11 @@ export default function SocialComment({ navigation, route }) {
 
   const postText = async () => {
     try {
-      await axios.put(
-        `${config.api2}put-reaction`,
-        {
-          roundId: route.params.roundId,
-          reactionType: "comment",
-          reactionComment: text
-        },
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
-      );
+      await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
+        roundId: route.params.roundId,
+        reactionType: "comment",
+        reactionComment: text
+      });
       navigation.goBack();
     } catch (err) {
       setError("Error posting to database");

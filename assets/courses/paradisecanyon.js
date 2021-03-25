@@ -1,23 +1,23 @@
 const paradise = {
   name: "Paradise Canyon",
-  blue_rtg: 72.8,
-  blue_slp: 138,
-  black_rtg: 75,
-  black_slp: 140,
+  blue_rtg: 71,
+  blue_slp: 131,
+  black_rtg: 73.1,
+  black_slp: 133,
   black_blue_rtg: 73.5,
   black_blue_slp: 139,
-  white_rtg: 70.4,
-  white_slp: 133,
+  white_rtg: 68.4,
+  white_slp: 121,
   blue_white_rtg: 71,
   blue_white_slp: 135,
-  red_rtg: 67.8,
-  red_slp: 127,
+  red_rtg: 71,
+  red_slp: 134,
   white_red_rtg: 69,
   white_red_slp: 129,
   holes: {
     1: {
       par: 4,
-      hcpRtg: 4,
+      hcpRtg: 9,
       distance: 386,
       pinCoords: {
         latitude: 49.65414237335619,
@@ -36,7 +36,7 @@ const paradise = {
     },
     2: {
       par: 3,
-      hcpRtg: 15,
+      hcpRtg: 13,
       distance: 420,
       pinCoords: {
         latitude: 49.654160172089256,
@@ -74,7 +74,7 @@ const paradise = {
     },
     4: {
       par: 5,
-      hcpRtg: 1,
+      hcpRtg: 3,
       distance: 520,
       pinCoords: {
         latitude: 49.65649695897764,
@@ -94,7 +94,7 @@ const paradise = {
     5: {
       par: 4,
       distance: 520,
-      hcpRtg: 17,
+      hcpRtg: 15,
       pinCoords: {
         latitude: 49.658942151961945,
         longitude: -112.83608313649893
@@ -113,7 +113,7 @@ const paradise = {
     6: {
       par: 3,
       distance: 520,
-      hcpRtg: 13,
+      hcpRtg: 11,
       pinCoords: {
         latitude: 49.66012042805633,
         longitude: -112.83798549324274
@@ -132,7 +132,7 @@ const paradise = {
     7: {
       par: 4,
       distance: 520,
-      hcpRtg: 15,
+      hcpRtg: 5,
       pinCoords: {
         latitude: 49.65721169035202,
         longitude: -112.8323444724083
@@ -150,7 +150,7 @@ const paradise = {
     },
     8: {
       par: 5,
-      hcpRtg: 9,
+      hcpRtg: 7,
       distance: 520,
       pinCoords: {
         latitude: 49.65328694120639,
@@ -169,7 +169,7 @@ const paradise = {
     },
     9: {
       par: 4,
-      hcpRtg: 9,
+      hcpRtg: 17,
       distance: 520,
       pinCoords: {
         latitude: 49.65060442034062,
@@ -189,7 +189,7 @@ const paradise = {
     10: {
       par: 4,
       distance: 520,
-      hcpRtg: 8,
+      hcpRtg: 6,
       pinCoords: {
         latitude: 49.64786834856898,
         longitude: -112.83372111618519
@@ -208,153 +208,153 @@ const paradise = {
     11: {
       par: 4,
       distance: 520,
-      hcpRtg: 2,
+      hcpRtg: 14,
       pinCoords: {
-        latitude: 51.02993317938791,
-        longitude: -114.31253895163536
+        latitude: 49.64585787601691,
+        longitude: -112.83726096153259
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.028298142494464,
-          longitude: -114.31507665663958
+          latitude: 49.646902307440996,
+          longitude: -112.83521678298712
         },
-        heading: 47.65424619536009,
+        heading: 237.3584804240068,
         pitch: 0,
-        zoom: 17.032438278198242
+        zoom: 17.135726928710938
       }
     },
     12: {
       par: 4,
-      hcpRtg: 12,
+      hcpRtg: 18,
       distance: 520,
       pinCoords: {
-        latitude: 51.02880126935344,
-        longitude: -114.3066880479455
+        latitude: 49.64522634342278,
+        longitude: -112.83900875598192
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.02970987816268,
-          longitude: -114.31019235402346
+          latitude: 49.64579014242169,
+          longitude: -112.83828992396593
         },
-        heading: 108.1793653537542,
+        heading: 224.23484283650382,
         pitch: 0,
-        zoom: 16.995737075805664
+        zoom: 18.227680206298828
       }
     },
     13: {
       par: 3,
-      hcpRtg: 18,
+      hcpRtg: 10,
       distance: 520,
       pinCoords: {
-        latitude: 51.02996101289298,
-        longitude: -114.30691469460726
+        latitude: 49.64318970897496,
+        longitude: -112.83254899084568
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.029143923874116,
-          longitude: -114.30608924478292
+          latitude: 49.644275012788555,
+          longitude: -112.83619947731495
         },
-        heading: 328.37913289318493,
+        heading: 121.88605638812854,
         pitch: 0,
-        zoom: 17.99102210998535
+        zoom: 16.94434928894043
       }
     },
     14: {
       par: 5,
-      hcpRtg: 4,
+      hcpRtg: 16,
       distance: 520,
       pinCoords: {
-        latitude: 51.027897492724165,
-        longitude: -114.30084720253944
+        latitude: 49.64470183298524,
+        longitude: -112.83246148377657
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.02913380242305,
-          longitude: -114.30449299514294
+          latitude: 49.64390463577075,
+          longitude: -112.83232469111681
         },
-        heading: 123.95729788580549,
+        heading: 2.2298799191487455,
         pitch: 0,
-        zoom: 16.883159637451172
+        zoom: 18.292724609375
       }
     },
     15: {
-      par: 4,
-      hcpRtg: 10,
+      par: 3,
+      hcpRtg: 4,
       distance: 520,
       pinCoords: {
-        latitude: 51.03009111322157,
-        longitude: -114.30491778999567
+        latitude: 49.647158038845745,
+        longitude: -112.8308605402708
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.02900369940726,
-          longitude: -114.30195763707161
+          latitude: 49.64585288283842,
+          longitude: -112.83356923609972
         },
-        heading: 296.1228207584805,
+        heading: 57.44467168148856,
         pitch: 0,
-        zoom: 17.088682174682617
+        zoom: 17.121932983398438
       }
     },
     16: {
-      par: 5,
-      hcpRtg: 6,
+      par: 4,
+      hcpRtg: 2,
       distance: 520,
       pinCoords: {
-        latitude: 51.02901677298451,
-        longitude: -114.29727382957935
+        latitude: 49.64420228364336,
+        longitude: -112.83125013113022
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.02965779547476,
-          longitude: -114.30177357047796
+          latitude: 49.64662616811685,
+          longitude: -112.83007834106684
         },
-        heading: 102.96840114141831,
+        heading: 193.90281940134835,
         pitch: 0,
-        zoom: 16.70349884033203
+        zoom: 16.947248458862305
       }
     },
     17: {
       par: 3,
-      hcpRtg: 16,
+      hcpRtg: 12,
       distance: 520,
       pinCoords: {
-        latitude: 51.028131978694255,
-        longitude: -114.30002208799124
+        latitude: 49.64516208251399,
+        longitude: -112.8293638676405
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.02838312197427,
-          longitude: -114.29853312671185
+          latitude: 49.64484468448385,
+          longitude: -112.82961633056402
         },
-        heading: 249.767832511602,
+        heading: 26.97017646111357,
         pitch: 0,
-        zoom: 17.887102127075195
+        zoom: 18.789318084716797
       }
     },
     18: {
-      par: 4,
-      hcpRtg: 14,
+      par: 5,
+      hcpRtg: 8,
       distance: 520,
       pinCoords: {
-        latitude: 51.02638237267699,
-        longitude: -114.29404143244028
+        latitude: 49.65000594491622,
+        longitude: -112.82864771783352
       },
       camera: {
         altitude: 1400,
         center: {
-          latitude: 51.02730410296466,
-          longitude: -114.29768990725279
+          latitude: 49.647070769026705,
+          longitude: -112.8289196267724
         },
-        heading: 108.45716733342982,
+        heading: 11.829326247381552,
         pitch: 0,
-        zoom: 16.90633201599121
+        zoom: 16.67829704284668
       }
     }
   }

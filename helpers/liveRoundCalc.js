@@ -3,8 +3,6 @@
 // and roundId
 
 export const liveRoundCalc = (playState, p1Name) => {
-  console.log(playState.player_2, playState.player_3);
-  // console.log(playState);
   const round = {
     contentType: "liveround",
     course: playState.courseName,
@@ -28,7 +26,7 @@ export const liveRoundCalc = (playState, p1Name) => {
       score: 0
     }
   };
-  let thru = 0;
+  let thru = 1;
   Object.keys(playState.p1score).forEach((hole) => {
     if (playState.p1score[hole]) {
       thru++;
@@ -49,7 +47,6 @@ export const liveRoundCalc = (playState, p1Name) => {
     }
   });
   round.thruHoles = thru;
-  // console.log("🚀 ~ file: score.js ~ line 9 ~ liveRoundCalc ~ thru", thru);
 
   return round;
 };

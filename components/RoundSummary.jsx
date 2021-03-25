@@ -10,6 +10,7 @@ import { netHandicapDiffCalc } from "../helpers/handicap";
 import axios from "axios";
 import config from "../settings.json";
 import { finalRoundPost } from "../helpers/finalRoundPost";
+import { authenticatedAxios } from "../helpers/authenticatedAxios";
 
 const sumValues = (obj) => {
   if (Object.values(obj).length > 0) {
@@ -213,42 +214,15 @@ export default function RoundSummary({ handleRoundSummary }) {
       appState.playState,
       appState.appState.user_name
     );
-    console.log(
-      "🚀 ~ file: RoundSummary.jsx ~ line 216 ~ handleScoreSubmit ~ finalRoundObj",
-      finalRoundObj
-    );
 
-    // if (appState.playState.liveRound) {
-    //   // UDONE ROUND
-    //   axios.put(
-    //     `${config.api2}rounds`,
-    //     {
-    //       contentType: "doneliveround",
-    //       roundId: appState.playState.liveRound
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: appState.appState.auth_data
-    //       }
-    //     }
-    //   );
-    // }
     if (postSocialRound) {
-      axios.post(
-        `${config.api2}rounds`,
-        {
-          contentType: "round",
-          stats: finalRoundObj,
-          course: appState.playState.courseName,
-          username: appState.appState.user_name,
-          timestamp: Date.now()
-        },
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
-      );
+      authenticatedAxios("POST", `${config.api2}rounds`, {
+        contentType: "round",
+        stats: finalRoundObj,
+        course: appState.playState.courseName,
+        username: appState.appState.user_name,
+        timestamp: Date.now()
+      });
     }
 
     appContext.value.doneRound();

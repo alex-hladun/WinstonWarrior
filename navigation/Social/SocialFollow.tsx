@@ -11,6 +11,7 @@ import config from "../../settings.json";
 import { Audio, Video } from "expo-av";
 import FollowLogo from "../../assets/svg/FollowLogo";
 import FollowCheck from "../../assets/svg/FollowCheck";
+import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
 export default function SocialFollow({ navigation }) {
   const appContext = React.useContext(AppContext);
@@ -24,18 +25,10 @@ export default function SocialFollow({ navigation }) {
 
   const followUser = (followedUser) => {
     console.log("following", followedUser);
-    axios.put(
-      `${config.api2}users`,
-      {
-        followedUser,
-        followType: "follow"
-      },
-      {
-        headers: {
-          Authorization: appState.appState.auth_data
-        }
-      }
-    );
+    authenticatedAxios("PUT", `${config.api2}users`, {
+      followedUser,
+      followType: "follow"
+    });
     appContext.dispatch({
       type: "follow_user",
       data: followedUser
@@ -43,18 +36,10 @@ export default function SocialFollow({ navigation }) {
   };
   const unfollowUser = (followedUser) => {
     console.log("unfollowing", followedUser);
-    axios.put(
-      `${config.api2}users`,
-      {
-        followedUser,
-        followType: "unfollow"
-      },
-      {
-        headers: {
-          Authorization: appState.appState.auth_data
-        }
-      }
-    );
+    authenticatedAxios("PUT", `${config.api2}users`, {
+      followedUser,
+      followType: "unfollow"
+    });
     appContext.dispatch({
       type: "unfollow_user",
       data: followedUser
@@ -93,13 +78,9 @@ export default function SocialFollow({ navigation }) {
     setRefreshing(true);
 
     try {
-      const userFollowData = await axios.get(
-        `${config.api2}users?user=${appState.appState["user_name"]}`,
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
+      const userFollowData = await authenticatedAxios(
+        "GET",
+        `${config.api2}users?user=${appState.appState["user_name"]}`
       );
       console.log("🚀 ", userFollowData.data);
       setFollowFeedError(false);

@@ -12,6 +12,7 @@ import Amplify, { Storage } from "aws-amplify";
 import * as ImagePicker from "expo-image-picker";
 import config from "../../settings.json";
 import { Audio, Video } from "expo-av";
+import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
 export default function SocialPost({ navigation }) {
   const statContext = React.useContext(StatContext);
@@ -38,11 +39,6 @@ export default function SocialPost({ navigation }) {
       // base64: true
     });
     if (!result.cancelled) {
-      console.log(
-        "🚀 ~ file: SocialPost.tsx ~ line 39 ~ pickImage ~ result",
-        result
-      );
-
       setContent(result);
       setPostState("PREVIEW");
     }
@@ -66,25 +62,13 @@ export default function SocialPost({ navigation }) {
         setUploadingProgress(progress.loaded / progress.total);
       }
     });
-    console.log(
-      "🚀 ~ file: SocialPost.tsx ~ line 34 ~ pickImage ~ testUpload",
-      testUpload.key
-    );
 
     try {
-      await axios.post(
-        `${config.api2}rounds`,
-        {
-          uri: testUpload.key,
-          contentType: content.type,
-          text: text
-        },
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
-      );
+      await authenticatedAxios("POST", {
+        uri: testUpload.key,
+        contentType: content.type,
+        text: text
+      });
       picture = null;
       setContent(null);
       setPostState("WAIT");
@@ -103,18 +87,10 @@ export default function SocialPost({ navigation }) {
 
   const postText = async () => {
     try {
-      await axios.post(
-        `${config.api2}rounds`,
-        {
-          contentType: "text",
-          text: text
-        },
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
-      );
+      await authenticatedAxios("POST", `${config.api2}rounds`, {
+        contentType: "text",
+        text: text
+      });
       setPostState("WAIT");
     } catch (err) {
       setError(`Error posting to database ${err}`);

@@ -122,10 +122,6 @@ export const loadHoleStatsForRefresh = async (courseID, holeNum, userID) => {
             [courseID, userID, holeNum],
             (txObj, result) => {
               const minScore = result.rows._array[0];
-              // console.log(
-              //   "🚀 ~ file: loadHoleStats.js ~ line 131 ~ db.transaction ~ minScore",
-              //   minScore
-              // );
               birdieObj["lowScore"] = minScore?.min_score;
             },
             (err, mess) => console.log("err getting stats", reject(mess))

@@ -25,337 +25,65 @@ import DeleteIcon from "../../assets/svg/DeleteIcon";
 import { Audio, Video } from "expo-av";
 var dayjs = require("dayjs");
 import config from "../../settings.json";
-const mockRound = [
-  {
-    stats: {
-      albatrosses: 0,
-      holesPlayed: 18,
-      triples: 3,
-      pars: 14,
-      scrambles: 0,
-      totalPutts: 37,
-      totalScore: 80,
-      eagles: 0,
-      backScore: 48,
-      gir: 14,
-      doubles: 0,
-      fairways: 17,
-      frontScore: 32,
-      bogies: 0,
-      birdies: 0
-    },
-    SK: "ROUND#ahladun#1615510110703",
-    username: "ahladun",
-    ContentType: "round",
-    PK: "USER#ahladun",
-    timestamp: 1615510110703
-  }
-];
-const mockData = [
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614914782184",
-    timestamp: 1614914782184,
-    username: "ahladun"
-  },
-  {
-    ContentType: "text",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614914290485",
-    text: "Sample text brah!",
-    timestamp: 1614914290485,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614911794409",
-    timestamp: 1614911794409,
-    username: "ahladun"
-  },
-  {
-    ContentType: "image",
-    ImageURI: "/92313318391833650.jpg",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614911642761",
-    text: "Sick meme",
-    timestamp: 1614911642761,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614911120571",
-    timestamp: 1614911120571,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614910685910",
-    timestamp: 1614910685910,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614909852325",
-    timestamp: 1614909852325,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614909586440",
-    timestamp: 1614909586440,
-    username: "ahladun"
-  },
-  {
-    ContentType: "round",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614909576751",
-    timestamp: 1614909576751,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun#1614909366789",
-    timestamp: 1614909366789,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614835518484",
-    timestamp: 1614835518484,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614834837793",
-    timestamp: 1614834837794,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614834737843",
-    timestamp: 1614834737843,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614833550354",
-    timestamp: 1614833550354,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614832409906",
-    timestamp: 1614832409906,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614831619786",
-    timestamp: 1614831619787,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614831595152",
-    timestamp: 1614831595152,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614831540571",
-    timestamp: 1614831540571,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614831513300",
-    timestamp: 1614831513300,
-    username: "ahladun"
-  },
-  {
-    ContentType: "liveround",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614830792666",
-    timestamp: 1614830792666,
-    username: "ahladun"
-  },
-  {
-    ContentType: "text",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614567273331",
-    text: "Sample post why a gear day",
-    timestamp: 1614567273331,
-    username: "ahladun"
-  },
-  {
-    ContentType: "text",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614567233685",
-    text: "Sample post why a gear day",
-    timestamp: 1614567233685,
-    username: "ahladun"
-  },
-  {
-    ContentType: "image",
-    ImageURI: "/43673240075635110.jpg",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614566827408",
-    text: "Forest",
-    timestamp: 1614566827409,
-    username: "ahladun"
-  },
-  {
-    ContentType: "image",
-    ImageURI: "/86070492295258910.jpg",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614556591485",
-    text: "What a cutie!",
-    timestamp: 1614556591485,
-    username: "ahladun"
-  },
-  {
-    ContentType: "video",
-    ImageURI: "/83740312530058140.mov",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614556447187",
-    text: "Sick bro",
-    timestamp: 1614556447187,
-    username: "ahladun"
-  },
-  {
-    ContentType: "image",
-    ImageURI: "/92246815933396200.jpg",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614556243048",
-    text: "Olly is funny!",
-    timestamp: 1614556243048,
-    username: "ahladun"
-  },
-  {
-    ContentType: "image",
-    ImageURI: "/30177181759744100.jpg",
-    PK: "USER#ahladun",
-    SK: "ROUND#ahladun1614555161017",
-    text: "Hiya",
-    timestamp: 1614555161017,
-    username: "ahladun"
-  }
-];
+import { authenticatedAxios } from "../../helpers/authenticatedAxios";
+
 export default function SocialHome({ navigation }) {
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
+  const [active, setActive] = React.useState(0);
+  const [visible, setVisible] = React.useState("");
+
   const [socialFeedError, setSocialFeedError] = React.useState<
     boolean | string
   >(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const postLike = async (roundId) => {
+  const postLike = async (roundId, userLiked) => {
+    appContext.dispatch({ type: "like_post", data: roundId });
     try {
-      const res = await axios.put(
-        `${config.api2}put-reaction`,
-        {
+      let res;
+
+      if (userLiked) {
+        res = await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
+          roundId,
+          reactionType: "unlike"
+        });
+        console.log("unliked", res.status);
+      } else {
+        res = await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
           roundId,
           reactionType: "like"
-        },
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        }
-      );
-      console.log(
-        "🚀 ~ file: SocialHome.tsx ~ line 279 ~ postLike ~ res",
-        res.status
-      );
+        });
+        console.log("🚀 ~ liked", res.status);
+      }
     } catch (err) {
-      console.log("error liking", err);
+      console.log("error liking/unliking", err);
     }
   };
+  const pieChartConfig = {
+    backgroundColor: Theme.chartBackgroundColor,
+    backgroundGradientFrom: Theme.chartBGGradientFrom,
+    backgroundGradientTo: Theme.chartBGGradientTo,
+    propsForVerticalLabels: {
+      rotation: -90
+    },
+    decimalPlaces: 0, // optional, defaults to 2dp
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
+  };
 
-  const SocialItem = (social) => {
-    const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
-
-    const textFont = { fontFamily: "nimbus", fontSize: 20 };
-    const stats = social.item.stats;
-    // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", social.item["SK"]);
-
-    const pieChartConfig = {
-      backgroundColor: Theme.chartBackgroundColor,
-      backgroundGradientFrom: Theme.chartBGGradientFrom,
-      backgroundGradientTo: Theme.chartBGGradientTo,
-      propsForVerticalLabels: {
-        rotation: -90
-      },
-      decimalPlaces: 0, // optional, defaults to 2dp
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
-    };
-    const pieChartData = [
-      {
-        name: "Eagles",
-        count: stats?.eagles,
-        color: Theme.piePalette[0],
-        legendFontColor: "#666464",
-        legendFontSize: 15
-      },
-      {
-        name: "Birdies",
-        count: stats?.birdies,
-        color: Theme.piePalette[1],
-        legendFontColor: "#666464",
-        legendFontSize: 15
-      },
-      {
-        name: "Pars",
-        count: stats?.pars,
-        color: Theme.piePalette[2],
-        legendFontColor: "#666464",
-        legendFontSize: 15
-      },
-      {
-        name: "Bogeys",
-        count: stats?.bogies,
-        color: Theme.piePalette[3],
-        legendFontColor: "#666464",
-        legendFontSize: 15
-      },
-      {
-        name: "Doubles",
-        count: stats?.doubles,
-        color: Theme.piePalette[4],
-        legendFontColor: "#666464",
-        legendFontSize: 15
-      },
-      {
-        name: "Triples +",
-        count: stats?.triples,
-        color: Theme.piePalette[5],
-        legendFontColor: "#666464",
-        legendFontSize: 15
-      }
-    ];
-    if (social.item.ContentType === "round") {
+  class SocialItemHeader extends React.Component {
+    shouldComponentUpdate(nextProps, nextState) {
+      return false;
     }
-    if (social.item.ContentType === "liveround" && withinMinutes > 30) {
-      return;
-    }
-    return (
-      <View style={socStyles.frame}>
+    render() {
+      const social = this.props.social;
+      const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
+      const textFont = { fontFamily: "nimbus", fontSize: 20 };
+      const stats = social.item.stats;
+      const userLiked = appState.socialState.likedPosts.includes(
+        social.item.SK
+      );
+      return (
         <View style={socStyles.upperFContainer}>
           <View style={socStyles.upperFImage}>
             <Text></Text>
@@ -371,139 +99,42 @@ export default function SocialHome({ navigation }) {
             </Text>
           </View>
         </View>
-        {social.item.text && social.item.ContentType !== "liveround" && (
-          <View style={socStyles.commentContainer}>
-            <Text style={[socStyles.comment, textFont]}>
-              {social.item.text}
-            </Text>
-          </View>
-        )}
-        {social.item.ImageURI && social.item.ContentType === "image" && (
-          <Image
-            source={{ uri: `${config.cloudfrontDist}${social.item.ImageURI}` }}
-            style={socStyles.mediaPicture}
-          />
-        )}
-        {social.item.ImageURI && social.item.ContentType === "video" && (
-          <Video
-            source={{ uri: `${config.cloudfrontDist}${social.item.ImageURI}` }}
-            style={socStyles.mediaPicture}
-            isMuted={false}
-            resizeMode="cover"
-            shouldPlay={true}
-            isLooping
-          />
-        )}
-        {social.item.ContentType === "round" && (
-          <View style={[socStyles.roundCardContainer]}>
-            <View style={socStyles.clubCardHeader}>
-              <Text style={socStyles.clubAvgText}>
-                {stats?.frontScore + stats?.backScore}
-              </Text>
-            </View>
-            <View style={socStyles.roundCardInnerContainer}>
-              <Text style={socStyles.courseText}>
-                {stats?.course ? stats?.course : "Sample Course"}
-              </Text>
-              <View style={socStyles.roundCardRow}>
-                <View style={socStyles.roundCardInnerContainer}>
-                  <Text style={socStyles.roundCardHeader}>Front</Text>
-                  <Text style={socStyles.roundCardScore}>
-                    {stats?.frontScore ? stats?.frontScore : ""}
-                  </Text>
-                </View>
-                {stats?.backScore && (
-                  <View style={socStyles.roundCardRow}>
-                    <View style={socStyles.roundCardInnerContainer}>
-                      <Text style={socStyles.roundCardHeader}>Back</Text>
-                      <Text style={socStyles.roundCardScore}>
-                        {stats?.backScore ? stats.backScore : ""}
-                      </Text>
-                    </View>
-                  </View>
-                )}
-              </View>
-              {stats?.frontScore && (
-                <PieChart
-                  data={pieChartData}
-                  chartConfig={pieChartConfig}
-                  height={200}
-                  width={Dimensions.get("window").width}
-                  style={socStyles.pieChartStyle}
-                  center={[3, 0]}
-                  hasLegend={true}
-                  accessor={"count"}
-                  backgroundColor={"transparent"}
-                  absolute="false"
-                />
-              )}
-            </View>
-            <View style={socStyles.roundCardRow}>
-              <View style={socStyles.roundCardInnerContainer}>
-                <Text style={socStyles.roundCardHeader}>FWY</Text>
-                <Text style={socStyles.roundCardSubText}>
-                  {stats?.fairways ? stats.fairways : ""} /{" "}
-                  {stats?.holesPlayed ? stats.holesPlayed : ""}
-                </Text>
-              </View>
-              <View style={socStyles.roundCardInnerContainer}>
-                <Text style={socStyles.roundCardHeader}>GIR</Text>
-                <Text style={socStyles.roundCardSubText}>
-                  {stats?.gir ? stats.gir : 0} /{" "}
-                  {stats?.holesPlayed ? stats?.holesPlayed : ""}
-                </Text>
-              </View>
-              <View style={socStyles.roundCardInnerContainer}>
-                <Text style={socStyles.roundCardHeader}>SCR</Text>
-                <Text style={socStyles.roundCardSubText}>
-                  {stats?.gir ? stats?.scrambles : 18} /{" "}
-                  {stats?.holesPlayed ? stats?.holesPlayed - stats?.gir : ""}
-                </Text>
-              </View>
-            </View>
-          </View>
-        )}
-        {social.item.ContentType === "liveround" && (
-          <View style={socStyles.commentContainer}>
-            <Text style={[socStyles.comment, textFont]}>
-              Thru {social.item.stats?.thruHoles}
-            </Text>
-            <Text style={[socStyles.comment, textFont]}>
-              {social.item.stats?.player1?.name}
-              {" - "}
-              {social.item.stats?.player1?.score}{" "}
-            </Text>
-            {social.item.stats?.player2?.name && (
-              <Text style={[socStyles.comment, textFont]}>
-                {social.item.stats?.player2?.name}
-                {" - "}
-                {social.item.stats?.player2?.score}{" "}
-              </Text>
-            )}
-            {social.item.stats?.player3?.name && (
-              <Text style={[socStyles.comment, textFont]}>
-                {social.item.stats?.player3?.name}
-                {" - "}
-                {social.item.stats?.player3?.score}{" "}
-              </Text>
-            )}
-            {social.item.stats?.player4?.name && (
-              <Text style={[socStyles.comment, textFont]}>
-                {social.item.stats?.player4?.name}
-                {" - "}
-                {social.item.stats?.player4?.score}{" "}
-              </Text>
-            )}
-          </View>
-        )}
+      );
+    }
+  }
+  class SocialItemFooter extends React.Component {
+    shouldComponentUpdate(nextProps, nextState) {
+      const isItemChanged =
+        this.props.social.item.timestamp != nextProps.social.item.timestamp;
+
+      const originalLike = appState.socialState.likedPosts.includes(
+        this.props.social.item.SK
+      );
+
+      const newLike = appState.socialState.likedPosts.includes(
+        nextProps.social.item.SK
+      );
+
+      const likeChanged = originalLike != newLike;
+      return isItemChanged || likeChanged;
+    }
+    render() {
+      const social = this.props.social;
+      const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
+      const textFont = { fontFamily: "nimbus", fontSize: 20 };
+      const stats = social.item.stats;
+      const userLiked = appState.socialState.likedPosts.includes(
+        social.item.SK
+      );
+      return (
         <View style={socStyles.commentBar}>
           <TouchableOpacity
             style={socStyles.commentLogo}
             onPress={() => {
-              postLike(social.item["SK"]);
+              postLike(social.item["SK"], userLiked);
             }}
           >
-            <HeartSymbol fill={true} />
+            <HeartSymbol fill={userLiked} />
           </TouchableOpacity>
           <TouchableOpacity
             style={socStyles.commentLogo}
@@ -530,7 +161,17 @@ export default function SocialHome({ navigation }) {
                     },
                     {
                       text: "Yes",
-                      onPress: () => console.log("Delete text goes here")
+                      onPress: async () => {
+                        try {
+                          const res = await authenticatedAxios(
+                            "DELETE",
+                            `${config.api2}rounds?roundId=${social.item["SK"]}`
+                          );
+                          console.log("DELETE ITEM", res);
+                        } catch (err) {
+                          console.log("ERROR DELETING", err);
+                        }
+                      }
                     }
                   ],
                   { cancelable: false }
@@ -541,27 +182,262 @@ export default function SocialHome({ navigation }) {
             </TouchableOpacity>
           )}
         </View>
-      </View>
+      );
+    }
+  }
+  class SocialItemClass extends React.Component {
+    shouldComponentUpdate(nextProps, nextState) {
+      return false;
+    }
+    render() {
+      const social = this.props.social;
+      const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
+      const textFont = { fontFamily: "nimbus", fontSize: 20 };
+      const stats = social.item.stats;
+      const userLiked = appState.socialState.likedPosts.includes(
+        social.item.SK
+      );
+
+      const pieChartData = [
+        {
+          name: "Eagles",
+          count: stats?.eagles,
+          color: Theme.piePalette[0],
+          legendFontColor: "#666464",
+          legendFontSize: 15
+        },
+        {
+          name: "Birdies",
+          count: stats?.birdies,
+          color: Theme.piePalette[1],
+          legendFontColor: "#666464",
+          legendFontSize: 15
+        },
+        {
+          name: "Pars",
+          count: stats?.pars,
+          color: Theme.piePalette[2],
+          legendFontColor: "#666464",
+          legendFontSize: 15
+        },
+        {
+          name: "Bogeys",
+          count: stats?.bogies,
+          color: Theme.piePalette[3],
+          legendFontColor: "#666464",
+          legendFontSize: 15
+        },
+        {
+          name: "Doubles",
+          count: stats?.doubles,
+          color: Theme.piePalette[4],
+          legendFontColor: "#666464",
+          legendFontSize: 15
+        },
+        {
+          name: "Triples +",
+          count: stats?.triples,
+          color: Theme.piePalette[5],
+          legendFontColor: "#666464",
+          legendFontSize: 15
+        }
+      ];
+
+      if (
+        social.item.ContentType === "liveround" &&
+        withinMinutes > 30 &&
+        social.item.stats?.thruHoles !== 18
+      ) {
+        return null;
+      }
+
+      return (
+        <>
+          {social.item.text && social.item.ContentType !== "liveround" && (
+            <View style={socStyles.commentContainer}>
+              <Text style={[socStyles.comment, textFont]}>
+                {social.item.text}
+              </Text>
+            </View>
+          )}
+          {social.item.ImageURI && social.item.ContentType === "image" && (
+            <Image
+              source={{
+                uri: `${config.cloudfrontDist}${social.item.ImageURI}`
+              }}
+              style={socStyles.mediaPicture}
+            />
+          )}
+          {social.item.ImageURI && social.item.ContentType === "video" && (
+            <Video
+              source={{
+                uri: `${config.cloudfrontDist}${social.item.ImageURI}`
+              }}
+              style={socStyles.mediaPicture}
+              isMuted={false}
+              resizeMode="cover"
+              shouldPlay={this.props.index === visible}
+              isLooping
+            />
+          )}
+          {social.item.ContentType === "round" && (
+            <View style={[socStyles.roundCardContainer]}>
+              <View style={socStyles.clubCardHeader}>
+                <Text style={socStyles.clubAvgText}>
+                  {stats?.frontScore + stats?.backScore}
+                </Text>
+              </View>
+              <View style={socStyles.roundCardInnerContainer}>
+                <Text style={socStyles.courseText}>
+                  {stats?.course ? stats?.course : "Sample Course"}
+                </Text>
+                <View style={socStyles.roundCardRow}>
+                  <View style={socStyles.roundCardInnerContainer}>
+                    <Text style={socStyles.roundCardHeader}>Front</Text>
+                    <Text style={socStyles.roundCardScore}>
+                      {stats?.frontScore ? stats?.frontScore : ""}
+                    </Text>
+                  </View>
+                  {stats?.backScore && (
+                    <View style={socStyles.roundCardRow}>
+                      <View style={socStyles.roundCardInnerContainer}>
+                        <Text style={socStyles.roundCardHeader}>Back</Text>
+                        <Text style={socStyles.roundCardScore}>
+                          {stats?.backScore ? stats.backScore : ""}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+                {stats?.frontScore && (
+                  <PieChart
+                    data={pieChartData}
+                    chartConfig={pieChartConfig}
+                    height={200}
+                    width={Dimensions.get("window").width}
+                    style={socStyles.pieChartStyle}
+                    center={[3, 0]}
+                    hasLegend={true}
+                    accessor={"count"}
+                    backgroundColor={"transparent"}
+                    absolute="false"
+                  />
+                )}
+              </View>
+              <View style={socStyles.roundCardRow}>
+                <View style={socStyles.roundCardInnerContainer}>
+                  <Text style={socStyles.roundCardHeader}>FWY</Text>
+                  <Text style={socStyles.roundCardSubText}>
+                    {stats?.fairways ? stats.fairways : ""} /{" "}
+                    {stats?.holesPlayed ? stats.holesPlayed - 1 : ""}
+                  </Text>
+                </View>
+                <View style={socStyles.roundCardInnerContainer}>
+                  <Text style={socStyles.roundCardHeader}>GIR</Text>
+                  <Text style={socStyles.roundCardSubText}>
+                    {stats?.gir ? stats.gir : 0} /{" "}
+                    {stats?.holesPlayed ? stats?.holesPlayed - 1 : ""}
+                  </Text>
+                </View>
+                <View style={socStyles.roundCardInnerContainer}>
+                  <Text style={socStyles.roundCardHeader}>SCR</Text>
+                  <Text style={socStyles.roundCardSubText}>
+                    {stats?.gir ? stats?.scrambles : 18} /{" "}
+                    {stats?.holesPlayed
+                      ? stats?.holesPlayed - stats?.gir - 1
+                      : ""}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
+          {social.item.ContentType === "liveround" && (
+            <View style={socStyles.commentContainer}>
+              <Text style={[socStyles.comment, textFont]}>
+                Thru {social.item.stats?.thruHoles}
+              </Text>
+              <Text style={[socStyles.comment, textFont]}>
+                {social.item.stats?.player1?.name}
+                {" - "}
+                {social.item.stats?.player1?.score}{" "}
+              </Text>
+              {social.item.stats?.player2?.name && (
+                <Text style={[socStyles.comment, textFont]}>
+                  {social.item.stats?.player2?.name}
+                  {" - "}
+                  {social.item.stats?.player2?.score}{" "}
+                </Text>
+              )}
+              {social.item.stats?.player3?.name && (
+                <Text style={[socStyles.comment, textFont]}>
+                  {social.item.stats?.player3?.name}
+                  {" - "}
+                  {social.item.stats?.player3?.score}{" "}
+                </Text>
+              )}
+              {social.item.stats?.player4?.name && (
+                <Text style={[socStyles.comment, textFont]}>
+                  {social.item.stats?.player4?.name}
+                  {" - "}
+                  {social.item.stats?.player4?.score}{" "}
+                </Text>
+              )}
+            </View>
+          )}
+        </>
+      );
+    }
+  }
+
+  const _renderItem = (item, index) => {
+    const withinMinutes = (Date.now() - item.item.timestamp) / 60 / 1000;
+
+    if (
+      item.item.ContentType === "liveround" &&
+      withinMinutes > 30 &&
+      item.item.stats?.thruHoles !== 18
+    ) {
+      return null;
+    }
+    return (
+      <>
+        <View style={socStyles.frame}>
+          <SocialItemHeader social={item} index={index} />
+          <SocialItemClass social={item} index={index} />
+          <SocialItemFooter social={item} index={index} />
+        </View>
+      </>
     );
   };
+  // const SocialItem = new React.Component((social) => {});
 
   const fetchRounds = async () => {
-    // return;
     setRefreshing(true);
 
     let user = appState.appState["user_name"];
     console.log("FETCHING WITH TOKEN ", appState.appState.auth_data);
     try {
-      const userRoundData = await axios.get(
-        `${config.api2}rounds?user=${user}`,
-        {
-          headers: {
-            Authorization: appState.appState.auth_data
+      const userRoundData = await authenticatedAxios(
+        "GET",
+        `${config.api2}rounds?user=${user}`
+      );
+      console.log("🚀 ", userRoundData.data);
+      setSocialFeedError(false);
+
+      let userLiked = false;
+      for (const item of userRoundData.data) {
+        for (const reaction of item.reactions.Items) {
+          if (
+            reaction.reactingUser === appState.appState["user_name"] &&
+            reaction.reactionType === "like"
+          ) {
+            appContext.dispatch({
+              type: "like_post_initial",
+              data: item.SK
+            });
           }
         }
-      );
-      console.log("🚀 ", userRoundData);
-      setSocialFeedError(false);
+      }
 
       appContext.dispatch({
         type: "set_social_posts",
@@ -578,13 +454,32 @@ export default function SocialHome({ navigation }) {
     fetchRounds();
   }, []);
 
+  const _onViewableItemsChanged = React.useCallback(
+    ({ viewableItems, changed }) => {
+      // console.log("Visible items are", viewableItems);
+      // console.log("Changed in this iteration", changed);
+      setVisible(changed[0].index);
+    },
+    []
+  );
+
+  const _viewabilityConfig = {
+    itemVisiblePercentThreshold: 50
+  };
+
   return (
     <>
       <View style={styles.socialFeed}>
         {socialFeedError && <Text>{socialFeedError}</Text>}
+        {appState.socialState.posts.length === 0 && !refreshing && (
+          <Text>No posts to show! Are you following anyone?</Text>
+        )}
         <FlatList
           data={appState.socialState.posts}
-          renderItem={SocialItem}
+          // onViewableItemsChanged={_onViewableItemsChanged}
+          viewabilityConfig={_viewabilityConfig}
+          renderItem={(item, index) => _renderItem(item, index)}
+          // initialNumToRender={10}
           keyExtractor={(item, index) => `itemsocial${index}`}
           refreshing={refreshing}
           extraData={refreshing}

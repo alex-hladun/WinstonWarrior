@@ -27,7 +27,6 @@ export function Login({ navigation }) {
   const [password, setPassword] = React.useState("");
 
   const checkLogin = async () => {
-    // if (!appState.app)
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
       console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
@@ -60,7 +59,6 @@ export function Login({ navigation }) {
       setUpDB();
       createClubs();
       createCourses();
-      // registerUser('Alex')
       appContext.value.doneRound();
     }
 

@@ -124,6 +124,7 @@ const reducer = produce((state, action) => {
       state.appState.loading = false;
       break;
     case "done_initial_loading":
+      console.log("Done inital loading");
       state.appState.initialLoading = false;
       break;
 
@@ -252,11 +253,26 @@ const reducer = produce((state, action) => {
       state.socialState.followingUsers.push(action.data);
       console.log(state.socialState.followingUsers);
       break;
+    case "like_post_initial":
+      state.socialState.likedPosts.push(action.data);
+
+      break;
+    case "like_post":
+      if (state.socialState.likedPosts.includes(action.data)) {
+        const newArray = state.socialState.likedPosts.filter(
+          (roundId) => roundId !== action.data
+        );
+        state.socialState.likedPosts = newArray;
+        return;
+      }
+      state.socialState.likedPosts.push(action.data);
+
+      break;
     case "unfollow_user":
-      const newArray = state.socialState.followingUsers.filter(
+      const freshArray = state.socialState.followingUsers.filter(
         (user) => user !== action.data
       );
-      state.socialState.followingUsers = newArray;
+      state.socialState.followingUsers = freshArray;
       console.log(state.socialState.followingUsers);
 
       break;
@@ -410,6 +426,7 @@ const initialState = {
   socialState: {
     posts: [],
     users: [],
+    likedPosts: [],
     followingUsers: []
   }
 };
@@ -454,174 +471,174 @@ function AppProvider(props) {
     // everything for app to function.
 
     // Loads all holes, shots, pars, grouped by for user
-    const birdieCount = await loadTotalBirds(user_id);
-    const totalBirds = {
-      albatrosses: 0,
-      eagles: 0,
-      birdies: 0,
-      pars: 0,
-      bogies: 0,
-      doubles: 0,
-      triples: 0
-    };
+    try {
+      const birdieCount = await loadTotalBirds(user_id);
+      const totalBirds = {
+        albatrosses: 0,
+        eagles: 0,
+        birdies: 0,
+        pars: 0,
+        bogies: 0,
+        doubles: 0,
+        triples: 0
+      };
 
-    birdieCount.forEach((hole) => {
-      if (hole.total_shots - hole.hole_par === -1) {
-        totalBirds.birdies++;
-      } else if (hole.total_shots - hole.hole_par === 0) {
-        totalBirds.pars++;
-      } else if (hole.total_shots - hole.hole_par <= -3) {
-        totalBirds.albatrosses++;
-      } else if (hole.total_shots - hole.hole_par === -2) {
-        totalBirds.eagles++;
-      } else if (hole.total_shots - hole.hole_par === 1) {
-        totalBirds.bogies++;
-      } else if (hole.total_shots - hole.hole_par === 2) {
-        totalBirds.doubles++;
-      } else {
-        totalBirds.triples++;
-      }
-    });
-
-    dispatch({ type: "set_total_birds", data: totalBirds });
-
-    // Count of rounds with end date.
-    const totalRounds = await loadTotalRounds(1);
-    dispatch({ type: "set_total_rounds", data: totalRounds });
-
-    const girPct = await loadGirPct(1);
-    dispatch({ type: "set_gir_pct", data: girPct });
-    const scramblePct = await loadScramblePct(1);
-    dispatch({ type: "set_scr_pct", data: scramblePct });
-
-    const avgScore = await loadAvgScore(1);
-    dispatch({ type: "set_avg_score", data: avgScore });
-
-    const bestScore = await loadBestScore(1);
-    dispatch({ type: "set_best_score", data: bestScore });
-
-    const avgPutts = await loadAvgPutts(1);
-    dispatch({ type: "set_avg_putts", data: avgPutts });
-    const fwyPct = await getPct(1);
-    dispatch({ type: "set_fwy_pct", data: fwyPct });
-
-    const clubs = await getClubs();
-
-    dispatch({
-      type: "set_club_list",
-      data: clubs
-    });
-
-    let roundHistory = await loadStats(user_id);
-    let roundHistory18Holes = await load18HoleStats(user_id);
-    dispatch({ type: "set_round_history", data: roundHistory.reverse() });
-    dispatch({
-      type: "set_round_history_18_holes",
-      data: roundHistory18Holes.reverse()
-    });
-
-    const sortedHistory = roundHistory
-      .slice()
-      .sort((a, b) => a.hcp_diff - b.hcp_diff);
-
-    let count = 0;
-    let hcpIndex = 0;
-    sortedHistory.forEach((score) => {
-      if (count < 8) {
-        count += 1;
-        hcpIndex += score.hcp_diff;
-      }
-    });
-    const hcp = hcpIndex / count;
-    dispatch({ type: "set_hcp", data: hcp });
-
-    const totalpctHistoy = await loadTotalPctHistory(user_id);
-
-    const fwyPctHistory = totalpctHistoy.totalHolesPlayed
-      .map((hP, i) => {
-        if (totalpctHistoy.fwyHit[i]) {
-          return Math.round((totalpctHistoy.fwyHit[i] * 100) / hP, 0);
+      birdieCount.forEach((hole) => {
+        if (hole.total_shots - hole.hole_par === -1) {
+          totalBirds.birdies++;
+        } else if (hole.total_shots - hole.hole_par === 0) {
+          totalBirds.pars++;
+        } else if (hole.total_shots - hole.hole_par <= -3) {
+          totalBirds.albatrosses++;
+        } else if (hole.total_shots - hole.hole_par === -2) {
+          totalBirds.eagles++;
+        } else if (hole.total_shots - hole.hole_par === 1) {
+          totalBirds.bogies++;
+        } else if (hole.total_shots - hole.hole_par === 2) {
+          totalBirds.doubles++;
         } else {
-          return 0;
+          totalBirds.triples++;
         }
-      })
-      .reverse();
-    dispatch({ type: "set_fwy_history", data: fwyPctHistory });
+      });
 
-    const girPctHistory = totalpctHistoy.totalHolesPlayed
-      .map((hP, i) => {
-        const indexOf = totalpctHistoy.girDates.indexOf(
-          totalpctHistoy.roundDates[i]
-        );
-        if (indexOf < 0) {
-          return 0;
-        } else {
-          return Math.round((totalpctHistoy.girHit[indexOf] * 100) / hP, 0);
+      dispatch({ type: "set_total_birds", data: totalBirds });
+
+      // Count of rounds with end date.
+      const totalRounds = await loadTotalRounds(1);
+      dispatch({ type: "set_total_rounds", data: totalRounds });
+
+      const girPct = await loadGirPct(1);
+      dispatch({ type: "set_gir_pct", data: girPct });
+      const scramblePct = await loadScramblePct(1);
+      dispatch({ type: "set_scr_pct", data: scramblePct });
+
+      const avgScore = await loadAvgScore(1);
+      dispatch({ type: "set_avg_score", data: avgScore });
+
+      const bestScore = await loadBestScore(1);
+      dispatch({ type: "set_best_score", data: bestScore });
+
+      const avgPutts = await loadAvgPutts(1);
+      dispatch({ type: "set_avg_putts", data: avgPutts });
+      const fwyPct = await getPct(1);
+      dispatch({ type: "set_fwy_pct", data: fwyPct });
+
+      const clubs = await getClubs();
+
+      dispatch({
+        type: "set_club_list",
+        data: clubs
+      });
+
+      let roundHistory = await loadStats(user_id);
+      let roundHistory18Holes = await load18HoleStats(user_id);
+      dispatch({ type: "set_round_history", data: roundHistory.reverse() });
+      dispatch({
+        type: "set_round_history_18_holes",
+        data: roundHistory18Holes.reverse()
+      });
+
+      const sortedHistory = roundHistory
+        .slice()
+        .sort((a, b) => a.hcp_diff - b.hcp_diff);
+
+      let count = 0;
+      let hcpIndex = 0;
+      sortedHistory.forEach((score) => {
+        if (count < 8) {
+          count += 1;
+          hcpIndex += score.hcp_diff;
         }
-      })
-      .reverse();
+      });
+      const hcp = hcpIndex / count;
+      dispatch({ type: "set_hcp", data: hcp });
 
-    dispatch({ type: "set_gir_history", data: girPctHistory });
+      const totalpctHistoy = await loadTotalPctHistory(user_id);
 
-    // console.log("TOTAL", totalpctHistoy);
-    const scramblePctHistory = totalpctHistoy.totalHolesPlayed
-      .map((hP, i) => {
-        const indexOf = totalpctHistoy.scrambleDates.indexOf(
-          totalpctHistoy.roundDates[i]
-        );
-        const girIndexOf = totalpctHistoy.girDates.indexOf(
-          totalpctHistoy.roundDates[i]
-        );
+      const fwyPctHistory = totalpctHistoy.totalHolesPlayed
+        .map((hP, i) => {
+          if (totalpctHistoy.fwyHit[i]) {
+            return Math.round((totalpctHistoy.fwyHit[i] * 100) / hP, 0);
+          } else {
+            return 0;
+          }
+        })
+        .reverse();
+      dispatch({ type: "set_fwy_history", data: fwyPctHistory });
 
-        if (indexOf < 0) {
-          return 0;
-        } else if (girIndexOf >= 0) {
-          return Math.round(
-            (totalpctHistoy.scrambleSuccess[indexOf] * 100) /
-              (hP - totalpctHistoy.girHit[girIndexOf]),
-            0
+      const girPctHistory = totalpctHistoy.totalHolesPlayed
+        .map((hP, i) => {
+          const indexOf = totalpctHistoy.girDates.indexOf(
+            totalpctHistoy.roundDates[i]
           );
-        } else {
-          return 100;
-        }
-      })
-      .reverse();
+          if (indexOf < 0) {
+            return 0;
+          } else {
+            return Math.round((totalpctHistoy.girHit[indexOf] * 100) / hP, 0);
+          }
+        })
+        .reverse();
 
-    dispatch({ type: "set_scr_history", data: scramblePctHistory });
+      dispatch({ type: "set_gir_history", data: girPctHistory });
+      const scramblePctHistory = totalpctHistoy.totalHolesPlayed
+        .map((hP, i) => {
+          const indexOf = totalpctHistoy.scrambleDates.indexOf(
+            totalpctHistoy.roundDates[i]
+          );
+          const girIndexOf = totalpctHistoy.girDates.indexOf(
+            totalpctHistoy.roundDates[i]
+          );
 
-    const newPuttHistory = await loadTotalPuttHistory(user_id);
-    const puttHistoryArray = newPuttHistory.map((puttObj) => {
-      return puttObj.putts;
-    });
-    dispatch({ type: "set_total_putt_history", data: puttHistoryArray });
+          if (indexOf < 0) {
+            return 0;
+          } else if (girIndexOf >= 0) {
+            return Math.round(
+              (totalpctHistoy.scrambleSuccess[indexOf] * 100) /
+                (hP - totalpctHistoy.girHit[girIndexOf]),
+              0
+            );
+          } else {
+            return 100;
+          }
+        })
+        .reverse();
 
-    const hcpRoundHistory = await loadHcpDiffStats(user_id);
-    const handicapHistoryArray = [];
-    const length = hcpRoundHistory.length;
+      dispatch({ type: "set_scr_history", data: scramblePctHistory });
 
-    // Max points should be used for the graph
-    let maxHcpPoints = 10;
-    if (length < 10) {
-      maxHcpPoints = length;
+      const newPuttHistory = await loadTotalPuttHistory(user_id);
+      const puttHistoryArray = newPuttHistory.map((puttObj) => {
+        return puttObj.putts;
+      });
+      dispatch({ type: "set_total_putt_history", data: puttHistoryArray });
+
+      const hcpRoundHistory = await loadHcpDiffStats(user_id);
+      const handicapHistoryArray = [];
+      const length = hcpRoundHistory.length;
+
+      // Max points should be used for the graph
+      let maxHcpPoints = 10;
+      if (length < 10) {
+        maxHcpPoints = length;
+      }
+
+      for (let i = 0; i < maxHcpPoints; i++) {
+        handicapHistoryArray.push(
+          loadHandicapFromArray(hcpRoundHistory.slice(i, i + 40)).handicap
+        );
+      }
+
+      const handicapRounds = loadHandicapFromArray(hcpRoundHistory.slice(0, 40))
+        .includedRounds;
+      dispatch({ type: "set_handicap_rounds", data: handicapRounds });
+      dispatch({
+        type: "set_handicap_history",
+        data: handicapHistoryArray.reverse()
+      });
+
+      dispatch({ type: "done_initial_loading" });
+    } catch (err) {
+      console.log("ERROR INITIAL;", err);
     }
-
-    for (let i = 0; i < maxHcpPoints; i++) {
-      handicapHistoryArray.push(
-        loadHandicapFromArray(hcpRoundHistory.slice(i, i + 40)).handicap
-      );
-    }
-
-    const handicapRounds = loadHandicapFromArray(hcpRoundHistory.slice(0, 40))
-      .includedRounds;
-    dispatch({ type: "set_handicap_rounds", data: handicapRounds });
-    dispatch({
-      type: "set_handicap_history",
-      data: handicapHistoryArray.reverse()
-    });
-
-    await loadShotHistory(user_id);
-
-    dispatch({ type: "done_initial_loading" });
   };
 
   const loadShotHistory = async (user_id) => {
@@ -825,9 +842,6 @@ function AppProvider(props) {
 
   const reloadHoleStats = async (courseID, holeNum) => {
     // Reload stats for a particular hole after score save.
-    console.log(
-      `Reloading stats sfor hole ${holeNum} for courseID ${courseID}`
-    );
     const birdieObj = await loadHoleStatsForRefresh(courseID, holeNum, 1);
     dispatch({
       type: "refresh_hole_stats",

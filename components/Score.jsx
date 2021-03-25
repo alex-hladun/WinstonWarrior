@@ -15,6 +15,7 @@ import axios from "axios";
 import config from "../settings.json";
 import { calculatedHolesPlayed } from "../helpers/handicap";
 import { liveRoundCalc } from "../helpers/liveRoundCalc";
+import { authenticatedAxios } from "../helpers/authenticatedAxios";
 
 export default function Score({
   holeNum,
@@ -42,14 +43,6 @@ export default function Score({
   const [approach, setApproach] = useState(50);
   const [chip, setChip] = useState(50);
   const [putting, setPutting] = useState(50);
-
-  useEffect(() => {
-    // console.log(
-    //   "LIVEROUND",
-    //   liveRoundCalc(appState.playState, appState.appState.user_name)
-    // );
-    // console.log(JSON.stringify(appState.playState.roundId));
-  }, []);
 
   useEffect(() => {
     let newArr = [appState.appState.user_name];
@@ -124,12 +117,7 @@ export default function Score({
     });
 
     if (appState.playState.player_2) {
-      postScore(
-        holeID,
-        holeNum,
-        appState.playState.player_2_rd_id,
-        p2score
-      );
+      postScore(holeID, holeNum, appState.playState.player_2_rd_id, p2score);
       appContext.dispatch({
         type: "set_p2_score",
         hole: holeNum,
@@ -137,12 +125,7 @@ export default function Score({
       });
     }
     if (appState.playState.player_3) {
-      postScore(
-        holeID,
-        holeNum,
-        appState.playState.player_3_rd_id,
-        p3score
-      );
+      postScore(holeID, holeNum, appState.playState.player_3_rd_id, p3score);
       appContext.dispatch({
         type: "set_p3_score",
         hole: holeNum,
@@ -175,11 +158,11 @@ export default function Score({
           appState.playState,
           appState.appState.user_name
         );
-        axios.put(`${config.api2}rounds`, putObj, {
-          headers: {
-            Authorization: appState.appState.auth_data
-          }
-        });
+        console.log(
+          "🚀 ~ file: Score.jsx ~ line 170 ~ handleScoreSubmit ~ putObj",
+          putObj
+        );
+        authenticatedAxios("PUT", `${config.api2}rounds`, putObj);
       } catch (err) {
         console.log("error with liveround post to backend", err);
       }

@@ -156,7 +156,6 @@ export const getRoundData = async (roundID) => {
           // console.log('result getting Round data', result.rows._array)
           const scramble = result.rows._array[0].scramble;
           roundObj = { ...roundObj, scramble };
-          // console.log("🚀 ~ file: roundData.js ~ line 76 ~ returnnewPromise ~ roundObj", roundObj)
           resolve(roundObj);
         },
         (err, mess) => reject(err, mess)

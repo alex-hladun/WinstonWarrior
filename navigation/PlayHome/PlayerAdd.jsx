@@ -13,6 +13,7 @@ import { registerUser, createRound } from "../../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import config from "../../settings.json";
+import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
 export function PlayerAdd({ navigation }) {
   const appContext = React.useContext(AppContext);
@@ -44,7 +45,7 @@ export function PlayerAdd({ navigation }) {
                 style={styles.playerText}
                 autoFocus={index > 1 && true}
                 selectTextOnFocus={true}
-                multiline={false}
+                multiline={true}
                 onChangeText={(text) => changePlayerName(index, text)}
               >
                 {player}
@@ -120,23 +121,15 @@ export function PlayerAdd({ navigation }) {
         value: roundId
       });
       try {
-        axios.post(
-          `${config.api2}rounds`,
-          {
-            contentType: "liveround",
-            p1: { name: appState.appState.user_name },
-            p2: { name: appState.playState.player_2 },
-            p3: { name: appState.playState.player_3 },
-            p4: { name: appState.playState.player_4 },
-            course: appState.playState.courseName,
-            roundId: roundId
-          },
-          {
-            headers: {
-              Authorization: appState.appState.auth_data
-            }
-          }
-        );
+        authenticatedAxios("POST", `${config.api2}rounds`, {
+          contentType: "liveround",
+          p1: { name: appState.appState.user_name },
+          p2: { name: appState.playState.player_2 },
+          p3: { name: appState.playState.player_3 },
+          p4: { name: appState.playState.player_4 },
+          course: appState.playState.courseName,
+          roundId: roundId
+        });
       } catch (err) {
         console.log("ERROR STARTING LIVE ROUND", err);
       }
@@ -178,7 +171,6 @@ export function PlayerAdd({ navigation }) {
   };
 
   const removePlayer = (num) => {
-    console.log("removing player", num);
     if (num !== 1) {
       console.log("removing player", num);
       appContext.dispatch({

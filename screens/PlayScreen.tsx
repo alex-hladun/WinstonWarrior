@@ -42,11 +42,10 @@ export default function PlayScreen({ navigation }) {
   }, []);
 
   React.useEffect(() => {
-    selectHoles();
+    // selectHoles();
     let roundID;
 
     const checkExisting = async () => {
-      // console.log('checking existing round')
       try {
         roundID = await AsyncStorage.getItem("roundID");
         if (roundID) {
@@ -95,7 +94,6 @@ export default function PlayScreen({ navigation }) {
   };
 
   const checkAndRestoreScores = async () => {
-    // console.log('playcontext', playContext)
     const p1roundID = await AsyncStorage.getItem("roundID");
     const p2roundID = await AsyncStorage.getItem("u2roundid");
     const p3roundID = await AsyncStorage.getItem("u3roundid");
@@ -125,7 +123,6 @@ export default function PlayScreen({ navigation }) {
 
     let scoreObj = {};
     for (const score of p1Score) {
-      console.log(`p1 score ${score}`);
       scoreObj[score.hole_num] = score.total_shots;
     }
     appContext.dispatch({
@@ -136,11 +133,9 @@ export default function PlayScreen({ navigation }) {
     // TODO: this can be refactored in a loop
     if (p2roundID) {
       const p2name = await AsyncStorage.getItem("u2name");
-      console.log("RESTOING PLAYER 2, ROUNDID; ", p2roundID);
       let scoreObj2 = {};
       const p2Score = await getScore(JSON.parse(p2roundID));
       for (const score of p2Score) {
-        console.log("p2 SCORE OBJ", score);
         scoreObj2[score.hole_num] = score.total_shots;
       }
       appContext.dispatch({
@@ -161,10 +156,8 @@ export default function PlayScreen({ navigation }) {
     if (p3roundID) {
       const p3name = await AsyncStorage.getItem("u3name");
       let scoreObj3 = {};
-      // console.log("RESTORING P3 SCORE");
       const p3Score = await getScore(JSON.parse(p3roundID));
       for (const score of p3Score) {
-        // console.log("p3 SCORE OBJ", score);
         scoreObj3[score.hole_num] = score.total_shots;
       }
       appContext.dispatch({
@@ -188,7 +181,6 @@ export default function PlayScreen({ navigation }) {
       let scoreObj4 = {};
       const p4Score = await getScore(JSON.parse(p4roundID));
       for (const score of p4Score) {
-        console.log("p4 SCORE OBJ", score);
         scoreObj4[score.hole_num] = score.total_shots;
       }
       appContext.dispatch({

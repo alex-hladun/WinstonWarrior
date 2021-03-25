@@ -41,6 +41,13 @@ export function CourseSelect({ navigation }) {
       img: require("../../assets/images/glencoe.png"),
       rtg: 71.8,
       slp: 127
+    },
+    {
+      name: "Paradise Canyon",
+      id: 3,
+      img: require("../../assets/images/canyon.png"),
+      rtg: 70.6,
+      slp: 129
     }
   ];
 
