@@ -6,7 +6,7 @@ export const authenticatedAxios = async (method, endpoint, payload = null) => {
   try {
     const authedUser = await Auth.currentAuthenticatedUser();
     authToken = authedUser.signInUserSession.idToken.jwtToken;
-    console.log("AUTHENTICATED WITH COGNITO", authToken);
+    console.log("AUTHENTICATED FETCH WITH COGNITO");
   } catch (err) {
     console.log("err authenticating");
     console.log(err); // this means there is no currently authenticated user

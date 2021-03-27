@@ -41,6 +41,7 @@
     "expo-av": "~8.6.0",
     "expo-cli": "^3.28.5",
     "expo-constants": "~9.2.0",
+    "expo-file-system": "~9.2.0",
     "expo-font": "~8.3.0",
     "expo-image-picker": "~9.1.1",
     "expo-linear-gradient": "~8.3.0",

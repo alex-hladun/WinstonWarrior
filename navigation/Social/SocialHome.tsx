@@ -9,14 +9,11 @@ import {
 } from "react-native";
 import * as React from "react";
 import * as Linking from "expo-linking";
-import GolfLogo from "../../assets/svg/GolfLogo";
 import styles from "../../assets/styles/PlayStyles";
 import socStyles from "../../assets/styles/SocialStyles";
-
 import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
 import { useEffect } from "react";
-import axios from "axios";
 import { Theme } from "../../assets/styles/Theme";
 import { PieChart } from "react-native-chart-kit";
 import HeartSymbol from "../../assets/svg/HeartSymbol";
@@ -26,32 +23,45 @@ import { Audio, Video } from "expo-av";
 var dayjs = require("dayjs");
 import config from "../../settings.json";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
+import { generatePieData, pieChartConfig } from "../../helpers/generatePieData";
+import CachedImage from "./CachedImage";
 
 export default function SocialHome({ navigation }) {
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
   const [active, setActive] = React.useState(0);
   const [visible, setVisible] = React.useState("");
+  const [socialPosts, setSocialPosts] = React.useState([]);
 
   const [socialFeedError, setSocialFeedError] = React.useState<
     boolean | string
   >(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [likedPosts, setLikedPosts] = React.useState({ likedPosts: [] });
 
-  const postLike = async (roundId, userLiked) => {
-    appContext.dispatch({ type: "like_post", data: roundId });
+  const postLike = async (roundSK, userLiked) => {
+    // appContext.dispatch({ type: "like_post", data: roundSK });
     try {
       let res;
 
       if (userLiked) {
+        const likedPostsClone = { ...likedPosts };
+        const itemIndex = likedPostsClone.likedPosts.indexOf(roundSK);
+        if (itemIndex > -1) {
+          likedPostsClone.likedPosts.splice(itemIndex, 1);
+          setLikedPosts(likedPostsClone);
+        }
         res = await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
-          roundId,
+          roundSK,
           reactionType: "unlike"
         });
         console.log("unliked", res.status);
       } else {
+        setLikedPosts((prev) => ({
+          likedPosts: [...prev.likedPosts, roundSK]
+        }));
         res = await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
-          roundId,
+          roundSK,
           reactionType: "like"
         });
         console.log("🚀 ~ liked", res.status);
@@ -60,16 +70,6 @@ export default function SocialHome({ navigation }) {
       console.log("error liking/unliking", err);
     }
   };
-  const pieChartConfig = {
-    backgroundColor: Theme.chartBackgroundColor,
-    backgroundGradientFrom: Theme.chartBGGradientFrom,
-    backgroundGradientTo: Theme.chartBGGradientTo,
-    propsForVerticalLabels: {
-      rotation: -90
-    },
-    decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
-  };
 
   class SocialItemHeader extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
@@ -77,12 +77,8 @@ export default function SocialHome({ navigation }) {
     }
     render() {
       const social = this.props.social;
-      const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
+      // const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
       const textFont = { fontFamily: "nimbus", fontSize: 20 };
-      const stats = social.item.stats;
-      const userLiked = appState.socialState.likedPosts.includes(
-        social.item.SK
-      );
       return (
         <View style={socStyles.upperFContainer}>
           <View style={socStyles.upperFImage}>
@@ -104,28 +100,12 @@ export default function SocialHome({ navigation }) {
   }
   class SocialItemFooter extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
-      const isItemChanged =
-        this.props.social.item.timestamp != nextProps.social.item.timestamp;
-
-      const originalLike = appState.socialState.likedPosts.includes(
-        this.props.social.item.SK
-      );
-
-      const newLike = appState.socialState.likedPosts.includes(
-        nextProps.social.item.SK
-      );
-
-      const likeChanged = originalLike != newLike;
-      return isItemChanged || likeChanged;
+      return false;
     }
     render() {
       const social = this.props.social;
-      const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
-      const textFont = { fontFamily: "nimbus", fontSize: 20 };
-      const stats = social.item.stats;
-      const userLiked = appState.socialState.likedPosts.includes(
-        social.item.SK
-      );
+      const userLiked = this.props.userLiked;
+
       return (
         <View style={socStyles.commentBar}>
           <TouchableOpacity
@@ -185,6 +165,7 @@ export default function SocialHome({ navigation }) {
       );
     }
   }
+
   class SocialItemClass extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
       return false;
@@ -194,62 +175,6 @@ export default function SocialHome({ navigation }) {
       const withinMinutes = (Date.now() - social.item.timestamp) / 60 / 1000;
       const textFont = { fontFamily: "nimbus", fontSize: 20 };
       const stats = social.item.stats;
-      const userLiked = appState.socialState.likedPosts.includes(
-        social.item.SK
-      );
-
-      const pieChartData = [
-        {
-          name: "Eagles",
-          count: stats?.eagles,
-          color: Theme.piePalette[0],
-          legendFontColor: "#666464",
-          legendFontSize: 15
-        },
-        {
-          name: "Birdies",
-          count: stats?.birdies,
-          color: Theme.piePalette[1],
-          legendFontColor: "#666464",
-          legendFontSize: 15
-        },
-        {
-          name: "Pars",
-          count: stats?.pars,
-          color: Theme.piePalette[2],
-          legendFontColor: "#666464",
-          legendFontSize: 15
-        },
-        {
-          name: "Bogeys",
-          count: stats?.bogies,
-          color: Theme.piePalette[3],
-          legendFontColor: "#666464",
-          legendFontSize: 15
-        },
-        {
-          name: "Doubles",
-          count: stats?.doubles,
-          color: Theme.piePalette[4],
-          legendFontColor: "#666464",
-          legendFontSize: 15
-        },
-        {
-          name: "Triples +",
-          count: stats?.triples,
-          color: Theme.piePalette[5],
-          legendFontColor: "#666464",
-          legendFontSize: 15
-        }
-      ];
-
-      if (
-        social.item.ContentType === "liveround" &&
-        withinMinutes > 30 &&
-        social.item.stats?.thruHoles !== 18
-      ) {
-        return null;
-      }
 
       return (
         <>
@@ -261,12 +186,22 @@ export default function SocialHome({ navigation }) {
             </View>
           )}
           {social.item.ImageURI && social.item.ContentType === "image" && (
-            <Image
+            <CachedImage
               source={{
                 uri: `${config.cloudfrontDist}${social.item.ImageURI}`
               }}
               style={socStyles.mediaPicture}
+              cacheKey={social.item.SK}
             />
+            // <Image
+            //   source={{
+            //     uri: `${config.cloudfrontDist}${social.item.ImageURI}`
+            //   }}
+            //   defaultSource={{
+            //     uri: `${config.cloudfrontDist}${social.item.ImageURI}`
+            //   }}
+            //   style={socStyles.mediaPicture}
+            // />
           )}
           {social.item.ImageURI && social.item.ContentType === "video" && (
             <Video
@@ -311,7 +246,7 @@ export default function SocialHome({ navigation }) {
                 </View>
                 {stats?.frontScore && (
                   <PieChart
-                    data={pieChartData}
+                    data={social.item.pieChartData}
                     chartConfig={pieChartConfig}
                     height={200}
                     width={Dimensions.get("window").width}
@@ -320,7 +255,6 @@ export default function SocialHome({ navigation }) {
                     hasLegend={true}
                     accessor={"count"}
                     backgroundColor={"transparent"}
-                    absolute="false"
                   />
                 )}
               </View>
@@ -388,66 +322,122 @@ export default function SocialHome({ navigation }) {
       );
     }
   }
-
-  const _renderItem = (item, index) => {
-    const withinMinutes = (Date.now() - item.item.timestamp) / 60 / 1000;
-
-    if (
-      item.item.ContentType === "liveround" &&
-      withinMinutes > 30 &&
-      item.item.stats?.thruHoles !== 18
-    ) {
-      return null;
-    }
+  const TotalRoundItem = ({ item, index, isLiked }) => {
     return (
       <>
         <View style={socStyles.frame}>
           <SocialItemHeader social={item} index={index} />
           <SocialItemClass social={item} index={index} />
-          <SocialItemFooter social={item} index={index} />
+          <SocialItemFooter social={item} index={index} userLiked={isLiked} />
         </View>
       </>
     );
   };
-  // const SocialItem = new React.Component((social) => {});
+
+  const areEqual = (prevProps, nextProps) => {
+    // console.log(
+    //   "🚀 ~ file: SocialHome.tsx ~ line 340 ~ areEqual ~ nextProps",
+    //   nextProps
+    // );
+
+    console.log(
+      "🚀 ~ file: SocialHome.tsx ~ line 361 ~ areEqual ~ prevProps.item.item.SK",
+      prevProps.item.item.SK
+    );
+    console.log(
+      "🚀 ~ file: SocialHome.tsx ~ line 363 ~ areEqual ~ likedPosts.likedPosts",
+      likedPosts.likedPosts
+    );
+
+    const userLiked = likedPosts.likedPosts.includes(prevProps.item.item.SK);
+    console.log(
+      "🚀 ~ file: SocialHome.tsx ~ line 333 ~ areEqual ~ userLiked",
+      userLiked
+    );
+    const userLikedNext = likedPosts.likedPosts.includes(
+      nextProps.item.item.SK
+    );
+    console.log(
+      "🚀 ~ file: SocialHome.tsx ~ line 336 ~ areEqual ~ userLikedNext",
+      userLikedNext
+    );
+
+    return true;
+  };
+
+  const _renderItem = (item, index) => {
+    const userLiked = likedPosts.likedPosts.includes(item.item.SK);
+    return <TotalWithRender item={item} index={index} isLiked={userLiked} />;
+  };
+
+  const TotalWithRender = React.memo(TotalRoundItem, areEqual);
 
   const fetchRounds = async () => {
     setRefreshing(true);
 
     let user = appState.appState["user_name"];
-    console.log("FETCHING WITH TOKEN ", appState.appState.auth_data);
     try {
       const userRoundData = await authenticatedAxios(
         "GET",
         `${config.api2}rounds?user=${user}`
       );
-      console.log("🚀 ", userRoundData.data);
+      console.log("Round fetch complete");
       setSocialFeedError(false);
 
-      let userLiked = false;
+      const optimizedData = [];
+
       for (const item of userRoundData.data) {
         for (const reaction of item.reactions.Items) {
           if (
             reaction.reactingUser === appState.appState["user_name"] &&
             reaction.reactionType === "like"
           ) {
-            appContext.dispatch({
-              type: "like_post_initial",
-              data: item.SK
-            });
+            setLikedPosts((prev) => ({
+              likedPosts: [...prev.likedPosts, item.SK]
+            }));
           }
         }
-      }
 
+        console.log("contenttype", item);
+        // Stale post? If so, filter out
+        const withinMinutes = (Date.now() - item.timestamp) / 60 / 1000;
+        item.withinMinues = withinMinutes;
+        if (
+          item.ContentType === "liveround" &&
+          withinMinutes > 30 &&
+          item.stats?.thruHoles !== 18
+        ) {
+          // console.log("skip");
+        } else if (
+          // Attach pie chart data to rounds, only for 18 holes
+
+          item.ContentType === "round" &&
+          item.stats.frontScore &&
+          item.stats.backScore
+        ) {
+          item.pieChartData = generatePieData(item.stats);
+          optimizedData.push(item);
+        } else if (item.ContentType === "text") {
+          optimizedData.push(item);
+        } else if (
+          item.ContentType === "image" ||
+          item.ContentType === "video"
+        ) {
+          optimizedData.push(item);
+        }
+      }
+      console.log("Initial done opitimize");
+      setSocialPosts(optimizedData);
       appContext.dispatch({
         type: "set_social_posts",
-        data: userRoundData.data
+        data: optimizedData
       });
+      console.log("Dispatched optimized items");
+      setRefreshing(false);
     } catch (err) {
       console.log("error loading", err);
       setSocialFeedError(`Error Loading Data ${err}`);
     }
-    setRefreshing(false);
   };
 
   useEffect(() => {
@@ -457,7 +447,7 @@ export default function SocialHome({ navigation }) {
   const _onViewableItemsChanged = React.useCallback(
     ({ viewableItems, changed }) => {
       // console.log("Visible items are", viewableItems);
-      // console.log("Changed in this iteration", changed);
+      console.log("Setting visible in this iteration", changed[0].index);
       setVisible(changed[0].index);
     },
     []
@@ -475,14 +465,14 @@ export default function SocialHome({ navigation }) {
           <Text>No posts to show! Are you following anyone?</Text>
         )}
         <FlatList
-          data={appState.socialState.posts}
+          data={socialPosts}
           // onViewableItemsChanged={_onViewableItemsChanged}
           viewabilityConfig={_viewabilityConfig}
           renderItem={(item, index) => _renderItem(item, index)}
+          extraData={likedPosts}
           // initialNumToRender={10}
-          keyExtractor={(item, index) => `itemsocial${index}`}
+          keyExtractor={(item, index) => `itemsocial${item.SK}`}
           refreshing={refreshing}
-          extraData={refreshing}
           onRefresh={fetchRounds}
         />
       </View>

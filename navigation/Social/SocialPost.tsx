@@ -35,8 +35,8 @@ export default function SocialPost({ navigation }) {
     setError("");
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      quality: 1,
-      videoQuality: 0.7,
+      quality: 0.5,
+      videoQuality: 0.5,
       mediaTypes: ImagePicker.MediaTypeOptions.All
     });
     if (!result.cancelled) {
