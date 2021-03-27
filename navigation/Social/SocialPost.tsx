@@ -34,9 +34,8 @@ export default function SocialPost({ navigation }) {
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
-      videoQuality: 1,
+      videoQuality: 0.7,
       mediaTypes: ImagePicker.MediaTypeOptions.All
-      // base64: true
     });
     if (!result.cancelled) {
       setContent(result);
@@ -48,37 +47,50 @@ export default function SocialPost({ navigation }) {
     setPostState("UPLOADING");
 
     const random = Math.round(Math.random() * 100000000000000000);
-    const imagePath = content.uri;
     const imageExt = content.uri.split(".").pop();
-    const imageMime = `image/${imageExt}`;
+    console.log(
+      "🚀 ~ file: SocialPost.tsx ~ line 58 ~ postImage ~ content",
+      content
+    );
 
-    let picture = await fetch(imagePath);
+    let picture = await fetch(content.uri);
     let blob = await picture.blob();
+    console.log("🚀 ~ file: SocialPost.tsx ~ line 54 ~ postImage ~ blob", blob);
 
-    const imageData = new File([blob], `photo.${imageExt}`);
-    const testUpload = await Storage.put(`/${random}.${imageExt}`, imageData, {
+    // const imageData = new File([blob], `photo.${imageExt}`);
+    Storage.put(`/${random}.${imageExt}`, blob, {
       contentType: "imageMime",
       progressCallback(progress) {
         setUploadingProgress(progress.loaded / progress.total);
       }
-    });
-
-    try {
-      await authenticatedAxios("POST", {
-        uri: testUpload.key,
-        contentType: content.type,
-        text: text
+    })
+      .then(async (result) => {
+        console.log(
+          "🚀 ~ file: SocialPost.tsx ~ line 75 ~ .then ~ result",
+          result
+        );
+        try {
+          await authenticatedAxios("POST", `${config.api2}rounds`, {
+            uri: result.key,
+            contentType: content.type,
+            text: text
+          });
+          // picture = null;
+          setContent(null);
+          setPostState("WAIT");
+          setError("");
+          console.log("DONE POSTING");
+        } catch (axiosError) {
+          console.log("AXIOS ERROR", axiosError);
+          setError(axiosError);
+        }
+      })
+      .catch((err) => {
+        console.log("error posting to dynamo", err);
+        setError(`Error posting to database ${err}`);
+        setContent(null);
+        setPostState("WAIT");
       });
-      picture = null;
-      setContent(null);
-      setPostState("WAIT");
-      console.log("DONE POSTING");
-    } catch (err) {
-      console.log("error posting to dynamo", err);
-      setError(`Error posting to database ${err}`);
-      setContent(null);
-      setPostState("WAIT");
-    }
   };
 
   const handleTextPost = () => {
