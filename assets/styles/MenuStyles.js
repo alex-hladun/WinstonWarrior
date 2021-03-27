@@ -63,12 +63,12 @@ export const styles = StyleSheet.create({
   addPlayer: {
     alignSelf: 'flex-start',
     width: 65,
-    height: 65,
+    height: 55,
     textAlign: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 15,
     marginTop: 10,
     borderColor: 'black',
     borderStyle: 'solid',
@@ -80,22 +80,22 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     // padding: 10,
     borderColor: 'black',
     borderStyle: 'solid',
     backgroundColor: Theme.iconStroke,
     // borderWidth: 0.5,
     borderRadius: 100,
-    marginVertical: 7
+    marginVertical: 5
   },
   removePlayer: {
     borderColor: 'black',
     borderStyle: 'solid',
     // borderWidth: 0.5,
     borderRadius: 100,
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
     backgroundColor: Theme.red,
     justifyContent: 'center',
     alignItems: 'center',
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 6
   },
   player: {
-    padding: 20,
+    padding: 17,
     width: 200,
     // marginRight:10
   },

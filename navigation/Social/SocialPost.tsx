@@ -24,13 +24,15 @@ export default function SocialPost({ navigation }) {
   const [uploadingProgress, setUploadingProgress] = useState(0);
   const [error, setError] = useState("");
   const [uri, setUri] = useState(null);
+  const [s3UploadItem, sets3UploadItem] = useState(null);
+  const [resultState, setResultState] = useState(null);
 
   const handlePost = () => {
-    console.log("posting");
     pickImage();
   };
 
   const pickImage = async () => {
+    setError("");
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
@@ -132,21 +134,18 @@ export default function SocialPost({ navigation }) {
                 <Text style={styles.buttonText}>Text</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handlePost}>
+            {/* <TouchableOpacity onPress={handlePost}>
               <View style={[styles.styledButton, styles.playButon]}>
                 <Text style={styles.buttonText}>Share Round</Text>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePost}>
-              <View style={[styles.styledButton, styles.playButon]}>
-                <Text style={styles.buttonText}>Tee Time</Text>
-              </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </>
         )}
         {postState === "UPLOADING" && (
-          <View>
-            <Text>UPLOADING {(100 * uploadingProgress).toFixed(1)}%</Text>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ fontSize: 30, textTransform: "uppercase" }}>
+              UPLOADING {(100 * uploadingProgress).toFixed(1)}%
+            </Text>
           </View>
         )}
         {postState === "PREVIEW" && (

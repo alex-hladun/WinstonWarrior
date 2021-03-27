@@ -44,8 +44,8 @@ export function PlayerAdd({ navigation }) {
               <TextInput
                 style={styles.playerText}
                 autoFocus={index > 1 && true}
-                selectTextOnFocus={true}
-                multiline={true}
+                // selectTextOnFocus={true}
+                multiline={false}
                 onChangeText={(text) => changePlayerName(index, text)}
               >
                 {player}
@@ -215,16 +215,18 @@ export function PlayerAdd({ navigation }) {
             </TouchableOpacity>
           )}
 
-          <View style={{ alignSelf: "center" }}>
-            <Text>Live Round</Text>
-            <Switch onValueChange={toggleLive} value={isLive} />
-          </View>
-
-          <TouchableOpacity onPress={() => handleStart()}>
-            <View style={[styles.startRoundButton, styles.startButton]}>
-              <Text style={styles.buttonText}>Tee Off</Text>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View style={{ alignSelf: "center" }}>
+              <Text style={{ paddingVertical: 10 }}>Live Round</Text>
+              <Switch onValueChange={toggleLive} value={isLive} />
             </View>
-          </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handleStart()}>
+              <View style={[styles.startRoundButton, styles.startButton]}>
+                <Text style={styles.buttonText}>Tee Off</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </>
