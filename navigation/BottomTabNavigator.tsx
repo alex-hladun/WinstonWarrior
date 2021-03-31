@@ -11,6 +11,7 @@ import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 import { Theme } from "../assets/styles/Theme";
 import GolfFlag from "../assets/svg/GolfFlag";
 import ChartLogo from "../assets/svg/ChartLogo";
+import SocialLogo from "../assets/svg/SocialLogo";
 import SocialPost from "./Social/SocialPost";
 import SocialComment from "./Social/SocialComment";
 import SocialFollow from "./Social/SocialFollow";
@@ -30,7 +31,8 @@ export default function BottomTabNavigator() {
         component={SocialNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <GolfFlag name="ios-code" color={Theme.spinGreen1} />
+            <SocialLogo />
+            // <GolfFlag name="ios-code" color={Theme.spinGreen1} />
           )
         }}
       />

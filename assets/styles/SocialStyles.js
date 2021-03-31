@@ -80,6 +80,13 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     borderColor: "black",
     // borderWidth: 1,
+    marginTop: 5,
+    maxWidth: "90%",
+    marginRight: 10
+  },
+  upperFCommentContainer: {
+    flexDirection: "row",
+    borderColor: "black",
     marginTop: 5
   },
   upperF2: {
@@ -626,6 +633,9 @@ export const styles = StyleSheet.create({
   },
   roundDate: {
     fontSize: 12
+  },
+  usernameText: {
+    fontWeight: "bold"
   }
 });
 

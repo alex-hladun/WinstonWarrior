@@ -1,4 +1,4 @@
-import Svg, { Path, Polyline } from "react-native-svg";
+import Svg, { Path, Line, Circle } from "react-native-svg";
 import React, { useState, useRef } from "react";
 import { Theme } from "../styles/Theme";
 
@@ -7,8 +7,8 @@ export default function SocialLogo(props) {
     <Svg
       xmlns="http://www.w3.org/2000/svg"
       class="icon icon-tabler icon-tabler-share"
-      width="44"
-      height="44"
+      width="30"
+      height="36"
       viewBox="0 0 24 24"
       stroke-width="1.5"
       stroke="#2c3e50"

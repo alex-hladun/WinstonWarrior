@@ -1,45 +1,64 @@
-import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  FlatList
+} from "react-native";
 import * as React from "react";
-import * as Linking from "expo-linking";
-import GolfLogo from "../../assets/svg/GolfLogo";
 import styles from "../../assets/styles/PlayStyles";
 import socStyles from "../../assets/styles/SocialStyles";
-import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
 import config from "../../settings.json";
-import { Audio, Video } from "expo-av";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
+const postText = async ({ navigation, route }) => {
+  try {
+    await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
+      roundId: route.params.roundId,
+      reactionType: "comment",
+      reactionComment: text
+    });
+    navigation.goBack();
+  } catch (err) {
+    setError("Error posting to database");
+    console.log("error posting text", err);
+  }
+};
+
+const Comment = ({ item, index }) => {
+  console.log(
+    "🚀 ~ file: SocialComment.tsx ~ line 33 ~ renderItem ~ item",
+    item
+  );
+  if (item.reactionType !== "like") {
+    return (
+      <>
+        <View style={socStyles.upperFContainer}>
+          <View style={socStyles.upperFImage}></View>
+          <View style={socStyles.upperFTextContainer}>
+            <Text style={socStyles.usernameText} key={item.PK}>
+              {item.reactingUser}
+            </Text>
+            <Text key={item.SK}> {item.reactionType}</Text>
+          </View>
+        </View>
+      </>
+    );
+  }
+  return null;
+};
+
 export default function SocialComment({ navigation, route }) {
-  const reactions = route.params.reactions.Items.map((item, index) => {
-    if (item.reactionType !== "like") {
-      return (
-        <Text key={item.PK}>
-          {item.reactingUser} - {item.reactionType}
-        </Text>
-      );
-    }
-  });
+  const reactions = route.params.reactions.Items.map((item, index) => {});
   const appContext = React.useContext(AppContext);
-  const appState = appContext.value.state;
   const [text, setText] = useState("");
   const [error, setError] = useState("");
 
-  const postText = async () => {
-    try {
-      await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
-        roundId: route.params.roundId,
-        reactionType: "comment",
-        reactionComment: text
-      });
-      navigation.goBack();
-    } catch (err) {
-      setError("Error posting to database");
-      console.log("error posting text", err);
-    }
+  const renderItem = ({ item }) => {
+    return <Comment item={item} />;
   };
 
   return (
@@ -56,7 +75,9 @@ export default function SocialComment({ navigation, route }) {
             <Text>Error! {error}</Text>
           </View>
         )}
-        {reactions}
+        <FlatList data={route.params.reactions.Items} renderItem={renderItem} />
+
+        {/* {reactions} */}
         <View style={socStyles.textBox}>
           <TextInput
             style={socStyles.textBox}
