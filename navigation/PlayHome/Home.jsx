@@ -26,7 +26,6 @@ export function Home({ navigation }) {
     navigation.push("Course");
   };
 
-
   return (
     <>
       <View style={styles.background}>
@@ -40,9 +39,6 @@ export function Home({ navigation }) {
               source={require("../../assets/images/winstonLogo.png")}
               style={styles.winnyImage}
             />
-            {/* <Text style={[styles.winstonTxtLogin, styles.buttonText]}>
-              Winston Warrior
-              </Text> */}
           </View>
 
           <View style={styles.holeRow}>

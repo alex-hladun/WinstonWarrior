@@ -217,7 +217,11 @@ export default function PlayScreen({ navigation }) {
 
   let location;
   const getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let { status } = await Permissions.askAsync(
+      Permissions.LOCATION,
+      Permissions.CAMERA,
+      Permissions.CAMERA_ROLL
+    );
     if (status !== "granted") {
       setState({
         ...state,

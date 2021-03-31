@@ -1,7 +1,11 @@
 import { Auth } from "aws-amplify";
 import axios from "axios";
 
-export const authenticatedAxios = async (method, endpoint, payload = null) => {
+export const authenticatedAxios = async (
+  method,
+  endpoint,
+  payload: null | any = null
+) => {
   let authToken;
   try {
     const authedUser = await Auth.currentAuthenticatedUser();
@@ -26,6 +30,10 @@ export const authenticatedAxios = async (method, endpoint, payload = null) => {
         }
       });
     case "PUT":
+      console.log(
+        "🚀 ~ file: authenticatedAxios.ts ~ line 35 ~ payload",
+        payload
+      );
       return await axios.put(endpoint, payload, {
         headers: {
           Authorization: authToken

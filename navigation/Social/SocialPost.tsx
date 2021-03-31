@@ -23,20 +23,30 @@ export default function SocialPost({ navigation }) {
   const [text, setText] = useState("");
   const [uploadingProgress, setUploadingProgress] = useState(0);
   const [error, setError] = useState("");
-  const [uri, setUri] = useState(null);
-  const [s3UploadItem, sets3UploadItem] = useState(null);
-  const [resultState, setResultState] = useState(null);
 
   const handlePost = () => {
     pickImage();
   };
 
+  const pickCamera = async () => {
+    setError("");
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 0.1,
+      videoQuality: 0.1,
+      mediaTypes: ImagePicker.MediaTypeOptions.All
+    });
+    if (!result.cancelled) {
+      setContent(result);
+      setPostState("PREVIEW");
+    }
+  };
   const pickImage = async () => {
     setError("");
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      quality: 0.5,
-      videoQuality: 0.5,
+      quality: 0.1,
+      videoQuality: 0.1,
       mediaTypes: ImagePicker.MediaTypeOptions.All
     });
     if (!result.cancelled) {
@@ -58,8 +68,6 @@ export default function SocialPost({ navigation }) {
     let picture = await fetch(content.uri);
     let blob = await picture.blob();
     console.log("🚀 ~ file: SocialPost.tsx ~ line 54 ~ postImage ~ blob", blob);
-
-    // const imageData = new File([blob], `photo.${imageExt}`);
     Storage.put(`/${random}.${imageExt}`, blob, {
       contentType: "imageMime",
       progressCallback(progress) {
@@ -67,10 +75,6 @@ export default function SocialPost({ navigation }) {
       }
     })
       .then(async (result) => {
-        console.log(
-          "🚀 ~ file: SocialPost.tsx ~ line 75 ~ .then ~ result",
-          result
-        );
         try {
           await authenticatedAxios("POST", `${config.api2}rounds`, {
             uri: result.key,
@@ -124,7 +128,12 @@ export default function SocialPost({ navigation }) {
         )}
         {postState === "WAIT" && (
           <>
-            <TouchableOpacity onPress={handlePost}>
+            <TouchableOpacity onPress={pickCamera}>
+              <View style={[styles.styledButton, styles.playButon]}>
+                <Text style={styles.buttonText}>Camera</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={pickImage}>
               <View style={[styles.styledButton, styles.playButon]}>
                 <Text style={styles.buttonText}>Image/Video</Text>
               </View>
@@ -134,11 +143,6 @@ export default function SocialPost({ navigation }) {
                 <Text style={styles.buttonText}>Text</Text>
               </View>
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={handlePost}>
-              <View style={[styles.styledButton, styles.playButon]}>
-                <Text style={styles.buttonText}>Share Round</Text>
-              </View>
-            </TouchableOpacity> */}
           </>
         )}
         {postState === "UPLOADING" && (
