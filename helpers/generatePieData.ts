@@ -1,10 +1,6 @@
 import { Theme } from "../assets/styles/Theme";
 
 const generatePieData = (stats) => {
-  console.log(
-    "🚀 ~ file: generatePieData.ts ~ line 4 ~ generatePieData ~ stats",
-    stats
-  );
   return [
     {
       name: "Eagles",

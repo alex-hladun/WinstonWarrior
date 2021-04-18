@@ -68,7 +68,7 @@ export default function PlayScreen({ navigation }) {
                     data: JSON.parse(roundID)
                   });
 
-                  setHole();
+                  // setHole();
                   checkAndRestoreScores();
                 }
               }
@@ -85,9 +85,6 @@ export default function PlayScreen({ navigation }) {
 
   const setHole = async () => {
     // Also put scores into state
-    const holeNum = await AsyncStorage.getItem("holeNum");
-    setInitialHole(JSON.parse(holeNum));
-    await appContext.value.setHole(JSON.parse(holeNum));
   };
 
   const checkAndRestoreScores = async () => {
@@ -97,6 +94,12 @@ export default function PlayScreen({ navigation }) {
     const p4roundID = await AsyncStorage.getItem("u4roundid");
     const liveRoundId = await AsyncStorage.getItem("liveRoundId");
     const p1Score = await getScore(JSON.parse(p1roundID));
+
+    const holeNum = await AsyncStorage.getItem("holeNum");
+    setInitialHole(JSON.parse(holeNum));
+    // SET hole id ad part of   SETHOLE
+    await appContext.value.setHole(JSON.parse(holeNum));
+
 
     // Set course holeInfo
 

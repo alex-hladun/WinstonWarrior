@@ -72,8 +72,12 @@ export const getRoundData = async (roundID) => {
     `,
         [roundID],
         (txObj, result) => {
-          const fwHit = result.rows._array[0].fw_hit;
-          roundObj = { ...roundObj, fwHit };
+          if (result.rows?._array?.[0]?.fw_hit) {
+            const fwHit = result.rows._array[0].fw_hit;
+            roundObj = { ...roundObj, fwHit };
+          } else {
+            roundObj = { ...roundObj, fwHit: 0 };
+          }
           // console.log("🚀 ~ file: roundData.js ~ line 14 ~ returnnewPromise ~ roundObj", roundObj)
         },
         (err, mess) => reject(err, mess)

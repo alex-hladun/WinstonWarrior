@@ -460,10 +460,13 @@ function AppProvider(props) {
       type: "set_hole_num",
       data: holeNum
     });
-    dispatch({
-      type: "set_hole_id",
-      data: holeID
-    });
+
+    if (holeID) {
+      dispatch({
+        type: "set_hole_id",
+        data: holeID
+      });
+    }
   };
 
   const loadInitialStats = async (user_id) => {
@@ -838,6 +841,20 @@ function AppProvider(props) {
       data: courseData
     });
 
+    const holeNum = await AsyncStorage.getItem("holeNum");
+
+    if (holeNum) {
+      dispatch({
+        type: "set_hole_id",
+        data: courseData[JSON.parse(holeNum)].id
+      });
+    } else {
+      dispatch({
+        type: "set_hole_id",
+        data: courseData[1].id
+      });
+    }
+
     dispatch({
       type: "done_loading"
     });
@@ -858,6 +875,16 @@ function AppProvider(props) {
   };
 
   const doneRound = () => {
+    AsyncStorage.removeItem("holeNum");
+    AsyncStorage.removeItem("roundID");
+    AsyncStorage.removeItem("u2roundid");
+    AsyncStorage.removeItem("u2name");
+    AsyncStorage.removeItem("u3roundid");
+    AsyncStorage.removeItem("u3name");
+    AsyncStorage.removeItem("u4roundid");
+    AsyncStorage.removeItem("u4name");
+    AsyncStorage.removeItem("course_id");
+    AsyncStorage.removeItem("liveRoundId");
     dispatch({
       type: "set_round_id",
       data: null
@@ -898,17 +925,6 @@ function AppProvider(props) {
     dispatch({
       type: "clear_all_scores"
     });
-
-    AsyncStorage.removeItem("holeNum");
-    AsyncStorage.removeItem("roundID");
-    AsyncStorage.removeItem("u2roundid");
-    AsyncStorage.removeItem("u2name");
-    AsyncStorage.removeItem("u3roundid");
-    AsyncStorage.removeItem("u3name");
-    AsyncStorage.removeItem("u4roundid");
-    AsyncStorage.removeItem("u4name");
-    AsyncStorage.removeItem("course_id");
-    AsyncStorage.removeItem("liveRoundId");
 
     console.log("all info cleared from AppContext");
   };

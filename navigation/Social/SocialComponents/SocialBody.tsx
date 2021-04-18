@@ -17,10 +17,6 @@ const SocialBody = React.memo(({ social, index, visible }) => {
 
   if (content.scoreArray) {
     sortedPlayers = content.scoreArray.map((player, index2) => {
-      console.log(
-        "🚀 ~ file: SocialBody.tsx ~ line 24 ~ sortedPlayers=content.scoreArray.map ~ player",
-        player
-      );
       return (
         <View key={`${index2}s2`} style={[playStyles.playerRow]}>
           <View
@@ -42,7 +38,7 @@ const SocialBody = React.memo(({ social, index, visible }) => {
           </Text>
           <View style={[playStyles.playerPosition]}>
             <Text style={playStyles.bold}>
-              {player.score > 0 ? "+" : player.score < 0 ? "-" : ""}
+              {player.score > 0 ? "+" : ""}
               {player.score}
             </Text>
           </View>
@@ -125,6 +121,7 @@ const SocialBody = React.memo(({ social, index, visible }) => {
                 hasLegend={true}
                 accessor={"count"}
                 backgroundColor={"transparent"}
+                absolute="false"
               />
             )}
           </View>

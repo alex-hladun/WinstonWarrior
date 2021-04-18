@@ -10,11 +10,9 @@ import {
 import { Video } from "expo-av";
 
 import * as React from "react";
-import * as Linking from "expo-linking";
 import { AppContext } from "../context/AppContext";
 import styles from "../assets/styles/PlayStyles";
 import {
-  createWinston,
   createCourses,
   setUpDB,
   removeDB,
@@ -44,6 +42,7 @@ export function SignUp({ navigation }) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [error, setError] = React.useState("");
 
   const handleRegister = async () => {
     console.log("completing signnup");
@@ -68,6 +67,7 @@ export function SignUp({ navigation }) {
       console.log(user);
     } catch (error) {
       console.log("error signing up:", error);
+      setError(error.message);
     }
   };
 
@@ -139,7 +139,9 @@ export function SignUp({ navigation }) {
               {password}
             </TextInput>
           </View>
-          {/* </View> */}
+          <View style={styles.errorBox}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
 
           <TouchableOpacity onPress={() => handleRegister()}>
             <View style={[styles.styledWelcomeButton, styles.playButton]}>

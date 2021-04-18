@@ -59,11 +59,9 @@ export const styles = StyleSheet.create({
   },
   welcomeContainer: {
     flex: 1,
-    justifyContent: "center"
-    // width: '100%',
-    // height: '100%',
-    // padding: 10,
-    // marginBottom: 30
+    justifyContent: "flex-start",
+    marginTop: 40,
+    alignItems: "center"
   },
   high: {
     zIndex: 10
@@ -74,14 +72,10 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     position: "absolute",
     justifyContent: "center"
-    // alignItems: "center",
-    // flexDirection: "column"
-    // padding: 10,
-    // marginBottom: 30
   },
   loginContainer: {
     flex: 1,
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     width: "100%",
     height: "100%",
     padding: 10
@@ -94,7 +88,6 @@ export const styles = StyleSheet.create({
     zIndex: 4,
     backgroundColor: "#fff",
     alignSelf: "center",
-    // top: 100,
     width: "100%",
     height: "100%",
     paddingTop: 50,
@@ -102,8 +95,6 @@ export const styles = StyleSheet.create({
     borderColor: "black",
     borderStyle: "solid",
     borderWidth: 0.5,
-    // borderRadius: 15,
-    // backgroundColor: 'red',
     position: "absolute"
   },
   holeRow: {
@@ -129,16 +120,13 @@ export const styles = StyleSheet.create({
   },
   hole: {
     justifyContent: "center",
-    // height: 40,
     maxWidth: 80,
     minWidth: 70,
-    // backgroundColor: 'green',
     textAlign: "center",
     borderColor: "black",
     borderStyle: "solid",
     borderWidth: 0.5,
     borderRadius: 15,
-    // alignSelf: 'center',
     alignItems: "center",
     padding: 10,
     margin: 10,
@@ -170,7 +158,6 @@ export const styles = StyleSheet.create({
   boxContainer: {
     flexDirection: "column",
     borderColor: "black",
-    // borderWidth: 1,
     backgroundColor: Theme.iconStroke,
     borderRadius: 100,
     borderWidth: 2,
@@ -178,7 +165,6 @@ export const styles = StyleSheet.create({
     borderColor: "black",
     borderBottomWidth: 4,
     borderRightWidth: 4,
-    // borderStyle: 'solid',
     padding: 10,
     width: 100,
     height: 100,
@@ -265,7 +251,7 @@ export const styles = StyleSheet.create({
     padding: 15,
     borderColor: "#f3f8ff",
     justifyContent: "center",
-    marginTop: 100,
+    // marginTop: 100,
     borderRadius: 24,
     alignSelf: "center"
   },
@@ -328,6 +314,17 @@ export const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: "bold"
+  },
+  errorBox: {
+    width: "100%",
+    justifyContent: "center",
+    paddingVertical: 10,
+    borderWidth: 2,
+    borderColor: "red"
+  },
+  errorText: {
+    fontSize: 20,
+    textAlign: "center"
   },
   player: {
     padding: 20,
