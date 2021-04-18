@@ -11,7 +11,6 @@ import styles from "../../assets/styles/MenuStyles";
 import { AppContext } from "../../context/AppContext";
 import { registerUser, createRound } from "../../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
-import axios from "axios";
 import config from "../../settings.json";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
@@ -112,6 +111,7 @@ export function PlayerAdd({ navigation }) {
       type: "set_hole_num",
       data: 1
     });
+    
 
     let roundId;
     if (isLive) {
