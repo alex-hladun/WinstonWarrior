@@ -129,22 +129,22 @@ const SocialBody = React.memo(({ social, index, visible }) => {
             <View style={socStyles.roundCardInnerContainer}>
               <Text style={socStyles.roundCardHeader}>FWY</Text>
               <Text style={socStyles.roundCardSubText}>
-                {stats?.fairways ? stats.fairways : ""} /{" "}
-                {stats?.holesPlayed ? stats.holesPlayed - 1 : ""}
+                {stats?.fairways ? stats.fairways : "0"} /{" "}
+                {stats?.holesPlayed ? stats.holesPlayed : ""}
               </Text>
             </View>
             <View style={socStyles.roundCardInnerContainer}>
               <Text style={socStyles.roundCardHeader}>GIR</Text>
               <Text style={socStyles.roundCardSubText}>
                 {stats?.gir ? stats.gir : 0} /{" "}
-                {stats?.holesPlayed ? stats?.holesPlayed - 1 : ""}
+                {stats?.holesPlayed ? stats?.holesPlayed : ""}
               </Text>
             </View>
             <View style={socStyles.roundCardInnerContainer}>
               <Text style={socStyles.roundCardHeader}>SCR</Text>
               <Text style={socStyles.roundCardSubText}>
-                {stats?.gir ? stats?.scrambles : 18} /{" "}
-                {stats?.holesPlayed ? stats?.holesPlayed - stats?.gir - 1 : ""}
+                {stats?.scrambles ? stats?.scrambles : 0} /{" "}
+                {stats?.holesPlayed ? stats?.holesPlayed - stats?.gir : ""}
               </Text>
             </View>
           </View>

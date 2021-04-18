@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View } from "./Themed";
 import { TouchableOpacity, Image, Switch } from "react-native";
 import styles from "../assets/styles/PlayStyles";
@@ -7,7 +7,6 @@ import XSymbol from "../assets/svg/XSymbol";
 import { postRound } from "../db/dbSetup";
 import { useHandicap } from "../hooks/useHandicap";
 import { netHandicapDiffCalc } from "../helpers/handicap";
-import axios from "axios";
 import config from "../settings.json";
 import { finalRoundPost } from "../helpers/finalRoundPost";
 import { authenticatedAxios } from "../helpers/authenticatedAxios";

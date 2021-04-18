@@ -20,7 +20,11 @@ const generateScoreArray = (stats) => {
   }
 
   const sortedArray = scoreArr.sort((a, b) =>
-    a.totalScore < b.totalScore ? 1 : b.totalScore < a.totalScore ? -1 : 0
+    a.totalScore > b.totalScore ? 1 : b.totalScore > a.totalScore ? -1 : 0
+  );
+  console.log(
+    "🚀 ~ file: generateScoreArray.js ~ line 25 ~ generateScoreArray ~ sortedArray",
+    sortedArray
   );
 
   sortedArray[0]["position"] = 1;

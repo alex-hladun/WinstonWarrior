@@ -5,15 +5,13 @@ import styles from "../assets/styles/ScoreStyles";
 import { Picker } from "@react-native-community/picker";
 import Slider from "@react-native-community/slider";
 import CheckSymbol from "../assets/svg/CheckSymbol";
-import db, { getScore, postScore } from "../db/dbSetup";
+import { postScore } from "../db/dbSetup";
 import { AppContext } from "../context/AppContext";
 import XSymbol from "../assets/svg/XSymbol";
 import { Theme } from "../assets/styles/Theme";
 import LeftSymbol from "../assets/svg/LeftSymbol";
 import RightSymbol from "../assets/svg/RightSymbol";
-import axios from "axios";
 import config from "../settings.json";
-import { calculatedHolesPlayed } from "../helpers/handicap";
 import { liveRoundCalc } from "../helpers/liveRoundCalc";
 import { authenticatedAxios } from "../helpers/authenticatedAxios";
 
