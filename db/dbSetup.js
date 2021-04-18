@@ -725,7 +725,8 @@ export const loadTotalPctHistory = async (user_id) => {
       // HitFW
       tx.executeSql(
         `
-    SELECT COUNT(*) AS fw_hit FROM scores 
+    SELECT COUNT(*) AS fw_hit, rounds.end_date AS date
+    FROM scores 
     JOIN rounds on rounds.round_id = scores.round_id
     WHERE rounds.user_id = ? AND (rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9) AND rounds.end_date NOT NULL AND scores.driver_direction = 50
     GROUP BY scores.round_id
@@ -741,7 +742,8 @@ export const loadTotalPctHistory = async (user_id) => {
           // );
           pctObj = {
             ...pctObj,
-            fwyHit: result.rows._array.map((i) => i.fw_hit)
+            fwyHit: result.rows._array.map((i) => i.fw_hit),
+            fwyDates: result.rows._array.map((i) => i.date)
           };
         },
         (err, mess) => console.log("err getting stats", reject(mess))

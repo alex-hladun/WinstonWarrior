@@ -158,10 +158,7 @@ export default function Score({
           appState.playState,
           appState.appState.user_name
         );
-        console.log(
-          "🚀 ~ file: Score.jsx ~ line 170 ~ handleScoreSubmit ~ putObj",
-          putObj
-        );
+        console.log("🚀 ~ LiveRoundCalcObj", putObj);
         authenticatedAxios("PUT", `${config.api2}rounds`, putObj);
       } catch (err) {
         console.log("error with liveround post to backend", err);

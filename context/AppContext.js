@@ -557,10 +557,13 @@ function AppProvider(props) {
 
       const fwyPctHistory = totalpctHistoy.totalHolesPlayed
         .map((hP, i) => {
-          if (totalpctHistoy.fwyHit[i]) {
-            return Math.round((totalpctHistoy.fwyHit[i] * 100) / hP, 0);
-          } else {
+          const indexOf = totalpctHistoy.fwyDates.indexOf(
+            totalpctHistoy.roundDates[i]
+          );
+          if (indexOf < 0) {
             return 0;
+          } else {
+            return Math.round((totalpctHistoy.fwyHit[indexOf] * 100) / hP, 0);
           }
         })
         .reverse();

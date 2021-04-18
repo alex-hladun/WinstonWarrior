@@ -18,19 +18,20 @@ export const finalRoundPost = async (playState, p1name) => {
     gir: 0,
     scrambles: 0,
     fairways: 0,
-    holesPlayed: liveRoundObj.thruHoles,
+    holesPlayed: liveRoundObj.thruHoles + 1,
     totalPutts: 0,
     totalScore: 0,
     frontScore: 0,
+    holesPlayed: 0,
     backScore: 0,
     course: playState.courseName
   };
   const p1Info = await getScore(playState.roundId);
-  p1Info.forEach((hole) => {
-    console.log(
-      "🚀 ~ file: finalRoundPost.js ~ line 34 ~ p1Info.forEach ~ hole",
-      hole
-    );
+  console.log(
+    "🚀 ~ file: finalRoundPost.js ~ line 30 ~ finalRoundPost ~ p1Info",
+    p1Info.length
+  );
+  for (const hole of p1Info) {
     if (hole.total_shots - hole.hole_par === -1) {
       totalBirds.birdies++;
     } else if (hole.total_shots - hole.hole_par === 0) {
@@ -62,7 +63,8 @@ export const finalRoundPost = async (playState, p1name) => {
     }
     totalBirds.totalPutts += hole.total_putts;
     totalBirds.totalScore += hole.total_shots;
-  });
+    totalBirds.holesPlayed++;
+  }
 
   return totalBirds;
 };

@@ -9,21 +9,24 @@ import {
 import * as React from "react";
 import styles from "../../assets/styles/PlayStyles";
 import socStyles from "../../assets/styles/SocialStyles";
-import { AppContext } from "../../context/AppContext";
 import { useState } from "react";
 import config from "../../settings.json";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
-const postText = async ({ navigation, route }) => {
+const postText = async (navigation, roundId, text) => {
+  console.log("🚀 ~ file: SocialComment.tsx ~ line 18 ~ postText ~ text", text);
+  console.log(
+    "🚀 ~ file: SocialComment.tsx ~ line 18 ~ postText ~ roundId",
+    roundId
+  );
   try {
     await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
-      roundId: route.params.roundId,
+      roundId: roundId,
       reactionType: "comment",
       reactionComment: text
     });
     navigation.goBack();
   } catch (err) {
-    setError("Error posting to database");
     console.log("error posting text", err);
   }
 };
@@ -52,13 +55,17 @@ const Comment = ({ item, index }) => {
 };
 
 export default function SocialComment({ navigation, route }) {
-  const reactions = route.params.reactions.Items.map((item, index) => {});
-  const appContext = React.useContext(AppContext);
+  console.log(
+    "🚀 ~ file: SocialComment.tsx ~ line 59 ~ SocialComment ~ route",
+    route
+  );
   const [text, setText] = useState("");
   const [error, setError] = useState("");
 
-  const renderItem = ({ item }) => {
-    return <Comment item={item} />;
+  const [roundId, setRoundId] = useState(route.params.roundId);
+
+  const renderItem = ({ item, index }) => {
+    return <Comment item={item} index={index} />;
   };
 
   return (
@@ -69,15 +76,13 @@ export default function SocialComment({ navigation, route }) {
           style={styles.bgImage}
         />
       </View>
-      <View style={styles.socialFeed}>
+      <View style={socStyles.socialFeedContainer}>
         {error !== "" && (
           <View>
             <Text>Error! {error}</Text>
           </View>
         )}
         <FlatList data={route.params.reactions.Items} renderItem={renderItem} />
-
-        {/* {reactions} */}
         <View style={socStyles.textBox}>
           <TextInput
             style={socStyles.textBox}
@@ -88,7 +93,7 @@ export default function SocialComment({ navigation, route }) {
             {text}
           </TextInput>
         </View>
-        <TouchableOpacity onPress={postText}>
+        <TouchableOpacity onPress={() => postText(navigation, roundId, text)}>
           <View style={styles.styledButton}>
             <Text style={styles.buttonText}>Post</Text>
           </View>

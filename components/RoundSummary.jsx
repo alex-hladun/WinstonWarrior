@@ -214,6 +214,7 @@ export default function RoundSummary({ handleRoundSummary }) {
       appState.playState,
       appState.appState.user_name
     );
+    console.log("🚀 ~ FinalRoundObj", finalRoundObj);
 
     if (postSocialRound) {
       authenticatedAxios("POST", `${config.api2}rounds`, {

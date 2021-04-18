@@ -55,7 +55,10 @@ export default function PlayScreen({ navigation }) {
             [
               {
                 text: "No",
-                style: "cancel"
+                style: "cancel",
+                onPress: () => {
+                  appContext.value.doneRound();
+                }
               },
               {
                 text: "Yes",
@@ -83,14 +86,8 @@ export default function PlayScreen({ navigation }) {
   const setHole = async () => {
     // Also put scores into state
     const holeNum = await AsyncStorage.getItem("holeNum");
-    const holeNumDig = JSON.parse(holeNum);
-    setInitialHole(holeNumDig);
-    await appContext.value.setHole(holeNumDig);
-
-    appContext.dispatch({
-      type: "set_view_mode",
-      data: "play"
-    });
+    setInitialHole(JSON.parse(holeNum));
+    await appContext.value.setHole(JSON.parse(holeNum));
   };
 
   const checkAndRestoreScores = async () => {
@@ -145,10 +142,6 @@ export default function PlayScreen({ navigation }) {
       });
 
       appContext.dispatch({
-        type: "set_player_2",
-        data: p2name
-      });
-      appContext.dispatch({
         type: "set_user_2_round_id",
         data: p2roundID
       });
@@ -164,11 +157,6 @@ export default function PlayScreen({ navigation }) {
         type: "restore_p3_score",
         data: scoreObj3,
         name: p3name
-      });
-
-      appContext.dispatch({
-        type: "set_player_3",
-        data: p3name
       });
 
       appContext.dispatch({
@@ -190,15 +178,14 @@ export default function PlayScreen({ navigation }) {
       });
 
       appContext.dispatch({
-        type: "set_player_4",
-        data: p4name
-      });
-
-      appContext.dispatch({
         type: "set_user_4_round_id",
         data: p4roundID
       });
     }
+    appContext.dispatch({
+      type: "set_view_mode",
+      data: "play"
+    });
   };
 
   const [state, setState] = React.useState({
@@ -215,7 +202,6 @@ export default function PlayScreen({ navigation }) {
 
   let locationUpdate;
 
-  let location;
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(
       Permissions.LOCATION,

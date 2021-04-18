@@ -2,13 +2,10 @@ import { View, Text, Image, Dimensions } from "react-native";
 import config from "../../settings.json";
 import * as React from "react";
 import styles from "../../assets/styles/SocialStyles";
-import styles2 from "../../assets/styles/StatStyles";
-import XSymbol from "../../assets/svg/XSymbol";
 import { Theme } from "../../assets/styles/Theme";
 import HeartSymbol from "../../assets/svg/HeartSymbol";
 import MessageSymbol from "../../assets/svg/MessageSymbol";
-import { AppContext } from "../../context/AppContext";
-import { Audio, Video } from "expo-av";
+import { Video } from "expo-av";
 var dayjs = require("dayjs");
 import { PieChart } from "react-native-chart-kit";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -76,7 +73,6 @@ export const SocialItem = (social) => {
   ];
   if (social.item.ContentType === "round") {
   }
-  // console.log("🚀🚀🚀🚀 ~ file: Rounds.jsx ~ line 19 ", withinMinutes);
   if (social.item.ContentType === "liveround" && withinMinutes > 30) {
     return;
   }
@@ -223,9 +219,12 @@ export const SocialItem = (social) => {
         <TouchableOpacity style={styles.commentLogo}>
           <HeartSymbol fill={true} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.commentLogo} onPress={() => {
-          navigator.push
-        }}>
+        <TouchableOpacity
+          style={styles.commentLogo}
+          onPress={() => {
+            navigator.push;
+          }}
+        >
           <MessageSymbol />
         </TouchableOpacity>
       </View>

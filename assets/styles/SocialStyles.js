@@ -32,6 +32,13 @@ export const styles = StyleSheet.create({
   upperText: {
     paddingHorizontal: 2
   },
+  commentFeedContainer: {
+    width: "100%",
+    maxHeight: "25vh",
+    zIndex: 2
+    // top: 1,
+    // bottom: 77
+  },
   commentLogo: { margin: 10, height: 30, width: 30 },
   commentBar: {
     // height: 50,
@@ -52,7 +59,16 @@ export const styles = StyleSheet.create({
     width: 35,
     margin: 15,
     marginTop: 10,
-    backgroundColor: "black"
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "black",
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderRadius: 100
+  },
+  profileImage: {
+    width: "80%",
+    height: "80%"
   },
   background: {
     backgroundColor: Theme.ygCrayola,
@@ -64,6 +80,20 @@ export const styles = StyleSheet.create({
   comment: {
     fontWeight: "500",
     fontSize: 15
+  },
+  header: {
+    fontWeight: "700",
+    fontSize: 25,
+    textAlign: "center"
+  },
+  marginContainer: {
+    marginBottom: 10
+  },
+  liveRoundSummary: {
+    paddingTop: 10
+  },
+  topMargin: {
+    marginTop: 15
   },
   commentContainer: {
     padding: 5,
@@ -114,7 +144,7 @@ export const styles = StyleSheet.create({
     width: "90%",
     height: "auto",
     backgroundColor: "white",
-    margin: 20,
+    margin: 15,
     color: "black",
     borderRadius: 20
   },
@@ -198,10 +228,8 @@ export const styles = StyleSheet.create({
   },
   roundCardContainer: {
     width: width - 30,
-    marginTop: 15,
     marginBottom: 15,
     paddingBottom: 10,
-    // height: 0.6 * height,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
@@ -245,7 +273,6 @@ export const styles = StyleSheet.create({
     opacity: 0.5,
     textAlign: "center",
     fontSize: 20
-    // fontWeight: 'bold'
   },
   clubCardHeader: {
     justifyContent: "center",
@@ -255,11 +282,8 @@ export const styles = StyleSheet.create({
     opacity: 0.35,
     paddingVertical: 10,
     height: "auto",
-    // borderRadius: 50,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50
-    // marginHorizontal: 10,
-    // padding: 20
   },
   clubTypeText: {
     fontSize: 30,
@@ -274,9 +298,7 @@ export const styles = StyleSheet.create({
     opacity: 1,
     textAlign: "center",
     alignSelf: "center",
-    // marginHorizontal: 10,
     padding: 10
-    // fontStyle: 'italic'
   },
   courseText: {
     fontSize: 30,

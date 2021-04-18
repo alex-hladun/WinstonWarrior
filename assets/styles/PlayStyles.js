@@ -29,9 +29,9 @@ export const styles = StyleSheet.create({
   },
   gradientBackground: {
     // zIndex: 2,
-    position: 'absolute',
-    width: '100%',
-    height: '100%'
+    position: "absolute",
+    width: "100%",
+    height: "100%"
   },
   homePageContainer: {
     flex: 1,
@@ -150,7 +150,7 @@ export const styles = StyleSheet.create({
     left: 0,
     alignItems: "stretch",
     bottom: 0,
-    right: 0,
+    right: 0
   },
   modalContainer: {
     alignItems: "center",
@@ -356,6 +356,7 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
     width: 48,
     height: 48,
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     // padding: 5
