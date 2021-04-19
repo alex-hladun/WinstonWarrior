@@ -56,7 +56,6 @@ function RootNavigator() {
   };
 
   React.useEffect(() => {
-    console.log("running checklogin in index 66666");
     checkLogin();
   }, [Auth]);
 
