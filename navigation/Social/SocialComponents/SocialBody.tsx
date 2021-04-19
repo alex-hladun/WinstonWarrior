@@ -91,7 +91,7 @@ const SocialBody = React.memo(({ social, index, visible }) => {
               {stats?.course ? stats?.course : "Sample Course"}
             </Text>
             <View style={socStyles.roundCardRow}>
-              {stats?.frontScore && (
+              {stats?.frontScore > 0 && (
                 <View style={socStyles.roundCardInnerContainer}>
                   <Text style={socStyles.roundCardHeader}>Front</Text>
                   <Text style={socStyles.roundCardScore}>

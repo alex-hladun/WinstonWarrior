@@ -147,7 +147,6 @@ const SocialHome = ({ navigation }) => {
           (item.stats.frontScore || item.stats.backScore)
         ) {
           item.pieChartData = generatePieData(item.stats);
-          console.log("ITEM SCORE", item);
           opitimizedObj[item.SK] = item;
         } else if (item.ContentType === "text") {
           // Attach text
