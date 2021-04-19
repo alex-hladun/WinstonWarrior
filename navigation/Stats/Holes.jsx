@@ -11,6 +11,9 @@ import styles from "../../assets/styles/StatStyles";
 import { LineChart, PieChart } from "react-native-chart-kit";
 import { Theme } from "../../assets/styles/Theme";
 import { AppContext } from "../../context/AppContext";
+import CheckSymbol from "../../assets/svg/CheckSymbol";
+import XSymbol from "../../assets/svg/XSymbol";
+import RedXSymbol from "../../assets/svg/RedXSymbol";
 
 export function Holes() {
   const width = Dimensions.get("window").width;
@@ -169,9 +172,24 @@ export function Holes() {
           {holeData[holeNum].fwyHistory.map((i, j) => {
             if (j > holeData[holeNum].fwyHistory.length - 6) {
               return (
-                <Text key={`fwyx${j}`} style={styles.customText}>
-                  {i}
-                </Text>
+                <>
+                  <View style={styles.whiteFairwayLine} />
+                  <View
+                    style={{
+                      backgroundColor: `${i === 50 ? "green" : "red"}`,
+                      padding: 10,
+                      borderRadius: 50,
+                      marginLeft: `${i - 10}%`,
+                      marginRight: `${100 - i - 10}%`,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Text key={`fwyx${j}`} style={styles.customText}>
+                      {i}
+                    </Text>
+                  </View>
+                </>
               );
             }
           })}
@@ -184,6 +202,7 @@ export function Holes() {
     return (
       <>
         <View style={styles.customCont1}>
+          {/* <View style={{ height: 0 }} /> */}
           {holeData[holeNum].girHistory.map((i, j) => {
             if (j > holeData[holeNum].girHistory.length - 6) {
               return (
@@ -195,15 +214,55 @@ export function Holes() {
           })}
         </View>
         <View style={styles.customCont2}>
+          <View
+            style={{
+              height: 20,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              // paddingHorizontal: 10
+            }}
+          >
+            <Text style={styles.customText}>GIR</Text>
+            <Text style={styles.customText}>Scramble</Text>
+            <Text style={styles.customText}>Penalty</Text>
+          </View>
           {holeData[holeNum].girHistory.map((i, j) => {
             const scramble =
-              holeData[holeNum].scrambleHistory[j] === 1 ? " Yes" : " No";
+              holeData[holeNum].scrambleHistory[j] === 1 ? (
+                <CheckSymbol color={Theme.spinGreen1} />
+              ) : (
+                <RedXSymbol color={Theme.red} />
+              );
             if (j > holeData[holeNum].girHistory.length - 6) {
               return (
-                <Text key={`fwyx${j}`} style={styles.customText}>
-                  GIR: {i > 0 ? "YES" : "NO"}. Scramble: {scramble}. Penalty:{" "}
-                  {holeData[holeNum].penaltyHistory[j] === 0 ? "No" : "Yes"}
-                </Text>
+                <>
+                  <View
+                    style={{
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingRight: 20
+                    }}
+                  >
+                    {i > 0 ? (
+                      <CheckSymbol color={Theme.spinGreen1} />
+                    ) : (
+                      <RedXSymbol color={Theme.red} />
+                    )}
+                    {scramble}
+                    {holeData[holeNum].penaltyHistory[j] === 0 ? (
+                      <Text
+                        style={{ textAlign: "center", color: Theme.spinGreen1 }}
+                      >
+                        0
+                      </Text>
+                    ) : (
+                      <Text style={{ textAlign: "center", color: Theme.red }}>
+                        {holeData[holeNum].penaltyHistory[j]}
+                      </Text>
+                    )}
+                  </View>
+                </>
               );
             }
           })}
@@ -381,32 +440,6 @@ export function Holes() {
                   </View>
                 </TouchableOpacity>
               </View>
-              {/* <View style={styles.holeRow}>
-                  <TouchableOpacity onPress={() => setChart('Scoring')}>
-                    <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
-                      <View style={styles.boxHeader}>
-                        <Text style={styles.boxHeaderText}>Eagles</Text>
-                      </View>
-                      <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].eagles : 0}</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setChart('Scoring')}>
-                  <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
-                    <View style={styles.boxHeader}>
-                      <Text style={styles.boxHeaderText}>Birds</Text>
-                    </View>
-                    <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].birdies : 0}</Text>
-                  </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setChart('Scoring')}>
-                  <View style={[styles.boxContainer, chartType === 'Scoring' && styles.selectBoxHole]}>
-                    <View style={styles.boxHeader}>
-                      <Text style={styles.boxHeaderText}>Pars</Text>
-                    </View>
-                    <Text style={styles.boxContent}>{totalInfo.birdieObj ? totalInfo.birdieObj[holeNum].pars : 0}</Text>
-                  </View>
-                  </TouchableOpacity>
-                </View> */}
             </>
           ) : (
             <View style={styles.chartContainer}>

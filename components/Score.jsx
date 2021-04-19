@@ -465,7 +465,7 @@ export default function Score({
           <TouchableOpacity onPress={(event) => handleScoreSubmit()}>
             <View style={[styles.checkSymbol]}>
               <Text>
-                <CheckSymbol />
+                <CheckSymbol color={Theme.iconStroke} />
               </Text>
             </View>
           </TouchableOpacity>

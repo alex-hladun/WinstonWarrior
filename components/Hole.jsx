@@ -23,6 +23,7 @@ import RoundSummary from "./RoundSummary";
 import ShotTrack from "./ShotTrack";
 import { AppContext } from "../context/AppContext";
 import { PlayContext } from "../context/PlayContext";
+import { Theme } from "../assets/styles/Theme.js";
 
 export default function Hole({ location, initialHole = 1 }) {
   // Loads all courseInfo into playcontext
@@ -382,7 +383,7 @@ export default function Hole({ location, initialHole = 1 }) {
         <TouchableOpacity onPress={() => handleScoreEnter()}>
           <View style={[styles.floatingHoleMarker, styles.check]}>
             <Text>
-              <CheckSymbol style={styles.icon} />
+              <CheckSymbol style={styles.icon} color={Theme.iconStroke} />
             </Text>
           </View>
         </TouchableOpacity>

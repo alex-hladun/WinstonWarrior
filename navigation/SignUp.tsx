@@ -55,7 +55,6 @@ export function SignUp({ navigation }) {
           email
         }
       });
-      console.log("signed up");
       const existingDb = checkExistingDb();
       if (!existingDb) {
         await resetDatabase();
@@ -63,8 +62,6 @@ export function SignUp({ navigation }) {
       }
 
       await Auth.signIn(username, password);
-
-      console.log("AUTHENTICATED AFTER SIGNING UP ");
       appContext.dispatch({
         type: "signed_up",
         data: username

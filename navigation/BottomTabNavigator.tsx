@@ -141,7 +141,8 @@ function StatNavigator() {
         name="StatScreen"
         component={TabTwoScreen}
         options={({ navigation, route }) => ({
-          headerTitle: "Stats"
+          headerTitle: "Stats",
+          headerShown: true
         })}
       />
     </StatStack.Navigator>

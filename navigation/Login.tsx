@@ -28,8 +28,6 @@ export function Login({ navigation }) {
     try {
       setLoading(true);
       const authedUser = await Auth.currentAuthenticatedUser();
-      console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
-      console.log("AUTHENTICATED WITH COGNITO");
       const existingDb = await checkExistingDb();
       if (!existingDb) {
         await resetDatabase();

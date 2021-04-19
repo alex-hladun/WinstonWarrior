@@ -37,20 +37,21 @@ export const styles = StyleSheet.create({
     backgroundColor: Theme.darkCharcoal
   },
   customText: {
-    color: Theme.iconStroke
+    color: Theme.iconStroke,
+    textAlign: "center"
   },
   customCont1: {
     flexDirection: "column",
     width: "20%",
     backgroundColor: Theme.spinGreen2,
     justifyContent: "space-evenly",
-    alignItems: "center"
+    alignItems: "center",
   },
   customCont2: {
     flexDirection: "column",
     justifyContent: "space-evenly",
-    alignItems: "center",
-    width: "80%",
+    paddingHorizontal: 25,
+    width: "80%"
   },
   xContainer: {
     backgroundColor: Theme.red,
@@ -510,6 +511,13 @@ export const styles = StyleSheet.create({
   },
   roundDate: {
     fontSize: 12
+  },
+  whiteFairwayLine: {
+    width: "100%",
+    height: 2,
+    backgroundColor: "white",
+    position: "relative",
+    top: 25
   }
 });
 

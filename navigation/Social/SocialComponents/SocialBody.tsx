@@ -84,22 +84,22 @@ const SocialBody = React.memo(({ social, index, visible }) => {
       {content.ContentType === "round" && (
         <View style={[socStyles.roundCardContainer]}>
           <View style={socStyles.clubCardHeader}>
-            <Text style={socStyles.clubAvgText}>
-              {stats?.frontScore + stats?.backScore}
-            </Text>
+            <Text style={socStyles.clubAvgText}>{stats?.totalScore}</Text>
           </View>
           <View style={socStyles.roundCardInnerContainer}>
             <Text style={socStyles.courseText}>
               {stats?.course ? stats?.course : "Sample Course"}
             </Text>
             <View style={socStyles.roundCardRow}>
-              <View style={socStyles.roundCardInnerContainer}>
-                <Text style={socStyles.roundCardHeader}>Front</Text>
-                <Text style={socStyles.roundCardScore}>
-                  {stats?.frontScore ? stats?.frontScore : ""}
-                </Text>
-              </View>
-              {stats?.backScore && (
+              {stats?.frontScore && (
+                <View style={socStyles.roundCardInnerContainer}>
+                  <Text style={socStyles.roundCardHeader}>Front</Text>
+                  <Text style={socStyles.roundCardScore}>
+                    {stats?.frontScore ? stats.frontScore : ""}
+                  </Text>
+                </View>
+              )}
+              {stats?.backScore > 0 && (
                 <View style={socStyles.roundCardRow}>
                   <View style={socStyles.roundCardInnerContainer}>
                     <Text style={socStyles.roundCardHeader}>Back</Text>
@@ -110,7 +110,7 @@ const SocialBody = React.memo(({ social, index, visible }) => {
                 </View>
               )}
             </View>
-            {stats?.frontScore && (
+            {(stats?.frontScore || stats?.backScore) && (
               <PieChart
                 data={content.pieChartData}
                 chartConfig={pieChartConfig}

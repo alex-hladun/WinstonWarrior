@@ -144,13 +144,13 @@ const SocialHome = ({ navigation }) => {
         } else if (
           // Attach pie chart data to rounds, only for 18 holes
           item.ContentType === "round" &&
-          item.stats.frontScore &&
-          item.stats.backScore
+          (item.stats.frontScore || item.stats.backScore)
         ) {
           item.pieChartData = generatePieData(item.stats);
+          console.log("ITEM SCORE", item);
           opitimizedObj[item.SK] = item;
-          // optimizedData.push(item);
         } else if (item.ContentType === "text") {
+          // Attach text
           opitimizedObj[item.SK] = item;
 
           optimizedData.push(item);

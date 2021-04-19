@@ -1,8 +1,7 @@
 import Svg, { Path, Line } from "react-native-svg";
-import React, { useState, useRef } from "react";
-import { Theme } from "../styles/Theme";
+import React from "react";
 
-export default function XSymbol(props) {
+export default function RedXSymbol({ color }) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +10,7 @@ export default function XSymbol(props) {
       height="44"
       viewBox="0 0 24 24"
       stroke-width="1.5"
-      stroke={Theme.iconStroke}
+      stroke={color}
       fill="none"
       stroke-linecap="round"
       stroke-linejoin="round"
