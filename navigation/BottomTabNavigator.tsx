@@ -15,6 +15,7 @@ import SocialLogo from "../assets/svg/SocialLogo";
 import SocialPost from "./Social/SocialPost";
 import SocialComment from "./Social/SocialComment";
 import SocialFollow from "./Social/SocialFollow";
+import { SignUp } from "./SignUp";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -79,9 +80,54 @@ function SocialNavigator() {
           headerShown: true
         })}
       />
-      <SocialStack.Screen name="Post" component={SocialPost} />
-      <SocialStack.Screen name="Follow" component={SocialFollow} />
-      <SocialStack.Screen name="Comment" component={SocialComment} />
+      <SocialStack.Screen
+        name="Post"
+        component={SocialPost}
+        options={({ navigation, route }) => ({
+          headerTitle: "Post",
+          headerShown: true,
+          headerStyle: {
+            height: 100,
+            backgroundColor: "#white",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.4,
+            shadowRadius: 3
+          }
+        })}
+      />
+      <SocialStack.Screen
+        name="Follow"
+        component={SocialFollow}
+        options={({ navigation, route }) => ({
+          headerTitle: "Follow",
+          headerShown: true,
+          headerStyle: {
+            height: 100,
+            backgroundColor: "#white",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.4,
+            shadowRadius: 3
+          }
+        })}
+      />
+      <SocialStack.Screen
+        name="Comment"
+        component={SocialComment}
+        options={({ navigation, route }) => ({
+          headerTitle: "Comment",
+          headerShown: true,
+          headerStyle: {
+            height: 100,
+            backgroundColor: "#white",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.4,
+            shadowRadius: 3
+          }
+        })}
+      />
     </SocialStack.Navigator>
   );
 }

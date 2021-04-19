@@ -19,6 +19,7 @@ import SocialBody from "./SocialComponents/SocialBody";
 import SocialHeader from "./SocialComponents/SocialHeader";
 import SocialFooter from "./SocialComponents/SocialFooter";
 import generateScoreArray from "./generateScoreArray";
+import Auth from "@aws-amplify/auth";
 
 const TotalRoundItem = React.memo(
   ({ item, index, onPress, navigation, visible }) => {
@@ -172,6 +173,7 @@ const SocialHome = ({ navigation }) => {
     } catch (err) {
       console.log("error loading", err);
       setSocialFeedError(`Error Loading Data ${err}`);
+      await Auth.currentAuthenticatedUser();
     }
   };
 

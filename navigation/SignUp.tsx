@@ -5,10 +5,10 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 import { Video } from "expo-av";
-
 import * as React from "react";
 import { AppContext } from "../context/AppContext";
 import styles from "../assets/styles/PlayStyles";
@@ -43,9 +43,10 @@ export function SignUp({ navigation }) {
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleRegister = async () => {
-    console.log("completing signnup");
+    setLoading(true);
     try {
       const { user } = await Auth.signUp({
         username,
@@ -60,13 +61,19 @@ export function SignUp({ navigation }) {
         await resetDatabase();
         registerUser(username);
       }
+
+      await Auth.signIn(username, password);
+
+      console.log("AUTHENTICATED AFTER SIGNING UP ");
       appContext.dispatch({
         type: "signed_up",
         data: username
       });
-      console.log(user);
+
+      setLoading(false);
     } catch (error) {
       console.log("error signing up:", error);
+      setLoading(false);
       setError(error.message);
     }
   };
@@ -145,7 +152,11 @@ export function SignUp({ navigation }) {
 
           <TouchableOpacity onPress={() => handleRegister()}>
             <View style={[styles.styledWelcomeButton, styles.playButton]}>
-              <Text style={styles.buttonText}>Sign Up</Text>
+              {loading ? (
+                <ActivityIndicator color="#000000" size="small" />
+              ) : (
+                <Text style={styles.buttonText}>Sign Up</Text>
+              )}
             </View>
           </TouchableOpacity>
         </View>

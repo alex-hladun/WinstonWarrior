@@ -1,13 +1,8 @@
 import * as React from "react";
-import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
-import EditScreenInfo from "../components/EditScreenInfo";
+import { View, Text, TouchableOpacity } from "react-native";
 import { AppContext } from "../context/AppContext";
 import SocialHome from "../navigation/Social/SocialHome";
-import AsyncStorage from "@react-native-community/async-storage";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { Theme } from "../assets/styles/Theme";
 import { useFonts } from "expo-font";
 import FollowLogo from "../assets/svg/FollowLogo";
 import PenLogo from "../assets/svg/PenLogo";

@@ -275,6 +275,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     textTransform: "uppercase",
     textAlign: "center",
+    justifyContent: "center",
     fontWeight: "bold",
     letterSpacing: 3
   },
@@ -318,9 +319,7 @@ export const styles = StyleSheet.create({
   errorBox: {
     width: "100%",
     justifyContent: "center",
-    paddingVertical: 10,
-    borderWidth: 2,
-    borderColor: "red"
+    paddingVertical: 10
   },
   errorText: {
     fontSize: 20,

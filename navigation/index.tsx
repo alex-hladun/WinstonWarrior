@@ -1,21 +1,16 @@
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { RootStackParamList } from "../types";
 import BottomTabNavigator from "./BottomTabNavigator";
-import LinkingConfiguration from "./LinkingConfiguration";
 import { Login } from "./Login";
-import { SignUp } from "./SignUp";
+import { resetDatabase, SignUp } from "./SignUp";
 import { AppContext } from "../context/AppContext";
 import { Auth } from "aws-amplify";
+import { checkExistingDb } from "../db/checkExistingDb";
+import { registerUser } from "../db/dbSetup";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -26,10 +21,7 @@ export default function SocialNavigation({
   colorScheme: ColorSchemeName;
 }) {
   return (
-    <NavigationContainer
-    // linking={LinkingConfiguration}
-    // theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    >
+    <NavigationContainer>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -42,19 +34,59 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   const context = React.useContext(AppContext);
 
+  const checkLogin = async () => {
+    try {
+      const authedUser = await Auth.currentAuthenticatedUser();
+      console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
+      console.log("AUTHENTICATED WITH COGNITO");
+      const existingDb = await checkExistingDb();
+      if (!existingDb) {
+        await resetDatabase();
+        registerUser(authedUser.username);
+      }
+      context.dispatch({
+        type: "authentication_done",
+        data: authedUser.username,
+        token: authedUser.signInUserSession.idToken.jwtToken
+      });
+    } catch (err) {
+      console.log("err signing in");
+      console.log(err); // this means there is no currently authenticated user
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("running checklogin in index 66666");
+    checkLogin();
+  }, [Auth]);
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false, headerTransparent: true }}
+      screenOptions={{ headerShown: true, headerTransparent: true }}
     >
       {!context.value.state.appState.logged_in ? (
         <>
-          <Stack.Screen name="Login" component={Login}  options={{headerTitle: ""}}/>
-          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerTitle: "" }}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{
+              headerTitle: "",
+              headerTransparent: true
+            }}
+          />
         </>
       ) : (
         <>
-          <Stack.Screen name="Root" component={BottomTabNavigator} options={{headerTitle: ""}}/>
+          <Stack.Screen
+            name="Root"
+            component={BottomTabNavigator}
+            options={{ headerTitle: "" }}
+          />
           <Stack.Screen
             name="NotFound"
             component={NotFoundScreen}

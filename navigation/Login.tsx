@@ -1,19 +1,16 @@
-import { View, Text, Dimensions, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  Dimensions,
+  TextInput,
+  Image,
+  ActivityIndicator
+} from "react-native";
 import * as React from "react";
 import { AppContext } from "../context/AppContext";
 import { Video } from "expo-av";
 import styles from "../assets/styles/PlayStyles";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  // createWinston,
-  seedData,
-  setUpDB,
-  registerUser,
-  createCourses,
-  removeDB,
-  createClubs
-} from "../db/dbSetup";
-import AsyncStorage from "@react-native-community/async-storage";
+import { registerUser } from "../db/dbSetup";
 import { Auth } from "aws-amplify";
 import { checkExistingDb } from "../db/checkExistingDb";
 import { resetDatabase } from "./SignUp";
@@ -22,12 +19,14 @@ const width = Dimensions.get("window").width;
 
 export function Login({ navigation }) {
   const appContext = React.useContext(AppContext);
-  const appState = appContext.value.state.appState;
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
 
   const checkLogin = async () => {
     try {
+      setLoading(true);
       const authedUser = await Auth.currentAuthenticatedUser();
       console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
       console.log("AUTHENTICATED WITH COGNITO");
@@ -42,37 +41,23 @@ export function Login({ navigation }) {
         token: authedUser.signInUserSession.idToken.jwtToken
       });
     } catch (err) {
+      setLoading(false);
       console.log("err signing in");
       console.log(err); // this means there is no currently authenticated user
+      setError(err.message);
     }
   };
 
-  React.useEffect(() => {
-    checkLogin();
-
-    let reset = false;
-    let seed = false;
-    if (reset) {
-      console.log("resetting DB SHOULD ONLY RUN ONCE");
-      AsyncStorage.removeItem("authName");
-      removeDB();
-      setUpDB();
-      createClubs();
-      createCourses();
-      appContext.value.doneRound();
-    }
-
-    if (seed) {
-      seedData();
-    }
-  }, []);
-
   const handleLogin = async () => {
     try {
+      setLoading(true);
+
       await Auth.signIn(username, password);
       checkLogin();
-    } catch (error) {
-      console.log("error signing in", error);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+      console.log("error signing in", err);
     }
   };
 
@@ -130,14 +115,24 @@ export function Login({ navigation }) {
             {password}
           </TextInput>
         </View>
+        {error ? (
+          <Text style={{ textAlign: "center" }}>{error}</Text>
+        ) : (
+          <View />
+        )}
         <View style={[styles.styledButton, { zIndex: 20 }]}>
-          <Text
-            onPress={() => handleLogin()}
-            style={[styles.buttonText, { zIndex: 30 }]}
-          >
-            Login
-          </Text>
+          {loading ? (
+            <ActivityIndicator color="#000000" />
+          ) : (
+            <Text
+              onPress={() => handleLogin()}
+              style={[styles.buttonText, { zIndex: 30 }]}
+            >
+              Login
+            </Text>
+          )}
         </View>
+
         <View
           style={[styles.styledWelcomeButton, { backgroundColor: "black" }]}
         >
