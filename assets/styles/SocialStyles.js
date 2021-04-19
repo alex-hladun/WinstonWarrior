@@ -230,6 +230,7 @@ export const styles = StyleSheet.create({
     width: width - 30,
     marginBottom: 15,
     paddingBottom: 10,
+    marginTop: 15,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",

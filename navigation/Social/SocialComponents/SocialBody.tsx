@@ -49,13 +49,14 @@ const SocialBody = React.memo(({ social, index, visible }) => {
 
   return (
     <>
-      {content.ContentType !== "liveround" && (
-        <View style={socStyles.commentContainer}>
-          {content?.text !== "" && content.text !== null && (
-            <Text style={[socStyles.comment, textFont]}>{content.text}</Text>
-          )}
-        </View>
-      )}
+      {content.ContentType !== "liveround" &&
+        content.ContentType !== "round" && (
+          <View style={socStyles.commentContainer}>
+            {content?.text !== "" && content.text !== null && (
+              <Text style={[socStyles.comment, textFont]}>{content.text}</Text>
+            )}
+          </View>
+        )}
       {content.ImageURI && content.ContentType === "image" && (
         <View style={socStyles.topMargin}>
           <CachedImage
