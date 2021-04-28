@@ -1,6 +1,7 @@
 const paradise = {
   name: "Paradise Canyon",
   blue_rtg: 71,
+  version: 1,
   blue_slp: 131,
   black_rtg: 73.1,
   black_slp: 133,

@@ -1,5 +1,6 @@
 const glencoe = {
   name: "Glencoe: Forest",
+  version: 1,
   blue_rtg: 72.8,
   blue_slp: 138,
   black_rtg: 75,

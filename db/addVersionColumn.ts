@@ -6,12 +6,21 @@ export const checkIfVersionPatchApplied = async () => {
       try {
         tx.executeSql(
           `
-         SELECT * FROM COURSES WHERE VERSION >= 1;
-      `,
+        PRAGMA table_info(courses);
+    `,
           [],
           (txObj, result) => {
-            const count = result.rows._array.length > 0;
-            resolve(count);
+            let patched = false;
+            for (const column of result.rows._array) {
+              if (column.name === "version") {
+                patched = true;
+              }
+            }
+            console.log(
+              "🚀 ~ file: testSqlStatement.ts ~ line 17 ~ db.transaction ~ patched",
+              patched
+            );
+            resolve(patched);
           },
           (err, mess) => console.log("error", reject(mess))
         );

@@ -1423,7 +1423,8 @@ export const setUpDB = () => {
           red_rtg REAL,
           red_slp REAL,
           white_red_slp REAL, 
-          white_red_rtg REAL
+          white_red_rtg REAL,
+          version INTEGER DEFAULT 1 NOT NULL
         );
         `,
         null,

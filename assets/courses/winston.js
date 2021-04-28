@@ -1,5 +1,6 @@
 const course = {
   name: "The Winston",
+  version: 1,
   blue_rtg: 71.8,
   blue_slp: 127,
   black_rtg: 74.4,

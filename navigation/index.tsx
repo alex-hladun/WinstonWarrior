@@ -42,13 +42,12 @@ function RootNavigator() {
   const checkLogin = async () => {
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
-      // console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
+      await testSqlStatement();
       const existingDb = await checkExistingDb();
       if (!existingDb) {
         await resetDatabase();
         registerUser(authedUser.username);
       }
-      // testSqlStatement();
 
       const versionPatchApplied = await checkIfVersionPatchApplied();
       if (!versionPatchApplied) {
