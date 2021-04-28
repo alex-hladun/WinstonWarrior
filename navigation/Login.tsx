@@ -14,6 +14,7 @@ import { registerUser } from "../db/dbSetup";
 import { Auth } from "aws-amplify";
 import { checkExistingDb } from "../db/checkExistingDb";
 import { resetDatabase } from "./SignUp";
+import { addVersionColumn } from "../db/addVersionColumn";
 
 const width = Dimensions.get("window").width;
 
@@ -33,6 +34,11 @@ export function Login({ navigation }) {
         await resetDatabase();
         registerUser(authedUser.username);
       }
+      const newColumn = await addVersionColumn();
+      console.log(
+        "🚀 ~ file: Login.tsx ~ line 38 ~ checkLogin ~ newColumn",
+        newColumn
+      );
       appContext.dispatch({
         type: "authentication_done",
         data: authedUser.username,

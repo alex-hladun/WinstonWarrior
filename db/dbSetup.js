@@ -373,8 +373,9 @@ export const createSingleCourse = async (course, courseIndex) => {
         red_rtg,
         red_slp,
         white_red_rtg,
-        white_red_slp
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        white_red_slp,
+        version
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
       `,
         [
           courseIndex,
@@ -392,7 +393,8 @@ export const createSingleCourse = async (course, courseIndex) => {
           course.red_rtg,
           course.red_slp,
           course.white_red_rtg,
-          course.white_red_slp
+          course.white_red_slp,
+          course.version
         ],
         (txObj, result) => {
           console.log(`result creating ${course.name}`, result);

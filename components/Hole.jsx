@@ -193,7 +193,6 @@ export default function Hole({ location, initialHole = 1 }) {
   const handleHoleDec = () => {
     if (holeNum !== 1) {
       appContext.value.setHole(holeNum - 1, holeInfo[holeNum - 1].id);
-      // setHoleNum(holeNum - 1)
       setDistanceMarker({
         latitude: undefined,
         longitude: undefined

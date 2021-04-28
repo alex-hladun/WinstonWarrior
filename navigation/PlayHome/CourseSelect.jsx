@@ -8,7 +8,10 @@ import {
 import * as React from "react";
 import { AppContext } from "../../context/AppContext";
 import styles from "../../assets/styles/MenuStyles";
-import { loadCourseInfo } from "../../db/dbSetup";
+import { getCourseVersion } from "../../db/getCourseVersion";
+import { versionedCourses } from "../../assets/courses/versionedCourses";
+import { addHolesToCourse, createSingleCourse } from "../../db/dbSetup";
+import { updateCourse } from "../../db/updateCourse";
 
 export function CourseSelect({ navigation }) {
   const appContext = React.useContext(AppContext);
@@ -22,6 +25,32 @@ export function CourseSelect({ navigation }) {
       rtg: course.rtg,
       slp: course.slp
     });
+
+    const courseVersion = await getCourseVersion(course.id);
+    console.log(
+      "🚀 ~ file: CourseSelect.jsx ~ line 30 ~ handlePress ~ courseVersion",
+      courseVersion
+    );
+    const recentVersion = versionedCourses[course.id].version;
+    console.log(
+      "🚀 ~ file: CourseSelect.jsx ~ line 32 ~ handlePress ~ recentVersion",
+      recentVersion
+    );
+
+    try {
+      if (courseVersion === undefined) {
+        console.log("course does not exist, creating");
+        await createSingleCourse(versionedCourses[course.id], course.id);
+        await addHolesToCourse(versionedCourses[course.id], course.id);
+      } else if (courseVersion < recentVersion) {
+        console.log("course out of date, updating");
+        await updateCourse(versionedCourses[course.id], course.id);
+      } else {
+        console.log("course in database is up to date");
+      }
+    } catch (err) {
+      console.log("err updating or creating course");
+    }
 
     appContext.value.loadInitialCourseData(course.id, 1);
     navigation.push("Add Players");

@@ -11,6 +11,11 @@ import { AppContext } from "../context/AppContext";
 import { Auth } from "aws-amplify";
 import { checkExistingDb } from "../db/checkExistingDb";
 import { registerUser } from "../db/dbSetup";
+import {
+  addVersionColumn,
+  checkIfVersionPatchApplied
+} from "../db/addVersionColumn";
+import { testSqlStatement } from "../db/testSqlStatement";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -37,13 +42,19 @@ function RootNavigator() {
   const checkLogin = async () => {
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
-      console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
-      console.log("AUTHENTICATED WITH COGNITO");
+      // console.log(authedUser.signInUserSession.idToken.jwtToken); // this means that you've logged in before with valid user/pass.
       const existingDb = await checkExistingDb();
       if (!existingDb) {
         await resetDatabase();
         registerUser(authedUser.username);
       }
+      // testSqlStatement();
+
+      const versionPatchApplied = await checkIfVersionPatchApplied();
+      if (!versionPatchApplied) {
+        await addVersionColumn();
+      }
+
       context.dispatch({
         type: "authentication_done",
         data: authedUser.username,

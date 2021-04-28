@@ -1,24 +1,10 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-  FlatList
-} from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import * as React from "react";
-import * as Linking from "expo-linking";
-import GolfLogo from "../../assets/svg/GolfLogo";
 import styles from "../../assets/styles/Play/HomeStyles";
 import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
-import { useTotalInfo } from "../../hooks/useTotalInfo";
-import { useHandicap } from "../../hooks/useHandicap";
-import { useHandicapHistory } from "../../hooks/useHandicapHistory";
-import { useEffect } from "react";
 
 export function Home({ navigation }) {
-  const statContext = React.useContext(StatContext);
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
 
