@@ -42,7 +42,7 @@ function RootNavigator() {
   const checkLogin = async () => {
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
-      await testSqlStatement();
+      // await testSqlStatement();
       const existingDb = await checkExistingDb();
       if (!existingDb) {
         await resetDatabase();
