@@ -1084,5 +1084,380 @@ export const versionedCourses = {
         }
       }
     }
+  },
+  4: {
+    name: "Blue Devil Golf Club",
+    version: 2,
+    blue_rtg: 70.8,
+    blue_slp: 130,
+    black_rtg: 74.4,
+    black_slp: 138,
+    black_blue_rtg: 70.8,
+    black_blue_slp: 130,
+    white_rtg: 68.1,
+    white_slp: 125,
+    blue_white_rtg: 68.1,
+    blue_white_slp: 125,
+    red_rtg: 68.8,
+    red_slp: 124,
+    white_red_rtg: 68.8,
+    white_red_slp: 124,
+    holes: {
+      1: {
+        par: 4,
+        hcpRtg: 14,
+        distance: 344,
+        pinCoords: {
+          latitude: 50.882357760892184,
+          longitude: -114.00877811014652
+        },
+        camera: {
+          altitude: 1400,
+          center: {
+            latitude: 50.884218981890996,
+            longitude: -114.0108397230506
+          },
+          heading: 144.09843649166712,
+          pitch: 0,
+          zoom: 16.913143157958984
+        }
+      },
+      2: {
+        par: 4,
+        hcpRtg: 6,
+        distance: 426,
+        pinCoords: {
+          latitude: 50.87922679057217,
+          longitude: -114.00674264878035
+        },
+        camera: {
+          altitude: 1400,
+          center: {
+            latitude: 50.881175712635034,
+            longitude: -114.00750137865543
+          },
+          heading: 167.7285351549469,
+          pitch: 0,
+          zoom: 17.138992309570312
+        }
+      },
+      3: {
+        par: 4,
+        hcpRtg: 4,
+        distance: 411,
+        pinCoords: {
+          latitude: 50.8827414759083,
+          longitude: -114.00551151484251
+        },
+        camera: {
+          altitude: 1400,
+          center: {
+            latitude: 50.880280695160124,
+            longitude: -114.0054240077734
+          },
+          heading: 358.9800242748864,
+          pitch: 0,
+          zoom: 16.760414123535156
+        }
+      },
+      4: {
+        par: 5,
+        hcpRtg: 10,
+        distance: 518,
+        pinCoords: {
+          latitude: 50.878909895290164,
+          longitude: -114.00475982576609
+        },
+        camera: {
+          altitude: 1400,
+          center: {
+            latitude: 50.881213577566314,
+            longitude: -114.00486208498478
+          },
+          heading: 178.38386719654508,
+          pitch: 0,
+          zoom: 16.91888999938965
+        }
+      },
+      5: {
+        par: 3,
+        hcpRtg: 16,
+        distance: 158,
+        pinCoords: {
+          latitude: 50.880714773378656,
+          longitude: -114.00299057364464
+        },
+        camera: {
+          altitude: 1400,
+          center: {
+            latitude: 50.87975903440722,
+            longitude: -114.00356356054544
+          },
+          heading: 18.88647167717697,
+          pitch: 0,
+          zoom: 17.78090476989746
+        }
+      },
+      6: {
+        par: 4,
+        distance: 332,
+        hcpRtg: 2,
+        pinCoords: {
+          latitude: 50.87832602384033,
+          longitude: -114.00406647473574
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.879626185561435,
+            longitude: -114.0030026435852
+          },
+          heading: 191.2244271943455,
+          pitch: 0,
+          zoom: 17.22322654724121
+        }
+      },
+      7: {
+        par: 3,
+        distance: 131,
+        hcpRtg: 18,
+        pinCoords: {
+          latitude: 50.8784301058085,
+          longitude: -114.00630243122578
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.87825092390182,
+            longitude: -114.00517590343952
+          },
+          heading: 272.9890492123822,
+          pitch: 0,
+          zoom: 18.064910888671875
+        }
+      },
+      8: {
+        par: 4,
+        hcpRtg: 12,
+        distance: 338,
+        pinCoords: {
+          latitude: 50.88081906154897,
+          longitude: -114.00911673903465
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.879139845552466,
+            longitude: -114.00777395814657
+          },
+          heading: 333.3123605516352,
+          pitch: 0,
+          zoom: 17.07933235168457
+        }
+      },
+      9: {
+        par: 5,
+        hcpRtg: 8,
+        distance: 517,
+        pinCoords: {
+          latitude: 50.88461198847775,
+          longitude: -114.01171579957008
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88202438739767,
+            longitude: -114.0096464753151
+          },
+          heading: 334.28641408344663,
+          pitch: 0,
+          zoom: 16.660837173461914
+        }
+      },
+      10: {
+        par: 4,
+        distance: 367,
+        hcpRtg: 13,
+        pinCoords: {
+          latitude: 50.88320387580291,
+          longitude: -114.0067295730114
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88491615384011,
+            longitude: -114.00856386870146
+          },
+          heading: 144.66504054678893,
+          pitch: 0,
+          zoom: 17.03741455078125
+        }
+      },
+      11: {
+        par: 4,
+        distance: 372,
+        hcpRtg: 9,
+        pinCoords: {
+          latitude: 50.886466351041086,
+          longitude: -114.00789834558964
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88457031893757,
+            longitude: -114.00657266378403
+          },
+          heading: 338.6472725301934,
+          pitch: 0,
+          zoom: 17.067642211914062
+        }
+      },
+      12: {
+        par: 3,
+        hcpRtg: 17,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.88764826507412,
+          longitude: -114.00785341858864
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88686822209765,
+            longitude: -114.0081974118948
+          },
+          heading: 21.57596368008143,
+          pitch: 0,
+          zoom: 17.87757110595703
+        }
+      },
+      13: {
+        par: 4,
+        hcpRtg: 7,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.88337034710259,
+          longitude: -114.00536265224218
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88586628764746,
+            longitude: -114.0065324306488
+          },
+          heading: 161.0894945842259,
+          pitch: 0,
+          zoom: 16.769901275634766
+        }
+      },
+      14: {
+        par: 4,
+        hcpRtg: 3,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.88137370992428,
+          longitude: -114.00338150560856
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.883741150794755,
+            longitude: -114.00365341454744
+          },
+          heading: 180.00345380207483,
+          pitch: 0,
+          zoom: 16.874847412109375
+        }
+      },
+      15: {
+        par: 5,
+        hcpRtg: 1,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.88590626391223,
+          longitude: -114.00309786200523
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88281085733791,
+            longitude: -114.00284707546234
+          },
+          heading: 4.803637439911766,
+          pitch: 0,
+          zoom: 16.60751724243164
+        }
+      },
+      16: {
+        par: 3,
+        hcpRtg: 11,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.88703721841704,
+          longitude: -114.00483023375273
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.88656005076051,
+            longitude: -114.00323063135147
+          },
+          heading: 299.9817108096106,
+          pitch: 0,
+          zoom: 17.82694435119629
+        }
+      },
+      17: {
+        par: 5,
+        hcpRtg: 15,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.884124431372435,
+          longitude: -114.00443259626627
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.886178693840186,
+            longitude: -114.0057297796011
+          },
+          heading: 156.01677162005512,
+          pitch: 0,
+          zoom: 17.036373138427734
+        }
+      },
+      18: {
+        par: 4,
+        hcpRtg: 5,
+        distance: 520,
+        pinCoords: {
+          latitude: 50.88527213901258,
+          longitude: -114.01036698371172
+        },
+        camera: {
+          altitude: 1400,
+
+          center: {
+            latitude: 50.885176321524256,
+            longitude: -114.00993715971708
+          },
+          heading: 310.81462168609335,
+          pitch: 0,
+          zoom: 17.14531707763672
+        }
+      }
+    }
   }
 };

@@ -77,6 +77,13 @@ export function CourseSelect({ navigation }) {
       img: require("../../assets/images/canyon.png"),
       rtg: 70.6,
       slp: 129
+    },
+    {
+      name: "Blue Devil Golf Club",
+      id: 4,
+      img: require("../../assets/images/bluedevil.png"),
+      rtg: 70.8,
+      slp: 130
     }
   ];
 

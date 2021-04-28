@@ -214,11 +214,19 @@ export default function Hole({ location, initialHole = 1 }) {
 
   const handleRegionChange = async (reg) => {
     let coords = await mapRef.current.getCamera();
+    // console.log(
+    //   "🚀 ~ file: Hole.jsx ~ line 217 ~ handleRegionChange ~ coords",
+    //   coords
+    // );
     coords = { ...coords, altitude: 1400 };
   };
 
   const handleMapShortPress = async (event) => {
     const coords = event.nativeEvent.coordinate;
+    // console.log(
+    //   "🚀 ~ file: Hole.jsx ~ line 226 ~ handleMapShortPress ~ coords",
+    //   coords
+    // );
 
     await setDistanceMarker(coords);
   };
