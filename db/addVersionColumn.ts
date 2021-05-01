@@ -16,10 +16,6 @@ export const checkIfVersionPatchApplied = async () => {
                 patched = true;
               }
             }
-            console.log(
-              "🚀 ~ file: testSqlStatement.ts ~ line 17 ~ db.transaction ~ patched",
-              patched
-            );
             resolve(patched);
           },
           (err, mess) => console.log("error", reject(mess))
