@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import SocialScreen from "../screens/SocialScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -15,13 +14,10 @@ import SocialLogo from "../assets/svg/SocialLogo";
 import SocialPost from "./Social/SocialPost";
 import SocialComment from "./Social/SocialComment";
 import SocialFollow from "./Social/SocialFollow";
-import { SignUp } from "./SignUp";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
       initialRouteName="Play"

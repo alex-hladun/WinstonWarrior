@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import * as React from "react";
 import styles from "../../assets/styles/Play/HomeStyles";
-import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
+import NotificationHandler from "../NotificationHandler";
 
 export function Home({ navigation }) {
   const appContext = React.useContext(AppContext);
@@ -26,6 +26,7 @@ export function Home({ navigation }) {
               style={styles.winnyImage}
             />
           </View>
+          <NotificationHandler />
 
           <View style={styles.holeRow}>
             <View style={styles.boxContainer}>
@@ -61,9 +62,19 @@ export function Home({ navigation }) {
               </Text>
             </View>
           </View>
-
+        </View>
+        <View style={styles.multipleButtonContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.push("Sniper");
+            }}
+          >
+            <View style={[styles.styledSnipeButton]}>
+              <Text style={styles.buttonText}>Snipe Times</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => handlePress()}>
-            <View style={[styles.styledButton, styles.playButton]}>
+            <View style={[styles.styledPlayButton, styles.playButton]}>
               <Text style={styles.buttonText}>Play Golf</Text>
             </View>
           </TouchableOpacity>

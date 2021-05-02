@@ -83,10 +83,6 @@ export default function PlayScreen({ navigation }) {
     checkExisting();
   }, []);
 
-  const setHole = async () => {
-    // Also put scores into state
-  };
-
   const checkAndRestoreScores = async () => {
     const p1roundID = await AsyncStorage.getItem("roundID");
     const p2roundID = await AsyncStorage.getItem("u2roundid");
@@ -99,7 +95,6 @@ export default function PlayScreen({ navigation }) {
     setInitialHole(JSON.parse(holeNum));
     // SET hole id ad part of   SETHOLE
     await appContext.value.setHole(JSON.parse(holeNum));
-
 
     // Set course holeInfo
 
@@ -209,7 +204,8 @@ export default function PlayScreen({ navigation }) {
     let { status } = await Permissions.askAsync(
       Permissions.LOCATION,
       Permissions.CAMERA,
-      Permissions.CAMERA_ROLL
+      Permissions.CAMERA_ROLL,
+      Permissions.NOTIFICATIONS
     );
     if (status !== "granted") {
       setState({

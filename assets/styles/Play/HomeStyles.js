@@ -178,6 +178,30 @@ export const styles = StyleSheet.create({
     alignSelf: "center"
     // position: "absolute"
   },
+  styledPlayButton: {
+    width: 160,
+    backgroundColor: Theme.ogButtonGreen,
+    padding: 15,
+    borderColor: "#f3f8ff",
+    justifyContent: "center",
+    margin: 20,
+    // top: 250,
+    borderRadius: 24,
+    alignSelf: "center"
+    // position: "absolute"
+  },
+  styledSnipeButton: {
+    width: 160,
+    backgroundColor: Theme.palette[6],
+    padding: 15,
+    borderColor: "#f3f8ff",
+    justifyContent: "center",
+    margin: 20,
+    // top: 250,
+    borderRadius: 24,
+    alignSelf: "center"
+    // position: "absolute"
+  },
   styledWelcomeButton: {
     width: 250,
     backgroundColor: Theme.ogButtonGreen,
@@ -190,8 +214,6 @@ export const styles = StyleSheet.create({
   },
   playButton: {
     backgroundColor: Theme.spinGreen2
-    // zIndex: 10,
-    // position: "absolute"
   },
   quitButton: {
     backgroundColor: Theme.quitRed,
@@ -296,6 +318,10 @@ export const styles = StyleSheet.create({
     // height: 300,
     marginVertical: 20,
     alignItems: "center"
+  },
+  multipleButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around"
   }
 });
 

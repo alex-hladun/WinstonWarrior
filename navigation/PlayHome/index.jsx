@@ -6,6 +6,7 @@ import LogoutSymbol from "../../assets/svg/LogoutSymbol";
 import { Home } from "./Home";
 import SocialPost from "../Social/SocialPost";
 import { CourseSelect } from "./CourseSelect";
+import { TimeSniper } from "./TimeSniper";
 import { PlayerAdd } from "./PlayerAdd";
 import { SignUp } from "../SignUp";
 import { Login } from "../Login";
@@ -73,6 +74,11 @@ function PlayNavigator() {
       <PlayStack.Screen
         name="Course"
         component={CourseSelect}
+        options={{ headerTransparent: true }}
+      />
+      <PlayStack.Screen
+        name="Sniper"
+        component={TimeSniper}
         options={{ headerTransparent: true }}
       />
       <PlayStack.Screen

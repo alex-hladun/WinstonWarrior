@@ -1,124 +1,124 @@
-import { StyleSheet } from 'react-native';
-import { Theme } from '../styles/Theme'
+import { StyleSheet } from "react-native";
+import { Theme } from "../styles/Theme";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     // zIndex: 4,
     // backgroundColor: Theme.spinGreen1,
-    alignSelf: 'center',
+    alignSelf: "center",
     top: 100,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start"
   },
   bgImage: {
     flex: 1,
-    width: '150%',
+    width: "150%",
     // height: '50%',
-    right: '5%',
-    top: '-20%',
-    position: 'absolute',
+    right: "5%",
+    top: "-20%",
+    position: "absolute",
     // zIndex: 10,
     opacity: 0.15,
-    resizeMode: 'contain',
+    resizeMode: "contain"
   },
   background: {
     backgroundColor: Theme.spinGreen1,
     flex: 1,
-    width: '100%',
-    height: '100%',
-    position: 'absolute'
+    width: "100%",
+    height: "100%",
+    position: "absolute"
   },
   courseText: {
-    textAlign: 'center'
+    textAlign: "center"
   },
   img: {
     width: 75,
     height: 75
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   column: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
   courseContainer: {
     backgroundColor: Theme.iconStroke,
     padding: 20,
     marginHorizontal: 20,
     marginTop: 10,
-    borderColor: 'black',
-    borderStyle: 'solid',
+    borderColor: "black",
+    borderStyle: "solid",
     // borderWidth: 0.5,
     borderRadius: 20
   },
   stroke: {
-    color: Theme.iconStroke,
+    color: Theme.iconStroke
   },
   addPlayer: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     width: 65,
     height: 55,
-    textAlign: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 15,
     marginTop: 10,
-    borderColor: 'black',
-    borderStyle: 'solid',
+    borderColor: "black",
+    borderStyle: "solid",
     // borderWidth: 0.5,
     borderRadius: 100,
-    backgroundColor: Theme.spinGreen2,
+    backgroundColor: Theme.spinGreen2
   },
   playerRow: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 15,
     // padding: 10,
-    borderColor: 'black',
-    borderStyle: 'solid',
+    borderColor: "black",
+    borderStyle: "solid",
     backgroundColor: Theme.iconStroke,
     // borderWidth: 0.5,
     borderRadius: 100,
     marginVertical: 5
   },
   removePlayer: {
-    borderColor: 'black',
-    borderStyle: 'solid',
+    borderColor: "black",
+    borderStyle: "solid",
     // borderWidth: 0.5,
     borderRadius: 100,
     width: 40,
     height: 40,
     backgroundColor: Theme.red,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     // padding: 5
     marginHorizontal: 6
   },
   player: {
     padding: 17,
-    width: 200,
+    width: 200
     // marginRight:10
   },
   startRound: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     // width: 65,
     // height: 65,
-    textAlign: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 15,
     marginTop: 30,
-    borderColor: 'black',
-    borderStyle: 'solid',
+    borderColor: "black",
+    borderStyle: "solid",
     borderWidth: 0.5,
     borderRadius: 0
   },
@@ -127,37 +127,61 @@ export const styles = StyleSheet.create({
     backgroundColor: "#f3f8ff",
     padding: 10,
     borderColor: "black",
-    justifyContent: 'center',
+    justifyContent: "center",
     // borderWidth: 1,
     margin: 10,
     borderRadius: 24,
-    alignSelf: 'center'
+    alignSelf: "center"
   },
   startRoundButton: {
     width: 225,
     backgroundColor: "#f3f8ff",
     padding: 15,
     borderColor: "black",
-    justifyContent: 'center',
+    justifyContent: "center",
     // borderWidth: 1,
     margin: 10,
     borderRadius: 24,
-    alignSelf: 'center'
+    alignSelf: "center"
   },
   playButton: {
-    backgroundColor: Theme.spinGreen2,
+    backgroundColor: Theme.spinGreen2
   },
   startButton: {
     marginTop: 30,
-    // padding: 10,
-    backgroundColor: '#33cc33'
+    backgroundColor: "#33cc33"
   },
   buttonText: {
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textTransform: "uppercase",
+    textAlign: "center",
+    fontWeight: "bold",
     letterSpacing: 3,
     color: Theme.iconStroke
+  },
+  dayRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 10,
+    width: "100%",
+    height: 70
+  },
+  timePickerRow: {
+    marginVertical: 10,
+    marginLeft: 15,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  dateTimePicker: {
+    width: 100
+  },
+  dayName: {
+    width: 80
+  },
+  timePickerColumn: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
