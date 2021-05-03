@@ -182,6 +182,25 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center"
+  },
+  numberOfPlayersContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  numberPlayerTextInput: {
+    fontSize: 20,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 50,
+    textAlign: "center"
+  },
+  playerText: {
+    marginLeft: 10,
+    fontSize: 20
   }
 });
 

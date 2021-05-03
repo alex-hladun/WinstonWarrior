@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
@@ -18,9 +19,10 @@ export default function NotificationHandler() {
   const responseListener = useRef();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token);
+      AsyncStorage.setItem("expoPushToken", JSON.stringify(token));
+    });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(
       (notification) => {
@@ -49,26 +51,8 @@ export default function NotificationHandler() {
         alignItems: "center",
         justifyContent: "space-around"
       }}
-    >
-      <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      />
-    </View>
+    />
   );
-}
-
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
-      data: { data: "goes here" }
-    },
-    trigger: { seconds: 2 }
-  });
 }
 
 async function registerForPushNotificationsAsync() {
@@ -83,13 +67,13 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
+      AsyncStorage.setItem("expoPushToken", "error");
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
   } else {
-    alert("Must use physical device for Push Notifications");
+    // alert("Must use physical device for Push Notifications");
   }
 
   if (Platform.OS === "android") {
