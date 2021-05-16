@@ -15,7 +15,7 @@ export const SocialItem = (social) => {
 
   const textFont = { fontFamily: "nimbus", fontSize: 20 };
   const stats = social.item.stats;
-  // console.log("🚀 ~ file: Rounds.jsx ~ line 19 ", social);
+
 
   const pieChartConfig = {
     backgroundColor: Theme.chartBackgroundColor,

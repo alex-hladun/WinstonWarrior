@@ -46,7 +46,7 @@ export const netHandicapDiffCalc = (
   const completedHoles = calculatedHolesPlayed(scoreObj);
 
   if (completedHoles === 18) {
-    console.log("fully completed");
+
     return {
       netHcpDiff: ((sumValues(scoreObj) - rtg) * 113) / slope,
       holesPlayed: 18,
