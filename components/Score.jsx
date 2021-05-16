@@ -80,7 +80,6 @@ export default function Score({
 
   const handleScoreSubmit = async (hideModal = true, delta = 0) => {
     if (putts > score - 1) {
-      console.log("INVALID PUTTS");
       setPutts(score - 1);
       return;
     }

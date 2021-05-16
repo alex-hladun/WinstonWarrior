@@ -2,13 +2,9 @@ import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import * as React from "react";
 import styles from "../../assets/styles/PlayStyles";
 import socStyles from "../../assets/styles/SocialStyles";
-import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import * as ImagePicker from "expo-image-picker";
+import { useEffect } from "react";
 import config from "../../settings.json";
-import { Audio, Video } from "expo-av";
 import FollowLogo from "../../assets/svg/FollowLogo";
 import FollowCheck from "../../assets/svg/FollowCheck";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
@@ -18,9 +14,8 @@ export default function SocialFollow({ navigation }) {
   const appState = appContext.value.state;
 
   const [followFeed, setFollowFeed] = React.useState([]);
-  const [followFeedError, setFollowFeedError] = React.useState<
-    boolean | string
-  >(false);
+  const [followFeedError, setFollowFeedError] =
+    React.useState<boolean | string>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const followUser = (followedUser) => {
@@ -46,11 +41,6 @@ export default function SocialFollow({ navigation }) {
     });
   };
   const FollowItem = (item) => {
-    // console.log(
-    //   "🚀 ~ file: SocialFollow.tsx ~ line 15 ~ FollowItem ~ item",
-    //   item
-    // );
-
     return (
       <View style={socStyles.roundItem}>
         <View style={socStyles.roundLeft}>

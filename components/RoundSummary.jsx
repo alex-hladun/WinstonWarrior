@@ -55,7 +55,7 @@ export default function RoundSummary({ handleRoundSummary }) {
       appState.appState.user_name
     );
     console.log(
-      "🚀 ~ file: RoundSummary.jsx ~ line 57 ~ getSamplepost ~ finalRoundObj1",
+      "🚀 SAMPLE FINAL ROUND OBJ",
       finalRoundObj1
     );
   };
@@ -142,7 +142,6 @@ export default function RoundSummary({ handleRoundSummary }) {
         leadScore = sortedArray[i].totalScore;
         sortedArray[i]["position"] = position;
       }
-    // console.log("sorted positions", sortedArray);
 
     setScoreArr(sortedArray);
     // setScoreObj(newObj)
@@ -213,7 +212,6 @@ export default function RoundSummary({ handleRoundSummary }) {
       appState.playState,
       appState.appState.user_name
     );
-    console.log("🚀 ~ FinalRoundObj", finalRoundObj);
 
     if (postSocialRound) {
       authenticatedAxios("POST", `${config.api2}rounds`, {

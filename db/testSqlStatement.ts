@@ -6,21 +6,16 @@ export const testSqlStatement = async () => {
       try {
         tx.executeSql(
           `
-          PRAGMA table_info(courses);
+         SELECT * FROM ROUNDS;
       `,
           [],
           (txObj, result) => {
-            let patched = false;
-            for (const column of result.rows._array) {
-              if (column.name === "version") {
-                patched = true;
-              }
-            }
             console.log(
-              "🚀 ~ file: testSqlStatement.ts ~ line 17 ~ db.transaction ~ patched",
-              patched
+              "🚀 ~ file: testSqlStatement.ts ~ line 15 ~ db.transaction ~ result.rows._array",
+              result.rows._array
             );
-            resolve(patched);
+
+            resolve();
             // console.log("result test sql statement", result.rows._array);
             // resolve(result);
           },

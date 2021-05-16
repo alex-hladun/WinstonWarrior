@@ -72,7 +72,6 @@ export function Rounds() {
   };
 
   const handleRoundSelect = (roundIndex) => {
-    console.log(roundIndex, "roundIndex");
     setRound(roundIndex);
     setRoundView(!roundView);
   };

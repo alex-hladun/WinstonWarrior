@@ -1,23 +1,17 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import * as React from "react";
-import * as Linking from "expo-linking";
-import GolfLogo from "../../assets/svg/GolfLogo";
 import styles from "../../assets/styles/PlayStyles";
 import socStyles from "../../assets/styles/SocialStyles";
-import { StatContext } from "../../context/StatContext";
 import { AppContext } from "../../context/AppContext";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Amplify, { Storage } from "aws-amplify";
+import { useState } from "react";
+import { Storage } from "aws-amplify";
 import * as ImagePicker from "expo-image-picker";
 import config from "../../settings.json";
-import { Audio, Video } from "expo-av";
+import { Video } from "expo-av";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
 export default function SocialPost({ navigation }) {
-  const statContext = React.useContext(StatContext);
   const appContext = React.useContext(AppContext);
-  const appState = appContext.value.state;
   const [postState, setPostState] = useState("WAIT");
   const [content, setContent] = useState(null);
   const [text, setText] = useState("");

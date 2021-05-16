@@ -34,11 +34,8 @@ export function Login({ navigation }) {
         await resetDatabase();
         registerUser(authedUser.username);
       }
-      const newColumn = await addVersionColumn();
-      console.log(
-        "🚀 ~ file: Login.tsx ~ line 38 ~ checkLogin ~ newColumn",
-        newColumn
-      );
+      await addVersionColumn();
+
       appContext.dispatch({
         type: "authentication_done",
         data: authedUser.username,

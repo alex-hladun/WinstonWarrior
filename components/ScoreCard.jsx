@@ -7,7 +7,6 @@ import { AppContext } from "../context/AppContext";
 import XSymbol from "../assets/svg/XSymbol";
 
 const sumValues = (obj) => {
-  // console.log("obj", obj)
   if (Object.keys(obj).length !== 0) {
     return Object.values(obj).reduce((a, b) => a + b);
   } else {

@@ -124,7 +124,6 @@ const reducer = produce((state, action) => {
       state.appState.loading = false;
       break;
     case "done_initial_loading":
-      console.log("Done inital loading");
       state.appState.initialLoading = false;
       break;
 
@@ -251,7 +250,6 @@ const reducer = produce((state, action) => {
       break;
     case "follow_user":
       state.socialState.followingUsers.push(action.data);
-      console.log(state.socialState.followingUsers);
       break;
     case "like_post_initial":
       state.socialState.likedPosts.push(action.data);
@@ -273,8 +271,6 @@ const reducer = produce((state, action) => {
         (user) => user !== action.data
       );
       state.socialState.followingUsers = freshArray;
-      console.log(state.socialState.followingUsers);
-
       break;
   }
 });
@@ -633,8 +629,9 @@ function AppProvider(props) {
         );
       }
 
-      const handicapRounds = loadHandicapFromArray(hcpRoundHistory.slice(0, 40))
-        .includedRounds;
+      const handicapRounds = loadHandicapFromArray(
+        hcpRoundHistory.slice(0, 40)
+      ).includedRounds;
       dispatch({ type: "set_handicap_rounds", data: handicapRounds });
       dispatch({
         type: "set_handicap_history",

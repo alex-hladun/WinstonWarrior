@@ -22,13 +22,11 @@ import ScoreCard from "./ScoreCard";
 import RoundSummary from "./RoundSummary";
 import ShotTrack from "./ShotTrack";
 import { AppContext } from "../context/AppContext";
-import { PlayContext } from "../context/PlayContext";
 import { Theme } from "../assets/styles/Theme.js";
 
 export default function Hole({ location, initialHole = 1 }) {
-  // Loads all courseInfo into playcontext
+  // Loads all courseInfo into AppContext
   const appContext = React.useContext(AppContext);
-  const playContext = React.useContext(PlayContext);
   const holeInfo = appContext.value.state.playState.holeInfo;
   const holeNum = appContext.value.state.playState.hole_num;
   const [camera, setCamera] = useState(holeInfo[holeNum].camera);
@@ -51,8 +49,6 @@ export default function Hole({ location, initialHole = 1 }) {
   const shotTargetRef = useRef(null);
   const holeTargetRef = useRef(null);
   const trackAnim = useRef(new Animated.Value(0.85)).current;
-
-  useEffect(() => {}, [playContext]);
 
   const measure = (lat1, lon1, lat2, lon2) => {
     // generally used geo measurement function
