@@ -40,7 +40,6 @@ export const loadHandicapFromArray = (hcpArray) => {
   const sortedHcpArray = handicapArrayToSort.sort(
     (a, b) => a.hcp_diff - b.hcp_diff
   );
-  // console.log("🚀 ~ file: useHandicapHistory.js ~ line 33 ~ loadHandicapFromArray ~ sortedHcpArray", sortedHcpArray)
 
   let totalCount = 0;
   let diffSum = 0;
@@ -75,7 +74,6 @@ export function useHandicapHistory(user_id) {
     const getHandicapHistory = async (user_id) => {
       // RETURNS ARRAY OF HANDICAPS
       const roundHistory = await loadHcpDiffStats(user_id);
-      // console.log("🚀 ~ file: useHandicapHistory.js ~ line 13 ~ getHandicapHistory ~ roundHistory", roundHistory)
 
       const handicapHistoryArray = [];
       const length = roundHistory.length;

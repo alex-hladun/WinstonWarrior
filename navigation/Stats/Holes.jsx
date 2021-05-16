@@ -218,7 +218,7 @@ export function Holes() {
             style={{
               height: 20,
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "space-between"
               // paddingHorizontal: 10
             }}
           >
@@ -306,7 +306,6 @@ export function Holes() {
                   chartConfig={chartConfig}
                   height={240}
                   style={{
-                    // alignSelf: 'flex-end',
                     left: 20,
                     marginVertical: 5,
                     borderRadius: 16

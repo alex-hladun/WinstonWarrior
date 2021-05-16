@@ -1,8 +1,6 @@
 import { View, Text, Dimensions } from "react-native";
 import * as React from "react";
 import styles from "../../assets/styles/StatStyles";
-import { LinearGradient } from "expo-linear-gradient";
-import XSymbol from "../../assets/svg/XSymbol";
 import { Theme } from "../../assets/styles/Theme";
 import { BarChart } from "react-native-chart-kit";
 import { AppContext } from "../../context/AppContext";
@@ -52,7 +50,6 @@ export function ClubCard({ handleClubView, item }) {
           {item.avg.toFixed(0)} yds
         </Text>
       </View>
-      {/* <Text style={{ color: 'black' }} onPress={() => handleClubView()}> Max -  {item.max.toFixed(0)}</Text> */}
       <BarChart
         style={styles.barChartStyle}
         chartConfig={barChartConfig}

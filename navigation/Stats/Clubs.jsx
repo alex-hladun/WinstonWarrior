@@ -6,18 +6,13 @@ import {
   FlatList,
   Image,
   Modal,
-  ImageBackground,
   Dimensions
 } from "react-native";
 import * as React from "react";
 import styles from "../../assets/styles/StatStyles";
 import Carousel from "react-native-snap-carousel";
-import { LinearGradient } from "expo-linear-gradient";
 import XSymbol from "../../assets/svg/XSymbol";
 import { Theme } from "../../assets/styles/Theme";
-import { useShotData } from "../../hooks/useShotData";
-import { BarChart } from "react-native-chart-kit";
-import { useShotHistory } from "../../hooks/useShotHistory";
 import { ClubCard } from "./ClubCard";
 import { AppContext } from "../../context/AppContext";
 
@@ -42,7 +37,6 @@ export function Clubs({ navigation }) {
   };
 
   const clubMenuItem = (clb) => {
-    // console.log('render club item', clb)
     return (
       <View
         key={`cl${clb.index}`}
