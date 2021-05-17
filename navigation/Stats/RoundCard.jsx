@@ -18,7 +18,6 @@ const pieChartConfig = {
 };
 
 export function RoundCard({ handleRoundView, item }) {
-  const appContext = React.useContext(AppContext);
   const [roundData, setRoundData] = React.useState({});
 
   const updateData = async () => {

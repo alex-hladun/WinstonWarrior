@@ -150,11 +150,20 @@ export default function Score({
     appContext.value.reloadHoleStats(appState.playState.courseId, holeNum);
 
     if (appState.playState.liveRound) {
+      const playClone = JSON.parse(JSON.stringify(appState.playState));
+
+      playClone.p1score[holeNum] = score;
+      if (appState.playState.player_2) {
+        playClone.p2score[holeNum] = p2score;
+      }
+      if (appState.playState.player_3) {
+        playClone.p3score[holeNum] = p3score;
+      }
+      if (appState.playState.player_4) {
+        playClone.p4score[holeNum] = p4score;
+      }
       try {
-        const putObj = liveRoundCalc(
-          appState.playState,
-          appState.appState.user_name
-        );
+        const putObj = liveRoundCalc(playClone, appState.appState.user_name);
         console.log("🚀 ~ LiveRoundCalcObj", putObj);
         authenticatedAxios("PUT", `${config.api2}rounds`, putObj);
       } catch (err) {

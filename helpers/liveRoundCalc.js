@@ -30,7 +30,7 @@ export const liveRoundCalc = (playState, p1Name) => {
       totalScore: 0
     }
   };
-  let thru = 1;
+  let thru = 0;
   Object.keys(playState.p1score).forEach((hole) => {
     if (playState.p1score[hole]) {
       thru++;
