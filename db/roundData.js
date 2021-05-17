@@ -55,7 +55,6 @@ export const getRoundData = async (roundID) => {
     `,
         [roundID],
         (txObj, result) => {
-          // console.log('result getting Round data', result.rows._array)
           const totalHoles = result.rows._array[0].total_holes;
           roundObj = { ...roundObj, totalHoles };
         },
@@ -78,7 +77,6 @@ export const getRoundData = async (roundID) => {
           } else {
             roundObj = { ...roundObj, fwHit: 0 };
           }
-          // console.log("🚀 ~ file: roundData.js ~ line 14 ~ returnnewPromise ~ roundObj", roundObj)
         },
         (err, mess) => reject(err, mess)
       );
@@ -114,7 +112,7 @@ export const getRoundData = async (roundID) => {
         [roundID],
         (txObj, result) => {
           const scores = result.rows._array;
-          // console.log("🚀 ~ file: roundData.js ~ line 73 ~ returnnewPromise ~ result.rows._array", result.rows._array)
+
           const birdieObj = {
             eagles: 0,
             albatrosses: 0,
@@ -157,7 +155,6 @@ export const getRoundData = async (roundID) => {
     `,
         [roundID],
         (txObj, result) => {
-          // console.log('result getting Round data', result.rows._array)
           const scramble = result.rows._array[0].scramble;
           roundObj = { ...roundObj, scramble };
           resolve(roundObj);

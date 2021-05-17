@@ -54,14 +54,10 @@ export default function SocialPost({ navigation }) {
 
     const random = Math.round(Math.random() * 100000000000000000);
     const imageExt = content.uri.split(".").pop();
-    console.log(
-      "🚀 ~ file: SocialPost.tsx ~ line 58 ~ postImage ~ content",
-      content
-    );
 
     let picture = await fetch(content.uri);
     let blob = await picture.blob();
-    console.log("🚀 ~ file: SocialPost.tsx ~ line 54 ~ postImage ~ blob", blob);
+
     Storage.put(`/${random}.${imageExt}`, blob, {
       contentType: "imageMime",
       progressCallback(progress) {

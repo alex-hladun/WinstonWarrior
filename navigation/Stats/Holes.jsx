@@ -21,7 +21,7 @@ export function Holes() {
   const appState = appContext.value.state;
   const holeData = appState.statState.courseData.holeStats;
   const holeNum = appState.playState.hole_num;
-  console.log(holeData[holeNum]);
+
   const puttHistory = holeData[holeNum]?.puttHistory;
   const [parentChartType, setParentChartType] = React.useState("LineChart");
   const [chartType, setChartType] = React.useState("Shots");

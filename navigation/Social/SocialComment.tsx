@@ -14,11 +14,6 @@ import config from "../../settings.json";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
 const postText = async (navigation, roundId, text) => {
-  console.log("🚀 ~ file: SocialComment.tsx ~ line 18 ~ postText ~ text", text);
-  console.log(
-    "🚀 ~ file: SocialComment.tsx ~ line 18 ~ postText ~ roundId",
-    roundId
-  );
   try {
     await authenticatedAxios("PUT", `${config.api2}put-reaction`, {
       roundId: roundId,

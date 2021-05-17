@@ -27,10 +27,7 @@ export const finalRoundPost = async (playState, p1name) => {
     course: playState.courseName
   };
   const p1Info = await getScore(playState.roundId);
-  console.log(
-    "🚀 ~ file: finalRoundPost.js ~ line 30 ~ finalRoundPost ~ p1Info",
-    p1Info.length
-  );
+
   for (const hole of p1Info) {
     if (hole.total_shots - hole.hole_par === -1) {
       totalBirds.birdies++;

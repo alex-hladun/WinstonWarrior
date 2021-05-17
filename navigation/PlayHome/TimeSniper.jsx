@@ -23,10 +23,7 @@ export function TimeSniper({ navigation }) {
     const savedTimes = await AsyncStorage.getItem("snipeTimes");
 
     const saveTimeObj = JSON.parse(savedTimes);
-    console.log(
-      "🚀 ~ file: TimeSniper.jsx ~ line 25 ~ getSavedTimes ~ saveTimeObj",
-      saveTimeObj
-    );
+
     if (Object.keys(savedTimes).length > 0) {
       setDayData(saveTimeObj);
     }
@@ -35,7 +32,6 @@ export function TimeSniper({ navigation }) {
 
   const onNumPlayerChange = (val) => {
     if (Number(val) >= 0 && Number(val) < 5) {
-      console.log(val);
       setNumPlayers(val);
     }
   };
@@ -135,8 +131,6 @@ export function TimeSniper({ navigation }) {
         }
       });
     }
-
-    // console.log(dayjs(dayData.Monday.startValue).format("HH:mm"));
   };
 
   const saveTimes = async () => {
@@ -144,10 +138,7 @@ export function TimeSniper({ navigation }) {
     for (const day of Object.keys(dayData)) {
       dayState[day] = { ...dayState[day], numPlayers };
     }
-    console.log(
-      "🚀 ~ file: TimeSniper.jsx ~ line 144 ~ saveTimes ~ dayState",
-      dayState
-    );
+
     setSaving(true);
     try {
       await AsyncStorage.setItem("snipeTimes", JSON.stringify(dayData));

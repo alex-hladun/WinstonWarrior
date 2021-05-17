@@ -12,8 +12,7 @@ export const authenticatedAxios = async (
     authToken = authedUser.signInUserSession.idToken.jwtToken;
     console.log("AUTHENTICATED FETCH WITH COGNITO");
   } catch (err) {
-    console.log("err authenticating");
-    console.log(err); // this means there is no currently authenticated user
+    console.log("err authenticating...no authed user", err);
   }
 
   switch (method) {
@@ -30,10 +29,6 @@ export const authenticatedAxios = async (
         }
       });
     case "PUT":
-      console.log(
-        "🚀 ~ file: authenticatedAxios.ts ~ line 35 ~ payload",
-        payload
-      );
       return await axios.put(endpoint, payload, {
         headers: {
           Authorization: authToken

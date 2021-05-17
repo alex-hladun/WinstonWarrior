@@ -5,7 +5,7 @@ import * as Permissions from "expo-permissions";
 import Hole from "../components/Hole";
 import { AppContext } from "../context/AppContext";
 import NavigationPlay from "../navigation/PlayHome";
-import { getScore, retrieveCourseInfo, selectHoles } from "../db/dbSetup";
+import { getScore, retrieveCourseInfo } from "../db/dbSetup";
 import AsyncStorage from "@react-native-community/async-storage";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { useFonts } from "expo-font";
@@ -42,7 +42,6 @@ export default function PlayScreen({ navigation }) {
   }, []);
 
   React.useEffect(() => {
-    // selectHoles();
     let roundID;
 
     const checkExisting = async () => {

@@ -109,7 +109,6 @@ export const getClubs = async () => {
     `,
         [],
         (txObj, result) => {
-          // console.log('getting clubs', result.rows._array)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err creating club", reject(mess))
@@ -121,14 +120,12 @@ export const getClubs = async () => {
 export const registerUser = async (user) => {
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
-      // console.log('inside reg user sql')
       tx.executeSql(
         `
     INSERT INTO users (user_name) VALUES (?);
     `,
         [user],
         (txObj, result) => {
-          console.log("created user", user);
           resolve(result.insertId);
         },
         (err, mess) => console.log("err creating user", reject(mess))
@@ -140,14 +137,12 @@ export const registerUser = async (user) => {
 export const createRound = async (course_id, user_id) => {
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
-      console.log("inside createRound");
       tx.executeSql(
         `
     INSERT INTO rounds (course_id, user_id) VALUES (?, ?);
     `,
         [course_id, user_id],
         (txObj, result) => {
-          console.log("result creating round", result);
           resolve(result.insertId);
         },
         (err, mess) => console.log("err creating round", reject(mess))
@@ -159,20 +154,12 @@ export const createRound = async (course_id, user_id) => {
 export const postShot = async (user_id, club_id, effort, distance) => {
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
-      // console.log('inside createRound')
       tx.executeSql(
         `
     INSERT INTO distances (user_id, club_id, effort, distance, date_time) VALUES (?, ?, ?, ?, strftime('%Y-%m-%d %H:%M:%S','now'));
     `,
         [user_id, club_id, effort, distance],
         (txObj, result) => {
-          console.log(
-            "shot successfully saved",
-            user_id,
-            club_id,
-            effort,
-            distance
-          );
           resolve(result);
         },
         (err, mess) => console.log("err saving shot", reject(mess))
@@ -189,7 +176,6 @@ export const postRound = async (
 ) => {
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
-      // console.log('inside createRound')
       console.log(
         "posting round",
         score,
@@ -206,10 +192,6 @@ export const postRound = async (
     `,
         [score, diff, holesPlayed, calculatedHolesPlayed, round_id],
         (txObj, result) => {
-          console.log(
-            "Round successfully saved",
-            `total score ${score}, round is ${round_id}`
-          );
           resolve(result);
         },
         (err, mess) => console.log("err saving round", reject(mess))
@@ -273,15 +255,9 @@ export const postScore = async (
                 result.rows._array[0].score_id
               ],
               (txObj, result) => {
-                console.log("result updating score", result);
                 resolve(result);
               },
               (err, mess) => {
-                console.log(
-                  `ERROR posting score PPOINT 1: ${JSON.stringify(
-                    err
-                  )}, ${mess}`
-                );
                 reject(err);
               }
             );
@@ -319,15 +295,9 @@ export const postScore = async (
                 ud
               ],
               (txObj, result) => {
-                // console.log("result posting NEW score", result);
                 resolve(result);
               },
               (err, mess) => {
-                console.log(
-                  `ERROR posting score NOT pre-EXISTING: ${JSON.stringify(
-                    err
-                  )}, ${mess}`
-                );
                 reject(err);
               }
             );
@@ -336,20 +306,6 @@ export const postScore = async (
       );
     })
   );
-};
-
-export const selectHoles = () => {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `
-    select * from users;
-    `,
-      (txObj, result) => {
-        console.log(`result`, result);
-      },
-      (err, mess) => console.log("errror reading ", mess)
-    );
-  });
 };
 
 export const createSingleCourse = async (course, courseIndex) => {
@@ -467,21 +423,12 @@ export const createCourses = async (courseObj) => {
     let courseIndex = 1;
     let courseLength = courseArray.length;
     for (const course of courseArray) {
-      console.log(
-        "🚀 ~ file: dbSetup.js ~ line 342 ~ returnnewPromise ~ courseIndex",
-        courseIndex,
-        course.name
-      );
       await createSingleCourse(course, courseIndex);
       await addHolesToCourse(course, courseIndex);
 
       courseIndex++;
-      console.log(
-        "🚀 ~ file: dbSetup.js ~ line 476 ~ //db.transaction ~ courseIndex",
-        courseIndex
-      );
+
       if (courseIndex === courseLength + 1) {
-        console.log("DONE CREATING COURSES AND HOLES");
         resolve("Done");
       }
     }
@@ -513,7 +460,6 @@ export const seedData = async () => {
         let score = Math.floor(Math.random() * (10 - 2) + 2);
         let putts = Math.floor(Math.random() * (10 - 0));
         db.transaction((tx) => {
-          // console.log('inside createRound')
           tx.executeSql(
             `
           INSERT OR REPLACE INTO scores (
@@ -547,7 +493,6 @@ export const seedData = async () => {
               Math.random() > 0.5
             ],
             (txObj, result) => {
-              console.log("Created score");
               // resolve(result)
             },
             (err, mess) => console.log("err seeding score", err, mess)
@@ -576,7 +521,7 @@ export const seedData = async () => {
 
 export const loadStats = async (user_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now.
-  // console.log('USER ID IN STATS', user_id)
+
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
       tx.executeSql(
@@ -591,9 +536,6 @@ export const loadStats = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(
-          //   `overall round stats: ${JSON.stringify(result.rows._array)}`
-          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(err, mess))
@@ -604,7 +546,7 @@ export const loadStats = async (user_id) => {
 
 export const load18HoleStats = async (user_id) => {
   // Loads overall user round history. Only grabs rounds with 18 holes entered, for now.
-  // console.log('USER ID IN STATS', user_id)
+
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
       tx.executeSql(
@@ -619,9 +561,6 @@ export const load18HoleStats = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(
-          //   `overall round stats: ${JSON.stringify(result.rows._array)}`
-          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(err, mess))
@@ -764,16 +703,11 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(
-          //   `overall GIR stats: ${JSON.stringify(result.rows._array)}`
-          // );
           pctObj = {
             ...pctObj,
             girHit: result.rows._array.map((i) => i.gir_hit),
             girDates: result.rows._array.map((i) => i.date)
           };
-
-          // resolve(result.rows._array.reverse())
         },
         (err, mess) => console.log("err getting stats", reject(mess))
       );
@@ -790,17 +724,12 @@ export const loadTotalPctHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(
-          //   `overall  successful scramble stats: ${JSON.stringify(
-          //     result.rows._array
-          //   )}`
-          // );
           pctObj = {
             ...pctObj,
             scrambleSuccess: result.rows._array.map((i) => i.scramble),
             scrambleDates: result.rows._array.map((i) => i.date)
           };
-          // console.log("PCT OBJ", pctObj);
+
           resolve(pctObj);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -810,7 +739,6 @@ export const loadTotalPctHistory = async (user_id) => {
 };
 
 export const loadTotalPuttHistory = async (user_id) => {
-  // console.log('LOADING PUTTS', user_id)
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
       tx.executeSql(
@@ -825,7 +753,6 @@ export const loadTotalPuttHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`overall putting stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array.reverse());
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -834,7 +761,6 @@ export const loadTotalPuttHistory = async (user_id) => {
   );
 };
 export const loadPuttsForHole = async (user_id, hole_id) => {
-  console.log("LOADING PUTTS", user_id, hole_id);
   return new Promise((resolve, reject) =>
     db.transaction((tx) => {
       tx.executeSql(
@@ -850,7 +776,6 @@ export const loadPuttsForHole = async (user_id, hole_id) => {
     `,
         [hole_id, user_id],
         (txObj, result) => {
-          // console.log(`overall fw History stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array.reverse());
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -898,7 +823,6 @@ export const loadShots = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -921,7 +845,6 @@ export const loadShotHistoryData = async (user_id, club_id) => {
     `,
         [user_id, club_id],
         (txObj, result) => {
-          // console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`);
           resolve(result.rows._array.reverse());
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -942,7 +865,6 @@ export const loadTotalRounds = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`total overall stats: ${JSON.stringify(result.rows._array)}`)
           if (result.rows._array[0]) {
             resolve(result.rows._array[0].total_rounds);
           } else {
@@ -967,7 +889,6 @@ export const loadAvgScore = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array[0].avg);
         },
         (err, mess) => console.log("err getting total stats", reject(mess))
@@ -990,7 +911,6 @@ export const loadAvgPutts = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`total avgscore: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array[0].avg);
         },
         (err, mess) => console.log("err getting total stats", reject(mess))
@@ -1011,7 +931,6 @@ export const loadBestScore = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`best score: ${JSON.stringify(result.rows._array)}`);
           resolve(result.rows._array[0]?.tot);
         },
         (err, mess) => console.log("err getting total stats", reject(mess))
@@ -1035,9 +954,7 @@ export const loadGirPct = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`GIR pct obj: ${JSON.stringify(result.rows._array[0].green_in_reg)}`)
           hitNum = result.rows._array[0].green_in_reg;
-          // resolve(result.rows._array[0])
         },
         (err, mess) => console.log("err getting GIR pct", reject(mess))
       );
@@ -1052,9 +969,6 @@ export const loadGirPct = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
-          const total = result.rows._array[0].total;
-          // console.log(`found ${hitNum} fairways hit out of ${total} holes`)
           resolve((hitNum * 100) / result.rows._array[0].total);
         },
         (err, mess) => console.log("err getting acg pct", reject(mess))
@@ -1079,9 +993,7 @@ export const loadScramblePct = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`Scramble pct obj: ${JSON.stringify(result.rows._array[0])}`)
           scrNum = result.rows._array[0].scramble;
-          // resolve(result.rows._array[0])
         },
         (err, mess) => console.log("err getting GIR pct", reject(mess))
       );
@@ -1097,9 +1009,7 @@ export const loadScramblePct = async (user_id) => {
   `,
         [user_id],
         (txObj, result) => {
-          // console.log(`GIR pct obj: ${JSON.stringify(result.rows._array[0].green_in_reg)}`)
           girNum = result.rows._array[0].green_in_reg;
-          // resolve(result.rows._array[0])
         },
         (err, mess) => console.log("err getting GIR pct", reject(mess))
       );
@@ -1114,9 +1024,6 @@ export const loadScramblePct = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`total holes for GIR: ${JSON.stringify(result.rows._array[0].total)}`)
-          const total = result.rows._array[0].total;
-          // console.log(`found ${scrNum} scrambles hit out of ${total} holes`)
           resolve((scrNum * 100) / (result.rows._array[0].total - girNum));
         },
         (err, mess) => console.log("err getting acg pct", reject(mess))
@@ -1141,9 +1048,7 @@ export const getPct = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`pct obj: ${JSON.stringify(result.rows._array[0].hit)}`)
           hitNum = result.rows._array[0].hit;
-          // resolve(result.rows._array[0])
         },
         (err, mess) => console.log("err getting acg pct", reject(mess))
       );
@@ -1159,9 +1064,6 @@ export const getPct = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`total holes: ${JSON.stringify(result.rows._array[0].total)}`)
-          const total = result.rows._array[0].total;
-          // console.log(`found ${hitNum} fairways hit out of ${total} holes`)
           resolve((hitNum * 100) / result.rows._array[0].total);
         },
         (err, mess) => console.log("err getting acg pct", reject(mess))
@@ -1183,7 +1085,6 @@ export const loadShotHistory = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`all shot stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1211,7 +1112,6 @@ export const loadFairwayData = async (user_id, course_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
-          // console.log(`all Fairway stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1238,7 +1138,6 @@ export const loadFairwayDataTotal = async (user_id, course_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
-          // console.log(`TOTAL FW stats: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1265,7 +1164,6 @@ export const loadHoleStats = async (course_id, user_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
-          // console.log(`Overall hole info: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1290,7 +1188,6 @@ export const loadHoleHistory = async (course_id, user_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
-          // console.log(`all hole history: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1311,7 +1208,6 @@ export const retrieveCourseInfo = async (round_id) => {
     `,
         [round_id],
         (txObj, result) => {
-          // console.log("result getting course INFO", result.rows._array[0]);
           resolve(result.rows._array[0]);
         },
         (err, mess) =>
@@ -1336,7 +1232,6 @@ export const loadLow = async (course_id, user_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
-          // console.log(`low hole history: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -1361,7 +1256,6 @@ export const loadBirds = async (course_id, user_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
-          // console.log(`all birdie info for ${targetNum}: ${JSON.stringify(result.rows._array)}`)
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting birds", reject(mess))
@@ -1385,9 +1279,6 @@ export const loadTotalBirds = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(
-          //   `all birdie info for: ${JSON.stringify(result.rows._array)}`
-          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting birds", reject(mess))
@@ -1576,10 +1467,6 @@ export const getScore = async (round_id) => {
     `,
         [round_id],
         (txObj, result) => {
-          // console.log(
-          //   `result getting score with round_id ${round_id}`,
-          //   result.rows._array
-          // );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err creating round", reject(mess))
@@ -1594,8 +1481,6 @@ export const dbCall = () => {
       "select * from scores",
       [],
       (txObj, result) => {
-        // console.log('result', result.rows)
-
         if (result.rows.length !== 0) {
           existingGameAlert();
           console.log("There is an existing game! Reset?");
@@ -1605,7 +1490,7 @@ export const dbCall = () => {
       () => console.log("error fetching")
     );
   });
-  console.log("done w DATABASE");
+
   return false;
 };
 
@@ -1630,11 +1515,8 @@ const dropAndCreate = async () => {
       null,
       (txObj, result) => {
         console.log("result", result);
-        // console.log('txObj', txObj)
       },
       (err) => console.log("err", err)
     );
   });
-
-  console.log("deleted game");
 };
