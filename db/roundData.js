@@ -141,6 +141,10 @@ export const getRoundData = async (roundID) => {
             }
           });
 
+          console.log(
+            "🚀 ~ file: roundData.js ~ line 145 ~ db.transaction ~ birdieObj",
+            birdieObj
+          );
           roundObj = { ...roundObj, birdieObj };
         },
         (err, mess) => reject(err, mess)

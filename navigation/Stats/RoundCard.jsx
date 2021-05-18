@@ -18,7 +18,7 @@ const pieChartConfig = {
 };
 
 export function RoundCard({ handleRoundView, item }) {
-  const [roundData, setRoundData] = React.useState({});
+  const [roundData, setRoundData] = React.useState();
 
   const updateData = async () => {
     const roundDataForState = await getRoundData(item.round_id);
@@ -35,7 +35,7 @@ export function RoundCard({ handleRoundView, item }) {
 
   let pieChartData;
 
-  if (roundData?.frontScore) {
+  if (roundData) {
     pieChartData = [
       {
         name: "Eagles",
@@ -91,12 +91,16 @@ export function RoundCard({ handleRoundView, item }) {
       <View style={styles.roundCardInnerContainer}>
         <Text style={styles.clubAvgText}>{item.course_name}</Text>
         <View style={styles.roundCardRow}>
-          <View style={styles.roundCardInnerContainer}>
-            <Text style={styles.roundCardHeader}>Front</Text>
-            <Text style={styles.roundCardScore}>
-              {roundData?.frontScore ? roundData.frontScore : ""}
-            </Text>
-          </View>
+          {roundData?.frontScore && (
+            <>
+              <View style={styles.roundCardInnerContainer}>
+                <Text style={styles.roundCardHeader}>Front</Text>
+                <Text style={styles.roundCardScore}>
+                  {roundData?.frontScore}
+                </Text>
+              </View>
+            </>
+          )}
           {roundData?.backScore && (
             <View style={styles.roundCardRow}>
               <View style={styles.roundCardInnerContainer}>
@@ -108,7 +112,7 @@ export function RoundCard({ handleRoundView, item }) {
             </View>
           )}
         </View>
-        {roundData.frontScore && (
+        {roundData && (
           <PieChart
             data={pieChartData}
             chartConfig={pieChartConfig}

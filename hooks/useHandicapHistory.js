@@ -3,10 +3,10 @@ import { loadHcpDiffStats } from "../db/dbSetup";
 import { StatContext } from "../context/StatContext";
 
 export const loadHandicapFromArray = (hcpArray) => {
-  console.log(
-    "🚀 ~ file: useHandicapHistory.js ~ line 6 ~ loadHandicapFromArray ~ hcpArray",
-    hcpArray
-  );
+  // console.log(
+  //   "🚀 ~ file: useHandicapHistory.js ~ line 6 ~ loadHandicapFromArray ~ hcpArray",
+  //   hcpArray
+  // );
   // Given a sliced array of objects, will tell you what the handicaps were at that particular time
 
   const handicapArrayToSort = [];

@@ -537,21 +537,6 @@ function AppProvider(props) {
         data: roundHistory18Holes.reverse()
       });
 
-      const sortedHistory = roundHistory
-        .slice()
-        .sort((a, b) => a.hcp_diff - b.hcp_diff);
-
-      let count = 0;
-      let hcpIndex = 0;
-      sortedHistory.forEach((score) => {
-        if (count < 8) {
-          count += 1;
-          hcpIndex += score.hcp_diff;
-        }
-      });
-      const hcp = hcpIndex / count;
-      dispatch({ type: "set_hcp", data: hcp });
-
       const totalpctHistoy = await loadTotalPctHistory(user_id);
 
       const fwyPctHistory = totalpctHistoy.totalHolesPlayed
@@ -637,6 +622,10 @@ function AppProvider(props) {
       dispatch({
         type: "set_handicap_history",
         data: handicapHistoryArray.reverse()
+      });
+      dispatch({
+        type: "set_hcp",
+        data: handicapHistoryArray[handicapHistoryArray.length - 1]
       });
 
       dispatch({ type: "done_initial_loading" });

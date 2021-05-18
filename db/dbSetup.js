@@ -160,7 +160,16 @@ export const deleteRound = async (round_id) => {
     `,
         [round_id],
         (txObj, result) => {
-          console.log("🚀 ~ file: dbSetup.js ~ lDELETE ROUND", result);
+          resolve(result.insertId);
+        },
+        (err, mess) => console.log("err creating round", reject(mess))
+      );
+      tx.executeSql(
+        `
+        DELETE FROM scores WHERE round_id = ?;
+    `,
+        [round_id],
+        (txObj, result) => {
           resolve(result.insertId);
         },
         (err, mess) => console.log("err creating round", reject(mess))
