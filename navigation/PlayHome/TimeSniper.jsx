@@ -9,48 +9,24 @@ import { ActivityIndicator } from "react-native";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 import config from "../../settings.json";
 import { TextInput } from "react-native";
+const dayjs = require("dayjs");
+const dayLookup = {
+  0: "Sunday",
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday"
+};
 
 export function TimeSniper({ navigation }) {
-  const appContext = React.useContext(AppContext);
   const [saving, setSaving] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [buttonText, setButtonText] = React.useState("Save Times");
   const [token, setToken] = React.useState("");
   const [error, setError] = React.useState(false);
   const [numPlayers, setNumPlayers] = React.useState("2");
-
-  const getSavedTimes = async () => {
-    const savedTimes = await AsyncStorage.getItem("snipeTimes");
-
-    const saveTimeObj = JSON.parse(savedTimes);
-
-    if (Object.keys(savedTimes).length > 0) {
-      setDayData(saveTimeObj);
-    }
-    setLoading(false);
-  };
-
-  const onNumPlayerChange = (val) => {
-    if (Number(val) >= 0 && Number(val) < 5) {
-      setNumPlayers(val);
-    }
-  };
-
-  const getAndSetToken = async () => {
-    const expoPushTokenString = await AsyncStorage.getItem("expoPushToken");
-    const expoPushToken = JSON.parse(expoPushTokenString);
-    if (expoPushToken === "error") {
-      setError(true);
-      return;
-    } else {
-      setToken(expoPushToken);
-    }
-  };
-
-  React.useEffect(() => {
-    // getSavedTimes();
-    getAndSetToken();
-  }, []);
 
   const [dayData, setDayData] = React.useState({
     Monday: {
@@ -89,6 +65,88 @@ export function TimeSniper({ navigation }) {
       endValue: new Date(2000, 1, 1, 21)
     }
   });
+  const getSavedTimes = async () => {
+    const savedTimes = await AsyncStorage.getItem("snipeTimes");
+    const saveTimeObj = JSON.parse(savedTimes);
+
+    if (Object.keys(saveTimeObj).length > 0) {
+      setDayData({
+        Monday: {
+          active: saveTimeObj.Monday.active,
+          startValue: new Date(saveTimeObj.Monday.startValue),
+          endValue: new Date(saveTimeObj.Monday.endValue)
+        },
+        Tuesday: {
+          active: saveTimeObj.Tuesday.active,
+          startValue: new Date(saveTimeObj.Tuesday.startValue),
+          endValue: new Date(saveTimeObj.Tuesday.endValue)
+        },
+        Wednesday: {
+          active: saveTimeObj.Wednesday.active,
+          startValue: new Date(saveTimeObj.Wednesday.startValue),
+          endValue: new Date(saveTimeObj.Wednesday.endValue)
+        },
+        Thursday: {
+          active: saveTimeObj.Thursday.active,
+          startValue: new Date(saveTimeObj.Thursday.startValue),
+          endValue: new Date(saveTimeObj.Thursday.endValue)
+        },
+        Friday: {
+          active: saveTimeObj.Friday.active,
+          startValue: new Date(saveTimeObj.Friday.startValue),
+          endValue: new Date(saveTimeObj.Friday.endValue)
+        },
+        Saturday: {
+          active: saveTimeObj.Saturday.active,
+          startValue: new Date(saveTimeObj.Saturday.startValue),
+          endValue: new Date(saveTimeObj.Saturday.endValue)
+        },
+        Sunday: {
+          active: saveTimeObj.Sunday.active,
+          startValue: new Date(saveTimeObj.Sunday.startValue),
+          endValue: new Date(saveTimeObj.Sunday.endValue)
+        }
+      });
+    }
+    setLoading(false);
+  };
+
+  const onNumPlayerChange = (val) => {
+    if (Number(val) >= 0 && Number(val) < 5) {
+      setNumPlayers(val);
+    }
+  };
+
+  const getAndSetToken = async () => {
+    const expoPushTokenString = await AsyncStorage.getItem("expoPushToken");
+    const expoPushToken = JSON.parse(expoPushTokenString);
+
+    if (!expoPushToken || expoPushToken === "error") {
+      setError(true);
+      return;
+    } else {
+      setToken(expoPushToken);
+    }
+  };
+
+  React.useEffect(() => {
+    getSavedTimes();
+    getAndSetToken();
+  }, []);
+
+  const sortedDayData = React.useMemo(() => {
+    let dayCode = dayjs(Date.now()).day();
+    const sorted = [];
+    for (let i = 0; i < 7; i++) {
+      if (dayCode > 6) {
+        dayCode = 0;
+      }
+      sorted.push({ ...dayData[dayLookup[dayCode]], day: dayLookup[dayCode] });
+      dayCode++;
+    }
+
+    return sorted;
+  }, [dayData]);
 
   const toggleDay = (day) => {
     setDayData({
@@ -101,12 +159,6 @@ export function TimeSniper({ navigation }) {
   };
 
   const setTime = (day, time, type) => {
-    console.log(
-      "🚀 ~ file: TimeSniper.jsx ~ line 82 ~ setTime ~ day, time, type",
-      day,
-      time,
-      type
-    );
     if (type === "START") {
       if (dayData[day].endValue < time) {
         return;
@@ -164,6 +216,12 @@ export function TimeSniper({ navigation }) {
         style={styles.bgImage}
       />
       <View style={styles.container}>
+        {error && (
+          <Text>
+            There was an error setting up notifications. Make sure you have push
+            notifications turned on, and try re-starting the app.
+          </Text>
+        )}
         <View style={styles.numberOfPlayersContainer}>
           <TextInput
             keyboardType="numeric"
@@ -176,16 +234,16 @@ export function TimeSniper({ navigation }) {
           <Text style={styles.playerText}>Players</Text>
         </View>
         {!error &&
-          Object.keys(dayData).map((day) => {
+          sortedDayData.map((day, dayIndex) => {
             return (
-              <View style={styles.dayRow} key={day}>
-                <Text style={styles.dayName}>{day}</Text>
+              <View style={styles.dayRow} key={day.day}>
+                <Text style={styles.dayName}>{day.day}</Text>
                 <Switch
-                  value={dayData[day].active}
-                  onValueChange={() => toggleDay(day)}
+                  value={day.active}
+                  onValueChange={() => toggleDay(day.day)}
                 />
 
-                {dayData[day].active && !loading && (
+                {day.active && !loading && (
                   <View style={styles.timePickerRow}>
                     <View style={styles.timePickerColumn}>
                       <Text>Start</Text>
@@ -193,9 +251,9 @@ export function TimeSniper({ navigation }) {
                         testID="Test"
                         mode="time"
                         style={styles.dateTimePicker}
-                        value={dayData[day].startValue}
+                        value={day.startValue}
                         onChange={(event, selectedDate) =>
-                          setTime(day, selectedDate, "START")
+                          setTime(day.day, selectedDate, "START")
                         }
                       />
                     </View>
@@ -205,9 +263,9 @@ export function TimeSniper({ navigation }) {
                         testID="Test"
                         mode="time"
                         style={styles.dateTimePicker}
-                        value={dayData[day].endValue}
+                        value={day.endValue}
                         onChange={(event, selectedDate) =>
-                          setTime(day, selectedDate, "END")
+                          setTime(day.day, selectedDate, "END")
                         }
                       />
                     </View>
@@ -216,21 +274,18 @@ export function TimeSniper({ navigation }) {
               </View>
             );
           })}
-        {error && (
-          <Text>
-            There was an error setting up notifications. Make sure you have push
-            notifications turned on, and try re-starting the app if you do
-          </Text>
+
+        {!error && (
+          <TouchableOpacity onPress={() => saveTimes()}>
+            <View style={[styles.styledButton, styles.playButton]}>
+              {saving ? (
+                <ActivityIndicator color="#000000" />
+              ) : (
+                <Text style={styles.buttonText}>{buttonText}</Text>
+              )}
+            </View>
+          </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={() => saveTimes()}>
-          <View style={[styles.styledButton, styles.playButton]}>
-            {saving ? (
-              <ActivityIndicator color="#000000" />
-            ) : (
-              <Text style={styles.buttonText}>{buttonText}</Text>
-            )}
-          </View>
-        </TouchableOpacity>
       </View>
     </View>
   );

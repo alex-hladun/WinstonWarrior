@@ -22,10 +22,6 @@ const generateScoreArray = (stats) => {
   const sortedArray = scoreArr.sort((a, b) =>
     a.score > b.score ? 1 : b.score > a.score ? -1 : 0
   );
-  console.log(
-    "🚀 ~ file: generateScoreArray.js ~ line 25 ~ generateScoreArray ~ sortedArray",
-    sortedArray
-  );
 
   sortedArray[0]["position"] = 1;
   let leadScore = sortedArray[0].score;
@@ -40,10 +36,6 @@ const generateScoreArray = (stats) => {
       sortedArray[i]["position"] = position;
     }
   }
-  console.log(
-    "🚀 ~ file: generateScoreArray.js ~ line 25 ~ generateScoreArray ~ sortedArray",
-    sortedArray
-  );
 
   return sortedArray;
 };

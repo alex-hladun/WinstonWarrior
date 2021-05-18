@@ -19,22 +19,24 @@ export default function NotificationHandler() {
   const responseListener = useRef();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
-      setExpoPushToken(token);
-      AsyncStorage.setItem("expoPushToken", JSON.stringify(token));
-    });
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        setExpoPushToken(token);
+        AsyncStorage.setItem("expoPushToken", JSON.stringify(token));
+      })
+      .catch((err) => {
+        AsyncStorage.setItem("expoPushToken", JSON.stringify("error"));
+      });
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(
-      (notification) => {
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
-      }
-    );
+      });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
-      }
-    );
+      });
 
     return () => {
       Notifications.removeNotificationSubscription(
@@ -57,23 +59,23 @@ export default function NotificationHandler() {
 
 async function registerForPushNotificationsAsync() {
   let token;
-  if (Constants.isDevice) {
-    const {
-      status: existingStatus
-    } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
+  try {
+    if (Constants.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        AsyncStorage.setItem("expoPushToken", JSON.stringify("error"));
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
     }
-    if (finalStatus !== "granted") {
-      AsyncStorage.setItem("expoPushToken", "error");
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    // alert("Must use physical device for Push Notifications");
+  } catch (err) {
+    AsyncStorage.setItem("expoPushToken", JSON.stringify("error"));
   }
 
   if (Platform.OS === "android") {
