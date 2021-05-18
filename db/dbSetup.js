@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import { Alert, AsyncStorageStatic } from "react-native";
+import { Alert } from "react-native";
 import glencoe from "../assets/courses/glencoe";
 import paradise from "../assets/courses/paradisecanyon";
 import winston from "../assets/courses/winston";
@@ -143,6 +143,24 @@ export const createRound = async (course_id, user_id) => {
     `,
         [course_id, user_id],
         (txObj, result) => {
+          resolve(result.insertId);
+        },
+        (err, mess) => console.log("err creating round", reject(mess))
+      );
+    })
+  );
+};
+
+export const deleteRound = async (round_id) => {
+  return new Promise((resolve, reject) =>
+    db.transaction((tx) => {
+      tx.executeSql(
+        `
+        DELETE FROM rounds WHERE round_id = ?;
+    `,
+        [round_id],
+        (txObj, result) => {
+          console.log("🚀 ~ file: dbSetup.js ~ lDELETE ROUND", result);
           resolve(result.insertId);
         },
         (err, mess) => console.log("err creating round", reject(mess))
@@ -615,7 +633,7 @@ export const loadHcpDiffStats = async (user_id) => {
     db.transaction((tx) => {
       tx.executeSql(
         `
-    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, rounds.end_date, count(scores.hole_num) AS holes_played, courses.name AS course_name, rounds.hcp_diff
+    SELECT rounds.round_id, SUM(scores.total_shots) AS total_score, rounds.end_date, rounds.calculated_holes_played AS holes_played, courses.name AS course_name, rounds.hcp_diff
     FROM ROUNDS JOIN scores ON rounds.round_id = scores.round_id
     JOIN courses ON rounds.course_id = courses.course_id
     WHERE rounds.user_id = ? AND rounds.hcp_DIFF IS NOT NULL
@@ -624,7 +642,9 @@ export const loadHcpDiffStats = async (user_id) => {
     `,
         [user_id],
         (txObj, result) => {
-          // console.log(`overall round stats: ${JSON.stringify(result.rows._array)}`)
+          console.log(
+            `overall Hcp stats: ${JSON.stringify(result.rows._array)}`
+          );
           resolve(result.rows._array);
         },
         (err, mess) => console.log("err getting stats", reject(mess))
@@ -743,11 +763,11 @@ export const loadTotalPuttHistory = async (user_id) => {
     db.transaction((tx) => {
       tx.executeSql(
         `
-    SELECT sum(scores.total_putts) AS putts, count(scores.driver_direction) = 50 AS hits FROM scores
+    SELECT sum(scores.total_putts) AS putts, count(scores.driver_direction) = 50 AS hits, rounds.calculated_holes_played FROM scores
     JOIN rounds on scores.round_id = rounds.round_id
     WHERE rounds.user_id = ?
     GROUP BY rounds.round_id
-    HAVING rounds.calculated_holes_played = 18
+    HAVING rounds.calculated_holes_played = 18 OR rounds.calculated_holes_played = 9
     ORDER BY rounds.round_id DESC
     LIMIT 10;
     `,

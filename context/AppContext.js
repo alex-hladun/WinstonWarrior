@@ -609,19 +609,20 @@ function AppProvider(props) {
 
       const newPuttHistory = await loadTotalPuttHistory(user_id);
       const puttHistoryArray = newPuttHistory.map((puttObj) => {
-        return puttObj.putts;
+        if (puttObj.calculated_holes_played === 9) {
+          return puttObj.putts * 2;
+        } else if (puttObj.calculated_holes_played === 18) {
+          return puttObj.putts;
+        }
       });
       dispatch({ type: "set_total_putt_history", data: puttHistoryArray });
 
       const hcpRoundHistory = await loadHcpDiffStats(user_id);
       const handicapHistoryArray = [];
-      const length = hcpRoundHistory.length;
 
       // Max points should be used for the graph
-      let maxHcpPoints = 10;
-      if (length < 10) {
-        maxHcpPoints = length;
-      }
+      let maxHcpPoints =
+        hcpRoundHistory.length > 10 ? 10 : hcpRoundHistory.length;
 
       for (let i = 0; i < maxHcpPoints; i++) {
         handicapHistoryArray.push(

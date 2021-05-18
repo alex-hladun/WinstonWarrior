@@ -6,7 +6,6 @@ import {
   FlatList,
   SafeAreaView,
   Dimensions,
-  ImageBackground,
   Modal
 } from "react-native";
 import * as React from "react";
@@ -16,6 +15,8 @@ import XSymbol from "../../assets/svg/XSymbol";
 import { AppContext } from "../../context/AppContext";
 import { Theme } from "../../assets/styles/Theme";
 import Carousel from "react-native-snap-carousel";
+import { Alert } from "react-native";
+import { deleteRound } from "../../db/dbSetup";
 
 const { width } = Dimensions.get("window");
 
@@ -24,10 +25,15 @@ export const RoundItem = ({
   round,
   handleRoundSelect,
   includedInHandicap,
-  nineHoleRound
+  nineHoleRound,
+  handleRoundDeleteAlert,
+  handleRoundDelete
 }) => {
   return (
-    <TouchableOpacity onPress={() => handleRoundSelect(round.index)}>
+    <TouchableOpacity
+      onPress={() => handleRoundSelect(round.index)}
+      onLongPress={() => handleRoundDeleteAlert(round)}
+    >
       <View style={nineHoleRound ? styles.nineHoleRoundItem : styles.roundItem}>
         <View style={styles.roundLeft}>
           <Text style={styles.roundCourseName}>
@@ -54,14 +60,35 @@ export function Rounds() {
   const [round, setRound] = React.useState(null);
   const carRef = React.useRef(null);
   const handicapRounds = appState.statState.hcpRounds;
+
+  const handleRoundDeleteAlert = (round) => {
+    Alert.alert("Delete round?", "Round will be gone forever", [
+      { text: "No", style: "cancel" },
+      {
+        text: "Yes",
+        onPress: () => {
+          console.log(`delete round ${round.item.round_id}`);
+          handleRoundDelete(round.item.round_id);
+        }
+      }
+    ]);
+  };
+
+  const handleRoundDelete = async (roundId) => {
+    await deleteRound(roundId);
+    appContext.value.loadInitialStats(1);
+  };
+
   // Item rendered into flatlist
   const renderItem = (round) => {
     return (
       <RoundItem
         handleRoundSelect={handleRoundSelect}
         round={round}
-        includedInHandicap={handicapRounds.includes(round.item.round_id)}
-        nineHoleRound={round.item.holes_played === 9}
+        includedInHandicap={handicapRounds?.includes(round.item.round_id)}
+        nineHoleRound={round.item.calculated_holes_played === 9}
+        handleRoundDeleteAlert={handleRoundDeleteAlert}
+        handleRoundDelete={handleRoundDelete}
       />
     );
   };
@@ -75,7 +102,6 @@ export function Rounds() {
     setRound(roundIndex);
     setRoundView(!roundView);
   };
-
   const handleRoundView = () => {
     setRoundView(!roundView);
   };

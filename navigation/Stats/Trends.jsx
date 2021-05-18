@@ -9,9 +9,9 @@ import { resetDatabase } from "../../navigation/SignUp";
 export function Trends({ navigation }) {
   const appContext = React.useContext(AppContext);
   const appState = appContext.value.state;
-  const handicapHistory = appState.statState.hcpHistory;
+  const handicapHistory = appState.statState.hcpHistory.filter((h) => !!h);
+
   const roundHistory = appState.statState.roundHistory;
-  const roundHistory18Holes = appState.statState.roundHistory18Holes;
   const totalPuttHistory = appState.statState.puttHistory;
   const [parentChartType, setParentChartType] = React.useState("LineChart");
   const [chartType, setChartType] = React.useState("Shots");
@@ -34,7 +34,7 @@ export function Trends({ navigation }) {
         setParentChartType("LineChart");
         setChartType("Putts");
         setChartData({
-          labels: roundHistory18Holes?.map((round, index) => {
+          labels: roundHistory?.map((round, index) => {
             return round.end_date?.slice(5, 10);
           }),
           datasets: [
@@ -66,6 +66,10 @@ export function Trends({ navigation }) {
         setChartType("GIR %");
         setChartData({
           labels: roundHistory?.map((round, index) => {
+            console.log(
+              "🚀 ~ file: Trends.jsx ~ line 68 ~ labels:roundHistory[0]?.map ~ round",
+              round
+            );
             return round.end_date?.slice(5, 10);
           }),
           datasets: [
@@ -94,11 +98,15 @@ export function Trends({ navigation }) {
         setChartType("HCP");
         setChartData({
           labels: roundHistory?.map((round, index) => {
-            return round.end_date?.slice(5, 10);
+            if (index < handicapHistory.length) {
+              return round.end_date?.slice(5, 10);
+            } else {
+              return "NA";
+            }
           }),
           datasets: [
             {
-              data: handicapHistory
+              data: handicapHistory.length > 0 ? handicapHistory : [0]
             }
           ]
         });
@@ -108,13 +116,21 @@ export function Trends({ navigation }) {
           setChartType("Shots");
           setParentChartType("LineChart");
           setChartData({
-            labels: roundHistory18Holes?.map((round, index) => {
+            labels: roundHistory?.map((round, index) => {
               return round.end_date?.slice(5, 10);
             }),
             datasets: [
               {
-                data: roundHistory18Holes.map((round) => {
-                  return round.total_score;
+                data: roundHistory.map((round) => {
+                  {
+                    if (round.calculated_holes_played === 9) {
+                      return round.total_score * 2;
+                    } else if (round.calculated_holes_played === 18) {
+                      return round.total_score;
+                    }
+
+                    return round.total_score;
+                  }
                 })
               }
             ]
@@ -197,7 +213,10 @@ export function Trends({ navigation }) {
         <View style={styles.homePageContainer}>
           {roundHistory[0] ? (
             <View style={styles.headerContainer}>
-              <Text onLongPress={() => resetDatabase(true)} style={styles.header}>
+              <Text
+                onLongPress={() => resetDatabase(true)}
+                style={styles.header}
+              >
                 Total {chartType}
               </Text>
             </View>

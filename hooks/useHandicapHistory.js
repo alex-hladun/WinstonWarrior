@@ -3,6 +3,10 @@ import { loadHcpDiffStats } from "../db/dbSetup";
 import { StatContext } from "../context/StatContext";
 
 export const loadHandicapFromArray = (hcpArray) => {
+  console.log(
+    "🚀 ~ file: useHandicapHistory.js ~ line 6 ~ loadHandicapFromArray ~ hcpArray",
+    hcpArray
+  );
   // Given a sliced array of objects, will tell you what the handicaps were at that particular time
 
   const handicapArrayToSort = [];
@@ -22,7 +26,6 @@ export const loadHandicapFromArray = (hcpArray) => {
         });
         currentNineHoleRound = false;
         currentNineHoleRoundID = undefined;
-        e;
       } else if (score.holes_played < 14) {
         // no existing 9 hole round
         currentNineHoleRoundID = score.round_id;
@@ -41,6 +44,14 @@ export const loadHandicapFromArray = (hcpArray) => {
     (a, b) => a.hcp_diff - b.hcp_diff
   );
 
+  // No history if doesn't meet requirements
+  if (sortedHcpArray.length === 0) {
+    return {
+      handicapHistory: [],
+      handicapRounds: []
+    };
+  }
+
   let totalCount = 0;
   let diffSum = 0;
 
@@ -55,7 +66,8 @@ export const loadHandicapFromArray = (hcpArray) => {
     totalCount++;
   });
 
-  const handicap = Math.round((diffSum * 10) / totalCount) / 10;
+  const handicap =
+    totalCount > 0 ? Math.round((diffSum * 10) / totalCount) / 10 : 0;
 
   // Return the handicap calculated from the given array of hanicaps
   return {
