@@ -23,6 +23,7 @@ import RoundSummary from "./RoundSummary";
 import ShotTrack from "./ShotTrack";
 import { AppContext } from "../context/AppContext";
 import { Theme } from "../assets/styles/Theme.js";
+import GameIndicator from "../components/GameIndicator";
 
 export default function Hole({ location, initialHole = 1 }) {
   // Loads all courseInfo into AppContext
@@ -234,183 +235,186 @@ export default function Hole({ location, initialHole = 1 }) {
     location.longitude
   );
   return (
-    <View style={styles.holeContainer}>
-      <Modal animationType="slide" transparent={true} visible={holeView}>
-        <View style={holeListStyles.container}>
-          <TouchableOpacity onPress={() => handleHoleChange()}>
-            <View style={holeListStyles.headerContainer}>
-              <Text
-                style={holeListStyles.header}
-                onPress={() => handleHoleChange()}
+    <>
+      <View style={styles.holeContainer}>
+        <Modal animationType="slide" transparent={true} visible={holeView}>
+          <View style={holeListStyles.container}>
+            <TouchableOpacity onPress={() => handleHoleChange()}>
+              <View style={holeListStyles.headerContainer}>
+                <Text
+                  style={holeListStyles.header}
+                  onPress={() => handleHoleChange()}
+                >
+                  <XSymbol />
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <HoleList
+              setHole={setHole}
+              handleRoundSummary={handleRoundSummary}
+              currentHole={holeNum}
+            />
+          </View>
+        </Modal>
+
+        <Modal animationType="slide" transparent={true} visible={shotTrackView}>
+          <ShotTrack
+            distance={trackDistance}
+            handleTrackViewClose={() => handleTrackViewClose()}
+          />
+        </Modal>
+
+        <Modal animationType="slide" transparent={true} visible={scoreView}>
+          <Score
+            holeNum={holeNum}
+            setHole={setHole}
+            handleScoreEnter={handleScoreEnter}
+            handleHoleInc={handleHoleInc}
+            handleHoleDec={handleHoleDec}
+          />
+        </Modal>
+
+        <Modal animationType="slide" transparent={true} visible={scoreCardView}>
+          <ScoreCard
+            holeNum={holeNum}
+            handleScoreCardEnter={handleScoreCardEnter}
+          />
+        </Modal>
+
+        <Modal animationType="slide" transparent={true} visible={endRoundView}>
+          <RoundSummary handleRoundSummary={handleRoundSummary} />
+        </Modal>
+
+        <View style={styles.header}>
+          <View style={styles.scoreBox}>
+            <TouchableOpacity onPress={() => handleHoleChange(1)}>
+              <Text style={styles.holeTitle}>{holeNum}</Text>
+            </TouchableOpacity>
+            <Text style={styles.title}>
+              {distanceToFlag > 999 ? "999" : distanceToFlag.toFixed(0)} yds
+            </Text>
+            <TouchableOpacity onPress={() => handleScoreCardEnter()}>
+              <Text style={styles.parTitle}>Par {holeInfo[holeNum].par}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {camera.altitude && (
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={{
+              width: Dimensions.get("window").width,
+              height: Dimensions.get("window").height
+            }}
+            mapType={"satellite"}
+            initialCamera={camera ? camera : null}
+            onRegionChangeComplete={(event) => handleRegionChange(event)}
+            onPress={(event) => handleMapShortPress(event)}
+            onMarkerDrag={(event) => handleMapShortPress(event)}
+          >
+            <Marker
+              coordinate={location}
+              title={"User Loc"}
+              description={"A full description"}
+              pinColor={"#FFFFFF"}
+              style={styles.customMarker}
+            >
+              <Image
+                style={styles.markerImage}
+                source={require("../assets/images/circle.png")}
+              />
+            </Marker>
+
+            <Marker
+              style={styles.customMarker}
+              ref={holeTargetRef}
+              coordinate={holeInfo[holeNum].pinCoords}
+            >
+              {distanceMarker.latitude && (
+                <View style={styles.distanceCallout}>
+                  <Text>{distanceToFlagTarget()} yds</Text>
+                </View>
+              )}
+              <Image
+                style={styles.markerImage}
+                source={require("../assets/images/pngegg.png")}
+              />
+            </Marker>
+            {distanceMarker.latitude && (
+              <Marker
+                ref={shotTargetRef}
+                coordinate={distanceMarker}
+                style={styles.customMarker}
               >
-                <XSymbol />
+                <View style={styles.distanceCallout}>
+                  <Text>{distanceToShotTarget()} yds</Text>
+                </View>
+              </Marker>
+            )}
+            {distanceMarker.latitude && (
+              <Polyline
+                coordinates={[location, distanceMarker]}
+                strokeColor={"#FFFFFF"}
+                strokeWidth={2}
+                geodesic={true}
+              />
+            )}
+            {distanceMarker.latitude && (
+              <Polyline
+                coordinates={[holeInfo[holeNum].pinCoords, distanceMarker]}
+                strokeColor={"#FFFFFF"}
+                strokeWidth={2}
+                lineDashPattern={[4, 3]}
+              />
+            )}
+          </MapView>
+        )}
+        <View style={styles.floatingContainer}>
+          <TouchableOpacity onPress={() => handleHoleDec()}>
+            <View style={[styles.floatingHoleMarker, styles.move]}>
+              <Text>
+                <LeftSymbol />
               </Text>
             </View>
           </TouchableOpacity>
-          <HoleList
-            setHole={setHole}
-            handleRoundSummary={handleRoundSummary}
-            currentHole={holeNum}
-          />
-        </View>
-      </Modal>
-
-      <Modal animationType="slide" transparent={true} visible={shotTrackView}>
-        <ShotTrack
-          distance={trackDistance}
-          handleTrackViewClose={() => handleTrackViewClose()}
-        />
-      </Modal>
-
-      <Modal animationType="slide" transparent={true} visible={scoreView}>
-        <Score
-          holeNum={holeNum}
-          setHole={setHole}
-          handleScoreEnter={handleScoreEnter}
-          handleHoleInc={handleHoleInc}
-          handleHoleDec={handleHoleDec}
-        />
-      </Modal>
-
-      <Modal animationType="slide" transparent={true} visible={scoreCardView}>
-        <ScoreCard
-          holeNum={holeNum}
-          handleScoreCardEnter={handleScoreCardEnter}
-        />
-      </Modal>
-
-      <Modal animationType="slide" transparent={true} visible={endRoundView}>
-        <RoundSummary handleRoundSummary={handleRoundSummary} />
-      </Modal>
-
-      <View style={styles.header}>
-        <View style={styles.scoreBox}>
-          <TouchableOpacity onPress={() => handleHoleChange(1)}>
-            <Text style={styles.holeTitle}>{holeNum}</Text>
+          <TouchableOpacity onPress={() => handleHoleReset()}>
+            <View style={[styles.floatingHoleMarker, styles.flag]}>
+              <Text>
+                <FlagSymbol />
+              </Text>
+            </View>
           </TouchableOpacity>
-          <Text style={styles.title}>
-            {distanceToFlag > 999 ? "999" : distanceToFlag.toFixed(0)} yds
-          </Text>
-          <TouchableOpacity onPress={() => handleScoreCardEnter()}>
-            <Text style={styles.parTitle}>Par {holeInfo[holeNum].par}</Text>
+          <TouchableOpacity onPress={() => handleScoreEnter()}>
+            <View style={[styles.floatingHoleMarker, styles.check]}>
+              <Text>
+                <CheckSymbol style={styles.icon} color={Theme.iconStroke} />
+              </Text>
+            </View>
           </TouchableOpacity>
-        </View>
-      </View>
-
-      {camera.altitude && (
-        <MapView
-          ref={mapRef}
-          provider={PROVIDER_GOOGLE}
-          style={{
-            width: Dimensions.get("window").width,
-            height: Dimensions.get("window").height
-          }}
-          mapType={"satellite"}
-          initialCamera={camera ? camera : null}
-          onRegionChangeComplete={(event) => handleRegionChange(event)}
-          onPress={(event) => handleMapShortPress(event)}
-          onMarkerDrag={(event) => handleMapShortPress(event)}
-        >
-          <Marker
-            coordinate={location}
-            title={"User Loc"}
-            description={"A full description"}
-            pinColor={"#FFFFFF"}
-            style={styles.customMarker}
-          >
-            <Image
-              style={styles.markerImage}
-              source={require("../assets/images/circle.png")}
-            />
-          </Marker>
-
-          <Marker
-            style={styles.customMarker}
-            ref={holeTargetRef}
-            coordinate={holeInfo[holeNum].pinCoords}
-          >
-            {distanceMarker.latitude && (
-              <View style={styles.distanceCallout}>
-                <Text>{distanceToFlagTarget()} yds</Text>
-              </View>
-            )}
-            <Image
-              style={styles.markerImage}
-              source={require("../assets/images/pngegg.png")}
-            />
-          </Marker>
-          {distanceMarker.latitude && (
-            <Marker
-              ref={shotTargetRef}
-              coordinate={distanceMarker}
-              style={styles.customMarker}
+          <TouchableOpacity onPress={(event) => handleTracking()}>
+            <Animated.View
+              style={[
+                styles.floatingHoleMarker,
+                styles.target,
+                { opacity: trackAnim }
+              ]}
             >
-              <View style={styles.distanceCallout}>
-                <Text>{distanceToShotTarget()} yds</Text>
-              </View>
-            </Marker>
-          )}
-          {distanceMarker.latitude && (
-            <Polyline
-              coordinates={[location, distanceMarker]}
-              strokeColor={"#FFFFFF"}
-              strokeWidth={2}
-              geodesic={true}
-            />
-          )}
-          {distanceMarker.latitude && (
-            <Polyline
-              coordinates={[holeInfo[holeNum].pinCoords, distanceMarker]}
-              strokeColor={"#FFFFFF"}
-              strokeWidth={2}
-              lineDashPattern={[4, 3]}
-            />
-          )}
-        </MapView>
-      )}
-      <View style={styles.floatingContainer}>
-        <TouchableOpacity onPress={() => handleHoleDec()}>
-          <View style={[styles.floatingHoleMarker, styles.move]}>
-            <Text>
-              <LeftSymbol />
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleHoleReset()}>
-          <View style={[styles.floatingHoleMarker, styles.flag]}>
-            <Text>
-              <FlagSymbol />
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleScoreEnter()}>
-          <View style={[styles.floatingHoleMarker, styles.check]}>
-            <Text>
-              <CheckSymbol style={styles.icon} color={Theme.iconStroke} />
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={(event) => handleTracking()}>
-          <Animated.View
-            style={[
-              styles.floatingHoleMarker,
-              styles.target,
-              { opacity: trackAnim }
-            ]}
-          >
-            <Text>
-              <TargetSymbol />
-            </Text>
-          </Animated.View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleHoleInc()}>
-          <View style={[styles.floatingHoleMarker, styles.move]}>
-            <Text>
-              <RightSymbol />
-            </Text>
-          </View>
-        </TouchableOpacity>
+              <Text>
+                <TargetSymbol />
+              </Text>
+            </Animated.View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleHoleInc()}>
+            <View style={[styles.floatingHoleMarker, styles.move]}>
+              <Text>
+                <RightSymbol />
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+      <GameIndicator mode="Match Play" timeout={2000} />
+    </>
   );
 }
