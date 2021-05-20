@@ -272,6 +272,15 @@ const reducer = produce((state, action) => {
       );
       state.socialState.followingUsers = freshArray;
       break;
+    case "SET_TEAM":
+      state.playState[`p${action.playerNumber}Team`] = action.team;
+      break;
+    case "SET_TEAM_NAME":
+      state.gameState[`team${action.number}`].name = action.name;
+      break;
+    case "SET_GAME_SETTINGS":
+      state.gameState.push = action.push;
+      break;
   }
 });
 
@@ -329,6 +338,10 @@ const initialState = {
     p3_slp: undefined,
     p4_rtg: undefined,
     p4_slp: undefined,
+    p1Team: undefined,
+    p2Team: undefined,
+    p3Team: undefined,
+    p4Team: undefined,
     player_2: undefined,
     player_3: undefined,
     player_4: undefined,
@@ -424,6 +437,31 @@ const initialState = {
     users: [],
     likedPosts: [],
     followingUsers: []
+  },
+  gameState: {
+    gameName: "",
+    gameId: undefined,
+    gameEnabled: true,
+    team1: {
+      name: "",
+      score: undefined
+    },
+    team2: {
+      name: "",
+      score: undefined
+    },
+    team3: {
+      name: "",
+      score: undefined
+    },
+    team4: {
+      name: "",
+      score: undefined
+    },
+    currentPlayerTurn: "",
+    nextPlayerTurn: "",
+    netScoring: false,
+    push: true
   }
 };
 const AppContext = React.createContext(initialState);
