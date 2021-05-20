@@ -90,6 +90,26 @@ export default function PlayScreen({ navigation }) {
     const liveRoundId = await AsyncStorage.getItem("liveRoundId");
     const p1Score = await getScore(JSON.parse(p1roundID));
 
+    for (let i = 1; i <= 4; i++) {
+      const team = await AsyncStorage.getItem(`p${i}Team`);
+      if (team) {
+        appContext.dispatch({
+          type: "SET_TEAM",
+          playerNumber: i,
+          team: JSON.parse(team)
+        });
+      }
+
+      if (i <= 2) {
+        const teamName = await AsyncStorage.getItem(`team${i}`);
+        appContext.dispatch({
+          type: "SET_TEAM_NAME",
+          number: i,
+          name: teamName
+        });
+      }
+    }
+
     const holeNum = await AsyncStorage.getItem("holeNum");
     setInitialHole(JSON.parse(holeNum));
     // SET hole id ad part of   SETHOLE

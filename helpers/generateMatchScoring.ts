@@ -29,27 +29,10 @@ const generateMatchScoring = (state: any) => {
   let carry = 0;
   for (let i = 1; i <= 18; i++) {
     if (team1[0][i]) {
-      console.log(
-        "🚀 ~ file: ~ line 48 ~ generateMatchScoring ~ team2",
-        team1,
-        team2
-      );
       const team1Min = Math.min(...team1.map((x) => x[i], 0));
 
-      // team1.reduce((prev, current) => {
-      //   console.log("prevvvv", prev[i]);
-      //   return prev[i] < current[i] ? prev[i] : current[i];
-      // });
-      console.log(
-        "🚀 ~ file: generateMatchScoring.ts ~ line 38 ~ generateMatchScoring ~ team1Max",
-        team1Min
-      );
       const team2Min = Math.min(...team2.map((x) => x[i], 0));
 
-      console.log(
-        "🚀 ~ file: generateMatchScoring.ts ~ line 40 ~ generateMatchScoring ~ team2Min",
-        team2Min
-      );
       if (team1Min < team2Min) {
         team1Score += carry + 1;
         carry = 0;
@@ -61,14 +44,6 @@ const generateMatchScoring = (state: any) => {
       }
     }
   }
-  console.log(
-    "🚀 ~ file: generateMatchScoring.ts ~ line 4 ~ generateMatchScoring ~ state",
-    state.playState.p1Team,
-    state.playState.p2Team,
-    state.playState.p3Team,
-    state.playState.p4Team,
-    state.gameState
-  );
 
   const rankingArray = [
     {
@@ -82,14 +57,6 @@ const generateMatchScoring = (state: any) => {
       position: team2Score >= team1Score ? 1 : 2
     }
   ].sort((a, b) => a.position - b.position);
-  console.log(
-    "🚀 ~ file: generateMatchScoring.ts ~ line 70 ~ generateMatchScoring ~ rankingArray",
-    rankingArray
-  );
-  console.log(
-    "🚀 ~ file: generateMatchScoring.ts ~ line 77 ~ generateMatchScoring ~ carry",
-    carry
-  );
 
   return { rankingArray, carry };
 };

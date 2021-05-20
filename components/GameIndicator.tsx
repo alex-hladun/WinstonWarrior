@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useMemo } from "react";
-import { TouchableOpacity, Modal, AppState } from "react-native";
+import { TouchableOpacity, Modal } from "react-native";
 import styles from "../assets/styles/GameIndicator.js";
 import { View, Text } from "react-native";
 import PlayerStroke from "../assets/svg/PlayerStroke";
@@ -63,6 +63,7 @@ const GameIndicator: React.FC<Props> = ({ mode, timeout = 0 }: Props) => {
               {rankingArray.map((ranking) => (
                 <Ranking
                   name={ranking.teamName}
+                  key={ranking.teamName}
                   position={ranking.position}
                   score={ranking.score}
                 />

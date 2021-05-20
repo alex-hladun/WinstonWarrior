@@ -273,9 +273,11 @@ const reducer = produce((state, action) => {
       state.socialState.followingUsers = freshArray;
       break;
     case "SET_TEAM":
+      AsyncStorage.setItem(`p${action.playerNumber}Team`, `${action.team}`);
       state.playState[`p${action.playerNumber}Team`] = action.team;
       break;
     case "SET_TEAM_NAME":
+      AsyncStorage.setItem(`team${action.number}`, action.name);
       state.gameState[`team${action.number}`].name = action.name;
       break;
     case "SET_GAME_SETTINGS":
@@ -909,6 +911,12 @@ function AppProvider(props) {
     AsyncStorage.removeItem("u4roundid");
     AsyncStorage.removeItem("u4name");
     AsyncStorage.removeItem("course_id");
+    AsyncStorage.removeItem("p1Team");
+    AsyncStorage.removeItem("p2Team");
+    AsyncStorage.removeItem("p3Team");
+    AsyncStorage.removeItem("p4Team");
+    AsyncStorage.removeItem("team1");
+    AsyncStorage.removeItem("team2");
     AsyncStorage.removeItem("liveRoundId");
     dispatch({
       type: "set_round_id",
