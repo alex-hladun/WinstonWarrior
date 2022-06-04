@@ -3,7 +3,7 @@ import * as React from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AppContext } from "../../context/AppContext";
 import styles from "../../assets/styles/MenuStyles";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Switch } from "react-native";
 import { ActivityIndicator } from "react-native";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";

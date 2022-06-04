@@ -33,6 +33,10 @@ export const addVersionColumn = async () => {
       try {
         tx.executeSql(
           `
+          IF NOT EXISTS(SELECT NULL
+            FROM INFORMATION_SCHEMA.COLUMNS
+           WHERE table_name = 'courses'
+             AND column_name = 'version')  THEN
           ALTER TABLE courses 
           ADD COLUMN 
           version INTEGER

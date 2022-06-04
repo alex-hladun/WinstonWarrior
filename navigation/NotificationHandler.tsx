@@ -1,8 +1,8 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import React, { useState, useEffect, useRef } from "react";
-import { Text, View, Button, Platform } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Platform, View } from "react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

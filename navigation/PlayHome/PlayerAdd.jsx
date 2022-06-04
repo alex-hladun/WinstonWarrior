@@ -10,7 +10,7 @@ import * as React from "react";
 import styles from "../../assets/styles/MenuStyles";
 import { AppContext } from "../../context/AppContext";
 import { registerUser, createRound } from "../../db/dbSetup";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from "../../settings.json";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 

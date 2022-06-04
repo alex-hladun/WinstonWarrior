@@ -121,10 +121,10 @@ export default function Hole({ location, initialHole = 1 }) {
   const distanceToFlagTarget = useCallback(() => {
     if (distanceMarker.latitude) {
       return measure(
-        holeInfo[holeNum].pinCoords.latitude,
-        holeInfo[holeNum].pinCoords.longitude,
-        distanceMarker.latitude,
-        distanceMarker.longitude
+        holeInfo[holeNum]?.pinCoords?.latitude,
+        holeInfo[holeNum]?.pinCoords?.longitude,
+        distanceMarker?.latitude,
+        distanceMarker?.longitude
       ).toFixed(0);
     } else {
       return null;

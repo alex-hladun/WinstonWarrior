@@ -34,7 +34,7 @@ export function Login({ navigation }) {
         await resetDatabase();
         registerUser(authedUser.username);
       }
-      await addVersionColumn();
+      // await addVersionColumn();
 
       appContext.dispatch({
         type: "authentication_done",

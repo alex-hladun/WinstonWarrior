@@ -1,14 +1,15 @@
-import * as React from "react";
-import { Alert, Text } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from "expo-font";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import * as React from "react";
+import { Alert, Text } from "react-native";
 import Hole from "../components/Hole";
-import { AppContext } from "../context/AppContext";
-import NavigationPlay from "../navigation/PlayHome";
-import { getScore, retrieveCourseInfo } from "../db/dbSetup";
-import AsyncStorage from "@react-native-community/async-storage";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { useFonts } from "expo-font";
+import { AppContext } from "../context/AppContext";
+import { getScore, retrieveCourseInfo } from "../db/dbSetup";
+import NavigationPlay from "../navigation/PlayHome";
+
 export default function PlayScreen({ navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({

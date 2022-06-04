@@ -1,5 +1,4 @@
-import React, { useReducer, useMemo } from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
+import React, { useMemo, useReducer } from "react";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -7,83 +6,82 @@ const reducer = (state, action) => {
       return {
         ...state,
         roundHistory: action.data
-      }
-    break;
+      };
+      break;
     case "set_hole_stats":
       return {
         ...state,
         holes: action.data
-      }
-    break;
+      };
+      break;
     case "set_hole_history":
       return {
         ...state,
         holeHistory: action.data
-      }
-    break;
+      };
+      break;
     case "set_low_scores":
       return {
         ...state,
         lowScores: action.data
-      }
-    break;
+      };
+      break;
     case "set_birdies":
       return {
         ...state,
         birdies: action.data
-      }
-    break;
+      };
+      break;
     case "set_fw_data":
       return {
         ...state,
         fwData: action.data
-      }
-    break;
+      };
+      break;
     case "set_shot_data":
       return {
         ...state,
         shotData: action.data
-      }
-    break;
+      };
+      break;
     case "set_total_info":
       return {
         ...state,
         totalInfo: action.data
-      }
-    break;
+      };
+      break;
     case "trigger_club_update":
       return {
         ...state,
         clubDataUpdate: Math.random()
-      }
-    break;
+      };
+      break;
     case "trigger_total_info_update":
       return {
         ...state,
         totalInfoUpdate: Math.random()
-      }
-    break;
+      };
+      break;
     case "trigger_all_data_update":
       return {
         ...state,
         allDataUpdate: Math.random()
-      }
-    break;
+      };
+      break;
     case "trigger_hole_data_update":
       return {
         ...state,
         holeDataUpdate: Math.random()
-      }
-    break;
+      };
+      break;
     case "trigger_handicap_update":
       return {
         ...state,
         handicapUpdate: Math.random()
-      }
-    break;
-
+      };
+      break;
   }
-}
+};
 const initialState = {
   totalInfo: {},
   shotData: [],
@@ -98,22 +96,21 @@ const initialState = {
   allDataUpdate: false,
   handicapUpdate: false,
   holeDataUpdate: false
-}
+};
 const StatContext = React.createContext(initialState);
 
 function StatProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-
-const doneRound = () => {
-  dispatch({
-    type: 'set_round_id',
-    data: null
-  })
-}
+  const doneRound = () => {
+    dispatch({
+      type: "set_round_id",
+      data: null
+    });
+  };
 
   const value = useMemo(() => {
-   return { state };
+    return { state };
   }, [state]);
 
   return (

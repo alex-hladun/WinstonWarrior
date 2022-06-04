@@ -1,16 +1,7 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  Switch
-} from "react-native";
 import * as React from "react";
+import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
 import styles from "../../assets/styles/MenuStyles";
 import { AppContext } from "../../context/AppContext";
-import AsyncStorage from "@react-native-community/async-storage";
-import PlayScreen from "../../screens/PlayScreen";
 
 export function GameSelect({ navigation }) {
   const appContext = React.useContext(AppContext);
