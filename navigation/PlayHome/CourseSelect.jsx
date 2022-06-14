@@ -84,7 +84,14 @@ export function CourseSelect({ navigation }) {
       img: require("../../assets/images/bluedevil.png"),
       rtg: 70.8,
       slp: 130
-    }
+    },
+    {
+      name: "Kananaskis (Lorette)",
+      id: 5,
+      img: require("../../assets/images/kcountry.png"),
+      rtg: 70.4,
+      slp: 130
+    },
   ];
 
   const courseItems = courseList.map((course, index) => {

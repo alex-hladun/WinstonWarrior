@@ -12,6 +12,15 @@ export const styles = StyleSheet.create({
     top: 100,
     justifyContent: "flex-start"
   },
+  teamContainer: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+    top: 100,
+    // justifyContent: "center",
+    alignItems: "center"
+  },
   bgImage: {
     flex: 1,
     width: "150%",
@@ -107,6 +116,17 @@ export const styles = StyleSheet.create({
     width: 200
     // marginRight:10
   },
+  teamRow: {
+    flexDirection: "row",
+    width: "80%",
+    justifyContent: "space-evenly",
+    marginHorizontal: "5%",
+    marginVertical: 20,
+    paddingVertical: 20,
+    borderRadius: 20,
+    backgroundColor: Theme.darkCharcoal
+  },
+  team: {},
   startRound: {
     alignSelf: "flex-start",
     // width: 65,
@@ -199,6 +219,11 @@ export const styles = StyleSheet.create({
     textAlign: "center"
   },
   playerText: {
+    marginLeft: 10,
+    fontSize: 20
+  },
+  playerTeamText: {
+    color: Theme.iconStroke,
     marginLeft: 10,
     fontSize: 20
   }

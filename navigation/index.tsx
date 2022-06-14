@@ -37,10 +37,12 @@ function RootNavigator() {
   const context = React.useContext(AppContext);
 
   const checkLogin = async () => {
+    console.log("AJDHJKASHDKJASHDAKJS");
     try {
       const authedUser = await Auth.currentAuthenticatedUser();
       // await testSqlStatement();
       const existingDb = await checkExistingDb();
+      console.log("🚀 ~ file: index.tsx ~ line 44 ~ existingDb", existingDb);
       if (!existingDb) {
         await resetDatabase();
         registerUser(authedUser.username);
@@ -57,7 +59,8 @@ function RootNavigator() {
         token: authedUser.signInUserSession.idToken.jwtToken
       });
     } catch (err) {
-      console.log("err signing in");
+      await resetDatabase();
+      console.log("err signing in", err);
       console.log(err); // this means there is no currently authenticated user
     }
   };

@@ -10,7 +10,7 @@ import * as React from "react";
 import styles from "../../assets/styles/MenuStyles";
 import { AppContext } from "../../context/AppContext";
 import { registerUser, createRound } from "../../db/dbSetup";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from "../../settings.json";
 import { authenticatedAxios } from "../../helpers/authenticatedAxios";
 
@@ -111,7 +111,6 @@ export function PlayerAdd({ navigation }) {
       type: "set_hole_num",
       data: 1
     });
-    
 
     let roundId;
     if (isLive) {
@@ -141,11 +140,14 @@ export function PlayerAdd({ navigation }) {
       ["liveRoundId", roundId ? JSON.stringify(roundId) : ""]
     ];
     await AsyncStorage.multiSet(saveItems);
-
-    await appContext.dispatch({
-      type: "set_view_mode",
-      data: "play"
-    });
+    if (playerCount > 1) {
+      navigation.push("Select Game");
+    } else {
+      await appContext.dispatch({
+        type: "set_view_mode",
+        data: "play"
+      });
+    }
   };
 
   const addPlayer = (num) => {

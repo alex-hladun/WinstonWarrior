@@ -8,7 +8,7 @@ import { AppProvider } from "./context/AppContext";
 import { StatProvider } from "./context/StatContext";
 import Amplify, { Auth } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
-
+import { argv } from "process";
 export default function App() {
   Amplify.configure(awsconfig);
   const isLoadingComplete = useCachedResources();

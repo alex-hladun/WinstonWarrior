@@ -8,6 +8,7 @@ import SocialPost from "../Social/SocialPost";
 import { CourseSelect } from "./CourseSelect";
 import { TimeSniper } from "./TimeSniper";
 import { PlayerAdd } from "./PlayerAdd";
+import { GameSelect } from "./GameSelect";
 import { SignUp } from "../SignUp";
 import { Login } from "../Login";
 import { AppContext } from "../../context/AppContext";
@@ -84,6 +85,11 @@ function PlayNavigator() {
       <PlayStack.Screen
         name="Add Players"
         component={PlayerAdd}
+        options={{ headerTransparent: true }}
+      />
+      <PlayStack.Screen
+        name="Select Game"
+        component={GameSelect}
         options={{ headerTransparent: true }}
       />
       <PlayStack.Screen name="Login" component={Login} />

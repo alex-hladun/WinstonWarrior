@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "../styles/Theme";
 import { Dimensions } from "react-native";
-import { color } from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("window");
 

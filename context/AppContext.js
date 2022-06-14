@@ -1,5 +1,5 @@
 import React, { useReducer, useMemo } from "react";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getClubs,
   getPct,
@@ -272,6 +272,17 @@ const reducer = produce((state, action) => {
       );
       state.socialState.followingUsers = freshArray;
       break;
+    case "SET_TEAM":
+      AsyncStorage.setItem(`p${action.playerNumber}Team`, `${action.team}`);
+      state.playState[`p${action.playerNumber}Team`] = action.team;
+      break;
+    case "SET_TEAM_NAME":
+      AsyncStorage.setItem(`team${action.number}`, action.name);
+      state.gameState[`team${action.number}`].name = action.name;
+      break;
+    case "SET_GAME_SETTINGS":
+      state.gameState.push = action.push;
+      break;
   }
 });
 
@@ -329,6 +340,10 @@ const initialState = {
     p3_slp: undefined,
     p4_rtg: undefined,
     p4_slp: undefined,
+    p1Team: undefined,
+    p2Team: undefined,
+    p3Team: undefined,
+    p4Team: undefined,
     player_2: undefined,
     player_3: undefined,
     player_4: undefined,
@@ -424,6 +439,31 @@ const initialState = {
     users: [],
     likedPosts: [],
     followingUsers: []
+  },
+  gameState: {
+    gameName: "",
+    gameId: undefined,
+    gameEnabled: true,
+    team1: {
+      name: "",
+      score: undefined
+    },
+    team2: {
+      name: "",
+      score: undefined
+    },
+    team3: {
+      name: "",
+      score: undefined
+    },
+    team4: {
+      name: "",
+      score: undefined
+    },
+    currentPlayerTurn: "",
+    nextPlayerTurn: "",
+    netScoring: false,
+    push: true
   }
 };
 const AppContext = React.createContext(initialState);
@@ -871,6 +911,12 @@ function AppProvider(props) {
     AsyncStorage.removeItem("u4roundid");
     AsyncStorage.removeItem("u4name");
     AsyncStorage.removeItem("course_id");
+    AsyncStorage.removeItem("p1Team");
+    AsyncStorage.removeItem("p2Team");
+    AsyncStorage.removeItem("p3Team");
+    AsyncStorage.removeItem("p4Team");
+    AsyncStorage.removeItem("team1");
+    AsyncStorage.removeItem("team2");
     AsyncStorage.removeItem("liveRoundId");
     dispatch({
       type: "set_round_id",

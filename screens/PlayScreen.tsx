@@ -1,14 +1,15 @@
-import * as React from "react";
-import { Alert, Text } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from "expo-font";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import * as React from "react";
+import { Alert, Text } from "react-native";
 import Hole from "../components/Hole";
-import { AppContext } from "../context/AppContext";
-import NavigationPlay from "../navigation/PlayHome";
-import { getScore, retrieveCourseInfo } from "../db/dbSetup";
-import AsyncStorage from "@react-native-community/async-storage";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { useFonts } from "expo-font";
+import { AppContext } from "../context/AppContext";
+import { getScore, retrieveCourseInfo } from "../db/dbSetup";
+import NavigationPlay from "../navigation/PlayHome";
+
 export default function PlayScreen({ navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -89,6 +90,26 @@ export default function PlayScreen({ navigation }) {
     const p4roundID = await AsyncStorage.getItem("u4roundid");
     const liveRoundId = await AsyncStorage.getItem("liveRoundId");
     const p1Score = await getScore(JSON.parse(p1roundID));
+
+    for (let i = 1; i <= 4; i++) {
+      const team = await AsyncStorage.getItem(`p${i}Team`);
+      if (team) {
+        appContext.dispatch({
+          type: "SET_TEAM",
+          playerNumber: i,
+          team: JSON.parse(team)
+        });
+      }
+
+      if (i <= 2) {
+        const teamName = await AsyncStorage.getItem(`team${i}`);
+        appContext.dispatch({
+          type: "SET_TEAM_NAME",
+          number: i,
+          name: teamName
+        });
+      }
+    }
 
     const holeNum = await AsyncStorage.getItem("holeNum");
     setInitialHole(JSON.parse(holeNum));

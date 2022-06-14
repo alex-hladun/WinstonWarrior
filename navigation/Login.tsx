@@ -34,7 +34,7 @@ export function Login({ navigation }) {
         await resetDatabase();
         registerUser(authedUser.username);
       }
-      await addVersionColumn();
+      // await addVersionColumn();
 
       appContext.dispatch({
         type: "authentication_done",
@@ -56,6 +56,7 @@ export function Login({ navigation }) {
       await Auth.signIn(username, password);
       checkLogin();
     } catch (err) {
+      console.log("🚀 ~ file: Login.tsx ~ line 59 ~ err", err);
       setLoading(false);
       setError(err.message);
       console.log("error signing in", err);
@@ -69,7 +70,7 @@ export function Login({ navigation }) {
   return (
     <>
       <View>
-        {width < 400 && (
+        {width < 500 && (
           <Video
             source={require("../assets/golf.m4v")}
             rate={1}

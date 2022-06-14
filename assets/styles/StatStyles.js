@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "../styles/Theme";
 import { Dimensions } from "react-native";
-import { color } from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
 
@@ -45,7 +44,7 @@ export const styles = StyleSheet.create({
     width: "20%",
     backgroundColor: Theme.spinGreen2,
     justifyContent: "space-evenly",
-    alignItems: "center",
+    alignItems: "center"
   },
   customCont2: {
     flexDirection: "column",
@@ -436,12 +435,10 @@ export const styles = StyleSheet.create({
     // fontFamily: 'tacoma'
   },
   smallTxt: {
-    // color: Theme.spinGreen4,
     color: "#000",
     opacity: 0.6,
     fontSize: 20,
     textAlign: "center"
-    // fontFamily: 'tacoma'
   },
   styledButton: {
     width: 250,
@@ -449,7 +446,6 @@ export const styles = StyleSheet.create({
     padding: 15,
     borderColor: "#f3f8ff",
     justifyContent: "center",
-    // borderWidth: 1,
     margin: 20,
     borderRadius: 24,
     alignSelf: "center"
@@ -462,7 +458,6 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     letterSpacing: 3
-    // color: "#f4f4f4"
   },
   roundItem: {
     borderWidth: 2,
@@ -478,7 +473,6 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "space-between",
     flexDirection: "row"
-    // filter: drop-shadow(0px 0px 40px rgba(0, 0, 0, 0.2));
   },
   nineHoleRoundItem: {
     borderWidth: 2,
@@ -494,7 +488,6 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "space-between",
     flexDirection: "row"
-    // filter: drop-shadow(0px 0px 40px rgba(0, 0, 0, 0.2));
   },
   roundLeft: {
     flexDirection: "column",
